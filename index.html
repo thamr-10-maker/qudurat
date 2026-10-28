@@ -1113,9 +1113,16 @@ function figBox(host, w, hgt) { const st = makeStage(host, w, hgt); st.wrap.styl
    A "build" teaches one idea as a picture that grows one layer at a time.
    Each frame adds a layer to the same drawing and shows one short line of text.
    frames: [{ say, draw(K) , clear? }]  — K draws into the frame's own layer. */
+/* SVG labels. Safari lays out right-to-left SVG text badly (pieces jump apart), so we never ask SVG for rtl:
+   pure maths is written in the order the eye reads it, and Arabic words sit inside an RTL embedding. */
+const AR_LETTER = /[\u0621-\u064A\u0671-\u06D3\uFB50-\uFDFF\uFE70-\uFEFC]/;
+const MIRROR = { '(': ')', ')': '(', '<': '>', '>': '<', '≤': '≥', '≥': '≤', '[': ']', ']': '[', '«': '»', '»': '«' };
+/* reversed by hand and locked with a left-to-right override, so no browser reorders it again */
+function visualMath(s) { const u = s.match(/[0-9٠-٩]+(?:[.,٫/:][0-9٠-٩]+)*[⁰¹²³⁴⁵⁶⁷⁸⁹]*|[\s\S]/g) || []; return '\u202D' + u.reverse().map(c => MIRROR[c] || c).join('') + '\u202C'; }
+function svLabel(parent, x, y, str, cls, anchor) { const s = ar(str); if (window.__labels) window.__labels.set(cls + '|' + str, [str, cls]); return svText(parent, x, y, AR_LETTER.test(s) ? '\u202B' + s + '\u202C' : visualMath(s), cls, anchor); }
 function buildKit(svg, layer) {
   /* labels are Arabic: digits and operators read right to left, like the lesson text */
-  const T = (x, y, s, cls, anchor = 'middle') => { const t = svText(layer, x, y, s, cls, anchor === 'start' ? 'end' : anchor === 'end' ? 'start' : anchor); t.setAttribute('direction', 'rtl'); t.style.unicodeBidi = 'embed'; return t; };
+  const T = (x, y, s, cls, anchor = 'middle') => svLabel(layer, x, y, s, cls, anchor);
   const K = {
     g: layer, svg,
     text: (x, y, s, cls = 's-txt', anchor = 'middle') => T(x, y, s, cls, anchor),
@@ -6848,7 +6855,7 @@ giveBuild('p8', 0, { h: 210, frames: [
 ] });
 
 /* ================= build-up pictures · units 4-7: ratio, motion, patterns, algebra ================= */
-const segBar = (K, x, y, w, hh, n, cls, labels) => { const pw = w / n; for (let i = 0; i < n; i++) { K.rect(x + i * pw, y, pw, hh, cls, 0); if (labels) K.note(x + i * pw + pw / 2, y + hh / 2, labels[i] != null ? labels[i] : labels); } K.rect(x, y, w, hh, 'b-edge', 4); };
+const segBar = (K, x, y, w, hh, n, cls, labels) => { const pw = w / n; for (let i = 0; i < n; i++) { K.rect(x + i * pw, y, pw, hh, cls, 0); if (labels) K.note(x + i * pw + pw / 2, y + hh / 2, Array.isArray(labels) ? labels[i] : labels); } K.rect(x, y, w, hh, 'b-edge', 4); };
 
 /* ---------- r2 ---------- */
 giveBuild('r2', 0, { h: 220, frames: [
@@ -7241,7 +7248,7 @@ giveBuild('c5', 0, { h: 220, frames: [
 ] });
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit } };
 })();
 (function () {
 /* ================= course block: Qudurat verbal section =================
@@ -7436,9 +7443,16 @@ function figBox(host, w, hgt) { const st = makeStage(host, w, hgt); st.wrap.styl
    A "build" teaches one idea as a picture that grows one layer at a time.
    Each frame adds a layer to the same drawing and shows one short line of text.
    frames: [{ say, draw(K) , clear? }]  — K draws into the frame's own layer. */
+/* SVG labels. Safari lays out right-to-left SVG text badly (pieces jump apart), so we never ask SVG for rtl:
+   pure maths is written in the order the eye reads it, and Arabic words sit inside an RTL embedding. */
+const AR_LETTER = /[\u0621-\u064A\u0671-\u06D3\uFB50-\uFDFF\uFE70-\uFEFC]/;
+const MIRROR = { '(': ')', ')': '(', '<': '>', '>': '<', '≤': '≥', '≥': '≤', '[': ']', ']': '[', '«': '»', '»': '«' };
+/* reversed by hand and locked with a left-to-right override, so no browser reorders it again */
+function visualMath(s) { const u = s.match(/[0-9٠-٩]+(?:[.,٫/:][0-9٠-٩]+)*[⁰¹²³⁴⁵⁶⁷⁸⁹]*|[\s\S]/g) || []; return '\u202D' + u.reverse().map(c => MIRROR[c] || c).join('') + '\u202C'; }
+function svLabel(parent, x, y, str, cls, anchor) { const s = ar(str); if (window.__labels) window.__labels.set(cls + '|' + str, [str, cls]); return svText(parent, x, y, AR_LETTER.test(s) ? '\u202B' + s + '\u202C' : visualMath(s), cls, anchor); }
 function buildKit(svg, layer) {
   /* labels are Arabic: digits and operators read right to left, like the lesson text */
-  const T = (x, y, s, cls, anchor = 'middle') => { const t = svText(layer, x, y, s, cls, anchor === 'start' ? 'end' : anchor === 'end' ? 'start' : anchor); t.setAttribute('direction', 'rtl'); t.style.unicodeBidi = 'embed'; return t; };
+  const T = (x, y, s, cls, anchor = 'middle') => svLabel(layer, x, y, s, cls, anchor);
   const K = {
     g: layer, svg,
     text: (x, y, s, cls = 's-txt', anchor = 'middle') => T(x, y, s, cls, anchor),
@@ -10538,7 +10552,7 @@ giveBuild('o2', 0, { h: 210, frames: [
 ] });
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit } };
 })();
 /* ================= academy shell =================
    Hosts every course block (window.AcademyCourses) in one page:
