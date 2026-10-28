@@ -791,6 +791,17 @@ h1,h2,h3{font-weight:500}
 .b-walk{fill:none;stroke:var(--theme);stroke-width:4;stroke-dasharray:10 7}
 .b-hot{stroke:var(--ok);stroke-width:6;stroke-linecap:round}
 .b-cold{stroke:var(--bad);stroke-width:6;stroke-linecap:round}
+.b-okbox{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2}
+.b-badbox{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2}
+.b-slot{fill:var(--card);stroke:var(--ink-2);stroke-width:2;stroke-dasharray:6 5}
+.b-okt{fill:var(--ok);font-family:var(--f-display);font-weight:600;font-size:20px}
+.b-badt{fill:var(--bad);font-family:var(--f-display);font-weight:600;font-size:20px}
+.b-okline{fill:none;stroke:var(--ok);stroke-width:3}
+.b-badline{fill:none;stroke:var(--bad);stroke-width:3;stroke-dasharray:7 5}
+.b-dashline{fill:none;stroke:var(--ink-3);stroke-width:2.5;stroke-dasharray:7 6}
+.s-paper{fill:var(--card);stroke:var(--line);stroke-width:2}
+.b-tl{fill:var(--line)}
+.b-hl{fill:var(--theme);opacity:.55}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -10241,6 +10252,290 @@ PLUS.a9 = {
   order: { q: 'رتّب خطة حل سؤال التناظر.', steps: ['أسمّي العلاقة بين كلمتي السؤال', 'أكتب جملة رابطة دقيقة', 'أجرّبها على كل خيار بالترتيب نفسه', 'إذا صح أكثر من خيار أجعل الجملة أدق'], why: 'هذه الخطة الكاملة.' },
   summary: ['جملة رابطة دقيقة أولًا', 'جرّبها على كل خيار بالترتيب نفسه', 'أكثر من خيار ← جملة أدق', 'لا شيء يصح ← جملة أوسع'],
 };
+
+/* ================= build-up pictures for the verbal theory cards ================= */
+const giveBuild = (id, i, build) => { const P = PLUS[id]; if (P && P.explains && P.explains[i]) P.explains[i].build = build; else console.warn('no explain', id, i); };
+
+/* ---- small drawing helpers (words in boxes, sentences, pages) ---- */
+const box = (K, t, cls, px = 10, py = 6, rx = 12) => {
+  const bb = t.getBBox(), y = +t.getAttribute('y');
+  const r = sv('rect', { x: bb.x - px, y: bb.y - py, width: bb.width + 2 * px, height: bb.height + 2 * py, rx, class: cls }); K.g.insertBefore(r, t);
+  return { l: bb.x - px, r: bb.x + bb.width + px, t: bb.y - py, b: bb.y + bb.height + py, cx: bb.x + bb.width / 2, y };
+};
+const chip = (K, x, y, s, cls = 's-mute', tcls = 'b-label') => box(K, K.text(x, y, s, tcls), cls);
+/* a chip whose right edge sits at `right` */
+const chipR = (K, right, y, s, cls = 's-mute', tcls = 'b-label') => { const t = K.text(0, y, s, tcls); t.setAttribute('x', right - 10 - t.getBBox().width / 2); return box(K, t, cls); };
+/* a sentence laid out right to left; numbers are blanks of that width; returns each word's box */
+function sent(K, y, words, { right = 348, left = 10, gap = 14, lh = 42, hi = {}, cls = 'b-label' } = {}) {
+  let x = right, yy = y; const out = [];
+  words.forEach((w, i) => {
+    if (typeof w === 'number') {
+      if (x - w < left) { x = right; yy += lh; }
+      K.rect(x - w, yy - 15, w, 30, hi[i] || 'b-slot', 8);
+      out.push({ l: x - w, r: x, t: yy - 15, b: yy + 15, cx: x - w / 2, y: yy }); x -= w + gap; return;
+    }
+    const t = K.text(0, yy, w, cls); const wd = t.getBBox().width;
+    if (x - wd < left) { x = right; yy += lh; t.setAttribute('y', yy); }
+    t.setAttribute('x', x - wd / 2);
+    const g = hi[i] ? box(K, t, hi[i], 5, 4, 8) : (() => { const bb = t.getBBox(); return { l: bb.x, r: bb.x + bb.width, t: bb.y, b: bb.y + bb.height, cx: bb.x + bb.width / 2, y: yy }; })();
+    out.push(g); x -= wd + gap;
+  });
+  return out;
+}
+/* redraw a word of a sentence on top, highlighted */
+const mark = (K, g, s, cls, tcls = 'b-label') => { K.rect(g.l - 5, g.t - 4, g.r - g.l + 10, g.b - g.t + 8, cls, 8); K.text(g.cx, g.y, s, tcls); };
+const fill = (K, g, s, cls = 'b-okbox') => { K.rect(g.l, g.t, g.r - g.l, g.b - g.t, cls, 8); K.text(g.cx, g.y, s, 'b-label'); };
+const ok = (K, x, y) => K.text(x, y, '✓', 'b-okt');
+const no = (K, x, y) => K.text(x, y, '✗', 'b-badt');
+/* a row: word → word with a small linking phrase over the arrow */
+function rel(K, y, a, b, verb, { cls = 's-mute', cls2 = 's-fill', ax = 290, bx = 70, arrow = 's-line2', flip = false } = {}) {
+  const A = chip(K, ax, y, a, cls), B = chip(K, bx, y, b, cls2);
+  if (flip) K.arrow(B.r + 6, y, A.l - 6, y, 0, arrow); else K.arrow(A.l - 6, y, B.r + 6, y, 0, arrow);
+  if (verb) K.note((A.l + B.r) / 2, y - 16, verb);
+  return { A, B };
+}
+/* a page of text: grey lines, right aligned */
+const LW = [.92, .8, .96, .72, .88, .66, .94, .58];
+function page(K, x, y, w, n, lh = 18) {
+  K.rect(x, y, w, n * lh + 22, 's-paper', 10);
+  return Array.from({ length: n }, (_, i) => { const lw = (w - 28) * LW[i % LW.length], L = { x: x + w - 14 - lw, y: y + 14 + i * lh, w: lw }; K.rect(L.x, L.y, L.w, 7, 'b-tl', 3); return L; });
+}
+const hiLine = (K, L, cls = 'b-hl', from = 0, len = 1) => K.rect(L.x + L.w * (1 - from - len), L.y - 4, L.w * len, 15, cls, 4);
+/* two halves of a sentence side by side (right half first) */
+function halves(K, rTop, rMain, lTop, lMain) {
+  K.rect(196, 24, 150, 64, 's-mute', 14); K.rect(14, 24, 150, 64, 's-mute', 14);
+  if (rTop) K.note(271, 42, rTop); if (lTop) K.note(89, 42, lTop);
+  K.label(271, 66, rMain); K.label(89, 66, lMain);
+  return { R: { l: 196, r: 346, t: 24, b: 88, cx: 271 }, L: { l: 14, r: 164, t: 24, b: 88, cx: 89 } };
+}
+
+/* ================= المفردات ================= */
+giveBuild('w1', 0, { h: 230, frames: [
+  { say: 'الجذر <b>ك ت ب</b>: ثلاثة حروف تحمل معنى الكتابة', draw(K) { K.circle(180, 112, 44, 's-hi-box'); K.text(180, 114, 'ك ت ب', 's-ink'); } },
+  { say: 'من الجذر تولد <b>عائلة</b> كلمات', draw(K) { [[300, 36, 'كاتب'], [300, 192, 'مكتوب'], [60, 36, 'مكتبة'], [60, 192, 'كتاب']].forEach(([x, y, s]) => { K.line(180 + (x > 180 ? 40 : -40), 112 + (y > 112 ? 20 : -20), x + (x > 180 ? -30 : 30), y + (y > 112 ? -16 : 16), 's-thin'); chip(K, x, y, s, 's-fill'); }); } },
+  { say: 'كلها تدور حول <b>الكتابة</b>: اعرف الجذر تخمّن المعنى', keepBright: true, draw(K) { K.tag(180, 214, 'العائلة كلها = كتابة'); } },
+] });
+giveBuild('w1', 1, { h: 250, frames: [
+  { say: 'الجذر <b>ص ن ع</b>', draw(K) { chip(K, 180, 28, 'ص ن ع', 's-hi-box', 's-ink'); } },
+  ...[['فاعِل', 'صانع', 'من يصنع'], ['مفعول', 'مصنوع', 'الشيء المصنوع'], ['مَفعَل', 'مَصنع', 'مكان الصنع']].map(([w, s, m], i) => ({
+    say: `وزن <b>${w}</b> ← ${s}: ${m}`, draw(K) { const y = 90 + i * 64; rel(K, y, w, s, '', { cls: 's-mute', cls2: 's-fill', ax: 280, bx: 110 }); K.note(110, y + 26, m); } })),
+] });
+giveBuild('w2', 0, { h: 230, frames: [
+  { say: 'كلمة في جملة: <b>زهيد</b>', draw(K) { sent(K, 40, ['ثمن', 'هذا', 'القلم', 'زهيد'], { hi: { 3: 's-hi-box' } }); } },
+  { say: 'نضع <b>رخيص</b> مكانها: المعنى نفسه ← <b>مرادف</b>', draw(K) { sent(K, 115, ['ثمن', 'هذا', 'القلم', 'رخيص'], { hi: { 3: 'b-okbox' } }); K.text(70, 115, 'مرادف', 'b-okt'); } },
+  { say: 'نضع <b>غالٍ</b>: انقلب المعنى ← <b>مضاد</b>', draw(K) { sent(K, 190, ['ثمن', 'هذا', 'القلم', 'غالٍ'], { hi: { 3: 'b-badbox' } }); K.text(70, 190, 'مضاد', 'b-badt'); } },
+] });
+const W3 = ['كان', 'الجو', 'قائظًا', 'فاحتمى', 'الناس', 'بالظل'];
+let G3;
+giveBuild('w3', 0, { h: 210, frames: [
+  { say: 'كلمة غريبة: <b>قائظًا</b>', draw(K) { G3 = sent(K, 50, W3, { hi: { 2: 's-hi-box' } }); } },
+  { say: 'ابحث حولها: <b>احتمى الناس بالظل</b>', draw(K) { [3, 4, 5].forEach(i => mark(K, G3[i], W3[i], 'b-okbox')); K.arrow(G3[4].cx, G3[4].b + 8, G3[2].cx, G3[2].b + 8, -34); } },
+  { say: 'نحتمي بالظل من الحر ← قائظ = <b>شديد الحرارة</b>', draw(K) { chip(K, G3[2].cx, 170, 'شديد الحرارة', 's-hi-box'); } },
+] });
+giveBuild('w4', 0, { h: 240, frames: [
+  { say: 'كلمة واحدة… <b>معانٍ</b> كثيرة', draw(K) { chip(K, 300, 120, 'ضرب', 's-hi-box', 's-ink'); } },
+  ...[['ضرب مثلًا', 'ذكر'], ['ضرب في الأرض', 'سافر'], ['ضرب موعدًا', 'حدّد']].map(([p, m], i) => ({
+    say: `«${p}» = <b>${m}</b>`, draw(K) { const y = 40 + i * 80; K.line(262, 120, 236, y, 's-thin'); const P = chipR(K, 236, y, p, 's-mute'); K.text(P.l - 16, y, '=', 'b-label'); chip(K, P.l - 60, y, m, 's-fill'); } })),
+] });
+const GR = [['نسيم', 30], ['ريح', 64], ['عاصفة', 104], ['إعصار', 150]];
+giveBuild('w5', 0, { h: 240, frames: [
+  { say: 'نسيم ثم ريح: الهواء <b>يشتد</b>', draw(K) { GR.slice(0, 2).forEach(([s, hh], i) => { K.rect(270 - i * 75, 196 - hh, 60, hh, 's-fill', 6); K.label(300 - i * 75, 218, s); }); } },
+  { say: 'ثم عاصفة، ثم إعصار', draw(K) { GR.slice(2).forEach(([s, hh], i) => { K.rect(120 - i * 75, 196 - hh, 60, hh, i ? 's-fill2' : 's-fill', 6); K.label(150 - i * 75, 218, s); }); } },
+  { say: 'ليست مترادفة: كل كلمة <b>أشد</b> من التي قبلها', keepBright: true, draw(K) { K.arrow(320, 24, 40, 24, 0, 's-line2'); K.note(180, 12, 'أشد'); } },
+] });
+giveBuild('w6', 0, { h: 210, frames: [
+  { say: 'كلمات تأتي معًا: <b>بذل جهدًا</b>', draw(K) { const a = chip(K, 280, 40, 'بذل', 's-mute'), b = chip(K, 80, 40, 'جهدًا', 's-fill'); K.line(a.l - 4, 40, b.r + 4, 40, 's-line'); } },
+  { say: 'أحرز <b>هدفًا</b> · اتخذ <b>قرارًا</b>', draw(K) { [['أحرز', 'هدفًا', 110], ['اتخذ', 'قرارًا', 180]].forEach(([v, n, y]) => { const a = chip(K, 280, y, v, 's-mute'), b = chip(K, 80, y, n, 's-fill'); K.line(a.l - 4, y, b.r + 4, y, 's-line'); }); } },
+  { say: '«أحرز جهدًا»؟ قريبة المعنى لكنها <b>غريبة</b> ✗', draw(K) { K.line(250, 104, 112, 48, 'b-badline'); no(K, 180, 66); } },
+] });
+
+/* ================= التناظر ================= */
+giveBuild('a2', 0, { h: 240, frames: [
+  ...[['كريم', 'سخي', '=', 'ترادف', '«الكريم هو السخي»'], ['طويل', 'قصير', 'عكس', 'تضاد', '«الطويل عكس القصير»'], ['دافئ', 'حار', 'أشد', 'تدرّج', '«الحار أشد من الدافئ»']].map(([a, b, sym, name, line], i) => ({
+    say: `<b>${name}</b>: ${line}`, draw(K) { const y = 34 + i * 76; chip(K, 300, y, a, 's-mute'); K.tag(240, y, sym); chip(K, 180, y, b, i === 2 ? 's-fill2' : 's-fill'); K.text(60, y, name, 's-hi-t'); K.note(240, y + 30, line); } })),
+] });
+giveBuild('a3', 0, { h: 240, frames: [
+  { say: 'الجزء <b>قطعة</b> من الشيء: الورقة من الشجرة', draw(K) { K.rect(258, 120, 20, 70, 's-face2', 3); K.circle(268, 90, 56, 's-fill'); K.path('M300,62 q22,-6 26,14 q-22,6 -26,-14 Z', 's-fill2'); K.note(222, 160, 'شجرة'); K.arrow(318, 60, 330, 24, 10, 's-thin'); K.label(318, 16, 'ورقة'); } },
+  { say: 'النوع <b>فرد</b> من مجموعة: التفاح من الفاكهة', draw(K) { K.rect(20, 40, 150, 150, 's-mute', 22); K.label(95, 24, 'فاكهة'); [['تفاح', 75, 's-fill2'], ['موز', 115, 's-mute'], ['عنب', 155, 's-mute']].forEach(([s, y, c]) => chip(K, 95, y, s, c)); } },
+  { say: 'الاختبار: «التفاح فاكهة» ✓ · «الورقة شجرة» ✗', keepBright: true, draw(K) { K.tag(95, 222, 'التفاح فاكهة ✓', 'b-okbox'); K.tag(268, 228, 'الورقة شجرة ✗', 'b-badbox'); } },
+] });
+giveBuild('a4', 0, { h: 220, frames: [
+  ...[['مقص', 'قص', 'نستخدمه في', 'الشيء ووظيفته'], ['نجار', 'منشار', 'يستخدم', 'المهنة وأداتها'], ['نحلة', 'عسل', 'تنتج', 'المنتِج وإنتاجه']].map(([a, b, v, name], i) => ({
+    say: `<b>${name}</b>: «${a} ${v} ${b}»`.replace('مقص نستخدمه في قص', 'نستخدم المقص في القص'), draw(K) { rel(K, 40 + i * 70, a, b, v); } })),
+] });
+const house = (K, g) => K.path(`M${g.l - 4},${g.t} L${g.cx},${g.t - 14} L${g.r + 4},${g.t} Z`, 's-face2');
+giveBuild('a5', 0, { h: 240, frames: [
+  { say: 'لكل شيء <b>مكانه</b>: الطائرة في المطار، والدواء في الصيدلية', draw(K) { [['طائرة', 'مطار', 44], ['دواء', 'صيدلية', 104]].forEach(([a, b, y]) => house(K, rel(K, y, a, b, 'مكانه').B)); } },
+  { say: 'وللحيوانات <b>مساكن</b>: الأسد في العرين، والنحل في الخلية', draw(K) { [['أسد', 'عرين', 164], ['نحل', 'خلية', 224]].forEach(([a, b, y]) => house(K, rel(K, y, a, b, 'يسكن', { cls2: 's-fill2' }).B)); } },
+] });
+const fam = (K, c, kids) => { chip(K, 180, 120, c, 's-hi-box', 's-ink'); };
+const FAM = [[290, 40, 'صغيره'], [290, 200, 'صوته'], [60, 120, 'أنثاه']];
+const famKid = (K, i, s) => { const [x, y, m] = FAM[i]; K.line(180 + (x > 180 ? 34 : -34), 120 + (y - 120) * .3, x + (x > 180 ? -30 : 30), y + (y < 120 ? 14 : y > 120 ? -14 : 0), 's-thin'); chip(K, x, y, s, 's-fill'); K.note(x, y + (y < 120 ? -26 : 28), m); };
+giveBuild('a6', 0, { h: 240, frames: [
+  { say: 'عائلة <b>الأسد</b>: صغيره <b>شبل</b>', draw(K) { fam(K, 'أسد'); famKid(K, 0, 'شبل'); } },
+  { say: 'صوته <b>زئير</b>، وأنثاه <b>لبؤة</b>', draw(K) { famKid(K, 1, 'زئير'); famKid(K, 2, 'لبؤة'); } },
+  { say: 'وعائلة <b>الحصان</b>: مُهر، صهيل، فرس. حدّد: صغير أم صوت أم أنثى؟', clear: true, draw(K) { fam(K, 'حصان'); famKid(K, 0, 'مُهر'); famKid(K, 1, 'صهيل'); famKid(K, 2, 'فرس'); } },
+] });
+giveBuild('a7', 0, { h: 230, frames: [
+  { say: '<b>المادة</b> ثم المصنوع: «الكرسي يُصنع من الخشب»', draw(K) { rel(K, 44, 'خشب', 'كرسي', 'يُصنع منه'); } },
+  { say: '<b>السبب</b> ثم النتيجة: «الإهمال يؤدي إلى الفشل»', draw(K) { rel(K, 120, 'إهمال', 'فشل', 'يؤدي إلى', { cls2: 's-fill2' }); } },
+  { say: 'الترتيب <b>جزء</b> من العلاقة: لا تقلبه', draw(K) { K.tag(180, 196, 'خشب : كرسي  ≠  كرسي : خشب'); } },
+] });
+giveBuild('a8', 0, { h: 230, frames: [
+  { say: 'الجملة الرابطة: «الطائر <b>يسكن</b> العش»', draw(K) { rel(K, 40, 'طائر', 'عش', 'يسكن'); ok(K, 30, 40); } },
+  { say: 'نقرؤها على «خلية : نحل» بالترتيب نفسه: «الخلية تسكن النحل»؟ ✗', draw(K) { rel(K, 116, 'خلية', 'نحل', 'تسكن؟', { arrow: 'b-badline' }); no(K, 30, 116); } },
+  { say: 'العلاقة صحيحة لكن <b>مقلوبة</b>: النحل هو الذي يسكن', draw(K) { rel(K, 192, 'خلية', 'نحل', 'يسكن', { flip: true, cls2: 's-fill2' }); K.note(180, 222, 'الاتجاه معكوس ← خيار خطأ'); } },
+] });
+giveBuild('a9', 0, { h: 230, frames: [
+  { say: '١) كوّن <b>جملة رابطة</b> دقيقة', draw(K) { chipR(K, 346, 34, '١  كوّن جملة', 's-fill'); } },
+  { say: '٢) جرّبها على <b>كل خيار</b> بالترتيب نفسه', draw(K) { chipR(K, 300, 110, '٢  جرّبها على الخيارات', 's-fill2'); [ok, no, ok, no].forEach((f, i) => f(K, 50 + i * 30, 146)); K.arrow(300, 46, 270, 92, 0, 's-thin'); } },
+  { say: '٣) صلح أكثر من خيار؟ اجعل الجملة <b>أدق</b>', draw(K) { chipR(K, 250, 190, '٣  أدقّ الجملة', 's-hi-box'); ok(K, 50, 190); K.arrow(250, 122, 220, 172, 0, 's-thin'); } },
+] });
+
+/* ================= إكمال الجمل ================= */
+const K1 = ['يغسل', 'الطاهي', 'يديه', 'قبل', 70, 'الطعام', 'حفاظًا', 'على', 'صحة', 'الزبائن'];
+let G1;
+giveBuild('k1', 0, { h: 240, frames: [
+  { say: '١) اقرأ الجملة <b>كاملة</b>', draw(K) { G1 = sent(K, 34, K1); } },
+  { say: '٢) خمّن من عندك قبل الخيارات: <b>إعداد</b>', draw(K) { const g = G1[4]; K.circle(180, 112, 4, 's-mute'); K.circle(180, 126, 6, 's-mute'); chip(K, 180, 154, 'إعداد', 's-hi-box'); K.note(260, 154, 'تخميني:'); } },
+  { say: '٣) اختر الأقرب إلى تخمينك: <b>تحضير</b>', draw(K) { [['تحضير', 'b-okbox'], ['تأجيل', 's-mute'], ['شراء', 's-mute'], ['وصف', 's-mute']].forEach(([s, c], i) => chip(K, 306 - i * 84, 210, s, c)); } },
+  { say: '٤) اقرأ الجملة به لتتأكد ✓', draw(K) { fill(K, G1[4], 'تحضير'); } },
+] });
+giveBuild('k2', 0, { h: 220, frames: [
+  { say: 'الجملة نصفان', draw(K) { halves(K, 'رغم', '____ الأسئلة', 'حصل الطلاب على', 'درجات عالية'); } },
+  { say: 'النصف الثاني <b>إيجابي</b> (+)', draw(K) { K.text(89, 118, '+', 'b-okt'); K.rect(14, 24, 150, 64, 'b-okline', 14); } },
+  { say: '«رغم» تقول: <b>عكس!</b> ← الأول سلبي: <b>صعوبة</b>', draw(K) { K.tag(180, 118, 'رغم = عكس'); K.text(271, 118, '−', 'b-badt'); chip(K, 271, 176, 'صعوبة', 'b-badbox'); } },
+] });
+giveBuild('k3', 0, { h: 220, frames: [
+  { say: 'الجملة نصفان', draw(K) { halves(K, 'بفضل', 'التطعيمات', '', '____ انتشار الأمراض'); } },
+  { say: 'النصف الأول <b>إيجابي</b> (+)', draw(K) { K.text(271, 118, '+', 'b-okt'); K.rect(196, 24, 150, 64, 'b-okline', 14); } },
+  { say: '«بفضل» تقول: <b>متفقان</b> ← النتيجة جيدة: <b>تراجع</b>', draw(K) { K.tag(180, 118, 'بفضل = اتفاق'); K.text(89, 118, '+', 'b-okt'); chip(K, 89, 176, 'تراجع', 'b-okbox'); } },
+] });
+giveBuild('k4', 0, { h: 230, frames: [
+  { say: 'كلمة <b>تصاحب</b> كلمة: «أبدى ملاحظاته»', draw(K) { const a = chip(K, 260, 36, 'أبدى', 's-mute'), b = chip(K, 120, 36, 'ملاحظاته', 's-fill'); K.line(a.l - 4, 36, b.r + 4, 36, 's-line'); } },
+  { say: 'وحرف الجر <b>يغيّر</b> المعنى', draw(K) { chip(K, 300, 150, 'رغب', 's-hi-box', 's-ink'); } },
+  { say: 'رغب <b>في</b> = أراد · رغب <b>عن</b> = ترك', draw(K) { [['رغب في', 'أراد', 110, 's-fill'], ['رغب عن', 'ترك', 194, 's-fill2']].forEach(([p, m, y, c]) => { K.line(266, 150, 228, y, 's-thin'); const P = chipR(K, 228, y, p, 's-mute'); K.text(P.l - 16, y, '=', 'b-label'); chip(K, P.l - 56, y, m, c); }); } },
+] });
+const K5 = ['كلما', 56, 'التدريب،', 56, 'الأخطاء'];
+let G5;
+giveBuild('k5', 0, { h: 240, frames: [
+  { say: 'فراغان، وكل خيار <b>كلمتان</b>', draw(K) { G5 = sent(K, 34, K5, { right: 336 }); } },
+  { say: 'المعنى: التدريب <b>يقلّل</b> الأخطاء', draw(K) { K.tag(180, 92, 'تدريب ↑   ←   أخطاء ↓'); } },
+  { say: 'جرّب الكلمتين <b>معًا</b>: يبقى خيار واحد', draw(K) { [['زاد – كثرت', 'b-badbox'], ['زاد – قلّت', 'b-okbox'], ['قلّ – قلّت', 'b-badbox'], ['نقص – اختفت', 'b-badbox']].forEach(([s, c], i) => chip(K, 262 - (i % 2) * 164, 150 + Math.floor(i / 2) * 56, s, c)); } },
+  { say: 'نضعهما في الجملة ✓', draw(K) { fill(K, G5[1], 'زاد'); fill(K, G5[3], 'قلّت'); } },
+] });
+const K6 = ['اقرأ الجملة كاملة', 'عكس أم اتفاق؟', 'خمّن قبل الخيارات', 'الفراغان معًا', 'راجع الصحبة'];
+giveBuild('k6', 0, { h: 240, frames: [
+  { say: '١) اقرأ كاملة ٢) ابحث عن الإشارة', draw(K) { K6.slice(0, 2).forEach((s, i) => chipR(K, 346 - i * 34, 26 + i * 46, `${i + 1}  ${s}`, 's-fill')); } },
+  { say: '٣) خمّن قبل أن تنظر', draw(K) { chipR(K, 346 - 68, 118, `3  ${K6[2]}`, 's-fill2'); } },
+  { say: '٤) في الفراغين جرّب الكلمتين ٥) راجع الصحبة', draw(K) { K6.slice(3).forEach((s, i) => chipR(K, 346 - (i + 3) * 34, 164 + i * 46, `${i + 4}  ${s}`, i ? 's-hi-box' : 's-fill')); } },
+] });
+
+/* ================= الخطأ السياقي ================= */
+const E1 = ['هطلت', 'أمطار', 'خفيفة،', 'فامتلأت', 'الشوارع'];
+let GE1;
+giveBuild('e1', 0, { h: 200, frames: [
+  { say: 'كلمات مميزة، <b>واحدة</b> تفسد المعنى', draw(K) { GE1 = sent(K, 50, E1); [0, 2, 3, 4].forEach(i => K.line(GE1[i].l, GE1[i].b + 4, GE1[i].r, GE1[i].b + 4, 's-thin')); } },
+  { say: 'امتلأت الشوارع… من مطر <b>خفيف</b>؟', draw(K) { mark(K, GE1[2], E1[2], 'b-badbox'); K.arrow(GE1[3].cx, GE1[3].b + 8, GE1[2].cx, GE1[2].b + 8, -30, 'b-badline'); } },
+  { say: 'الصواب: <b>غزيرة</b> ✓', draw(K) { chip(K, GE1[2].cx, 160, 'غزيرة', 'b-okbox'); K.line(GE1[2].cx, GE1[2].b + 12, GE1[2].cx, 142, 's-thin'); } },
+] });
+const E2 = ['تُعدّ', 'القراءة', 'غذاءً', 'للعقل،', 'فهي', 'توسّع', 'المدارك', 'وتُضيّق', 'الخيال'];
+let GE2;
+giveBuild('e2', 0, { h: 210, frames: [
+  { say: 'قبل البحث: ما <b>اتجاه</b> الجملة؟', draw(K) { GE2 = sent(K, 34, E2); } },
+  { say: 'غذاء للعقل، توسّع المدارك ← الاتجاه <b>مدح</b> ↑', draw(K) { [2, 5].forEach(i => mark(K, GE2[i], E2[i], 'b-okbox')); K.tag(270, 150, 'الاتجاه: مدح ↑'); } },
+  { say: '«تُضيّق» تسير <b>عكسه</b> ← الصواب: تُنمّي', draw(K) { mark(K, GE2[7], E2[7], 'b-badbox'); chip(K, 80, 150, 'تُنمّي', 'b-okbox'); K.arrow(GE2[7].cx, GE2[7].b + 6, 80, 134, 10, 's-thin'); } },
+] });
+const E3 = ['يلبسون', 'الملابس', 'الثقيلة', 'في', 'الشتاء', 'ليشعروا'];
+giveBuild('e3', 0, { h: 220, frames: [
+  { say: 'جملة صحيحة: … ليشعروا <b>بالدفء</b>', draw(K) { sent(K, 40, [...E3, 'بالدفء'], { hi: { 6: 'b-okbox' } }); } },
+  { say: 'واضع السؤال <b>يقلب</b> كلمة واحدة إلى ضدها', draw(K) { sent(K, 120, [...E3, 'بالبرد'], { hi: { 6: 'b-badbox' } }); K.arrow(40, 54, 40, 104, -14, 's-line2'); } },
+  { say: 'أنت تعكس العملية: ضد «بالبرد» <b>يُصلح</b> الجملة ← هي الخطأ', draw(K) { K.tag(180, 190, 'بالبرد  ⇄  بالدفء ✓'); } },
+] });
+giveBuild('e4', 0, { h: 220, frames: [
+  { say: 'سبب ← نتيجة', draw(K) { halves(K, 'السبب', 'الامتحان صعب', 'النتيجة', 'أنهوه مبتسمين'); } },
+  { say: 'هل الصعوبة تؤدي إلى إنهاء مبكر بابتسامة؟ <b>لا</b> ✗', draw(K) { K.arrow(192, 66, 168, 66, 0, 'b-badline'); no(K, 180, 110); K.rect(196, 24, 150, 64, 'b-badline', 14); } },
+  { say: 'نعكس السبب: <b>سهل</b> ← النتيجة منطقية ✓', draw(K) { chip(K, 271, 170, 'الامتحان سهل', 'b-okbox'); K.arrow(200, 170, 160, 170, 0, 's-line2'); chip(K, 89, 170, 'أنهوه مبتسمين', 's-mute'); ok(K, 180, 140); } },
+] });
+const E5 = ['الإكثار', 'من', 'السكريات', 'يضر', 'بالأسنان', 'ويسبب', 'التسوس،', 'لذلك', 'ينصح', 'الأطباء', 'بزيادته'];
+let GE5;
+giveBuild('e5', 0, { h: 220, frames: [
+  { say: '١) افهم الفكرة', draw(K) { GE5 = sent(K, 34, E5); } },
+  { say: 'يضر، يسبب التسوس ← الاتجاه <b>تحذير</b>', draw(K) { [3, 6].forEach(i => mark(K, GE5[i], E5[i], 's-fill2')); } },
+  { say: '٢) «بزيادته» <b>تخالف</b> التحذير', draw(K) { mark(K, GE5[10], E5[10], 'b-badbox'); } },
+  { say: '٣) جرّب الضد: <b>بتقليله</b> ✓', draw(K) { const g = GE5[10]; chip(K, g.cx, g.b + 70, 'بتقليله', 'b-okbox'); K.line(g.cx, g.b + 6, g.cx, g.b + 52, 's-thin'); } },
+] });
+
+/* ================= استيعاب المقروء ================= */
+giveBuild('r1', 0, { h: 220, frames: [
+  { say: '١) اقرأ النص بسرعة: موضوعه وترتيبه', draw(K) { page(K, 196, 20, 150, 8); } },
+  { say: '٢) اقرأ السؤال: ماذا يطلب <b>بالضبط</b>؟', draw(K) { chip(K, 86, 50, 'لماذا يحذّرون؟', 's-hi-box'); } },
+  { say: '٣) ارجع إلى النص وابحث عن <b>الجملة الدليل</b>', draw(K) { const L = page(K, 196, 20, 150, 8); hiLine(K, L[3]); hiLine(K, L[4], 'b-hl', 0, .5); K.arrow(86, 70, L[3].x - 4, L[3].y + 4, -20, 's-line2'); } },
+] });
+giveBuild('r2', 0, { h: 230, frames: [
+  { say: 'العنوان الجيد <b>بمقاس</b> النص', draw(K) { page(K, 105, 40, 150, 7); } },
+  { say: '<b>ضيق</b>: يغطي تفصيلًا واحدًا ✗', draw(K) { K.rect(110, 84, 140, 22, 'b-badline', 6); K.note(300, 95, 'ضيق ✗'); } },
+  { say: '<b>واسع</b>: أكبر من النص ✗', draw(K) { K.rect(14, 8, 332, 214, 'b-badline', 16); K.note(56, 24, 'واسع ✗'); } },
+  { say: '<b>بالمقاس</b>: يغطي النص كله، لا أقل ولا أكثر ✓', draw(K) { K.rect(99, 34, 162, 160, 'b-okline', 12); K.note(300, 180, 'بالمقاس ✓'); } },
+] });
+giveBuild('r3', 0, { h: 220, frames: [
+  { say: 'اختر من السؤال كلمة <b>مميزة</b>: غاب', draw(K) { K.note(86, 30, 'بماذا استعانوا إذا'); chip(K, 120, 64, 'غاب', 's-hi-box'); K.note(56, 64, 'النجم؟'); } },
+  { say: 'ابحث عنها <b>بعينك</b> في النص', draw(K) { const L = page(K, 196, 20, 150, 8); K.rect(L[2].x + L[2].w - 34, L[2].y - 5, 30, 17, 's-hi', 4); K.arrow(120, 84, L[2].x + L[2].w - 40, L[2].y + 4, -30, 's-line2'); } },
+  { say: 'ثم اقرأ <b>الجملة كاملة</b>: هناك الجواب', draw(K) { const L = page(K, 196, 20, 150, 8); hiLine(K, L[2]); hiLine(K, L[3]); } },
+] });
+giveBuild('r4', 0, { h: 230, frames: [
+  { say: 'في النص: «تسعى الدول لحمايتها من <b>التلوث والقطع</b>»', draw(K) { const L = page(K, 196, 20, 150, 9); hiLine(K, L[7]); } },
+  { say: 'نستنتج: <b>مهددة</b> بالتلوث. غير مكتوب حرفيًا، لكنه مؤكد ✓', draw(K) { chip(K, 86, 60, 'مهددة بالتلوث', 'b-okbox'); K.arrow(190, 150, 150, 74, 20, 's-line2'); } },
+  { say: '«أطول الأشجار»؟ قد يبدو منطقيًا، لكن النص لا يقوله ✗', draw(K) { chip(K, 86, 180, 'أطول الأشجار', 'b-badbox'); no(K, 86, 212); } },
+] });
+giveBuild('r5', 0, { h: 230, frames: [
+  { say: 'كلمة في جملتها: <b>ألّف</b>', draw(K) { sent(K, 40, ['وقد', 'ألّف', 'ابن', 'ماجد', 'كتبًا'], { hi: { 1: 's-hi-box' } }); } },
+  { say: 'نجرّب <b>جمع</b>: قريبة، لكنها أقل دقة', draw(K) { sent(K, 115, ['وقد', 'جمع', 'ابن', 'ماجد', 'كتبًا'], { hi: { 1: 's-fill2' } }); K.text(50, 115, '~', 'b-label'); } },
+  { say: 'نجرّب <b>صنّف</b>: هذا معناها هنا ✓', draw(K) { sent(K, 190, ['وقد', 'صنّف', 'ابن', 'ماجد', 'كتبًا'], { hi: { 1: 'b-okbox' } }); ok(K, 50, 190); } },
+] });
+let GR5;
+giveBuild('r5', 1, { h: 220, frames: [
+  { say: 'رحلات <b>مَن</b>؟ الضمير «هم» يعود على اسم سابق', draw(K) { GR5 = sent(K, 40, ['فأصبحت', 'رحلاتهم', 'أكثر', 'أمانًا'], { right: 250, hi: { 1: 's-hi-box' } }); K.text(306, 40, '…', 'b-label'); } },
+  { say: 'نجرّب: رحلات <b>النجوم</b>؟ ✗', draw(K) { chip(K, 290, 120, 'النجوم', 'b-badbox'); K.arrow(GR5[1].cx, GR5[1].b + 6, 270, 104, 16, 'b-badline'); } },
+  { say: 'رحلات <b>البحّارة</b> ✓ هذا هو المرجع', draw(K) { chip(K, 290, 186, 'البحّارة', 'b-okbox'); K.arrow(GR5[1].cx - 10, GR5[1].b + 6, 254, 180, 30, 's-line2'); } },
+] });
+giveBuild('r6', 0, { h: 210, frames: [
+  { say: 'طرفان <b>مطلقان</b>: أبدًا … دائمًا', draw(K) { K.line(70, 100, 290, 100, 's-axis'); chip(K, 318, 100, 'أبدًا', 'b-badbox'); chip(K, 40, 100, 'دائمًا', 'b-badbox'); } },
+  { say: 'الكاتب الحذر في <b>الوسط</b>: قد، غالبًا، بعض', draw(K) { chip(K, 180, 100, 'قد · غالبًا · بعض', 'b-okbox'); K.note(180, 144, 'النص: «قد يسبب الأرق»'); } },
+  { say: '«الشاي ضار <b>دائمًا</b>» قفزت إلى الطرف ← تخالف النص ✗', draw(K) { K.arrow(150, 84, 50, 82, 30, 'b-badline'); K.note(90, 30, 'ضار دائمًا ✗'); } },
+] });
+giveBuild('r7', 0, { h: 230, frames: [
+  { say: 'الغرض: انظر إلى <b>البداية</b> و<b>النهاية</b>', draw(K) { const L = page(K, 196, 20, 150, 8); hiLine(K, L[0]); hiLine(K, L[7]); } },
+  { say: 'لماذا كتب؟ ليُعلّم؟ ليُقنع؟ ليحذّر؟ ليصحّح؟', draw(K) { [['يُعلّم', 'b-okbox'], ['يُقنع', 's-mute'], ['يحذّر', 's-mute'], ['يصحّح', 's-mute']].forEach(([s, c], i) => chip(K, 86, 34 + i * 44, s, c)); } },
+  { say: 'الموقف من <b>الكلمات الوصفية</b>: مؤيد؟ معارض؟ معتدل؟', clear: true, draw(K) { K.rect(30, 90, 300, 30, 's-mute', 15); K.rect(130, 90, 100, 30, 'b-okbox', 15); K.note(290, 140, 'مؤيد'); K.note(180, 140, 'معتدل'); K.note(70, 140, 'معارض'); K.path('M180,84 l-9,-14 h18 Z', 's-hi'); K.note(180, 180, '«الاعتدال ما ينصح به المختصون»'); } },
+] });
+const R8 = [['تفاصيل', 'كلمة مفتاحية'], ['فكرة / عنوان', 'النص كله'], ['استنتاج', 'دليل + فهم'], ['معنى / ضمير', 'التعويض'], ['يتفق / لا يتفق', 'الكلمات المطلقة'], ['غرض / موقف', 'البداية والنهاية']];
+giveBuild('r8', 0, { h: 250, frames: [0, 1, 2].map(f => ({
+  say: ['نوع السؤال ← طريقة البحث', 'الاستنتاج يحتاج دليلًا، والمعنى يحتاج تعويضًا', 'الاتفاق ← احذر المطلق · الغرض ← الأطراف'][f],
+  draw(K) { R8.slice(f * 2, f * 2 + 2).forEach(([a, b], j) => { const y = 24 + (f * 2 + j) * 40; rel(K, y, a, b, '', { ax: 270, bx: 86, cls: 's-mute', cls2: f === 2 ? 's-fill2' : 's-fill' }); }); } })) });
+const R9 = ['جذورًا', 'هوائية', 'تخرج', 'من', 'الطين', 'لتتنفس'];
+let GR9;
+giveBuild('r9', 0, { h: 220, frames: [
+  { say: 'مصطلح غريب: <b>جذور هوائية</b>', draw(K) { GR9 = sent(K, 50, R9, { hi: { 0: 's-hi-box', 1: 's-hi-box' } }); } },
+  { say: 'الشرح <b>بعده مباشرة</b>: تخرج من الطين لتتنفس', draw(K) { const a = GR9[2], b = GR9[5]; K.path(`M${a.r},${a.b + 8} v8 H${b.l} v-8`, 'b-okline'); K.note((a.r + b.l) / 2, a.b + 32, 'هذا هو الشرح'); } },
+  { say: 'إشارات الشرح في النص', draw(K) { ['أي', 'ويُقصد بـ', 'تُعرف بـ'].forEach((s, i) => chip(K, 290 - i * 110, 170, s, 's-fill')); } },
+] });
+const TL = [[296, 'قديمًا', 'النجوم'], [190, 'ثم', 'البوصلة'], [76, 'قرونًا', 'كتب ابن ماجد']];
+giveBuild('r10', 0, { h: 200, frames: TL.map(([x, w, s], i) => ({
+  say: [`«قديمًا»: <b>النجوم</b>`, '«ثم»: <b>البوصلة</b>', 'ثم كتب ابن ماجد مرجعًا <b>قرونًا</b>'][i],
+  draw(K) { if (!i) K.arrow(340, 100, 20, 100, 0, 's-axis'); K.circle(x, 100, 9, i === 2 ? 's-hi' : 's-pt'); K.label(x, 66, w); chip(K, x, 144, s, i === 2 ? 's-fill2' : 's-fill'); } })) });
+const O1 = ['تفاح', 'برتقال', 'موز', 'جزر'];
+giveBuild('o1', 0, { h: 200, frames: [
+  { say: 'أربع كلمات', draw(K) { O1.forEach((s, i) => chip(K, 306 - i * 84, 80, s, 's-mute')); } },
+  { say: 'ابحث عن <b>الرابط</b> أولًا: فواكه', draw(K) { K.rect(94, 52, 252, 56, 'b-okline', 24); K.note(220, 132, 'فواكه'); } },
+  { say: 'والتي <b>خارج</b> الرابط هي الشاذة: جزر خضار', draw(K) { chip(K, 54, 80, 'جزر', 'b-badbox'); K.note(54, 132, 'خضار'); } },
+] });
+const O2 = ['نسر', 'صقر', 'حمامة', 'نحلة'];
+giveBuild('o2', 0, { h: 210, frames: [
+  { say: 'أربع كلمات', draw(K) { O2.forEach((s, i) => chip(K, 306 - i * 84, 90, s, 's-mute')); } },
+  { say: '«كلها تطير»؟ تجمع الأربع ← فكرة <b>عامة</b> جدًا', draw(K) { K.rect(10, 52, 340, 76, 'b-dashline', 30); K.note(180, 30, 'كلها تطير'); } },
+  { say: 'فكرة <b>أضيق</b>: طيور. والنحلة حشرة ← الشاذة', draw(K) { K.rect(94, 62, 252, 56, 'b-okline', 24); K.note(220, 146, 'طيور'); chip(K, 54, 90, 'نحلة', 'b-badbox'); K.note(54, 146, 'حشرة'); } },
+] });
 
 window.AcademyCourses = window.AcademyCourses || {};
 window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK } };
