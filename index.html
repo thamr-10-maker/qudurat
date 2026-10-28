@@ -752,6 +752,35 @@ h1,h2,h3{font-weight:500}
 .sum li::before{content:"";position:absolute;inset-inline-start:0;top:.8em;width:5px;height:5px;border-radius:50%;background:color-mix(in srgb,var(--pc) 70%,var(--ink))}
 .cv-lock{position:absolute;top:10px;inset-inline-start:10px;display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;color:var(--poster-ink);background:rgba(0,0,0,.35);border-radius:999px;padding:3px 9px}
 .cover-btn.lockd .poster{filter:saturate(.55) brightness(.85)}
+/* ---------- build-up pictures ---------- */
+.buildc{display:flex;flex-direction:column;gap:10px;padding:4px 0}
+.buildc h3{font-family:var(--f-display);font-weight:500;font-size:24px;letter-spacing:-.01em}
+.buildc .xdots{display:flex;gap:5px}.buildc .xdots i{width:18px;height:4px;border-radius:2px;background:var(--line)}.buildc .xdots i.on{background:var(--theme)}
+.bfig{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:10px 6px;transition:max-height .3s}
+.bfig svg{display:block;width:100%;height:auto}
+.bfig.shrink{opacity:.75}
+.blayer{transition:opacity .45s ease,transform .45s ease}
+.blayer.past{opacity:.5}
+.blayer.gone{display:none}
+.bsay{margin:4px 2px 0;font-family:var(--f-display);font-weight:400;font-size:19px;line-height:1.75;min-height:2.2em;color:var(--ink)}
+.bsay b{color:var(--theme);font-weight:600}
+.buildc ul.bu{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.buildc ul.bu li{font-size:16px;line-height:1.75;padding-inline-start:14px;position:relative}
+.buildc ul.bu li::before{content:"";position:absolute;inset-inline-start:0;top:.8em;width:5px;height:5px;border-radius:50%;background:var(--theme)}
+.dock-in.withback{display:flex;gap:10px;align-items:center}
+.dock-in.withback .cta{flex:1}
+.backbtn{width:52px;height:52px;flex:none;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-2);background:var(--card)}
+.b-tag{fill:var(--brand-soft);stroke:var(--theme);stroke-width:1.5}
+.s-hi{fill:var(--theme)} .s-hi-t{fill:var(--theme);font-family:var(--f-display);font-weight:600;font-size:18px}
+.s-mute{fill:var(--bg-2);stroke:var(--line);stroke-width:1.5}
+.s-ink{fill:var(--ink);font-family:var(--f-display);font-weight:400;font-size:22px}
+.b-grid{stroke:var(--shape);stroke-width:.6;opacity:.45}
+.b-beam{stroke:var(--ink);stroke-width:5;stroke-linecap:round}
+.b-frame{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-dasharray:7 5}
+.s-bad{stroke:var(--bad);stroke-width:3;stroke-linecap:round}
+.blayer.past{opacity:.72}
+.b-label{fill:var(--ink);font-family:var(--f-display);font-weight:500;font-size:17px}
+.bfig .s-txt-s{font-size:14px}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1058,6 +1087,58 @@ function bisectorPoint(A, B, C, r) {
 
 /* ================= static figure helpers for questions ================= */
 function figBox(host, w, hgt) { const st = makeStage(host, w, hgt); st.wrap.style.maxWidth = '420px'; st.wrap.style.marginInline = 'auto'; return st.svg; }
+
+/* ================= build-up pictures =================
+   A "build" teaches one idea as a picture that grows one layer at a time.
+   Each frame adds a layer to the same drawing and shows one short line of text.
+   frames: [{ say, draw(K) , clear? }]  — K draws into the frame's own layer. */
+function buildKit(svg, layer) {
+  /* labels are Arabic: digits and operators read right to left, like the lesson text */
+  const T = (x, y, s, cls, anchor = 'middle') => { const t = svText(layer, x, y, s, cls, anchor === 'start' ? 'end' : anchor === 'end' ? 'start' : anchor); t.setAttribute('direction', 'rtl'); t.style.unicodeBidi = 'embed'; return t; };
+  const K = {
+    g: layer, svg,
+    text: (x, y, s, cls = 's-txt', anchor = 'middle') => T(x, y, s, cls, anchor),
+    big: (x, y, s, anchor) => T(x, y, s, 's-big', anchor),
+    note: (x, y, s, anchor) => T(x, y, s, 's-txt-s', anchor),
+    label: (x, y, s, anchor) => T(x, y, s, 'b-label', anchor),
+    /* a stacked fraction n over d */
+    frac(x, y, n, d, cls = 's-txt') { T(x, y - 13, String(n), cls); sv('line', { x1: x - 13, y1: y, x2: x + 13, y2: y, class: 's-axis', 'stroke-width': 2 }, layer); T(x, y + 14, String(d), cls); },
+    rect: (x, y, w, hh, cls = 's-fill', rx = 6) => sv('rect', { x, y, width: w, height: hh, rx, class: cls }, layer),
+    line: (x1, y1, x2, y2, cls = 's-line') => sv('line', { x1, y1, x2, y2, class: cls }, layer),
+    circle: (cx, cy, r, cls = 's-fill') => sv('circle', { cx, cy, r, class: cls }, layer),
+    path: (d, cls = 's-fill') => sv('path', { d, class: cls }, layer),
+    /* a curved arrow from (x1,y1) to (x2,y2), bending up by `bend` */
+    arrow(x1, y1, x2, y2, bend = 30, cls = 's-line2') {
+      const mx = (x1 + x2) / 2, my = Math.min(y1, y2) - bend;
+      sv('path', { d: `M${x1},${y1} Q${mx},${my} ${x2},${y2}`, class: cls, fill: 'none' }, layer);
+      const a = Math.atan2(y2 - my, x2 - mx), L = 9;
+      sv('path', { d: `M${x2},${y2} L${x2 - L * Math.cos(a - .45)},${y2 - L * Math.sin(a - .45)} M${x2},${y2} L${x2 - L * Math.cos(a + .45)},${y2 - L * Math.sin(a + .45)}`, class: cls }, layer);
+    },
+    /* n unit squares in rows of `cols`, starting at the top-right (Arabic reading order) */
+    blocks(x, y, n, { cols = 10, size = 16, gap = 3, cls = 's-unit', rtl = false } = {}) {
+      const out = [];
+      for (let i = 0; i < n; i++) { const r = Math.floor(i / cols), c = i % cols, xx = rtl ? x - (c + 1) * (size + gap) : x + c * (size + gap);
+        out.push(sv('rect', { x: xx, y: y + r * (size + gap), width: size, height: size, rx: 3, class: cls }, layer)); }
+      return out;
+    },
+    /* a bar cut into `parts` equal pieces with the first `filled` shaded */
+    bar(x, y, w, hh, parts, filled, cls = 's-fill', empty = 's-unit') {
+      const pw = w / parts;
+      for (let i = 0; i < parts; i++) sv('rect', { x: x + i * pw, y, width: pw, height: hh, class: i < filled ? cls : empty, rx: 0 }, layer);
+      sv('rect', { x, y, width: w, height: hh, rx: 6, fill: 'none', style: 'stroke:var(--ink-2);stroke-width:2' }, layer);
+    },
+    /* a number line; returns X(value) */
+    numline(x1, x2, y, min, max, step = 1, labels = true) {
+      const X = v => x1 + (v - min) / (max - min) * (x2 - x1);
+      sv('line', { x1: x1 - 8, y1: y, x2: x2 + 8, y2: y, class: 's-axis', 'stroke-width': 2 }, layer);
+      for (let v = min; v <= max + 1e-9; v += step) { sv('line', { x1: X(v), y1: y - 6, x2: X(v), y2: y + 6, class: 's-axis' }, layer); if (labels) svText(layer, X(v), y + 20, String(+v.toFixed(2)), 's-txt-s'); }
+      return X;
+    },
+    /* a highlighted label chip */
+    tag(x, y, s, cls = 'b-tag') { const t = T(x, y, s, 's-txt'); const bb = t.getBBox ? t.getBBox() : { x: x - 20, y: y - 10, width: 40, height: 20 }; const r = sv('rect', { x: bb.x - 8, y: bb.y - 4, width: bb.width + 16, height: bb.height + 8, rx: 10, class: cls }); layer.insertBefore(r, t); return t; },
+  };
+  return K;
+}
 
 /* ================= sound effects, Arabic voice, confetti, haptics =================
    No music by design. All sounds are synthesized (no audio files). */
@@ -1934,7 +2015,7 @@ function runPlayer(P) {
   function progress() { pbar.firstChild.style.width = (endless ? 10 * (log.length % 10) : 100 * idx / queue.length) + '%'; }
   function setDock(state, title, why, label, onClick, enabled = true) {
     dock.className = 'dock' + (state ? ' ' + state : '');
-    dockIn.innerHTML = '';
+    dockIn.innerHTML = ''; dockIn.classList.remove('withback');
     if (title) { const hd = h('div', 'fb-head'); hd.innerHTML = `<span class="fb-ic">${ic(state === 'ok' ? 'check' : 'cross', 20)}</span>`; hd.appendChild(h('p', 'fb-t', title)); dockIn.appendChild(hd); }
     if (why) { const w = h('p', 'fb-w', fmt(why)); dockIn.appendChild(w); }
     const b = h('button', 'cta', label); b.disabled = !enabled; b.onclick = () => { FX.play('tap'); onClick(); };
@@ -1968,6 +2049,7 @@ function runPlayer(P) {
   }
   /* theory first: the idea in plain words, an example, why it works, and where you will use it */
   function renderExplain(s) {
+    if (s.explain.build) return renderBuild(s.explain);
     const E = s.explain, c = h('section', 'explain');
     const parts = [['الفكرة', `<p class="idea">${fmt(E.idea)}</p>`]];
     if (E.example) parts.push(['مثال', `<div class="exbox">${fmt(E.example)}</div>`]);
@@ -1986,6 +2068,44 @@ function runPlayer(P) {
       setDock('', '', '', last ? 'فهمت، لنجرّب' : 'التالي: ' + parts[k + 1][0], () => { if (last) next(); else { k++; show(); } });
     };
     show();
+  }
+  /* build-up picture: the idea grows one layer at a time, one short line per layer, then where it is used */
+  function renderBuild(E) {
+    const B = E.build, frames = B.frames, W = 360, H = B.h || 230;
+    const c = h('section', 'buildc');
+    c.innerHTML = `<h3>${fmt(E.title)}</h3><div class="xdots">${frames.map(() => '<i></i>').join('')}${E.uses ? '<i></i>' : ''}</div>`;
+    const fig = h('div', 'bfig'), svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, style: 'direction:ltr' }); fig.appendChild(svg);
+    const say = h('p', 'bsay'); say.setAttribute('aria-live', 'polite');
+    c.append(fig, say); body.appendChild(c);
+    const layers = [];
+    let k = -1;
+    const dots = () => c.querySelectorAll('.xdots i').forEach((d, i) => d.classList.toggle('on', i <= k));
+    function show(i) {
+      while (layers.length > i) layers.pop().remove(); // going back: drop later layers
+      for (let j = layers.length; j <= i; j++) {
+        const F = frames[j], g = sv('g', { class: 'blayer' }, svg);
+        if (F.clear) layers.forEach(l => l.classList.add('gone'));
+        F.draw(buildKit(svg, g)); layers.push(g);
+        if (j === i) { g.classList.add('bnew'); if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) { g.style.opacity = 0; requestAnimationFrame(() => { g.style.opacity = ''; }); } }
+      }
+      layers.forEach((l, j) => l.classList.toggle('past', j < i && !frames[i].keepBright));
+      say.innerHTML = fmt(frames[i].say); say.classList.remove('pop-in'); void say.offsetWidth; say.classList.add('pop-in');
+      k = i; dots(); FX.play('tap');
+      const last = i === frames.length - 1;
+      dockFor(last ? (E.uses ? 'أين ستستخدمها؟' : 'فهمت، لنجرّب') : 'التالي', () => { if (!last) show(i + 1); else if (E.uses) uses(); else next(); }, i > 0 ? () => show(i - 1) : null);
+    }
+    function uses() {
+      k = frames.length; dots();
+      fig.classList.add('shrink'); say.innerHTML = '';
+      const ul = h('ul', 'uses bu'); ul.innerHTML = E.uses.map(u => `<li>${fmt(u)}</li>`).join(''); c.appendChild(ul);
+      dockFor('فهمت، لنجرّب', next, () => { ul.remove(); fig.classList.remove('shrink'); show(frames.length - 1); });
+    }
+    function dockFor(label, go, back) {
+      const cta = setDock('', '', '', label, go);
+      if (back) { const b = h('button', 'backbtn', ic('back', 18)); b.setAttribute('aria-label', 'الخطوة السابقة'); b.onclick = () => { FX.play('tap'); back(); }; cta.before(b); dockIn.classList.add('withback'); }
+      else dockIn.classList.remove('withback');
+    }
+    show(0);
   }
   /* a rule as a small structured card, not a paragraph */
   function renderRule(s) {
@@ -6454,6 +6574,87 @@ PLUS.r8 = {
   summary: ['المقياس ١ : ن ← كل ١ على الرسم = ن في الواقع', 'الحقيقي = الرسم × المقياس، ثم حوّل الوحدة', 'من وحدة كبيرة إلى صغيرة ← اضرب', 'تأكد من الوحدة قبل اختيار الجواب'],
 };
 
+/* ================= build-up pictures for the theory cards =================
+   Each build replaces a paragraph: the idea is drawn one layer at a time, one short line per layer. */
+const BUILD = {};
+const giveBuild = (id, i, build) => { const P = PLUS[id]; if (P && P.explains && P.explains[i]) P.explains[i].build = build; };
+
+/* ---------- n1 · the place decides the value ---------- */
+giveBuild('n1', 0, { h: 250, frames: [
+  { say: 'العدد ٣٣٣ فيه الرقم ٣ ثلاث مرات. هل له القيمة نفسها؟', draw(K) {
+    [['مئات', 70], ['عشرات', 180], ['آحاد', 290]].forEach(([lab, x]) => { K.rect(x - 34, 18, 68, 64, 's-mute', 14); K.text(x, 52, '3', 's-big'); K.note(x, 98, lab); }); } },
+  { say: 'في <b>الآحاد</b>: ٣ قطع مفردة = <b>٣</b>', draw(K) { K.blocks(268, 120, 3, { cols: 3, size: 13, gap: 3, cls: 's-fill' }); K.text(290, 228, '3', 's-hi-t'); } },
+  { say: 'في <b>العشرات</b>: ٣ أعمدة، كل عمود ١٠ = <b>٣٠</b>', draw(K) {
+    for (let c = 0; c < 3; c++) K.blocks(158 + c * 16, 112, 10, { cols: 1, size: 10, gap: 0.5, cls: 's-fill2' }); K.text(180, 228, '30', 's-hi-t'); } },
+  { say: 'في <b>المئات</b>: ٣ ألواح، كل لوح ١٠٠ = <b>٣٠٠</b>', draw(K) {
+    for (let c = 0; c < 3; c++) { const x = 34 + c * 26, y = 112 + c * 6; K.rect(x, y, 48, 48, 's-fill', 2); for (let k = 1; k < 10; k++) { K.line(x + k * 4.8, y, x + k * 4.8, y + 48, 'b-grid'); K.line(x, y + k * 4.8, x + 48, y + k * 4.8, 'b-grid'); } } K.text(70, 228, '300', 's-hi-t'); } },
+  { say: 'كل خانة إلى اليسار أكبر <b>بعشر مرات</b>. المكان يحدد القيمة.', keepBright: true, draw(K) { K.arrow(262, 96, 208, 96, 18); K.note(235, 70, '× 10'); K.arrow(152, 96, 98, 96, 18); K.note(125, 70, '× 10'); } },
+] });
+
+/* ---------- f1 · a fraction is a part of a whole ---------- */
+giveBuild('f1', 0, { h: 250, frames: [
+  { say: 'هذه بيتزا كاملة: <b>واحد صحيح</b>', draw(K) { K.circle(130, 125, 90, 's-mute'); } },
+  { say: 'نقسمها إلى <b>٤ قطع متساوية</b>. هذا هو <b>المقام</b>', draw(K) { K.line(130, 35, 130, 215, 's-axis'); K.line(40, 125, 220, 125, 's-axis'); K.text(300, 160, '4', 's-big'); K.note(300, 190, 'المقام: كم قطعة قسمنا'); K.line(275, 132, 325, 132, 's-axis'); } },
+  { say: 'نأخذ <b>٣ قطع</b>. هذا هو <b>البسط</b>', draw(K) { [[0, 90], [90, 180], [180, 270]].forEach(([a, b]) => K.path(arcPath(130, 125, 88, a, b), 's-fill')); K.text(300, 105, '3', 's-big'); K.note(300, 75, 'البسط: كم قطعة أخذنا'); } },
+  { say: 'ما أخذناه = <b>٣ من ٤</b> = [[3/4]] البيتزا', keepBright: true, draw(K) { K.tag(130, 232, 'ثلاثة أرباع'); } },
+] });
+
+/* ---------- f4 · we add pieces of the same size only ---------- */
+giveBuild('f4', 0, { h: 250, frames: [
+  { say: 'نريد أن نجمع <b>نصفًا</b> و<b>ثلثًا</b>', draw(K) { K.bar(20, 30, 300, 34, 2, 1, 's-fill'); K.frac(348, 47, 1, 2, 's-txt-s'); K.bar(20, 90, 300, 34, 3, 1, 's-fill2'); K.frac(348, 107, 1, 3, 's-txt-s'); } },
+  { say: 'القطعتان <b>بحجمين مختلفين</b>، فلا نستطيع عدّهما معًا', draw(K) { K.line(180, 70, 180, 88, 's-thin'); K.text(180, 146, 'نصف + ثلث = ؟', 's-txt'); } },
+  { say: 'نقسم الشريطين إلى <b>أسداس</b>: قطع بالحجم نفسه', clear: true, draw(K) { K.bar(20, 30, 300, 34, 6, 3, 's-fill'); K.frac(348, 47, 3, 6, 's-txt-s'); K.bar(20, 90, 300, 34, 6, 2, 's-fill2'); K.frac(348, 107, 2, 6, 's-txt-s'); } },
+  { say: 'الآن نعدّ: ٣ أسداس + ٢ أسداس = <b>٥ أسداس</b>', draw(K) { const pw = 50; for (let i = 0; i < 6; i++) K.rect(20 + i * pw, 160, pw, 34, i < 3 ? 's-fill' : i < 5 ? 's-fill2' : 's-unit', 0); K.rect(20, 160, 300, 34, 'b-frame', 6); K.frac(180, 226, 5, 6, 's-hi-t'); } },
+] });
+
+/* ---------- r1 · percent means out of every hundred ---------- */
+giveBuild('r1', 0, { h: 260, frames: [
+  { say: 'لوح فيه <b>١٠٠</b> مربع صغير', draw(K) { K.blocks(40, 20, 100, { cols: 10, size: 19, gap: 3, cls: 's-unit' }); } },
+  { say: '<b>٣٥٪</b> تعني ٣٥ مربعًا <b>من كل ١٠٠</b>', draw(K) { K.blocks(40, 20, 35, { cols: 10, size: 19, gap: 3, cls: 's-fill' }); } },
+  { say: 'إذن ٣٥٪ = [[35/100]]، ونبسّطها: [[7/20]]', draw(K) { K.text(300, 80, '35', 's-big'); K.line(272, 104, 328, 104, 's-axis'); K.text(300, 128, '100', 's-big'); } },
+  { say: 'وهي نفسها <b>٠٫٣٥</b>: ثلاث كتابات لكمية واحدة', keepBright: true, draw(K) { K.tag(300, 190, '0.35'); K.tag(300, 230, '35٪'); } },
+] });
+
+/* ---------- a2 · an equation is a balance ---------- */
+const scale = (K, L, R) => { K.path('M180,60 L170,226 L190,226 Z', 's-mute'); K.line(40, 60, 320, 60, 'b-beam');
+  [[90, L], [270, R]].forEach(([x, items]) => { K.line(x, 60, x, 150, 's-axis'); K.path(`M${x - 72},150 h144 l-12,14 h-120 Z`, 's-mute');
+    const list = []; items.forEach(([t, n]) => { for (let i = 0; i < n; i++) list.push(t); });
+    list.forEach((t, i) => { const r = Math.floor(i / 6), c = i % 6, xx = x - 60 + c * 21 + 10, yy = 136 - r * 21;
+      if (t === 'x') { K.rect(xx - 10, yy - 10, 20, 20, 's-fill2', 4); K.label(xx, yy + 1, 'س'); } else K.circle(xx, yy, 8, 's-fill'); });
+    K.label(x, 190, items.map(([t, n]) => t === 'x' ? (n > 1 ? n + 'س' : 'س') : String(n)).join(' + ')); }); };
+giveBuild('a2', 0, { h: 240, frames: [
+  { say: 'المعادلة `2س + 5 = 17` ميزان <b>متوازن</b>', draw(K) { scale(K, [['x', 2], ['u', 5]], [['u', 17]]); } },
+  { say: 'نُزيل <b>٥</b> من الكفتين معًا، فيبقى متوازنًا', draw(K) { for (let i = 0; i < 5; i++) { const xi = 2 + i, r = Math.floor(xi / 6), c = xi % 6; K.line(30 + c * 21 + 4, 130 - r * 21, 30 + c * 21 + 16, 142 - r * 21, 's-bad'); const r2 = Math.floor(i / 6), c2 = i % 6; K.line(210 + c2 * 21 + 4, 130 - r2 * 21, 210 + c2 * 21 + 16, 142 - r2 * 21, 's-bad'); } } },
+  { say: 'بقي: صندوقان = <b>١٢</b>', clear: true, draw(K) { scale(K, [['x', 2]], [['u', 12]]); } },
+  { say: 'نقسم الكفتين على ٢: الصندوق الواحد = <b>٦</b>', clear: true, draw(K) { scale(K, [['x', 1]], [['u', 6]]); K.tag(180, 26, 'س = 6'); } },
+] });
+
+/* ---------- g7 · a triangle is half a rectangle ---------- */
+giveBuild('g7', 1, { h: 250, frames: [
+  { say: 'مستطيل قاعدته ٨ وارتفاعه ٥: مساحته <b>٤٠</b>', draw(K) { for (let r = 0; r < 5; r++) for (let c = 0; c < 8; c++) K.rect(60 + c * 30, 30 + r * 30, 30, 30, 's-unit', 0); K.label(180, 202, '8'); K.label(44, 105, '5'); } },
+  { say: 'نرسم مثلثًا له <b>القاعدة نفسها والارتفاع نفسه</b>', draw(K) { K.path('M60,180 L300,180 L170,30 Z', 's-fill'); K.line(170, 30, 170, 180, 's-thin'); } },
+  { say: 'الجزءان خارج المثلث يساويان <b>تمامًا</b> ما بداخله', draw(K) { K.path('M60,180 L60,30 L170,30 Z', 's-fill2'); K.path('M300,180 L300,30 L170,30 Z', 's-fill2'); } },
+  { say: 'إذن المثلث <b>نصف المستطيل</b>: ½ × ٨ × ٥ = <b>٢٠</b>', keepBright: true, draw(K) { K.tag(180, 228, '½ × 8 × 5 = 20'); } },
+] });
+
+/* ---------- t6 · Gauss: two staircases make a rectangle ---------- */
+giveBuild('t6', 0, { h: 260, frames: [
+  { say: '١ + ٢ + ٣ + … + ١٠ يشبه <b>درجًا</b>', draw(K) { for (let i = 1; i <= 10; i++) K.blocks(28 + (i - 1) * 30, 220 - i * 18, i, { cols: 1, size: 16, gap: 2, cls: 's-fill' }); } },
+  { say: 'نضع <b>نسخة مقلوبة</b> من الدرج فوقه', draw(K) { for (let i = 1; i <= 10; i++) { const n = 11 - i; K.blocks(28 + (i - 1) * 30, 220 - 11 * 18 + 0, n, { cols: 1, size: 16, gap: 2, cls: 's-fill2' }); } } },
+  { say: 'يتكوّن <b>مستطيل</b>: ١٠ أعمدة، في كل عمود <b>١١</b>', draw(K) { K.rect(24, 220 - 11 * 18 - 4, 302, 11 * 18 + 6, 'b-frame', 8); K.label(176, 244, '10 أعمدة'); K.label(344, 120, '11'); } },
+  { say: 'الدرج نصف المستطيل: ١٠ × ١١ ÷ ٢ = <b>٥٥</b>', keepBright: true, draw(K) { K.tag(176, 20, '10 × 11 ÷ 2 = 55'); } },
+] });
+
+/* ---------- p6 · difference of two squares ---------- */
+giveBuild('p6', 0, { h: 260, frames: [
+  { say: 'مربع كبير ضلعه <b>أ</b>: مساحته <b>أ²</b>', draw(K) { K.rect(40, 30, 200, 200, 's-unit', 4); K.label(140, 248, 'أ'); K.label(22, 130, 'أ'); } },
+  { say: 'نقص منه مربعًا صغيرًا ضلعه <b>ب</b>: الباقي <b>أ² − ب²</b>', draw(K) { K.rect(160, 150, 80, 80, 's-mute', 0); K.label(200, 190, 'ب²'); } },
+  { say: 'الباقي قطعتان: عرض كل منهما <b>أ − ب</b>', draw(K) { K.rect(40, 30, 200, 120, 's-fill', 0); K.rect(40, 150, 120, 80, 's-fill2', 0); K.label(290, 90, 'أ − ب'); } },
+  { say: 'نقلب القطعة البرتقالية ونضعها بجانب الأخرى…', clear: true, draw(K) { K.rect(20, 60, 200, 120, 's-fill', 0); K.rect(220, 60, 80, 120, 's-fill2', 0); } },
+  { say: '…فيتكوّن مستطيل طوله <b>أ + ب</b> وعرضه <b>أ − ب</b>', draw(K) { K.rect(20, 60, 280, 120, 'b-frame', 4); K.label(160, 200, 'أ + ب'); K.label(332, 120, 'أ − ب'); } },
+  { say: 'إذن <b>أ² − ب² = (أ − ب)(أ + ب)</b>', keepBright: true, draw(K) { K.tag(160, 30, '51² − 49² = 2 × 100 = 200'); } },
+] });
+
 window.AcademyCourses = window.AcademyCourses || {};
 window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK } };
 })();
@@ -6645,6 +6846,58 @@ function bisectorPoint(A, B, C, r) {
 
 /* ================= static figure helpers for questions ================= */
 function figBox(host, w, hgt) { const st = makeStage(host, w, hgt); st.wrap.style.maxWidth = '420px'; st.wrap.style.marginInline = 'auto'; return st.svg; }
+
+/* ================= build-up pictures =================
+   A "build" teaches one idea as a picture that grows one layer at a time.
+   Each frame adds a layer to the same drawing and shows one short line of text.
+   frames: [{ say, draw(K) , clear? }]  — K draws into the frame's own layer. */
+function buildKit(svg, layer) {
+  /* labels are Arabic: digits and operators read right to left, like the lesson text */
+  const T = (x, y, s, cls, anchor = 'middle') => { const t = svText(layer, x, y, s, cls, anchor === 'start' ? 'end' : anchor === 'end' ? 'start' : anchor); t.setAttribute('direction', 'rtl'); t.style.unicodeBidi = 'embed'; return t; };
+  const K = {
+    g: layer, svg,
+    text: (x, y, s, cls = 's-txt', anchor = 'middle') => T(x, y, s, cls, anchor),
+    big: (x, y, s, anchor) => T(x, y, s, 's-big', anchor),
+    note: (x, y, s, anchor) => T(x, y, s, 's-txt-s', anchor),
+    label: (x, y, s, anchor) => T(x, y, s, 'b-label', anchor),
+    /* a stacked fraction n over d */
+    frac(x, y, n, d, cls = 's-txt') { T(x, y - 13, String(n), cls); sv('line', { x1: x - 13, y1: y, x2: x + 13, y2: y, class: 's-axis', 'stroke-width': 2 }, layer); T(x, y + 14, String(d), cls); },
+    rect: (x, y, w, hh, cls = 's-fill', rx = 6) => sv('rect', { x, y, width: w, height: hh, rx, class: cls }, layer),
+    line: (x1, y1, x2, y2, cls = 's-line') => sv('line', { x1, y1, x2, y2, class: cls }, layer),
+    circle: (cx, cy, r, cls = 's-fill') => sv('circle', { cx, cy, r, class: cls }, layer),
+    path: (d, cls = 's-fill') => sv('path', { d, class: cls }, layer),
+    /* a curved arrow from (x1,y1) to (x2,y2), bending up by `bend` */
+    arrow(x1, y1, x2, y2, bend = 30, cls = 's-line2') {
+      const mx = (x1 + x2) / 2, my = Math.min(y1, y2) - bend;
+      sv('path', { d: `M${x1},${y1} Q${mx},${my} ${x2},${y2}`, class: cls, fill: 'none' }, layer);
+      const a = Math.atan2(y2 - my, x2 - mx), L = 9;
+      sv('path', { d: `M${x2},${y2} L${x2 - L * Math.cos(a - .45)},${y2 - L * Math.sin(a - .45)} M${x2},${y2} L${x2 - L * Math.cos(a + .45)},${y2 - L * Math.sin(a + .45)}`, class: cls }, layer);
+    },
+    /* n unit squares in rows of `cols`, starting at the top-right (Arabic reading order) */
+    blocks(x, y, n, { cols = 10, size = 16, gap = 3, cls = 's-unit', rtl = false } = {}) {
+      const out = [];
+      for (let i = 0; i < n; i++) { const r = Math.floor(i / cols), c = i % cols, xx = rtl ? x - (c + 1) * (size + gap) : x + c * (size + gap);
+        out.push(sv('rect', { x: xx, y: y + r * (size + gap), width: size, height: size, rx: 3, class: cls }, layer)); }
+      return out;
+    },
+    /* a bar cut into `parts` equal pieces with the first `filled` shaded */
+    bar(x, y, w, hh, parts, filled, cls = 's-fill', empty = 's-unit') {
+      const pw = w / parts;
+      for (let i = 0; i < parts; i++) sv('rect', { x: x + i * pw, y, width: pw, height: hh, class: i < filled ? cls : empty, rx: 0 }, layer);
+      sv('rect', { x, y, width: w, height: hh, rx: 6, fill: 'none', style: 'stroke:var(--ink-2);stroke-width:2' }, layer);
+    },
+    /* a number line; returns X(value) */
+    numline(x1, x2, y, min, max, step = 1, labels = true) {
+      const X = v => x1 + (v - min) / (max - min) * (x2 - x1);
+      sv('line', { x1: x1 - 8, y1: y, x2: x2 + 8, y2: y, class: 's-axis', 'stroke-width': 2 }, layer);
+      for (let v = min; v <= max + 1e-9; v += step) { sv('line', { x1: X(v), y1: y - 6, x2: X(v), y2: y + 6, class: 's-axis' }, layer); if (labels) svText(layer, X(v), y + 20, String(+v.toFixed(2)), 's-txt-s'); }
+      return X;
+    },
+    /* a highlighted label chip */
+    tag(x, y, s, cls = 'b-tag') { const t = T(x, y, s, 's-txt'); const bb = t.getBBox ? t.getBBox() : { x: x - 20, y: y - 10, width: 40, height: 20 }; const r = sv('rect', { x: bb.x - 8, y: bb.y - 4, width: bb.width + 16, height: bb.height + 8, rx: 10, class: cls }); layer.insertBefore(r, t); return t; },
+  };
+  return K;
+}
 
 /* ================= sound effects, Arabic voice, confetti, haptics =================
    No music by design. All sounds are synthesized (no audio files). */
@@ -7935,7 +8188,7 @@ function runPlayer(P) {
   function progress() { pbar.firstChild.style.width = (endless ? 10 * (log.length % 10) : 100 * idx / queue.length) + '%'; }
   function setDock(state, title, why, label, onClick, enabled = true) {
     dock.className = 'dock' + (state ? ' ' + state : '');
-    dockIn.innerHTML = '';
+    dockIn.innerHTML = ''; dockIn.classList.remove('withback');
     if (title) { const hd = h('div', 'fb-head'); hd.innerHTML = `<span class="fb-ic">${ic(state === 'ok' ? 'check' : 'cross', 20)}</span>`; hd.appendChild(h('p', 'fb-t', title)); dockIn.appendChild(hd); }
     if (why) { const w = h('p', 'fb-w', fmt(why)); dockIn.appendChild(w); }
     const b = h('button', 'cta', label); b.disabled = !enabled; b.onclick = () => { FX.play('tap'); onClick(); };
@@ -7969,6 +8222,7 @@ function runPlayer(P) {
   }
   /* theory first: the idea in plain words, an example, why it works, and where you will use it */
   function renderExplain(s) {
+    if (s.explain.build) return renderBuild(s.explain);
     const E = s.explain, c = h('section', 'explain');
     const parts = [['الفكرة', `<p class="idea">${fmt(E.idea)}</p>`]];
     if (E.example) parts.push(['مثال', `<div class="exbox">${fmt(E.example)}</div>`]);
@@ -7987,6 +8241,44 @@ function runPlayer(P) {
       setDock('', '', '', last ? 'فهمت، لنجرّب' : 'التالي: ' + parts[k + 1][0], () => { if (last) next(); else { k++; show(); } });
     };
     show();
+  }
+  /* build-up picture: the idea grows one layer at a time, one short line per layer, then where it is used */
+  function renderBuild(E) {
+    const B = E.build, frames = B.frames, W = 360, H = B.h || 230;
+    const c = h('section', 'buildc');
+    c.innerHTML = `<h3>${fmt(E.title)}</h3><div class="xdots">${frames.map(() => '<i></i>').join('')}${E.uses ? '<i></i>' : ''}</div>`;
+    const fig = h('div', 'bfig'), svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, style: 'direction:ltr' }); fig.appendChild(svg);
+    const say = h('p', 'bsay'); say.setAttribute('aria-live', 'polite');
+    c.append(fig, say); body.appendChild(c);
+    const layers = [];
+    let k = -1;
+    const dots = () => c.querySelectorAll('.xdots i').forEach((d, i) => d.classList.toggle('on', i <= k));
+    function show(i) {
+      while (layers.length > i) layers.pop().remove(); // going back: drop later layers
+      for (let j = layers.length; j <= i; j++) {
+        const F = frames[j], g = sv('g', { class: 'blayer' }, svg);
+        if (F.clear) layers.forEach(l => l.classList.add('gone'));
+        F.draw(buildKit(svg, g)); layers.push(g);
+        if (j === i) { g.classList.add('bnew'); if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) { g.style.opacity = 0; requestAnimationFrame(() => { g.style.opacity = ''; }); } }
+      }
+      layers.forEach((l, j) => l.classList.toggle('past', j < i && !frames[i].keepBright));
+      say.innerHTML = fmt(frames[i].say); say.classList.remove('pop-in'); void say.offsetWidth; say.classList.add('pop-in');
+      k = i; dots(); FX.play('tap');
+      const last = i === frames.length - 1;
+      dockFor(last ? (E.uses ? 'أين ستستخدمها؟' : 'فهمت، لنجرّب') : 'التالي', () => { if (!last) show(i + 1); else if (E.uses) uses(); else next(); }, i > 0 ? () => show(i - 1) : null);
+    }
+    function uses() {
+      k = frames.length; dots();
+      fig.classList.add('shrink'); say.innerHTML = '';
+      const ul = h('ul', 'uses bu'); ul.innerHTML = E.uses.map(u => `<li>${fmt(u)}</li>`).join(''); c.appendChild(ul);
+      dockFor('فهمت، لنجرّب', next, () => { ul.remove(); fig.classList.remove('shrink'); show(frames.length - 1); });
+    }
+    function dockFor(label, go, back) {
+      const cta = setDock('', '', '', label, go);
+      if (back) { const b = h('button', 'backbtn', ic('back', 18)); b.setAttribute('aria-label', 'الخطوة السابقة'); b.onclick = () => { FX.play('tap'); back(); }; cta.before(b); dockIn.classList.add('withback'); }
+      else dockIn.classList.remove('withback');
+    }
+    show(0);
   }
   /* a rule as a small structured card, not a paragraph */
   function renderRule(s) {
