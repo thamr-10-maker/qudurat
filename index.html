@@ -781,6 +781,10 @@ h1,h2,h3{font-weight:500}
 .blayer.past{opacity:.72}
 .b-label{fill:var(--ink);font-family:var(--f-display);font-weight:500;font-size:17px}
 .bfig .s-txt-s{font-size:14px}
+.b-cut{stroke:var(--ink);stroke-width:2;stroke-dasharray:5 4}
+.b-ring{fill:none;stroke:var(--theme);stroke-width:3}
+.s-hi-box{fill:var(--brand-soft);stroke:var(--theme);stroke-width:3}
+.b-rad{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -6653,6 +6657,177 @@ giveBuild('p6', 0, { h: 260, frames: [
   { say: 'نقلب القطعة البرتقالية ونضعها بجانب الأخرى…', clear: true, draw(K) { K.rect(20, 60, 200, 120, 's-fill', 0); K.rect(220, 60, 80, 120, 's-fill2', 0); } },
   { say: '…فيتكوّن مستطيل طوله <b>أ + ب</b> وعرضه <b>أ − ب</b>', draw(K) { K.rect(20, 60, 280, 120, 'b-frame', 4); K.label(160, 200, 'أ + ب'); K.label(332, 120, 'أ − ب'); } },
   { say: 'إذن <b>أ² − ب² = (أ − ب)(أ + ب)</b>', keepBright: true, draw(K) { K.tag(160, 30, '51² − 49² = 2 × 100 = 200'); } },
+] });
+
+/* ================= build-up pictures · units 1-3: numbers, fractions, powers ================= */
+/* f2 keeps its own inline steps: give its theory cards a picture directly */
+const giveBuildInline = (unit, lid, i, build) => { const d = BUILT[unit]; const l = d && d.lessons.find(x => x.id === lid); if (!l) return; const E = l.steps.filter(s => s.explain)[i]; if (E) E.explain.build = build; };
+const dotsRow = (K, x, y, n, { gap = 26, r = 9, cls = 's-fill' } = {}) => { for (let i = 0; i < n; i++) K.circle(x + i * gap, y, r, cls); };
+
+/* ---------- n2 ---------- */
+giveBuild('n2', 0, { h: 220, frames: [
+  { say: 'خط الأعداد: <b>الصفر</b> في المنتصف', draw(K) { K.numline(30, 330, 110, -10, 10, 2); } },
+  { say: 'يمين الصفر: الأعداد <b>الموجبة</b>', draw(K) { K.rect(180, 80, 155, 18, 's-fill', 9); K.label(258, 60, 'موجبة'); } },
+  { say: 'يسار الصفر: الأعداد <b>السالبة</b>، مثل حرارة الشتاء', draw(K) { K.rect(25, 80, 155, 18, 's-fill2', 9); K.label(102, 60, 'سالبة'); } },
+  { say: 'كلما اتجهت <b>يمينًا</b> كبر العدد: −٢ أكبر من −٨', draw(K) { const X = v => 30 + (v + 10) * 15; K.circle(X(-8), 110, 9, 's-hi'); K.circle(X(-2), 110, 9, 's-hi'); K.arrow(X(-8), 150, X(-2), 150, 14); K.label((X(-8) + X(-2)) / 2, 185, 'أكبر ←'); } },
+] });
+giveBuild('n2', 1, { h: 220, frames: [
+  { say: 'العدد ٣ سهم يتجه <b>يمينًا</b>', draw(K) { K.numline(30, 330, 120, -6, 6, 1); const X = v => 30 + (v + 6) * 25; K.line(X(0), 92, X(3), 92, 's-line'); K.path(`M${X(3)},92 l-10,-7 v14 Z`, 's-hi'); K.label(X(1.5), 70, '3'); } },
+  { say: 'الإشارة السالبة تعني: <b>اعكس الاتجاه</b> ← −٣', draw(K) { const X = v => 30 + (v + 6) * 25; K.line(X(0), 160, X(-3), 160, 's-line2'); K.path(`M${X(-3)},160 l10,-7 v14 Z`, 's-hi'); K.label(X(-1.5), 186, '−3'); } },
+  { say: 'نعكسه <b>مرة ثانية</b> فيرجع يمينًا: سالب × سالب = <b>موجب</b>', draw(K) { const X = v => 30 + (v + 6) * 25; K.arrow(X(-3), 150, X(3), 100, 50, 's-line'); K.tag(X(3) + 10, 40, '(−3) × (−1) = 3'); } },
+] });
+/* ---------- n3 ---------- */
+giveBuild('n3', 0, { h: 230, frames: [
+  { say: 'كم ناتج `3 + 4 × 2`؟ ١٤ أم ١١؟', draw(K) { K.text(180, 50, '3 + 4 × 2', 's-ink'); } },
+  { say: 'الضرب <b>كتلة واحدة</b>: ٤ مكررة مرتين = ٨', draw(K) { K.rect(78, 30, 130, 42, 'b-frame', 12); K.arrow(143, 76, 143, 118, -8); K.text(143, 136, '8', 's-hi-t'); } },
+  { say: 'ثم نجمع: ٣ + ٨ = <b>١١</b>', draw(K) { K.text(180, 180, '3 + 8 = 11', 's-ink'); } },
+  { say: 'الترتيب دائمًا: <b>أقواس، أسس، ضرب وقسمة، جمع وطرح</b>', clear: true, draw(K) { ['( )', 'أسس', '× ÷', '+ −'].forEach((t, i) => { K.rect(250 - i * 70, 40 + i * 40, 90, 34, i === 0 ? 's-fill' : 's-mute', 10); K.label(295 - i * 70, 58 + i * 40, t); }); K.note(180, 215, 'من الأعلى إلى الأسفل'); } },
+] });
+/* ---------- n4 ---------- */
+giveBuild('n4', 0, { h: 210, frames: [
+  { say: '٨ نقاط: كل نقطة لها <b>زميل</b> ← <b>زوجي</b>', draw(K) { for (let i = 0; i < 4; i++) { K.rect(60 + i * 46, 30, 34, 66, 's-mute', 17); K.circle(77 + i * 46, 48, 9, 's-fill'); K.circle(77 + i * 46, 78, 9, 's-fill'); } K.label(300, 64, '8'); } },
+  { say: '٧ نقاط: بقيت نقطة <b>وحدها</b> ← <b>فردي</b>', draw(K) { for (let i = 0; i < 3; i++) { K.rect(60 + i * 46, 120, 34, 66, 's-mute', 17); K.circle(77 + i * 46, 138, 9, 's-fill'); K.circle(77 + i * 46, 168, 9, 's-fill'); } K.circle(214, 138, 11, 's-hi'); K.label(300, 154, '7'); } },
+  { say: 'يكفي <b>آخر رقم</b>: ٣٤٥٨ آخره ٨ ← زوجي', clear: true, draw(K) { ['3', '4', '5', '8'].forEach((d, i) => { K.rect(96 + i * 44, 56, 38, 48, i === 3 ? 's-hi-box' : 's-mute', 10); K.label(115 + i * 44, 80, d); }); K.note(180, 140, 'الآحاد وحدها تقرر'); } },
+] });
+giveBuild('n4', 1, { h: 210, frames: [
+  { say: 'فردي + فردي: في كل واحد نقطة <b>وحيدة</b>', draw(K) { dotsRow(K, 250, 40, 2, { gap: 24 }); K.circle(250, 70, 11, 's-hi'); K.label(250 + 12, 104, '3'); K.label(180, 55, '+'); dotsRow(K, 40, 40, 4, { gap: 24, cls: 's-fill2' }); dotsRow(K, 40, 70, 0); K.circle(64, 70, 9, 's-fill2'); K.circle(40, 70, 9, 's-fill2'); K.circle(88, 70, 11, 's-hi'); K.label(76, 104, '5'); } },
+  { say: '…والوحيدان يكوّنان <b>زوجًا</b> ← المجموع زوجي', draw(K) { K.arrow(250, 84, 100, 84, 26); K.label(180, 120, '3 + 5 = 8'); } },
+  { say: 'وفي الضرب: وجود <b>زوجي واحد</b> يجعل الناتج زوجيًا', draw(K) { for (let g = 0; g < 3; g++) { K.rect(60 + g * 86, 130, 70, 44, 's-mute', 22); K.circle(82 + g * 86, 152, 9, 's-fill'); K.circle(108 + g * 86, 152, 9, 's-fill'); } K.note(180, 196, '3 × 2: كله أزواج'); } },
+] });
+/* ---------- n5 ---------- */
+giveBuild('n5', 0, { h: 230, frames: [
+  { say: 'هل <b>٤٧١</b> يقبل القسمة على ٣؟', draw(K) { [['4', 120], ['7', 180], ['1', 240]].forEach(([d, x]) => { K.rect(x - 26, 24, 52, 56, 's-mute', 12); K.text(x, 54, d, 's-big'); }); } },
+  { say: 'نجمع أرقامه: ٤ + ٧ + ١ = <b>١٢</b>', draw(K) { [240, 180, 120].forEach(x => K.line(x, 84, 180, 130, 's-thin')); K.rect(146, 132, 68, 44, 's-fill', 12); K.text(180, 155, '12', 's-big'); } },
+  { say: '١٢ يقبل القسمة على ٣، إذن <b>٤٧١ يقبله</b>', keepBright: true, draw(K) { K.tag(180, 206, '471 ÷ 3 = 157'); } },
+] });
+/* ---------- n6 ---------- */
+giveBuild('n6', 0, { h: 230, frames: [
+  { say: '١٢ نقطة نستطيع ترتيبها <b>مستطيلات</b>: ٣ × ٤', draw(K) { for (let r = 0; r < 3; r++) dotsRow(K, 40, 40 + r * 26, 4, { r: 8 }); } },
+  { say: 'ونرتبها ٢ × ٦ أيضًا. إذن ١٢ <b>ليس أوليًا</b>', draw(K) { for (let r = 0; r < 2; r++) dotsRow(K, 180, 40 + r * 26, 6, { r: 8, cls: 's-fill2', gap: 26 }); } },
+  { say: '٧ نقاط: <b>صف واحد فقط</b>. لا مستطيل آخر ← <b>أولي</b>', draw(K) { dotsRow(K, 80, 170, 7, { r: 10, cls: 's-hi', gap: 30 }); K.rect(62, 152, 216, 36, 'b-frame', 18); } },
+] });
+/* ---------- n7 ---------- */
+giveBuild('n7', 0, { h: 240, frames: [
+  { say: 'كل مستطيل من ١٢ مربعًا يعطينا <b>زوجًا من العوامل</b>: ١ × ١٢', draw(K) { K.blocks(30, 30, 12, { cols: 12, size: 22, gap: 3 }); K.note(180, 14, '1 × 12'); } },
+  { say: '٢ × ٦', draw(K) { K.blocks(30, 70, 12, { cols: 6, size: 22, gap: 3, cls: 's-fill2' }); K.label(250, 95, '2 × 6'); } },
+  { say: '٣ × ٤', draw(K) { K.blocks(30, 136, 12, { cols: 4, size: 22, gap: 3, cls: 's-fill' }); K.label(200, 172, '3 × 4'); } },
+  { say: 'عوامل ١٢ ستة: ١، ٢، ٣، ٤، ٦، ١٢', keepBright: true, draw(K) { K.tag(180, 222, '1 · 2 · 3 · 4 · 6 · 12'); } },
+] });
+giveBuild('n7', 1, { h: 200, frames: [
+  { say: 'المضاعفات: نقفز بالعدد نفسه على خط الأعداد', draw(K) { K.numline(24, 336, 130, 0, 24, 4); } },
+  { say: 'مضاعفات ٤: ٤، ٨، ١٢، ١٦…', draw(K) { const X = v => 24 + v * 13; for (let v = 0; v < 24; v += 4) K.arrow(X(v), 122, X(v + 4), 122, 26); } },
+  { say: 'العوامل <b>محدودة</b>، والمضاعفات <b>لا تنتهي</b>', draw(K) { K.arrow(300, 60, 350, 60, 0, 's-line'); K.note(300, 36, 'ولا تتوقف'); } },
+] });
+/* ---------- n8 ---------- */
+giveBuild('n8', 0, { h: 240, frames: [
+  { say: 'شريطان: ١٢ و ١٨', draw(K) { K.rect(30, 30, 96, 30, 's-fill', 4); K.label(150, 45, '12'); K.rect(30, 74, 144, 30, 's-fill2', 4); K.label(198, 89, '18'); } },
+  { say: '<b>ق.م.أ</b>: أكبر قطعة تقيس الاثنين بلا باقٍ = <b>٦</b>', draw(K) { for (const [y, n] of [[30, 2], [74, 3]]) for (let i = 1; i < n; i++) K.line(30 + i * 48, y - 4, 30 + i * 48, y + 34, 'b-cut'); } },
+  { say: '<b>م.م.أ</b>: أول مكان يلتقي فيه تكرارهما = <b>٣٦</b>', draw(K) { for (let i = 0; i < 3; i++) K.rect(30 + i * 96, 140, 96, 24, 's-fill', 2); for (let i = 0; i < 2; i++) K.rect(30 + i * 144, 172, 144, 24, 's-fill2', 2); K.line(318, 130, 318, 206, 's-line'); K.label(318, 224, '36'); } },
+] });
+/* ---------- n9 ---------- */
+giveBuild('n9', 0, { h: 220, frames: [
+  { say: '٧٤ = <b>٧ عشرات</b> + ٤ آحاد', draw(K) { for (let c = 0; c < 7; c++) K.blocks(200 + c * 13, 30, 10, { cols: 1, size: 9, gap: 0, cls: 's-fill2' }); K.blocks(300, 102, 4, { cols: 4, size: 9, gap: 3, cls: 's-fill' }); K.label(70, 70, '74'); } },
+  { say: 'ومقلوبه ٤٧ = <b>٤ عشرات</b> + ٧ آحاد', draw(K) { for (let c = 0; c < 4; c++) K.blocks(200 + c * 13, 124, 10, { cols: 1, size: 9, gap: 0, cls: 's-fill2' }); K.blocks(260, 196, 7, { cols: 7, size: 9, gap: 3, cls: 's-fill' }); K.label(70, 164, '47'); } },
+  { say: 'كل عشرة أقل تخسر ٩: الفرق = ٩ × ٣ = <b>٢٧</b>', keepBright: true, draw(K) { K.tag(70, 117, '9 × (7 − 4) = 27'); } },
+] });
+giveBuild('n9', 1, { h: 220, frames: [
+  { say: '١٥، ١٦، ١٧: أعمدة متتالية', draw(K) { [15, 16, 17].forEach((v, i) => { K.rect(90 + i * 70, 190 - v * 9, 50, v * 9, 's-fill', 4); K.label(115 + i * 70, 200 - v * 9 - 14, String(v)); }); } },
+  { say: 'نأخذ ١ من الأطول ونعطيه للأقصر…', draw(K) { K.rect(230, 190 - 17 * 9, 50, 9, 's-hi', 2); K.arrow(255, 190 - 17 * 9 - 4, 115, 190 - 16 * 9 - 4, 30); } },
+  { say: '…فتصير كلها <b>١٦</b>: المجموع = ١٦ × ٣ = <b>٤٨</b>', keepBright: true, draw(K) { K.line(80, 190 - 16 * 9, 290, 190 - 16 * 9, 'b-cut'); K.tag(180, 205, '16 × 3 = 48'); } },
+] });
+
+/* a square-root sign drawn as a shape (text radicals flip in right-to-left labels) */
+const rad = (K, x, y, w, inside) => { K.path(`M${x - 18},${y + 26} l7,-4 l8,22 l10,-44 h${w + 6}`, 'b-rad'); K.label(x + 6 + w / 2, y + 22, inside); };
+/* ---------- f2 (inline lesson) ---------- */
+giveBuildInline('fractions', 'f2', 0, { h: 220, frames: [
+  { say: 'نصف شريط: [[1/2]]', draw(K) { K.bar(30, 30, 280, 34, 2, 1); K.frac(336, 47, 1, 2, 's-txt-s'); } },
+  { say: 'نقسم كل نصف إلى قطعتين: [[2/4]]', draw(K) { K.bar(30, 92, 280, 34, 4, 2, 's-fill2'); K.frac(336, 109, 2, 4, 's-txt-s'); } },
+  { say: 'ومرة أخرى: [[4/8]]', draw(K) { K.bar(30, 154, 280, 34, 8, 4); K.frac(336, 171, 4, 8, 's-txt-s'); } },
+  { say: 'الكمية <b>لم تتغير</b>: قطع أصغر وعدد أكبر', keepBright: true, draw(K) { K.line(170, 18, 170, 200, 's-line2'); } },
+] });
+giveBuildInline('fractions', 'f2', 1, { h: 220, frames: [
+  { say: '[[18/24]]: قطع صغيرة كثيرة', draw(K) { K.bar(30, 40, 300, 34, 24, 18); } },
+  { say: 'نجمع كل <b>٦ قطع</b> في قطعة واحدة', draw(K) { for (let i = 1; i < 4; i++) K.line(30 + i * 75, 30, 30 + i * 75, 84, 's-line2'); } },
+  { say: 'تصير [[3/4]]: الكمية نفسها بأصغر أرقام', draw(K) { K.bar(30, 130, 300, 34, 4, 3, 's-fill2'); K.tag(180, 196, '18 ÷ 6 = 3 · 24 ÷ 6 = 4'); } },
+] });
+/* ---------- f3 ---------- */
+giveBuild('f3', 0, { h: 230, frames: [
+  { say: 'أيهما أكبر: [[3/5]] أم [[2/3]]؟', draw(K) { K.bar(30, 30, 280, 34, 5, 3); K.frac(336, 47, 3, 5, 's-txt-s'); K.bar(30, 86, 280, 34, 3, 2, 's-fill2'); K.frac(336, 103, 2, 3, 's-txt-s'); } },
+  { say: 'بالرسم: [[2/3]] <b>أطول قليلًا</b>', draw(K) { K.line(30 + 280 * 3 / 5, 22, 30 + 280 * 3 / 5, 128, 'b-cut'); K.line(30 + 280 * 2 / 3, 22, 30 + 280 * 2 / 3, 128, 's-line2'); } },
+  { say: 'وبدون رسم: <b>الضرب التبادلي</b> ٣ × ٣ = ٩ و ٥ × ٢ = ١٠', clear: true, draw(K) { K.frac(230, 110, 3, 5, 's-ink'); K.frac(130, 110, 2, 3, 's-ink'); K.line(222, 92, 140, 128, 's-line'); K.line(222, 128, 140, 92, 's-line2'); K.label(280, 110, '9'); K.label(80, 110, '10'); K.note(180, 190, '١٠ أكبر ← [[2/3]] أكبر'); } },
+] });
+/* ---------- f5 ---------- */
+giveBuild('f5', 0, { h: 230, frames: [
+  { say: 'مربع، نأخذ منه <b>ثلثًا</b>', draw(K) { K.rect(80, 20, 200, 200, 's-unit', 4); K.rect(80, 20, 200 / 3, 200, 's-fill', 0); K.line(80 + 200 / 3, 20, 80 + 200 / 3, 220, 's-axis'); K.line(80 + 400 / 3, 20, 80 + 400 / 3, 220, 's-axis'); } },
+  { say: 'ثم <b>نصف</b> هذا الثلث', draw(K) { K.line(80, 120, 280, 120, 's-axis'); K.rect(80, 20, 200 / 3, 100, 's-fill2', 0); } },
+  { say: 'المربع صار ٦ قطع: نصف الثلث = [[1/6]]. «من» تعني <b>ضرب</b>', keepBright: true, draw(K) { K.tag(300, 120, '½ × ⅓ = ⅙'); } },
+] });
+giveBuild('f5', 1, { h: 210, frames: [
+  { say: '٣ ÷ [[1/2]] تسأل: <b>كم نصفًا في ٣؟</b>', draw(K) { for (let i = 0; i < 3; i++) K.rect(30 + i * 104, 50, 96, 46, 's-fill', 8); } },
+  { say: 'نقطع كل واحد نصفين', draw(K) { for (let i = 0; i < 3; i++) K.line(78 + i * 104, 44, 78 + i * 104, 102, 's-line2'); } },
+  { say: 'نعدّ: <b>٦ أنصاف</b> ← ٣ × ٢ = ٦', draw(K) { for (let i = 0; i < 6; i++) K.label(54 + Math.floor(i / 2) * 104 + (i % 2) * 48, 73, String(i + 1)); K.tag(180, 160, '3 ÷ ½ = 3 × 2 = 6'); } },
+] });
+/* ---------- f6 ---------- */
+giveBuild('f6', 0, { h: 220, frames: [
+  { say: '[[7/4]]: سبعة أرباع', draw(K) { for (let i = 0; i < 7; i++) K.rect(24 + i * 46, 40, 40, 40, 's-fill', 6); } },
+  { say: 'كل ٤ أرباع تصنع <b>واحدًا صحيحًا</b>', draw(K) { K.rect(18, 32, 182, 56, 'b-frame', 10); K.label(109, 110, '1'); } },
+  { say: 'ويبقى ٣ أرباع: [[7/4]] = <b>١ و [[3/4]]</b>', keepBright: true, draw(K) { K.label(270, 110, '¾'); K.tag(180, 180, '7 ÷ 4 = 1 والباقي 3'); } },
+] });
+/* ---------- f7 ---------- */
+giveBuild('f7', 0, { h: 240, frames: [
+  { say: 'نقسم الواحد إلى ١٠ أجزاء: كل جزء <b>٠٫١</b>', draw(K) { K.bar(30, 30, 300, 36, 10, 0); } },
+  { say: '٠٫٧ = <b>٧ أعشار</b>', draw(K) { K.bar(30, 30, 300, 36, 10, 7); } },
+  { say: 'وبعد الفاصلة منزلتان: ٠٫٢٥ = <b>٢٥ من ١٠٠</b> = [[1/4]]', draw(K) { K.blocks(110, 92, 100, { cols: 10, size: 12, gap: 2, cls: 's-unit' }); K.blocks(110, 92, 25, { cols: 10, size: 12, gap: 2, cls: 's-fill2' }); } },
+] });
+/* ---------- f8 ---------- */
+giveBuild('f8', 0, { h: 220, frames: [
+  { say: 'نصف الدائرة…', draw(K) { K.circle(90, 110, 70, 's-unit'); K.path(arcPath(90, 110, 69, 90, 270), 's-fill'); } },
+  { say: '…يُكتب بثلاث طرق: [[1/2]] = ٠٫٥ = ٥٠٪', draw(K) { K.tag(260, 60, '½'); K.tag(260, 110, '0.5'); K.tag(260, 160, '50٪'); } },
+  { say: 'اختر الشكل الأسهل للسؤال الذي أمامك', keepBright: true, draw(K) { K.note(260, 204, '3/4 = 0.75 = 75٪'); } },
+] });
+
+/* ---------- p1 ---------- */
+giveBuild('p1', 0, { h: 230, frames: [
+  { say: '<b>٥²</b>: مربع من ٥ × ٥', draw(K) { K.blocks(40, 30, 25, { cols: 5, size: 28, gap: 3 }); } },
+  { say: 'نعدّ: <b>٢٥</b> مربعًا', draw(K) { K.label(100, 200, '5² = 25'); } },
+  { say: '<b>٢³</b>: مكعب من ٢ × ٢ × ٢ = ٨', draw(K) { const cube = (x, y, s) => { K.path(`M${x},${y} l${s},${-s / 2} l${s},${s / 2} l${-s},${s / 2} Z`, 's-face1'); K.path(`M${x},${y} l${s},${s / 2} v${s} l${-s},${-s / 2} Z`, 's-face2'); K.path(`M${x + s},${y + s / 2} l${s},${-s / 2} v${s} l${-s},${s / 2} Z`, 's-face3'); };
+    for (const [dx, dy] of [[0, 0], [30, 15], [-30, 15], [0, 30]]) cube(250 + dx, 80 + dy + 30, 30); for (const [dx, dy] of [[0, 0], [30, 15], [-30, 15], [0, 30]]) cube(250 + dx, 50 + dy, 30); K.label(280, 200, '2³ = 8'); } },
+] });
+/* ---------- p2 ---------- */
+giveBuild('p2', 0, { h: 220, frames: [
+  { say: '٢³ × ٢²: ثلاث مرات ٢، ثم مرتان', draw(K) { for (let i = 0; i < 3; i++) { K.rect(250 - i * 44, 40, 36, 36, 's-fill', 8); K.label(268 - i * 44, 58, '2'); } for (let i = 0; i < 2; i++) { K.rect(110 - i * 44, 40, 36, 36, 's-fill2', 8); K.label(128 - i * 44, 58, '2'); } } },
+  { say: 'نعدّها كلها: <b>خمس مرات</b> ← ٢⁵. في الضرب <b>نجمع</b> الأسس', draw(K) { K.rect(62, 32, 232, 52, 'b-frame', 14); K.label(178, 106, '2³ × 2² = 2⁵'); } },
+  { say: 'وفي القسمة <b>تُحذف</b> المتشابهة: ٢⁵ ÷ ٢² = ٢³', draw(K) { for (let i = 0; i < 5; i++) { K.rect(250 - i * 44, 140, 36, 36, 's-mute', 8); K.label(268 - i * 44, 158, '2'); } for (let i = 3; i < 5; i++) K.line(250 - i * 44, 176, 286 - i * 44, 140, 's-bad'); } },
+] });
+/* ---------- p3 ---------- */
+giveBuild('p3', 0, { h: 230, frames: [
+  { say: '٢³ = ٨ ، ٢² = ٤ ، ٢¹ = ٢: كل نزول <b>÷ ٢</b>', draw(K) { [['2³', '8'], ['2²', '4'], ['2¹', '2']].forEach(([e, v], i) => { K.label(320 - i * 68, 40, e); K.rect(296 - i * 68, 60, 48, 48, 's-fill', 10); K.label(320 - i * 68, 84, v); if (i) K.arrow(320 - (i - 1) * 68 - 26, 120, 320 - i * 68 + 26, 120, 14); }); } },
+  { say: 'ننزل مرة أخرى: ٢⁰ = <b>١</b>', draw(K) { K.label(116, 40, '2⁰'); K.rect(92, 60, 48, 48, 's-hi-box', 10); K.label(116, 84, '1'); K.arrow(158, 120, 142, 120, 10); } },
+  { say: 'ثم الأس السالب: ٢⁻¹ = [[1/2]]. مقلوب، <b>وليس سالبًا</b>', draw(K) { K.label(48, 40, '2⁻¹'); K.rect(24, 60, 48, 48, 's-fill2', 10); K.label(48, 84, '½'); K.arrow(90, 120, 74, 120, 10); K.note(180, 190, 'كل خطوة ÷ ٢، ولا يظهر سالب أبدًا'); } },
+] });
+/* ---------- p4 ---------- */
+giveBuild('p4', 0, { h: 240, frames: [
+  { say: 'مربع مساحته <b>٢٥</b>', draw(K) { K.blocks(40, 30, 25, { cols: 5, size: 30, gap: 2 }); } },
+  { say: 'ضلعه؟ <b>٥</b>. إذن √٢٥ = ٥', draw(K) { K.line(40, 200, 198, 200, 's-line2'); K.label(119, 222, '5'); } },
+  { say: '√٥٠ ليس عددًا صحيحًا: يقع <b>بين ٧ و ٨</b>', draw(K) { const X = K.numline(230, 340, 120, 6, 9, 1); K.circle(X(7.07), 120, 8, 's-hi'); K.note(285, 80, '49 < 50 < 64'); } },
+] });
+/* ---------- p5 ---------- */
+giveBuild('p5', 0, { h: 230, frames: [
+  { say: '√١٢: نكتب ١٢ = <b>٤ × ٣</b>', draw(K) { rad(K, 140, 30, 80, '12'); K.line(180, 84, 120, 120, 's-thin'); K.line(180, 84, 240, 120, 's-thin'); K.rect(216, 122, 48, 44, 's-fill', 10); K.label(240, 144, '4'); K.rect(96, 122, 48, 44, 's-mute', 10); K.label(120, 144, '3'); } },
+  { say: '٤ مربع كامل: جذره <b>٢</b> يخرج من الجذر', draw(K) { K.rect(210, 116, 60, 56, 'b-frame', 12); K.arrow(240, 176, 250, 206, -4); K.label(254, 216, '2'); } },
+  { say: 'و ٣ يبقى داخل الجذر: √١٢ = <b>٢√٣</b>', draw(K) { K.arrow(120, 176, 140, 198, -4); rad(K, 160, 196, 30, '3'); } },
+] });
+/* ---------- p7 ---------- */
+giveBuild('p7', 0, { h: 220, frames: [
+  { say: '٦٨ × ٩٩: مستطيل ٦٨ في ٩٩', draw(K) { K.rect(30, 40, 291, 136, 's-fill', 4); K.label(176, 196, '99'); K.label(340, 108, '68'); } },
+  { say: 'نكمله إلى <b>١٠٠</b>: ٦٨ × ١٠٠ = ٦٨٠٠', draw(K) { K.rect(321, 40, 3, 136, 's-fill2', 0); K.rect(30, 40, 294, 136, 'b-frame', 4); } },
+  { say: 'ثم نطرح الشريط الزائد: ٦٨٠٠ − ٦٨ = <b>٦٧٣٢</b>', keepBright: true, draw(K) { K.tag(176, 20, '6800 − 68 = 6732'); } },
+] });
+/* ---------- p8 ---------- */
+giveBuild('p8', 0, { h: 210, frames: [
+  { say: '٤٩ × ٢١، والخيارات ١٠٠ و ١٠٠٠ و ١٠٠٠٠', draw(K) { [['100', 60], ['1000', 180], ['10000', 300]].forEach(([t, x]) => { K.rect(x - 44, 40, 88, 40, 's-mute', 12); K.label(x, 60, t); }); } },
+  { say: 'نقرّب: ٥٠ × ٢٠ = <b>١٠٠٠</b>', draw(K) { K.text(180, 130, '49 × 21 ≈ 50 × 20 = 1000', 's-txt'); } },
+  { say: 'الخيارات متباعدة، فالتقريب يكفي', draw(K) { K.rect(136, 40, 88, 40, 'b-frame', 12); K.arrow(180, 112, 180, 88, -6); } },
 ] });
 
 window.AcademyCourses = window.AcademyCourses || {};
