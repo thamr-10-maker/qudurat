@@ -803,6 +803,57 @@ h1,h2,h3{font-weight:500}
 .b-tl{fill:var(--line)}
 .b-hl{fill:var(--theme);opacity:.55}
 
+/* ===== smart placement test + personal plan ===== */
+:root{--warn:#A8650F;--warn-soft:#F7EBDA;--chk:#2F5D8A;--chk-soft:#E4ECF5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn:#E2A54F;--warn-soft:#2B2113;--chk:#7FA8D6;--chk-soft:#15202C}}
+:root[data-theme="dark"]{--warn:#E2A54F;--warn-soft:#2B2113;--chk:#7FA8D6;--chk-soft:#15202C}
+.dgq{padding-top:16px;padding-inline-end:84px;min-height:92px}
+.dtimer{position:absolute;inset-inline-end:12px;top:12px;width:62px;height:62px;display:grid;place-items:center;text-align:center}
+.dtimer svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.dtimer .tr-bg{fill:none;stroke:var(--line);stroke-width:4}
+.dtimer .tr-fg{fill:none;stroke:var(--theme);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .2s linear,stroke .3s}
+.dtimer b{font-family:var(--f-display);font-size:21px;font-weight:600;line-height:1;margin-top:-6px;color:var(--ink)}
+.dtimer small{position:absolute;bottom:13px;font-size:9.5px;color:var(--ink-3)}
+.dtimer.low .tr-fg{stroke:var(--bad)} .dtimer.low b{color:var(--bad)}
+.dtimer.out .tr-fg{stroke:var(--bad)} .dtimer.out b{color:var(--bad)}
+@media (prefers-reduced-motion:no-preference){.dtimer.low b{animation:dgpulse 1s ease-in-out infinite}@keyframes dgpulse{50%{opacity:.45}}}
+.dgrow{display:flex;gap:10px}
+.dgrow .cta{flex:1.6}
+.dgrow .btn.dk{flex:1;width:auto;background:var(--card);border:1px solid var(--line);color:var(--ink-2)}
+.dg-out{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;font-weight:600;color:var(--bad);font-size:17px}
+.dg-rules ul{list-style:none;margin:6px 0 0;padding:0}
+.dg-rules li{display:flex;flex-direction:column;gap:2px;padding:14px 0;border-top:1px solid var(--line)}
+.dg-rules li b{font-family:var(--f-display);font-weight:500;font-size:16.5px}
+.dg-rules li span{color:var(--ink-2);font-size:14.5px;line-height:1.7}
+.dg-note{color:var(--ink-2);font-size:14px;margin:6px 0 0}
+.dg-counts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.dgc{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px;border-radius:16px;background:var(--card);border:1px solid var(--line);text-align:center}
+.dgc b{font-family:var(--f-display);font-size:26px;font-weight:600;line-height:1.1}
+.dgc span{font-weight:600;font-size:14px} .dgc small{font-size:11px;color:var(--ink-3);line-height:1.4}
+.dgc.green b{color:var(--ok)} .dgc.yellow b{color:var(--warn)} .dgc.red b{color:var(--bad)} .dgc.check b{color:var(--chk)}
+.dg-gaps h3,.dg-map h3{font-family:var(--f-display);font-weight:500;font-size:17px;margin:18px 0 8px}
+.dg-gaps .gap{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.dg-gaps .gap b{display:block;font-weight:600} .dg-gaps .gap small{color:var(--ink-2);line-height:1.7}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;margin-top:8px} .dot.red{background:var(--bad)}
+.dg-map .mrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+.dg-map .mname{flex:0 0 38%;font-size:13.5px;color:var(--ink-2)}
+.dg-map .msq{display:flex;flex-wrap:wrap;gap:4px}
+.dg-map i,.mkey i{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--bg-2)}
+.dg-map i.green,.mkey i.green{background:var(--ok)} .dg-map i.yellow,.mkey i.yellow{background:var(--warn)}
+.dg-map i.red,.mkey i.red{background:var(--bad)} .dg-map i.check,.mkey i.check{background:var(--chk)}
+.mkey{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 24px;font-size:13px;color:var(--ink-2)} .mkey span{display:inline-flex;align-items:center;gap:6px}
+.lrow.st-green{opacity:.55} .lrow.st-green .lstate{color:var(--ok)}
+.lessons2 .lrow.st-red .lbody small{background:var(--bad-soft);color:var(--bad)} .lessons2 .lrow.st-yellow .lbody small{background:var(--warn-soft);color:var(--warn)} .lessons2 .lrow.st-check .lbody small{background:var(--chk-soft);color:var(--chk)} .lessons2 .lrow.st-green .lbody small{background:var(--ok-soft);color:var(--ok)}
+.lrow.st-red .num{border-color:var(--bad);color:var(--bad)}
+.sdot{display:inline-block;width:10px;height:10px;border-radius:50%} .sdot.red{background:var(--bad)} .sdot.yellow{background:var(--warn)} .sdot.check{background:var(--chk)}
+.tile.dgt small::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:6px;vertical-align:middle;background:#fff}
+.tile.dgt.red small::before{background:#FF8A80} .tile.dgt.yellow small::before{background:#FFD180} .tile.dgt.check small::before{background:#9EC5FF}
+.tile.dgt.confirm{background:var(--card);color:var(--ink);border:1px solid var(--line)} .tile.dgt.confirm small{color:var(--ink-2)} .tile.dgt.confirm .t-num{color:var(--chk)}
+.btn.skipk{margin-top:8px;background:transparent;border:none;color:var(--ink-2);font-weight:500;font-size:14px;text-decoration:underline;text-underline-offset:4px}
+@media (max-width:360px){.dg-counts{grid-template-columns:repeat(2,1fr)}}
+.dtimer.out .tr-fg{opacity:0} .dtimer.out b{animation:none}
+.dg .opt:disabled{opacity:.55}
+
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
 .vtitle{font-weight:600;margin-bottom:6px}
@@ -1754,6 +1805,7 @@ function recordAnswer(s, ok, mode, conf) {
   S.answered++; if (ok) S.right++;
   if (conf && conf !== 'typed') { const c = S.conf || (S.conf = {}); const e = c[conf] || (c[conf] = [0, 0]); e[0]++; if (ok) e[1]++; }
   const lucky = ok && conf === 'guess';
+  if (mode !== 'placement') dgSlip(s, ok && !lucky);
   if (s.dist && WEIGHT[s.dist] != null) { const a = S.skill[s.dist] || (S.skill[s.dist] = []); a.push(ok ? 1 : 0); if (a.length > 24) a.shift(); }
   const key = mistakeKey(s), m = S.mistakes[key];
   if (!ok || lucky) {
@@ -1812,7 +1864,7 @@ function relationFirst(s) {
   const a = m[1].trim(), b = m[2].trim(), rel = relOf(a, b);
   return rel ? [a, b, rel] : null;
 }
-function lessonsDone(d) { return (d.lessons || []).filter(l => S.done[l.id]).length; }
+function lessonsDone(d) { return (d.lessons || []).filter(l => cleared(l)).length; }
 
 /* ---------- interface colour (unlockable with points) ---------- */
 const ACCENTS = [['emerald', 'زمردي', '#0E6E5C', 0], ['navy', 'كحلي', '#24479E', 0], ['indigo', 'نيلي', '#4B45B8', 150], ['maroon', 'عنابي', '#8E2D45', 150], ['copper', 'نحاسي', '#A65420', 300], ['graphite', 'فحمي', '#323A48', 300]];
@@ -1859,18 +1911,21 @@ function showCity() {
   const bar = hud(`<span class="wordmark">قدرات</span><span class="sec">${COURSE.section}</span>`); bar.classList.add('over');
   if (window.Academy) { const b = h('button', 'xbtn', ic('back', 22)); b.setAttribute('aria-label', 'الأكاديمية'); b.onclick = () => { FX.play('tap'); window.Academy.home(COURSE.id); }; bar.prepend(b); }
   const w = h('div', 'home');
-  let next = null;
-  for (const d of openUnits()) { const i = d.lessons.findIndex(l => !S.done[l.id]); if (i >= 0) { next = { d, l: d.lessons[i], i }; break; } }
+  const next = nextLesson();
   const pred = predictScore(), dte = daysToExam(), target = S.profile.target || 0;
   /* 1 · billboard: the one thing to do now */
   const bb = h('div', 'gut');
-  if (!pred) {
-    const pv = poster('billboard', DISTRICTS.find(d => d.exam) || units()[0], `<div class="bb-body"><small class="eyebrow">الخطوة الأولى</small><h1>اعرف مستواك</h1><p>${qWord(2 * Object.keys(WEIGHT).filter(id => GEN[id]).length)} قصيرة من كل الوحدات، ثم نخبرك من أين تبدأ.</p><div class="bb-act"></div></div>`);
-    const go = h('button', 'play-btn', `${ic('play', 18)}<span>ابدأ اختبار المستوى</span>`); go.onclick = () => { FX.play('whoosh'); playPlacement(); };
+  const testing = S.diag && S.diag.run;
+  if (testing || (!dgOn() && !pred)) {
+    const pv = poster('billboard', DISTRICTS.find(d => d.exam) || units()[0], testing
+      ? `<div class="bb-body"><small class="eyebrow">اختبار المستوى</small><h1>أكمل من حيث توقفت</h1><p>أجبت ${qWord(testing.n)}. إجاباتك محفوظة.</p><div class="bb-act"></div></div>`
+      : `<div class="bb-body"><small class="eyebrow">الخطوة الأولى</small><h1>اعرف مستواك</h1><p>اختبار ذكي يتغيّر مع إجاباتك، ثم يصنع لك خطة بالدروس التي تحتاجها فقط.</p><div class="bb-act"></div></div>`);
+    const go = h('button', 'play-btn', `${ic('play', 18)}<span>${testing ? 'أكمل الاختبار' : 'ابدأ اختبار المستوى'}</span>`); go.onclick = () => { FX.play('whoosh'); testing ? dgRun() : dgIntro(); };
     pv.querySelector('.bb-act').appendChild(go); bb.appendChild(pv);
   } else if (next) {
-    const pv = poster('billboard', next.d, `<div class="bb-body"><small class="eyebrow">الوحدة ${ar(unitNo(next.d))} · الدرس ${ar(next.i + 1)}</small><h1>${fmt(next.l.title)}</h1><p>${fmt(whyOf(next.l))}</p><div class="bb-act"></div></div>`);
-    const go = h('button', 'play-btn', `${ic('play', 18)}<span>${S.answered ? 'تابع الدرس' : 'ابدأ الدرس'}</span>`); go.onclick = () => { FX.play('whoosh'); playLesson(next.d, next.l); };
+    const stp = next.st ? `خطتك · ${DG_NAME[next.st]}` : `الوحدة ${ar(unitNo(next.d))} · الدرس ${ar(next.i + 1)}`;
+    const pv = poster('billboard', next.d, `<div class="bb-body"><small class="eyebrow">${stp}</small><h1>${fmt(next.l.title)}</h1><p>${next.st === 'check' ? 'سؤالان للتحقق: إذا أصبت تتخطى الدرس.' : next.st === 'yellow' ? 'تعرف هذا الدرس. تمرين سريع بالوقت يكفي.' : fmt(whyOf(next.l))}</p><div class="bb-act"></div></div>`);
+    const go = h('button', 'play-btn', `${ic('play', 18)}<span>${next.st === 'check' ? 'تحقق' : next.st === 'yellow' ? 'تمرين بالوقت' : S.answered ? 'تابع الدرس' : 'ابدأ الدرس'}</span>`); go.onclick = () => { FX.play('whoosh'); next.st ? dgOpen(next) : playLesson(next.d, next.l); };
     const more = h('button', 'ghost-btn', `<span>الوحدة</span>`); more.onclick = () => { FX.play('tap'); showDistrict(next.d); };
     pv.querySelector('.bb-act').append(go, more); bb.appendChild(pv);
   } else if (openUnits().length < units().length) {
@@ -1885,11 +1940,13 @@ function showCity() {
     st.onclick = () => { FX.play('tap'); showReport(); };
     w.appendChild(st);
   }
-  /* 3 · rail: the rest of the current unit */
-  if (next) {
+  /* 3 · the personal plan from the placement test */
+  if (dgOn()) { const pr = dgPlanRail(); if (pr) w.appendChild(pr); }
+  /* 3b · rail: the rest of the current unit */
+  if (next && !dgOn()) {
     const [sec, row] = rail(`تابع: ${next.d.name}`, `${ar(lessonsDone(next.d))} من ${ar(next.d.lessons.length)}`);
     next.d.lessons.forEach((l, i) => { if (i < next.i - 1) return;
-      const done = !!S.done[l.id], locked = i > next.i;
+      const done = cleared(l), locked = i > next.i;
       const c = h('button', 'tile' + (done ? ' done' : '') + (locked ? ' locked' : '') + (i === next.i ? ' now' : ''));
       c.style.setProperty('--pc', posterVar(next.d));
       c.innerHTML = `<span class="t-num">${ar(i + 1)}</span><span class="t-body"><small>${done ? 'أنهيته' : i === next.i ? 'التالي' : 'لاحقًا'}</small><b>${fmt(l.title)}</b></span>`;
@@ -1944,17 +2001,19 @@ function showDistrict(d) {
     return;
   }
   const done = lessonsDone(d), total = d.lessons.length;
-  const current = d.lessons.findIndex(l => !S.done[l.id]);
+  const current = d.lessons.findIndex(l => !cleared(l));
   const head = poster('billboard short', d, `<div class="bb-body"><small class="eyebrow">الوحدة ${ar(unitNo(d))} · ${ar(done)} من ${ar(total)} دروس</small><h1>${d.name}</h1><p>${d.desc}</p><div class="bb-act"></div></div>`);
   if (current >= 0) { const go = h('button', 'play-btn', `${ic('play', 18)}<span>${done ? 'تابع' : 'ابدأ'}: ${fmt(d.lessons[current].title)}</span>`); go.onclick = () => { FX.play('whoosh'); playLesson(d, d.lessons[current]); }; head.querySelector('.bb-act').appendChild(go); }
   const hg = h('div', 'gut'); hg.appendChild(head); wrap.appendChild(hg);
   const list = h('div', 'lessons2 gut');
   list.style.setProperty('--pc', posterVar(d));
   d.lessons.forEach((l, i) => {
-    const locked = current !== -1 && i > current, isDone = !!S.done[l.id];
-    const row = h('button', 'lrow' + (locked ? ' locked' : '') + (i === current ? ' current' : '') + (isDone ? ' done' : ''));
-    row.innerHTML = `<span class="num">${ar(i + 1)}</span><span class="lbody"><b>${fmt(l.title)}</b>${i === current ? '<small>التالي</small>' : ''}</span><span class="lstate">${isDone ? ic('check', 18) : ''}</span>`;
-    row.onclick = () => { if (locked) { FX.play('wrong'); toast('أكمل الدرس السابق أولًا'); } else { FX.play('whoosh'); playLesson(d, l); } };
+    const dst = S.done[l.id] ? null : dgState(l.id), planned = dst && dst !== 'green';
+    const locked = !dgOn() && current !== -1 && i > current, isDone = !!S.done[l.id], known = dst === 'green';
+    const row = h('button', 'lrow' + (locked ? ' locked' : '') + (i === current && !dgOn() ? ' current' : '') + (isDone ? ' done' : '') + (dst ? ' st-' + dst : ''));
+    const tag = known ? 'متقن · تتخطاه' : planned ? `في خطتك · ${DG_NAME[dst]}` : i === current && !dgOn() ? 'التالي' : '';
+    row.innerHTML = `<span class="num">${ar(i + 1)}</span><span class="lbody"><b>${fmt(l.title)}</b>${tag ? `<small>${tag}</small>` : ''}</span><span class="lstate">${isDone || known ? ic('check', 18) : planned ? `<i class="sdot ${dst}"></i>` : ''}</span>`;
+    row.onclick = () => { if (locked) { FX.play('wrong'); toast('أكمل الدرس السابق أولًا'); } else { FX.play('whoosh'); if (dst === 'yellow') dgPractice(d, l); else playLesson(d, l); } };
     list.appendChild(row);
   });
   const bossLocked = current !== -1;
@@ -1974,7 +2033,9 @@ function showDistrict(d) {
 }
 
 /* ---------- PLAYER (lessons, practice, unit test, exam) ---------- */
-function playLesson(d, lesson) { runPlayer({ d, mode: 'lesson', lesson, steps: lesson.steps.slice(), title: lesson.title }); }
+function playLesson(d, lesson, direct) {
+  if (!direct && !S.done[lesson.id] && dgState(lesson.id) === 'check') return dgGate(d, lesson);
+  runPlayer({ d, mode: 'lesson', lesson, steps: lesson.steps.slice(), title: lesson.title }); }
 function allQuestions(d, onlyDone) {
   const qs = [];
   for (const l of d.lessons || []) if (!onlyDone || S.done[l.id]) for (const s of l.steps) if (s.q) qs.push(s);
@@ -1993,7 +2054,8 @@ function playEndless(d) {
   runPlayer({ d, mode: 'endless', gen: ids, steps: [genFor(ids)], title: d ? 'تدريب مفتوح · ' + d.name : 'تدريب مفتوح · كل الوحدات' });
 }
 function playReview() { runPlayer({ d: null, mode: 'review', steps: dueMistakes().slice(0, 12), title: 'مراجعة الأخطاء' }); }
-function playPlacement() {
+function playPlacement() { return dgIntro(); }
+function playPlacementOld() {
   const steps = [];
   for (const id of Object.keys(WEIGHT)) { if (!GEN[id]) continue; const gi = shuffle(GEN[id].map((_, i) => i)); steps.push(genQuestion(id, 1, gi[0]), genQuestion(id, 2, gi[1])); }
   runPlayer({ d: null, mode: 'placement', steps: steps.filter(Boolean), title: 'اختبار تحديد المستوى' });
@@ -2074,6 +2136,10 @@ function runPlayer(P) {
     body.appendChild(c);
     if (false) { const pv = h('div', 'preview'); pv.innerHTML = `<small class="eyebrow">بنهاية الدرس ستحل سؤالًا مثل هذا</small><p class="qtext">${fmt(I.preview.q)}</p>${I.preview.a != null ? `<div class="cmp"><div><small>القيمة الأولى</small><span>${fmt(I.preview.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(I.preview.b)}</span></div></div>` : ''}<div class="pv-opts">${I.preview.choices.map((x, k) => `<span><i>${LETTERS[k]}</i>${fmt(x)}</span>`).join('')}</div>`; body.appendChild(pv); }
     setDock('', '', '', 'لنبدأ', next);
+    if (dgOn() && P.lesson && !S.done[P.lesson.id] && DIAG[P.lesson.id]) {
+      const sk = h('button', 'btn skipk', 'أعرف هذا؟ تخطَّه بسؤالين'); sk.onclick = () => { FX.play('tap'); dgSkipTest(P.d, P.lesson); };
+      dockIn.appendChild(sk);
+    }
   }
   /* theory first: the idea in plain words, an example, why it works, and where you will use it */
   function renderExplain(s) {
@@ -7247,8 +7313,927 @@ giveBuild('c5', 0, { h: 220, frames: [
   { say: '٣) الحساب سهل؟ ← <b>احسب</b> مباشرة', draw(K) { K.rect(20, 152, 140, 46, 's-hi-box', 14); K.label(90, 175, 'احسب'); K.arrow(140, 136, 120, 152, 0); } },
 ] });
 
+/* ================= skill map for the smart placement test =================
+   Every lesson is one skill. `pre` = the lessons it is built on (direct only).
+   `t` = seconds per question for this skill. `mixed` = a practice lesson, not a skill of its own:
+   its state follows the rest of its unit. */
+const SKILLS = {
+  n1: { pre: [] }, n2: { pre: ['n1'] }, n3: { pre: ['n1'] }, n4: { pre: ['n1'] }, n5: { pre: ['n4'] }, n6: { pre: ['n5'] },
+  n7: { pre: ['n6'] }, n8: { pre: ['n7'] }, n9: { pre: ['n1', 'n4', 'n5'], t: 75 },
+  f1: { pre: ['n1'] }, f2: { pre: ['f1', 'n7'] }, f3: { pre: ['f2'] }, f4: { pre: ['f2', 'n8'] }, f5: { pre: ['f1'] },
+  f6: { pre: ['f4', 'f5'] }, f7: { pre: ['n1', 'f1'] }, f8: { pre: ['f7', 'f2'] },
+  p1: { pre: ['n3'] }, p2: { pre: ['p1'] }, p3: { pre: ['p2', 'f5'] }, p4: { pre: ['p1'] }, p5: { pre: ['p4', 'n7'] },
+  p6: { pre: ['p1'] }, p7: { pre: ['p6'] }, p8: { pre: ['p4', 'f7'] },
+  r1: { pre: ['f8'] }, r2: { pre: ['r1'] }, r3: { pre: ['r2'], t: 90 }, r4: { pre: ['r3'], t: 90 }, r5: { pre: ['f5'], t: 75 },
+  r6: { pre: ['r5'], t: 90 }, r7: { pre: ['r5'], t: 90 }, r8: { pre: ['r7'], t: 75 },
+  m1: { pre: ['f5'], t: 90 }, m2: { pre: ['m1'], t: 90 }, m3: { pre: ['f4', 'm1'], t: 90 }, m4: { pre: ['n3'] }, m5: { pre: ['n5'] }, m6: { pre: ['m1'], t: 90 },
+  t1: { pre: ['n3'] }, t2: { pre: ['p2'] }, t3: { pre: ['p1'] }, t4: { pre: ['t1', 't2'] }, t5: { pre: ['t1'], t: 75 }, t6: { pre: ['t1'] },
+  a1: { pre: ['n3'] }, a2: { pre: ['a1'] }, a3: { pre: ['a2'], t: 90 }, a4: { pre: ['a3'], t: 90 }, a5: { pre: ['a3', 'n4'], t: 90 },
+  a6: { pre: ['a2', 'n2'], t: 75 }, a7: { pre: ['p6', 'a2'], t: 75 }, a8: { pre: ['a2'], t: 90 },
+  g1: { pre: [] }, g2: { pre: ['g1'] }, g3: { pre: ['g2'] }, g4: { pre: ['g3'], t: 75 }, g5: { pre: ['g3'], t: 75 }, g6: { pre: ['g1'] },
+  g7: { pre: ['g6', 'f5'], t: 75 }, g8: { pre: ['g5', 'p4'], t: 75 }, g9: { pre: ['g7'], t: 75 }, g10: { pre: ['g5', 'g7'], t: 75 },
+  g11: { pre: ['g7'], t: 75 }, g12: { pre: ['n2', 'g8'], t: 75 }, g13: { pre: ['g5', 'r7'], t: 90 },
+  d1: { pre: ['n3', 'f5'] }, d2: { pre: ['d1'] }, d3: { pre: ['n1'] }, d4: { pre: ['d3'] }, d5: { pre: ['r1', 'g2'], t: 75 },
+  d6: { pre: ['n1'] }, d7: { pre: ['n3'], t: 75 }, d8: { pre: ['f1', 'r1'], t: 75 },
+  c1: { pre: ['n2'], t: 45 }, c2: { pre: ['c1', 'p1', 'f3'], t: 45 }, c3: { pre: ['c1', 'a2'], t: 45 }, c4: { pre: ['c1', 'p6'], t: 45 }, c5: { mixed: true },
+};
+const SKILL_T = 60; // default seconds per question
+
+/* ================= diagnostic questions: only used by the placement test and the lesson checks =================
+   D(lesson, [[question, [right, wrong1, wrong2, wrong3], why, [what wrong1 means, what wrong2 means, ...]], ...])
+   The "what it means" text names the exact slip, so the report can say *why* the student missed. */
+const DIAG = {};
+function D(id, list) {
+  DIAG[id] = list.map(x => {
+    const o = Array.isArray(x) ? { q: x[0], choices: x[1].map(String), answer: 0, why: x[2], m: x[3] || [] } : Object.assign({ answer: 0, m: [] }, x);
+    o.miss = {}; let k = 0;
+    o.choices.forEach((c, i) => { if (i !== o.answer) { if (o.m[k]) o.miss[c] = o.m[k]; k++; } });
+    delete o.m; return o;
+  });
+}
+
+/* ================= diagnostic questions · numbers + fractions ================= */
+D('n1', [
+  ['ما قيمة الرقم ٧ في العدد `47215`؟', [7000, 700, 70000, 7], 'الرقم ٧ في خانة الآلاف: ٧٠٠٠.', ['عدّ الخانات خطأ: أخذ المئات بدل الآلاف', 'زاد خانة في العدّ', 'أخذ الرقم نفسه لا قيمته في خانته']],
+  ['عدد فيه ٣ آلاف و ٥ عشرات و ٢ آحاد. ما هو؟', [3052, 352, 3520, 30052], 'لا مئات، فنضع صفرًا مكانها: ٣٠٥٢.', ['نسي الصفر في الخانة الفارغة', 'وضع الأرقام في خانات خاطئة', 'زاد صفرًا لا داعي له']],
+  ['قرّب العدد `6482` لأقرب مئة.', [6500, 6400, 6480, 7000], 'رقم العشرات ٨ (٥ أو أكثر) فنرفع المئات: ٦٥٠٠.', ['قرّب إلى الأسفل دائمًا', 'قرّب لأقرب عشرة لا مئة', 'قرّب لأقرب ألف لا مئة']],
+  ['كم عشرة في العدد `3400`؟', [340, 34, 3400, 40], 'نقسم على ١٠: `3400 ÷ 10 = 340`.', ['عدّ المئات بدل العشرات', 'عدّ الآحاد بدل العشرات', 'أخذ رقم خانة العشرات فقط']],
+]);
+D('n2', [
+  ['احسب: `-7 + 3`', [-4, -10, 4, 10], 'من −٧ نتحرك ٣ إلى اليمين: −٤.', ['جمع القيمتين وأبقى الإشارة السالبة', 'أهمل إشارة السالب في الناتج', 'أهمل الإشارات كلها']],
+  ['احسب: `-5 - (-8)`', [3, -13, -3, 13], 'طرح السالب = جمع: `-5 + 8 = 3`.', ['عامل طرح السالب كأنه طرح موجب', 'أخطأ في إشارة الناتج', 'جمع القيم ونسي الإشارات']],
+  ['أي الأعداد التالية هو الأصغر؟', [-9, -2, 0, 3], 'كلما ابتعد السالب عن الصفر صغر: −٩ هو الأصغر.', ['ظن أن السالب الأقرب للصفر هو الأصغر', 'ظن أن الصفر أصغر عدد', 'خلط بين الأكبر والأصغر']],
+  ['احسب: `(-4) × (-6)`', [24, -24, -10, 10], 'سالب × سالب = موجب: ٢٤.', ['ظن أن سالب × سالب = سالب', 'جمع العددين بدل ضربهما', 'جمع القيم دون إشارات']],
+]);
+D('n3', [
+  ['احسب: `8 + 4 × 3`', [20, 36, 15, 96], 'الضرب أولًا: `4 × 3 = 12`، ثم `8 + 12 = 20`.', ['جمع قبل الضرب', 'جمع كل الأعداد', 'ضرب كل الأعداد']],
+  ['احسب: `20 − 12 ÷ 4 × 2`', [14, 4, 18.5, 1], 'القسمة والضرب بالترتيب: `12 ÷ 4 = 3`، `3 × 2 = 6`، `20 − 6 = 14`.', ['طرح أولًا لأنه جاء أولًا', 'ضرب قبل القسمة دائمًا', 'طرح أولًا ثم ضرب قبل القسمة']],
+  ['احسب: `(6 + 2)² − 10`', [54, 30, -2, 6], 'القوس أولًا: `8² = 64`، ثم `64 − 10 = 54`.', ['وزّع التربيع على الجمع: `6² + 2²`', 'نسي التربيع', 'ضاعف بدل أن يربّع']],
+  ['احسب: `3 × (5 − 2)²`', [27, 81, 18, 73], 'القوس `3`، ثم التربيع `9`، ثم `3 × 9 = 27`.', ['ضرب قبل التربيع', 'ضاعف بدل أن يربّع', 'تجاهل الأقواس']],
+]);
+D('n4', [
+  ['إذا كان س عددًا فرديًا، فأي التالي <b>زوجي</b> دائمًا؟', ['`س + 1`', '`س + 2`', '`2س + 1`', '`3س`'], 'فردي + فردي = زوجي.', ['ظن أن فردي + زوجي = زوجي', 'لم ينتبه أن ٢س زوجي و +١ يجعله فرديًا', 'ظن أن فردي × فردي = زوجي']],
+  ['ناتج جمع ثلاثة أعداد فردية يكون:', ['فرديًا دائمًا', 'زوجيًا دائمًا', 'زوجيًا أو فرديًا حسب الأعداد', 'من مضاعفات ٣ دائمًا'], 'فردي + فردي = زوجي، ثم زوجي + فردي = فردي.', ['عمّم قاعدة جمع عددين فرديين', 'لم يلاحظ أن الناتج ثابت', 'خلط بين الزوجية والقسمة على ٣']],
+  ['إذا كان أ زوجيًا و ب فرديًا، فأي التالي <b>فردي</b>؟', ['`أ + ب`', '`أ × ب`', '`2ب`', '`أ + 2`'], 'زوجي + فردي = فردي.', ['نسي أن الزوجي × أي عدد = زوجي', 'نسي أن ضعف أي عدد زوجي', 'نسي أن زوجي + زوجي = زوجي']],
+  ['كم عددًا زوجيًا يقع بين ١١ و ٣١؟', [10, 20, 11, 9], 'من ١٢ إلى ٣٠: `(30 − 12) ÷ 2 + 1 = 10`.', ['عدّ كل الأعداد لا الزوجية فقط', 'أضاف عددًا خارج الحدود', 'نسي أحد الطرفين']],
+]);
+D('n5', [
+  ['أي الأعداد التالية يقبل القسمة على ٣؟', [471, 472, 473, 485], 'مجموع أرقام ٤٧١ = ١٢، وهو من مضاعفات ٣.', ['لم يجمع الأرقام (مجموعها ١٣)', 'لم يجمع الأرقام (مجموعها ١٤)', 'لم يجمع الأرقام (مجموعها ١٧)']],
+  ['أي الأعداد التالية يقبل القسمة على ٤؟', [3716, 3714, 3722, 3726], 'آخر رقمين ١٦ يقبلان القسمة على ٤.', ['اكتفى بأن العدد زوجي', 'اكتفى بأن العدد زوجي', 'اكتفى بأن العدد زوجي']],
+  ['ما الرقم الذي يوضع مكان ■ ليقبل العدد `5■2` القسمة على ٩؟', [2, 5, 9, 0], '`5 + 2 + 2 = 9`.', ['طبّق قاعدة ٣ بدل قاعدة ٩', 'ظن أن الرقم نفسه يجب أن يكون ٩', 'ظن أن الصفر يصلح دائمًا']],
+  ['أي الأعداد التالية يقبل القسمة على ٦؟', [1254, 1256, 1251, 1255], 'زوجي ومجموع أرقامه ١٢ (يقبل ٣) ← يقبل ٦.', ['زوجي لكنه لا يقبل القسمة على ٣', 'يقبل ٣ لكنه فردي', 'اختار عددًا يقبل القسمة على ٥']],
+]);
+D('n6', [
+  ['أي الأعداد التالية أولي؟', [29, 27, 39, 51], '٢٩ لا يقبل القسمة إلا على ١ ونفسه.', ['لم يلاحظ أن `27 = 3 × 9`', 'لم يلاحظ أن `39 = 3 × 13`', 'وقع في فخ ٥١ = ٣ × ١٧']],
+  ['كم عددًا أوليًا يقع بين ١٠ و ٣٠؟', [6, 5, 7, 10], '١١، ١٣، ١٧، ١٩، ٢٣، ٢٩.', ['نسي عددًا أوليًا', 'عدّ عددًا فرديًا غير أولي مثل ٢١ أو ٢٧', 'عدّ كل الأعداد الفردية']],
+  ['أي العبارات التالية صحيحة؟', ['٢ هو العدد الأولي الزوجي الوحيد', 'العدد ١ عدد أولي', 'كل عدد فردي أولي', 'العدد ٩ أولي'], 'كل زوجي غير ٢ يقبل القسمة على ٢.', ['ظن أن ١ أولي', 'خلط بين الفردي والأولي', 'نسي أن `9 = 3 × 3`']],
+  ['ما مجموع العوامل الأولية <b>المختلفة</b> للعدد ٦٠؟', [10, 12, 5, 168], '`60 = 2 × 2 × 3 × 5` ← العوامل المختلفة ٢، ٣، ٥.', ['كرّر العامل المتكرر', 'أخذ أكبر عامل فقط', 'جمع كل القواسم لا الأولية فقط']],
+]);
+D('n7', [
+  ['كم قاسمًا (عاملًا) للعدد ٣٦؟', [9, 10, 8, 6], '١، ٢، ٣، ٤، ٦، ٩، ١٢، ١٨، ٣٦.', ['عدّ ٦ مرتين (٦ × ٦)', 'نسي ١ أو ٣٦', 'عدّ العوامل الأولية فقط']],
+  ['أي الأعداد التالية من مضاعفات ٧؟', [91, 81, 97, 57], '`91 = 7 × 13`.', ['`81 = 9 × 9`', '٩٧ عدد أولي', 'وقع في فخ ٥٧ = ٣ × ١٩']],
+  ['ما أصغر عدد نضرب فيه ١٢ ليصبح الناتج مربعًا كاملًا؟', [3, 2, 4, 12], '`12 = 4 × 3`، نحتاج ٣ أخرى: `36 = 6²`.', ['`24` ليس مربعًا', '`48` ليس مربعًا', 'يصح لكنه ليس الأصغر']],
+  ['عدد يقبل القسمة على ٦ وعلى ١٠. أي التالي يقسمه بالتأكيد؟', [30, 60, 16, 20], 'المضاعف المشترك الأصغر لـ ٦ و ١٠ هو ٣٠.', ['ضرب العددين بدل المضاعف المشترك الأصغر', 'جمع العددين', 'لا يلزم: ٣٠ لا يقبل القسمة على ٢٠']],
+]);
+D('n8', [
+  ['ما القاسم المشترك الأكبر للعددين ٢٤ و ٣٦؟', [12, 6, 72, 4], '١٢ أكبر عدد يقسم الاثنين.', ['قاسم مشترك لكنه ليس الأكبر', 'حسب المضاعف المشترك الأصغر بدلًا منه', 'قاسم مشترك لكنه ليس الأكبر']],
+  ['ما المضاعف المشترك الأصغر للعددين ٨ و ١٢؟', [24, 96, 4, 48], '٢٤ أول عدد يقبل القسمة على الاثنين.', ['ضرب العددين', 'حسب القاسم المشترك الأكبر بدلًا منه', 'مضاعف مشترك لكنه ليس الأصغر']],
+  ['جرس يرنّ كل ٦ دقائق، وآخر كل ٩ دقائق. رنّا معًا الساعة ٨:٠٠. متى يرنّان معًا مرة أخرى؟', ['٨:١٨', '٨:٥٤', '٨:١٥', '٨:٠٣'], 'المضاعف المشترك الأصغر لـ ٦ و ٩ = ١٨.', ['ضرب ٦ × ٩', 'جمع ٦ + ٩', 'استخدم القاسم المشترك بدل المضاعف']],
+  ['عند فهد ١٨ قلمًا أحمر و ٢٤ قلمًا أزرق، ويريد توزيعها على أكبر عدد من العلب المتماثلة دون أن يبقى شيء. كم علبة؟', [6, 72, 3, 42], 'القاسم المشترك الأكبر لـ ١٨ و ٢٤ = ٦.', ['حسب المضاعف المشترك بدل القاسم', 'قاسم مشترك لكنه ليس الأكبر', 'جمع العددين']],
+]);
+D('n9', [
+  ['عدد من رقمين، مجموع رقميه ٩، ورقم عشراته ضعف رقم آحاده. ما العدد؟', [63, 36, 81, 42], 'الآحاد ٣ والعشرات ٦: `6 + 3 = 9`.', ['عكس الخانتين', 'تحقق من المجموع فقط', 'تحقق من شرط الضعف فقط']],
+  ['كم عددًا من رقمين رقم آحاده ٧؟', [9, 10, 8, 90], '١٧، ٢٧، … ، ٩٧.', ['عدّ ٠٧ كأنه من رقمين', 'نسي ١٧ أو ٩٧', 'عدّ كل الأعداد من رقمين']],
+  ['عدد من رقمين مجموع رقميه ٥، وإذا عكسنا رقميه زاد ٢٧. ما العدد؟', [14, 41, 23, 32], 'العكس يزيد `9 × (4 − 1) = 27`.', ['اختار العدد بعد العكس', 'مجموعه ٥ لكن الزيادة ٩ فقط', 'عكسه يصغر ولا يكبر']],
+  ['ما أكبر عدد من ثلاثة أرقام <b>مختلفة</b> مجموع أرقامه ١٠؟', [910, 901, 811, 730], 'نبدأ بأكبر رقم ممكن ٩، ثم ١ ثم ٠.', ['رتّب الرقمين الأخيرين ترتيبًا أصغر', 'كرّر رقمًا والأرقام يجب أن تختلف', 'لم يبدأ بأكبر رقم ممكن']],
+]);
+
+D('f1', [
+  ['في فصل ٣٢ طالبًا، ربعهم يلعبون الكرة. كم طالبًا يلعب الكرة؟', [8, 4, 28, 128], 'الربع = القسمة على ٤: `32 ÷ 4 = 8`.', ['قسم على ٨ بدل ٤', 'حسب الباقي لا الربع', 'ضرب بدل أن يقسم']],
+  ['أي الكسور التالية يساوي النصف؟', ['[[7/14]]', '[[7/12]]', '[[5/8]]', '[[2/5]]'], 'البسط نصف المقام: ٧ نصف ١٤.', ['قريب من النصف لكنه أكبر', 'قريب من النصف لكنه أكبر', 'قريب من النصف لكنه أصغر']],
+  ['قُسّم شريط إلى ٦ أجزاء متساوية، ولُوّن منها ٤. ما الكسر <b>غير</b> الملوّن؟', ['[[1/3]]', '[[2/3]]', '[[1/6]]', '[[4/6]]'], 'غير الملوّن ٢ من ٦ = [[1/3]].', ['أجاب عن الملوّن', 'عدّ جزءًا واحدًا فقط', 'أجاب عن الملوّن دون تبسيط']],
+  ['ثلثا عدد يساويان ٢٤. ما العدد؟', [36, 16, 48, 72], 'الثلث = ١٢، فالعدد = `3 × 12 = 36`.', ['حسب ثلثي ٢٤ بدل العكس', 'ضاعف ٢٤', 'ضرب ٢٤ في ٣']],
+]);
+D('f2', [
+  ['ما أبسط صورة للكسر [[45/60]]؟', ['[[3/4]]', '[[9/12]]', '[[15/20]]', '[[4/5]]'], 'القاسم المشترك الأكبر ١٥: [[45/60]] = [[3/4]].', ['مكافئ لكنه غير مبسّط', 'مكافئ لكنه غير مبسّط', 'قسم البسط والمقام على عددين مختلفين']],
+  ['أي الكسور التالية <b>لا</b> يكافئ [[3/5]]؟', ['[[9/16]]', '[[6/10]]', '[[12/20]]', '[[15/25]]'], '[[9/16]] = ٠٫٥٦٢٥، أما الباقي فكلها ٠٫٦.', ['[[6/10]] = [[3/5]]', '[[12/20]] = [[3/5]]', '[[15/25]] = [[3/5]]']],
+  ['إذا كان [[4/7]] = [[س/42]]، فما قيمة س؟', [24, 39, 28, 6], '`42 ÷ 7 = 6`، فنضرب البسط في ٦: `4 × 6 = 24`.', ['جمع الفرق ٣٥ بدل الضرب', 'ضرب ٤ في ٧', 'أخذ المضاعف نفسه لا البسط']],
+  ['أي الكسور التالية مكتوب في أبسط صورة؟', ['[[14/15]]', '[[14/21]]', '[[15/21]]', '[[12/15]]'], '١٤ و ١٥ لا قاسم مشترك لهما غير ١.', ['يقبلان القسمة على ٧', 'يقبلان القسمة على ٣', 'يقبلان القسمة على ٣']],
+]);
+D('f3', [
+  ['أي الكسور التالية هو الأكبر؟', ['[[5/6]]', '[[4/5]]', '[[7/9]]', '[[3/4]]'], 'كلها ينقصها جزء واحد، وأصغر جزء ناقص [[1/6]].', ['قريب لكن ينقصه [[1/5]]', 'ينقصه [[2/9]]', 'ينقصه [[1/4]]']],
+  ['رتّب تصاعديًا: [[1/2]]، [[2/5]]، [[3/7]]', ['[[2/5]]، [[3/7]]، [[1/2]]', '[[1/2]]، [[2/5]]، [[3/7]]', '[[3/7]]، [[2/5]]، [[1/2]]', '[[1/2]]، [[3/7]]، [[2/5]]'], '٠٫٤ ثم ٠٫٤٣ ثم ٠٫٥.', ['رتّب حسب المقام', 'قارن البسط فقط', 'رتّب تنازليًا']],
+  ['أي الكسور التالية <b>أصغر</b> من [[1/3]]؟', ['[[3/10]]', '[[2/5]]', '[[4/11]]', '[[5/14]]'], '[[3/10]] = ٠٫٣ أصغر من ٠٫٣٣.', ['[[2/5]] = ٠٫٤', '[[4/11]] ≈ ٠٫٣٦', '[[5/14]] ≈ ٠٫٣٦']],
+  ['أكلت سارة [[3/8]] كعكة، وأكلت نورة [[2/5]] كعكة مماثلة. من أكلت أكثر؟', ['نورة', 'سارة', 'متساويتان', 'لا يمكن المعرفة'], 'بالضرب التبادلي: `2 × 8 = 16` أكبر من `3 × 5 = 15`.', ['قارن البسطين: ٣ أكبر من ٢', 'ظن أن الكسرين متقاربان فهما متساويان', 'ظن أن المقامين المختلفين يمنعان المقارنة']],
+]);
+D('f4', [
+  ['احسب: [[1/3]] + [[1/4]]', ['[[7/12]]', '[[2/7]]', '[[1/7]]', '[[2/12]]'], 'المقام المشترك ١٢: [[4/12]] + [[3/12]] = [[7/12]].', ['جمع البسطين والمقامين', 'جمع المقامين فقط', 'جمع البسطين على مقام مشترك دون توسيع']],
+  ['احسب: [[5/6]] − [[1/4]]', ['[[7/12]]', '[[4/2]]', '[[1/2]]', '[[4/24]]'], '[[10/12]] − [[3/12]] = [[7/12]].', ['طرح البسطين والمقامين', 'طرح البسطين على أحد المقامين', 'ضرب المقامين ثم طرح البسطين دون توسيع']],
+  ['قطع خالد [[2/5]] الطريق صباحًا و [[1/3]] مساءً. ما الجزء الباقي؟', ['[[4/15]]', '[[11/15]]', '[[3/8]]', '[[1/15]]'], 'المقطوع [[11/15]]، الباقي `1 − [[11/15]] = [[4/15]]`.', ['أجاب عن المقطوع لا الباقي', 'جمع البسطين والمقامين', 'طرح الكسرين بدل جمعهما']],
+  ['احسب: `2` − [[3/8]]', ['[[13/8]]', '[[1/8]]', '[[5/8]]', '[[11/8]]'], '`2 = [[16/8]]`، ثم `[[16/8]] − [[3/8]] = [[13/8]]`.', ['طرح البسط من العدد مباشرة', 'اعتبر ٢ = [[8/8]]', 'أخطأ في الطرح']],
+]);
+D('f5', [
+  ['احسب: [[2/3]] × [[9/10]]', ['[[3/5]]', '[[11/13]]', '[[20/27]]', '[[6/5]]'], 'بسط × بسط ومقام × مقام: [[18/30]] = [[3/5]].', ['جمع البسطين والمقامين بدل الضرب', 'قلب الكسر الثاني كأنها قسمة', 'أخطأ في التبسيط']],
+  ['احسب: `6 ÷ [[2/3]]`', [9, 4, 3, 18], 'القسمة على كسر = الضرب في مقلوبه: `6 × [[3/2]] = 9`.', ['ضرب في الكسر بدل مقلوبه', 'قسم ٦ على ٢ فقط', 'ضرب ٦ في ٣ ونسي ٢']],
+  ['احسب: [[3/4]] ÷ [[3/8]]', [2, '[[9/32]]', '[[1/2]]', '[[3/8]]'], '`[[3/4]] × [[8/3]] = 2`.', ['ضرب بدل أن يقسم', 'قلب الكسر الأول بدل الثاني', 'قسم البسطين والمقامين خطأ']],
+  ['كم ربعًا في [[3 1/2]]؟', [14, 7, 12, 4], '`3.5 ÷ [[1/4]] = 3.5 × 4 = 14`.', ['قسم على ٢ بدل الضرب في ٤', 'نسي النصف', 'عدّ الأعداد الصحيحة فقط']],
+]);
+D('f6', [
+  ['اكتب [[2 3/5]] في صورة كسر.', ['[[13/5]]', '[[6/5]]', '[[5/5]]', '[[23/5]]'], '`2 × 5 + 3 = 13`.', ['ضرب ٢ في ٣', 'جمع ٢ و ٣', 'كتب الرقمين متجاورين']],
+  ['احسب: [[1 1/2]] + [[2 2/3]]', ['[[4 1/6]]', '[[3 3/5]]', '[[3 1/6]]', '[[4 3/5]]'], 'الكسور: [[1/2]] + [[2/3]] = [[7/6]] = [[1 1/6]]، والأعداد الصحيحة: `1 + 2 = 3`، فالمجموع [[4 1/6]].', ['جمع البسطين والمقامين', 'نسي أن [[7/6]] أكبر من ١', 'جمع الكسور خطأ']],
+  ['احسب: [[3 1/4]] − [[1 3/4]]', ['[[1 1/2]]', '[[2 1/2]]', '[[1 3/4]]', '[[1/2]]'], 'نستلف واحدًا: [[2 5/4]] − [[1 3/4]] = [[1 2/4]].', ['طرح الكسرين بالعكس ولم يستلف', 'استلف لكنه أخطأ في الطرح', 'نسي الأعداد الصحيحة']],
+  ['احسب: [[1 1/2]] × [[1 1/3]]', [2, '[[1 1/6]]', '[[2 1/6]]', '[[1 2/5]]'], '[[3/2]] × [[4/3]] = [[12/6]] = `2`.', ['ضرب الكسرين فقط', 'ضرب الصحيحين والكسرين كلًّا وحده', 'جمع بدل الضرب']],
+]);
+D('f7', [
+  ['احسب: `0.4 × 0.3`', [0.12, 1.2, 0.012, 0.7], '`4 × 3 = 12`، ومنزلتان عشريتان: ٠٫١٢.', ['أخطأ في عدّ المنازل العشرية', 'زاد منزلة عشرية', 'جمع بدل الضرب']],
+  ['احسب: `3.6 ÷ 0.4`', [9, 0.9, 90, 1.44], 'نضرب الاثنين في ١٠: `36 ÷ 4 = 9`.', ['حرّك الفاصلة في عدد واحد فقط', 'حرّك الفاصلة خطوتين', 'ضرب بدل أن يقسم']],
+  ['أي الأعداد التالية هو الأكبر؟', [0.5, 0.45, 0.405, 0.099], '٠٫٥ = ٠٫٥٠٠ وهو الأكبر.', ['ظن أن الأرقام الأكثر تعني عددًا أكبر', 'ظن أن الأرقام الأكثر تعني عددًا أكبر', 'ظن أن الأرقام الأكثر تعني عددًا أكبر']],
+  ['احسب: `5 − 1.25`', [3.75, 4.25, 3.25, 4.75], '`5.00 − 1.25 = 3.75`.', ['طرح الجزأين كلًّا وحده خطأ', 'أخطأ في الاستلاف', 'أخطأ في الطرح']],
+]);
+D('f8', [
+  ['حوّل [[3/8]] إلى نسبة مئوية.', ['٣٧٫٥٪', '٣٨٪', '٣٫٨٪', '٢٦٫٧٪'], '`3 ÷ 8 = 0.375 = 37.5٪`.', ['قرّب خطأ', 'أخطأ بمنزلة عشرية', 'قسم المقام على البسط']],
+  ['أي التالي يساوي ٠٫٠٥؟', ['[[1/20]]', '[[1/5]]', '[[5/10]]', '٥٠٪'], '`0.05 = [[5/100]] = [[1/20]]`.', ['قرأ ٠٫٠٥ كأنها ٠٫٢', 'قرأ ٠٫٠٥ كأنها ٠٫٥', 'قرأ ٠٫٠٥ كأنها ٠٫٥']],
+  ['حوّل ١٢٥٪ إلى كسر في أبسط صورة.', ['[[5/4]]', '[[1/4]]', '[[125/10]]', '[[4/5]]'], '[[125/100]] = [[5/4]].', ['نسي المئة الكاملة', 'قسم على ١٠ بدل ١٠٠', 'قلب الكسر']],
+  ['رتّب تصاعديًا: [[2/3]]، ٠٫٦، ٦٥٪', ['٠٫٦، ٦٥٪، [[2/3]]', '[[2/3]]، ٠٫٦، ٦٥٪', '٦٥٪، ٠٫٦، [[2/3]]', '٠٫٦، [[2/3]]، ٦٥٪'], '٠٫٦٠ ثم ٠٫٦٥ ثم ٠٫٦٧.', ['رتّب بحسب شكل الكتابة', 'ظن أن ٦٥ أكبر من الكل', 'ظن [[2/3]] = ٠٫٦٣']],
+]);
+
+/* ================= diagnostic questions · powers + ratio + motion ================= */
+D('p1', [
+  ['احسب: `13²`', [169, 26, 196, 2197], '`13 × 13 = 169`.', ['ضرب في ٢ بدل التربيع', 'خلط بين ١٣² و ١٤²', 'حسب المكعب بدل المربع']],
+  ['احسب: `(-3)³`', [-27, 27, -9, 9], '`(-3) × (-3) × (-3) = -27`: الأس الفردي يحفظ السالب.', ['نسي أن الأس الفردي يحفظ الإشارة السالبة', 'ضرب في ٣ بدل الرفع للقوة', 'ضرب في ٣ وأهمل الإشارة']],
+  ['أي الأعداد التالية مكعب كامل؟', [125, 100, 81, 36], '`125 = 5³`.', ['١٠٠ مربع لا مكعب', '`81 = 3⁴` ليس مكعبًا', '٣٦ مربع لا مكعب']],
+  ['احسب: `0.3²`', [0.09, 0.9, 0.6, 0.009], '`0.3 × 0.3 = 0.09` (منزلتان عشريتان).', ['أخطأ في عدّ المنازل العشرية', 'ضاعف بدل التربيع', 'زاد منزلة عشرية']],
+]);
+D('p2', [
+  ['بسّط: `2³ × 2⁴`', ['`2⁷`', '`2¹²`', '`4⁷`', '`4¹²`'], 'عند ضرب أساسين متساويين نجمع الأسس.', ['ضرب الأسس بدل جمعها', 'ضرب الأساسين', 'ضرب الأساسين والأسس']],
+  ['بسّط: `(3²)³`', ['`3⁶`', '`3⁵`', '`3⁸`', '`9⁵`'], 'قوة القوة: نضرب الأسين.', ['جمع الأسين بدل ضربهما', 'رفع الأس لقوة', 'ضرب الأساس وجمع الأسين']],
+  ['بسّط: `5⁸ ÷ 5²`', ['`5⁶`', '`5⁴`', '`1⁶`', '`5¹⁰`'], 'عند القسمة نطرح الأسس.', ['قسم الأسين بدل طرحهما', 'قسم الأساسين', 'جمع الأسين']],
+  ['بسّط: `2¹⁰ + 2¹⁰`', ['`2¹¹`', '`2²⁰`', '`4¹⁰`', '`4²⁰`'], '`2 × 2¹⁰ = 2¹¹`.', ['جمع الأسين عند الجمع (القانون للضرب فقط)', 'جمع الأساسين', 'جمع الأساسين والأسين']],
+]);
+D('p3', [
+  ['احسب: `7⁰`', [1, 0, 7, -7], 'أي عدد (غير الصفر) أسه صفر = ١.', ['ظن أن الأس صفر يعطي صفرًا', 'ظن أن الأس صفر لا يغيّر العدد', 'خلط بين الأس صفر والسالب']],
+  ['احسب: `2⁻³`', ['[[1/8]]', '−٨', '−٦', '[[1/6]]'], 'الأس السالب = مقلوب: [[1/2³]] = [[1/8]].', ['ظن أن الأس السالب يجعل العدد سالبًا', 'ضرب الأساس في الأس', 'ضرب الأساس في الأس ثم قلب']],
+  ['احسب: `(1/3)⁻²`', [9, '[[1/9]]', -9, 6], 'نقلب الكسر ونربّع: `3² = 9`.', ['أهمل إشارة الأس', 'ظن أن الأس السالب يجعل الناتج سالبًا', 'ضرب في ٢ بدل التربيع']],
+  ['احسب: `5⁻¹ × 5³`', [25, 125, '[[1/125]]', -25], 'نجمع الأسين: `5²= 25`.', ['أهمل الأس السالب', 'ضرب الأسين بدل جمعهما', 'ظن أن الأس السالب يجعل الناتج سالبًا']],
+]);
+D('p4', [
+  ['احسب: `√144`', [12, 72, 14, 22], '`12 × 12 = 144`.', ['قسم على ٢ بدل الجذر', 'خلط مع `√196`', 'خمّن']],
+  ['بين أي عددين صحيحين متتاليين يقع `√50`؟', ['٧ و ٨', '٦ و ٧', '٢٤ و ٢٦', '٤٩ و ٥١'], '`7² = 49` و `8² = 64`.', ['أخطأ في المربعات', 'قسم على ٢ بدل الجذر', 'نسي الجذر']],
+  ['احسب: `√(9 + 16)`', [5, 7, 25, 12.5], 'نجمع أولًا: `√25 = 5`.', ['أخذ جذر كل عدد وحده: ٣ + ٤', 'نسي الجذر', 'قسم على ٢ بدل الجذر']],
+  ['احسب: `√0.04`', [0.2, 0.02, 0.4, 2], '`0.2 × 0.2 = 0.04`.', ['أخطأ في المنازل العشرية', 'خلط بين ٠٫٠٤ و ٠٫١٦', 'أهمل الفاصلة']],
+]);
+D('p5', [
+  ['بسّط: `√72`', ['`6√2`', '`2√6`', '`36√2`', '`4√3`'], '`√72 = √36 × √2 = 6√2`.', ['أخطأ في التحليل', 'أخرج ٣٦ دون أخذ جذرها', 'أخطأ في التحليل']],
+  ['احسب: `√12 + √27`', ['`5√3`', '`√39`', '`6√3`', '`5√6`'], '`2√3 + 3√3 = 5√3`.', ['جمع ما تحت الجذر', 'ضرب المعاملين بدل جمعهما', 'جمع ما تحت الجذر بعد التبسيط']],
+  ['احسب: `√8 × √2`', [4, '`√10`', 16, 8], '`√16 = 4`.', ['جمع ما تحت الجذر بدل الضرب', 'نسي الجذر', 'ضرب ثم قسم على ٢']],
+  ['احسب: `√50 ÷ √2`', [5, 25, '`√48`', 10], '`√(50 ÷ 2) = √25 = 5`.', ['نسي الجذر بعد القسمة', 'طرح بدل القسمة', 'قسم ٥٠ على ٥']],
+]);
+D('p6', [
+  ['احسب: `51² − 49²`', [200, 4, 2, 100], '`(51 − 49)(51 + 49) = 2 × 100 = 200`.', ['ربّع الفرق بين العددين', 'أخذ الفرق فقط', 'أخذ المجموع فقط']],
+  ['إذا كان `س + ص = 10` و `س − ص = 4`، فما قيمة `س² − ص²`؟', [40, 14, 6, 84], '`(س + ص)(س − ص) = 10 × 4 = 40`.', ['جمع بدل الضرب', 'طرح بدل الضرب', 'ربّع المعطيات وطرحها']],
+  ['حلّل: `س² − 49`', ['`(س − 7)(س + 7)`', '`(س − 7)²`', '`(س + 7)²`', '`(س − 49)(س + 49)`'], 'فرق بين مربعين: `س² − 7²`.', ['ظنه مربعًا كاملًا', 'ظنه مربعًا كاملًا', 'لم يأخذ الجذر']],
+  ['احسب: `99 × 101`', [9999, 10001, 10000, 9899], '`(100 − 1)(100 + 1) = 10000 − 1`.', ['أضاف ١ بدل طرحه', 'نسي طرح ١', 'أخطأ في الحساب']],
+]);
+D('p7', [
+  ['احسب: `25 × 48`', [1200, 120, 1250, 12000], '`25 × 4 = 100`، و `48 = 4 × 12` ← `1200`.', ['نسي صفرًا', 'قرّب ٤٨ إلى ٥٠ ولم يصحح', 'زاد صفرًا']],
+  ['احسب: `998 × 7`', [6986, 7000, 6993, 6976], '`1000 × 7 − 2 × 7 = 7000 − 14`.', ['قرّب ونسي الطرح', 'طرح ٧ بدل ١٤', 'أخطأ في الطرح']],
+  ['احسب: `15²`', [225, 125, 215, 250], '`1 × 2 = 2` ثم نكتب ٢٥: ٢٢٥.', ['ضرب ١ × ١ بدل ١ × ٢', 'أخطأ في الخدعة', 'ضاعف بدل التربيع']],
+  ['احسب: `0.5 × 864`', [432, 4320, 43.2, 1728], 'الضرب في ٠٫٥ = القسمة على ٢.', ['ضرب في ٥ ونسي الفاصلة', 'أخطأ في الفاصلة', 'ضرب في ٢ بدل القسمة']],
+]);
+D('p8', [
+  ['أي القيم التالية أقرب إلى `49 × 21`؟', [1000, 100, 10000, 700], '`50 × 20 = 1000`.', ['أخطأ في عدد الأصفار', 'أخطأ في عدد الأصفار', 'قرّب خطأ']],
+  ['أي الأعداد التالية أقرب إلى `√80`؟', [9, 40, 8, 10], '`9² = 81` قريب جدًا من ٨٠.', ['قسم على ٢ بدل الجذر', '`8² = 64` أبعد من ٨١', '`10² = 100` أبعد']],
+  ['أي القيم التالية أقرب إلى `3.9 × 5.1`؟', [20, 15, 25, 200], '`4 × 5 = 20`.', ['قرّب العددين إلى الأسفل كثيرًا', 'قرّب العددين إلى الأعلى كثيرًا', 'أخطأ في الفاصلة']],
+  ['أي القيم التالية أقرب إلى `0.48 × 602`؟', [300, 3000, 30, 250], '`0.5 × 600 = 300`.', ['أخطأ في الفاصلة', 'أخطأ في الفاصلة', 'قرّب خطأ']],
+]);
+
+D('r1', [
+  ['كم يساوي ٢٥٪ من ٨٠؟', [20, 25, 32, 55], 'الربع: `80 ÷ 4 = 20`.', ['أخذ النسبة نفسها', 'حسب ٤٠٪ بدل ٢٥٪', 'طرح ٢٥ من ٨٠']],
+  ['ما نسبة ١٥ من ٦٠؟', ['٢٥٪', '٤٠٠٪', '١٥٪', '٤٥٪'], '`15 ÷ 60 = 0.25`.', ['قسم الكل على الجزء', 'أخذ الجزء نفسه', 'طرح الجزء من الكل']],
+  ['العدد ٠٫٧ يساوي:', ['٧٠٪', '٧٪', '٠٫٧٪', '٧٠٠٪'], 'نضرب في ١٠٠.', ['أخطأ بمنزلة عشرية', 'نسي الضرب في ١٠٠', 'ضرب في ١٠٠٠']],
+  ['٤٠٪ من عدد تساوي ٣٠. ما العدد؟', [75, 12, 70, 120], '١٠٪ = ٧٫٥، فالعدد = `75`.', ['حسب ٤٠٪ من ٣٠', 'جمع العددين', 'ضرب ٣٠ في ٤']],
+]);
+D('r2', [
+  ['كم يساوي ١٥٪ من ٢٤٠؟', [36, 24, 12, 16], '١٠٪ = ٢٤ و ٥٪ = ١٢ ← ٣٦.', ['حسب ١٠٪ فقط', 'حسب ٥٪ فقط', 'قسم ٢٤٠ على ١٥']],
+  ['كم يساوي ١٢٠٪ من ٥٠؟', [60, 6, 10, 170], '`50 + 10 = 60`.', ['أخطأ بالفاصلة', 'حسب الزيادة فقط', 'جمع ١٢٠ و ٥٠']],
+  ['كم يساوي ٣٥٪ من ٢٠٠؟', [70, 35, 7, 700], '١٪ = ٢، فـ ٣٥٪ = ٧٠.', ['أخذ النسبة نفسها', 'أخطأ بالفاصلة', 'أخطأ بالفاصلة']],
+  ['ما العدد الذي ٥٠٪ منه تساوي ٨٪ من ٥٠؟', [8, 4, 50, 25], '٨٪ من ٥٠ = ٤، و ٤ نصف ٨.', ['توقف عند ٨٪ من ٥٠', 'أخذ العدد المعطى', 'أخذ ٥٠٪ من ٥٠']],
+]);
+D('r3', [
+  ['ارتفع سعر من ٤٠ إلى ٥٠ ريالًا. ما نسبة الزيادة؟', ['٢٥٪', '٢٠٪', '١٠٪', '١٢٥٪'], 'الزيادة ١٠ من الأصل ٤٠ = ٢٥٪.', ['قسم على السعر الجديد بدل الأصل', 'أخذ الفرق كأنه النسبة', 'قسم الجديد على القديم']],
+  ['نقص عدد الطلاب من ٨٠ إلى ٦٠. ما نسبة النقص؟', ['٢٥٪', '٢٠٪', '٣٣٪', '٧٥٪'], 'النقص ٢٠ من الأصل ٨٠ = ٢٥٪.', ['أخذ الفرق كأنه النسبة', 'قسم على العدد الجديد بدل الأصل', 'حسب الباقي لا النقص']],
+  ['زاد عدد بنسبة ٢٠٪ فصار ٧٢. ما العدد الأصلي؟', [60, 57.6, 52, 86.4], '`72 ÷ 1.2 = 60`.', ['طرح ٢٠٪ من العدد الجديد', 'طرح ٢٠ بدل ٢٠٪', 'أضاف ٢٠٪ مرة أخرى']],
+  ['زاد سعر ١٠٪ ثم نقص ١٠٪. ماذا حدث للسعر؟', ['صار أقل من الأصل بـ ١٪', 'عاد كما كان', 'صار أكبر من الأصل بـ ١٪', 'صار أقل من الأصل بـ ١٠٪'], 'من ١٠٠: ١١٠ ثم `110 − 11 = 99`.', ['ظن أن الزيادة والنقص يلغيان بعضهما', 'أخطأ في الاتجاه', 'تجاهل الزيادة']],
+]);
+D('r4', [
+  ['قميص سعره ٢٠٠ ريال وعليه خصم ١٥٪. كم سعره بعد الخصم؟', [170, 30, 185, 230], 'الخصم ٣٠ ← `200 − 30 = 170`.', ['أجاب بقيمة الخصم', 'طرح ١٥ ريالًا بدل ١٥٪', 'أضاف الخصم بدل طرحه']],
+  ['اشترى تاجر سلعة بـ ٨٠ ريالًا وباعها بـ ١٠٠. ما نسبة ربحه؟', ['٢٥٪', '٢٠٪', '١٢٥٪', '٨٠٪'], 'الربح ٢٠ من سعر الشراء ٨٠ = ٢٥٪.', ['قسم على سعر البيع بدل الشراء', 'قسم البيع على الشراء', 'قسم الشراء على البيع']],
+  ['بعد خصم ٢٥٪ صار السعر ٩٠ ريالًا. ما السعر الأصلي؟', [120, 112.5, 115, 67.5], '٩٠ = ٧٥٪ من الأصل ← `90 ÷ 0.75 = 120`.', ['أضاف ٢٥٪ إلى السعر الجديد', 'أضاف ٢٥ ريالًا', 'طرح ٢٥٪ مرة أخرى']],
+  ['خصم ٢٠٪ يتبعه خصم ١٠٪ يساوي خصمًا واحدًا قدره:', ['٢٨٪', '٣٠٪', '٢٪', '٢٥٪'], 'من ١٠٠: ٨٠ ثم ٧٢ ← الخصم ٢٨٪.', ['جمع الخصمين', 'ضرب النسبتين', 'أخذ متوسط تقريبي']],
+]);
+D('r5', [
+  ['نسبة البنين إلى البنات ٣ : ٥، وعدد الطلاب ٤٠. كم عدد البنين؟', [15, 25, 24, 8], 'المجموع ٨ أجزاء، الجزء = ٥ ← البنين ١٥.', ['أخذ نصيب البنات', 'قسم على أحد الطرفين لا على المجموع', 'توقف عند قيمة الجزء الواحد']],
+  ['بسّط النسبة ١٨ : ٢٤', ['٣ : ٤', '٤ : ٣', '٩ : ١٢', '٦ : ٨'], 'نقسم على ٦.', ['عكس الترتيب', 'لم يكمل التبسيط', 'لم يكمل التبسيط']],
+  ['إذا كان أ : ب = ٢ : ٣ و ب : ج = ٤ : ٥، فما أ : ج؟', ['٨ : ١٥', '٢ : ٥', '٨ : ١٢', '٣ : ٤'], 'نوحّد ب: أ : ب : ج = ٨ : ١٢ : ١٥.', ['تجاهل ب وربط الطرفين مباشرة', 'توقف عند أ : ب بعد التوحيد', 'أخذ ب : ج مقلوبة']],
+  ['خليط عصير وماء بنسبة ٢ : ٧. كم لترًا من العصير في ٤٥ لترًا من الخليط؟', [10, 35, 9, 18], 'المجموع ٩ أجزاء، الجزء ٥ لترات ← العصير ١٠.', ['أخذ الماء بدل العصير', 'توقف عند عدد الأجزاء', 'ضرب ٢ في ٩']],
+]);
+D('r6', [
+  ['قُسم ٩٠٠ ريال بين أخوين بنسبة ٤ : ٥. كم نصيب الأكبر؟', [500, 400, 100, 180], 'الجزء = `900 ÷ 9 = 100` ← الأكبر ٥٠٠.', ['أخذ النصيب الأصغر', 'توقف عند قيمة الجزء الواحد', 'قسم على ٥ فقط']],
+  ['قُسم مبلغ بنسبة ٢ : ٣ فكان الفرق بين النصيبين ٦٠ ريالًا. كم المبلغ؟', [300, 180, 120, 60], 'الفرق جزء واحد = ٦٠، والمبلغ ٥ أجزاء.', ['ضرب الفرق في ٣ فقط', 'ضرب الفرق في ٢ فقط', 'ظن أن الفرق هو المبلغ']],
+  ['قُسم العدد ٧٢ بنسبة ١ : ٢ : ٣. ما أكبر نصيب؟', [36, 24, 12, 18], 'المجموع ٦ أجزاء، الجزء ١٢ ← الأكبر ٣٦.', ['أخذ النصيب الأوسط', 'أخذ النصيب الأصغر', 'قسم على ٤ بدل ٦']],
+  ['نسبة عمر الأب إلى عمر ابنه ٧ : ٢، ومجموع عمريهما ٥٤. كم عمر الابن؟', [12, 42, 6, 27], 'المجموع ٩ أجزاء، الجزء ٦ ← الابن ١٢.', ['أخذ عمر الأب', 'توقف عند قيمة الجزء', 'قسم المجموع على ٢']],
+]);
+D('r7', [
+  ['ثمن ٥ أقلام ١٥ ريالًا. كم ثمن ٨ أقلام؟', [24, 18, 40, 28], 'القلم بـ ٣ ← `8 × 3 = 24`.', ['أضاف الفرق بدل التناسب', 'ضرب ٨ في ٥', 'أخطأ في الحساب']],
+  ['٦ عمال ينهون عملًا في ١٠ أيام. كم يومًا يحتاج ١٢ عاملًا بنفس السرعة؟', [5, 20, 8, 16], 'عمال أكثر ← أيام أقل: `60 ÷ 12 = 5`.', ['عامله كتناسب طردي', 'طرح بدل القسمة', 'أضاف العمال إلى الأيام']],
+  ['سيارة بسرعة ٦٠ كم/س تقطع مسافة في ٣ ساعات. كم تحتاج بسرعة ٩٠ كم/س؟', ['ساعتان', '٤٫٥ ساعة', '١٫٥ ساعة', '٣ ساعات'], 'المسافة ١٨٠ ← `180 ÷ 90 = 2`.', ['عامله كتناسب طردي', 'قسم الزمن على ٢', 'ظن أن الزمن لا يتغير']],
+  ['ص تتناسب طرديًا مع س. إذا كانت ص = ١٢ عندما س = ٤، فما ص عندما س = ١٠؟', [30, 18, 4.8, 120], '`ص = 3س` ← `30`.', ['أضاف الفرق بدل الضرب', 'عامله كتناسب عكسي', 'ضرب ١٢ في ١٠']],
+]);
+D('r8', [
+  ['مقياس رسم خريطة ١ : ٥٠٠٠٠. المسافة على الخريطة ٤ سم. كم المسافة الحقيقية؟', ['٢ كم', '٢٠ كم', '٢٠٠ م', '١٢٫٥ كم'], '`4 × 50000 = 200000` سم = ٢ كم.', ['أخطأ في تحويل الوحدات', 'أخطأ في تحويل الوحدات', 'قسم بدل الضرب']],
+  ['كم سنتيمترًا مربعًا في المتر المربع؟', [10000, 100, 1000, 1000000], '`100 × 100 = 10000`.', ['حوّل كأنها أطوال لا مساحات', 'أخطأ في عدد الأصفار', 'حوّل كأنها حجوم']],
+  ['كم دقيقة في ٣٫٥ ساعة؟', [210, 350, 230, 185], '`3.5 × 60 = 210`.', ['اعتبر الساعة ١٠٠ دقيقة', 'قرأ ٣٫٥ كأنها ٣ ساعات و ٥٠ دقيقة', 'أخطأ في نصف الساعة']],
+  ['السرعة ٧٢ كم/س تساوي كم مترًا في الثانية؟', [20, 72000, 1.2, 259.2], '`72000 ÷ 3600 = 20`.', ['حوّل الكيلومترات ونسي الساعة', 'قسم على ٦٠ فقط', 'ضرب في ٣٫٦ بدل القسمة']],
+]);
+
+D('m1', [
+  ['تسير سيارة بسرعة ٨٠ كم/س لمدة ساعتين ونصف. كم المسافة؟', [200, 32, 160, 82.5], '`80 × 2.5 = 200`.', ['قسم بدل الضرب', 'نسي نصف الساعة', 'جمع بدل الضرب']],
+  ['قطع عدّاء ٣٠٠ متر في دقيقة واحدة. كم سرعته بالمتر في الثانية؟', [5, 300, 18000, 50], '`300 ÷ 60 = 5`.', ['نسي تحويل الدقيقة إلى ثوانٍ', 'ضرب في ٦٠ بدل القسمة', 'أخطأ في القسمة']],
+  ['كم ساعة تحتاج لقطع ١٢٠ كم بسرعة ٤٠ كم/س؟', ['٣ ساعات', '٤٨٠٠ ساعة', '٨٠ ساعة', '[[1/3]] ساعة'], '`120 ÷ 40 = 3`.', ['ضرب بدل القسمة', 'طرح بدل القسمة', 'قسم السرعة على المسافة']],
+  ['قطع خالد ٦ كم في ٤٥ دقيقة. كم سرعته بالكم/س؟', [8, 4.5, 0.13, 6], '٤٥ دقيقة = ٠٫٧٥ ساعة ← `6 ÷ 0.75 = 8`.', ['ضرب بدل القسمة', 'قسم على ٤٥ دون تحويل الدقائق', 'تجاهل الزمن']],
+]);
+D('m2', [
+  ['تنطلق سيارتان من نقطة واحدة في اتجاهين متعاكسين بسرعتي ٥٠ و ٧٠ كم/س. بعد كم ساعة تصبح المسافة بينهما ٣٦٠ كم؟', [3, 18, 7.2, 6], 'تتباعدان بـ `50 + 70 = 120` كل ساعة.', ['طرح السرعتين بدل جمعهما', 'استخدم سرعة واحدة', 'أخطأ في القسمة']],
+  ['بين مدينتين ٣٠٠ كم، تنطلق سيارة من كل مدينة نحو الأخرى بسرعتي ٦٠ و ٩٠ كم/س. متى تلتقيان؟', ['بعد ساعتين', 'بعد ١٠ ساعات', 'بعد ٥ ساعات', 'بعد ٣٫٣ ساعة'], 'تقتربان بـ ١٥٠ كل ساعة.', ['طرح السرعتين بدل جمعهما', 'استخدم سرعة السيارة الأولى فقط', 'استخدم سرعة السيارة الثانية فقط']],
+  ['انطلق أحمد ماشيًا بسرعة ٤ كم/س، وبعد ساعة لحقه أخوه بدراجة بسرعة ١٢ كم/س. كم يحتاج الأخ ليلحق به؟', ['[[1/2]] ساعة', '[[1/4]] ساعة', '[[1/3]] ساعة', '٣ ساعات'], 'السبق ٤ كم، والأخ يقترب بـ `12 − 4 = 8` كل ساعة.', ['جمع السرعتين بدل طرحهما', 'قسم على سرعة الأخ فقط', 'قسم السرعتين']],
+  ['عدّاءان على مضمار دائري طوله ٤٠٠ م يبدآن معًا في الاتجاه نفسه بسرعتي ٦ و ٤ م/ث. متى يلتقيان أول مرة؟', ['بعد ٢٠٠ ثانية', 'بعد ٤٠ ثانية', 'بعد ١٠٠ ثانية', 'بعد ٦٧ ثانية'], 'الأسرع يتقدم ٢ م كل ثانية حتى يكسب لفة كاملة.', ['جمع السرعتين (هذا في الاتجاه المعاكس)', 'قسم على السرعة البطيئة', 'قسم على السرعة السريعة']],
+]);
+D('m3', [
+  ['ينهي أحمد عملًا في ٦ ساعات، وينهيه سعد في ٣ ساعات. في كم ساعة ينهيانه معًا؟', [2, 4.5, 9, 3], '[[1/6]] + [[1/3]] = [[1/2]] من العمل كل ساعة.', ['أخذ متوسط الزمنين', 'جمع الزمنين', 'أخذ زمن الأسرع']],
+  ['صنبور يملأ حوضًا في ٤ ساعات، وآخر في ١٢ ساعة. في كم ساعة يملآنه معًا؟', [3, 8, 16, 6], '[[1/4]] + [[1/12]] = [[1/3]] كل ساعة.', ['أخذ متوسط الزمنين', 'جمع الزمنين', 'قسم الزمن الأكبر على ٢']],
+  ['صنبور يملأ حوضًا في ٣ ساعات، وفتحة تفرغه في ٦ ساعات. إذا فُتحا معًا، متى يمتلئ؟', ['بعد ٦ ساعات', 'بعد ساعتين', 'بعد ٣ ساعات', 'بعد ٩ ساعات'], '[[1/3]] − [[1/6]] = [[1/6]] كل ساعة.', ['جمع المعدلين بدل طرحهما', 'تجاهل الفتحة', 'جمع الزمنين']],
+  ['٣ عمال يبنون جدارًا في ٨ أيام. كم يومًا يحتاج ٤ عمال بنفس السرعة؟', [6, '[[10 2/3]]', 7, 24], 'العمل ٢٤ يوم-عامل ← `24 ÷ 4 = 6`.', ['عامله كتناسب طردي', 'طرح يومًا لكل عامل زائد', 'توقف عند حجم العمل']],
+]);
+D('m4', [
+  ['كم ثانية في ساعتين؟', [7200, 120, 720, 3600], '`2 × 60 × 60 = 7200`.', ['حوّل إلى دقائق فقط', 'أخطأ في الأصفار', 'حسب ساعة واحدة']],
+  ['٢٥٠ دقيقة تساوي:', ['٤ ساعات و ١٠ دقائق', 'ساعتين و ٥٠ دقيقة', '٤ ساعات و ١٧ دقيقة', '٥ ساعات'], '`4 × 60 = 240` والباقي ١٠.', ['اعتبر الساعة ١٠٠ دقيقة', 'حوّل الكسر العشري للساعة كأنه دقائق', 'قرّب للأعلى']],
+  ['بدأ اجتماع الساعة ١٠:٤٥ واستمر ٩٥ دقيقة. متى انتهى؟', ['١٢:٢٠', '١١:٤٠', '١٢:٤٠', '١١:٢٠'], '٩٥ دقيقة = ساعة و ٣٥ دقيقة.', ['اعتبر الساعة ١٠٠ دقيقة', 'أخطأ في الدقائق الزائدة', 'أضاف ٣٥ دقيقة فقط']],
+  ['كم يومًا في ٦ أسابيع و ٣ أيام؟', [45, 39, 63, 9], '`6 × 7 + 3 = 45`.', ['ضرب ٦ في ٦', 'ضرب ٩ في ٧', 'جمع الأعداد']],
+]);
+D('m5', [
+  ['اليوم الثلاثاء. ما اليوم بعد ٢٠ يومًا؟', ['الاثنين', 'الأحد', 'الأربعاء', 'الثلاثاء'], '`20 = 2 × 7 + 6` ← ستة أيام بعد الثلاثاء.', ['أخطأ بيوم في العدّ', 'أخذ الباقي ١ بدل ٦', 'ظن أن ٢٠ من مضاعفات ٧']],
+  ['إذا كان ١ رمضان يوم الأحد، فما يوم ٢٥ رمضان؟', ['الأربعاء', 'الخميس', 'الثلاثاء', 'الأحد'], 'بين اليومين ٢٤ يومًا، والباقي ٣.', ['عدّ ٢٥ يومًا بدل ٢٤', 'أخطأ بيوم في العدّ', 'ظن أن الأيام تعود كما هي']],
+  ['اليوم الجمعة. ما اليوم قبل ١٠ أيام؟', ['الثلاثاء', 'الاثنين', 'الأربعاء', 'الخميس'], '`10 = 7 + 3` ← نرجع ثلاثة أيام.', ['تحرّك إلى الأمام بدل الخلف', 'رجع يومين فقط', 'رجع يومًا واحدًا']],
+  ['كم يوم جمعة <b>على الأقل</b> في ٥٠ يومًا متتالية؟', [7, 8, 6, 10], '٥٠ يومًا = ٧ أسابيع ويوم ← ٧ على الأقل.', ['هذا الحد الأعلى لا الأدنى', 'أخطأ في القسمة', 'قسم على ٥']],
+]);
+D('m6', [
+  ['ذهب خالد إلى مكان بسرعة ٦٠ كم/س ورجع بسرعة ٤٠ كم/س. ما متوسط سرعته؟', [48, 50, 100, 20], 'لمسافة ١٢٠: ساعتان ذهابًا وثلاث رجوعًا ← `240 ÷ 5 = 48`.', ['أخذ متوسط السرعتين', 'جمع السرعتين', 'طرح السرعتين']],
+  ['قطع ١٠٠ كم في ساعتين، ثم ٨٠ كم في ساعة. ما متوسط سرعته؟', [60, 65, 90, 180], '`180 ÷ 3 = 60`.', ['أخذ متوسط السرعتين ٥٠ و ٨٠', 'قسم على ساعتين', 'نسي القسمة على الزمن']],
+  ['قطع نصف الطريق بسرعة ٣٠ كم/س والنصف الآخر بسرعة ٦٠ كم/س. ما متوسط سرعته؟', [40, 45, 90, 50], 'لطريق ١٢٠: ساعتان + ساعة ← `120 ÷ 3 = 40`.', ['أخذ متوسط السرعتين', 'جمع السرعتين', 'خمّن']],
+  ['رحلة طولها ٢٤٠ كم استغرقت ٤ ساعات، منها ساعة راحة. ما متوسط سرعة الرحلة كلها؟', [60, 80, 240, 48], 'المتوسط = المسافة كلها ÷ الزمن كله.', ['استبعد وقت الراحة', 'نسي القسمة على الزمن', 'قسم على ٥']],
+]);
+
+/* ================= diagnostic questions · patterns + algebra + geometry + data + comparisons ================= */
+/* a comparison question; m4 = what each of the 4 choices means when wrong (the right one is skipped) */
+const DC = (q, a, b, ans, why, m4) => ({ q, a, b, choices: CMP, answer: ans, why, m: m4.filter((_, i) => i !== ans) });
+
+D('t1', [
+  ['المتتابعة: ٣، ٧، ١١، ١٥، … ما حدها العاشر؟', [39, 43, 40, 19], '`3 + 9 × 4 = 39`.', ['ضرب ١٠ في الفرق بدل ٩', 'ضرب ١٠ في الفرق ونسي الحد الأول', 'أعطى الحد التالي فقط']],
+  ['ما العدد الناقص: ٥، ١١، ■، ٢٣، ٢٩', [17, 16, 18, 15], 'الفرق ثابت ٦.', ['افترض أن الفرق ٥', 'افترض أن الفرق ٧', 'أخطأ في الفرق']],
+  ['متتابعة حسابية حدها الأول ٢٠ وأساسها −٣. ما حدها السادس؟', [5, 2, 35, 17], '`20 + 5 × (-3) = 5`.', ['ضرب ٦ في الأساس بدل ٥', 'أهمل إشارة الأساس', 'أعطى الحد الثاني']],
+  ['كم حدًا في المتتابعة: ٤، ٨، ١٢، … ، ١٠٠؟', [25, 24, 100, 26], '`(100 − 4) ÷ 4 + 1 = 25`.', ['نسي إضافة الحد الأول', 'عدّ كل الأعداد', 'أضاف حدًا زائدًا']],
+]);
+D('t2', [
+  ['المتتابعة: ٢، ٦، ١٨، ٥٤، … ما الحد التالي؟', [162, 90, 108, 216], 'كل حد × ٣.', ['افترض فرقًا ثابتًا', 'ضرب في ٢ بدل ٣', 'ضرب في ٤ بدل ٣']],
+  ['ما العدد الناقص: ٨٠، ٤٠، ٢٠، ■', [10, 0, 5, 15], 'كل حد ÷ ٢.', ['افترض أنه يطرح ٢٠', 'قسم على ٤', 'طرح ٥']],
+  ['متتابعة هندسية حدها الأول ٣ وأساسها ٢. ما حدها الخامس؟', [48, 96, 30, 11], '`3 × 2⁴ = 48`.', ['رفع الأساس للقوة ٥ بدل ٤', 'ضرب في ٢ ثم في ٥', 'جمع بدل الضرب']],
+  ['المتتابعة: ١، ٣، ٩، ٢٧، … أي الأعداد التالية <b>ليس</b> من حدودها؟', [54, 81, 243, 729], 'الحدود قوى ٣، و ٥٤ = ٢ × ٢٧.', ['`81 = 3⁴` من حدودها', '`243 = 3⁵` من حدودها', '`729 = 3⁶` من حدودها']],
+]);
+D('t3', [
+  ['المتتابعة: ١، ٤، ٩، ١٦، ٢٥، … ما الحد التالي؟', [36, 34, 30, 49], 'مربعات: `6² = 36`.', ['أضاف ٩ (الفرق السابق)', 'أضاف ٥', 'قفز حدًا']],
+  ['المتتابعة: ١، ١، ٢، ٣، ٥، ٨، … ما الحد التالي؟', [13, 11, 16, 12], 'كل حد = مجموع الحدين قبله: `5 + 8`.', ['أضاف ٣', 'ضاعف الحد الأخير', 'خمّن']],
+  ['المتتابعة: ٢، ٣، ٥، ٧، ١١، … ما الحد التالي؟', [13, 15, 12, 14], 'الأعداد الأولية بالترتيب.', ['ظن أنها أعداد فردية', 'أخطأ في النمط', 'أخطأ في النمط']],
+  ['المتتابعة: ١، ٨، ٢٧، ٦٤، … ما الحد التالي؟', [125, 100, 81, 91], 'مكعبات: `5³ = 125`.', ['خلط المكعب بالمربع', 'خلط المكعب بالمربع', 'حاول الفروق ولم يكملها']],
+]);
+D('t4', [
+  ['المتتابعة: ٢، ٥، ١١، ٢٣، … ما الحد التالي؟', [47, 35, 46, 44], 'كل حد × ٢ + ١.', ['ظن أن الفرق الأخير يتكرر', 'ضاعف ونسي +١', 'ضاعف ثم طرح']],
+  ['ما العدد الناقص: ١، ٢، ٤، ٧، ١١، ■', [16, 15, 22, 18], 'الفروق ١، ٢، ٣، ٤ ثم ٥.', ['كرّر الفرق الأخير', 'ضاعف الحد الأخير', 'أخطأ في الفروق']],
+  ['ما العدد الناقص: ٣، ٦، ٤، ٨، ٦، ١٢، ■', [10, 24, 14, 8], 'بالتناوب: × ٢ ثم − ٢.', ['ضاعف ونسي التناوب', 'أضاف ٢', 'طرح ٤']],
+  ['ما العدد الناقص: ١٠، ٨، ١٦، ١٤، ٢٨، ■', [26, 56, 30, 24], 'بالتناوب: − ٢ ثم × ٢.', ['ضاعف ونسي التناوب', 'أضاف ٢ بدل الطرح', 'طرح ٤']],
+]);
+D('t5', [
+  ['٦ أشخاص صافح كل واحد منهم الآخرين مرة واحدة. كم مصافحة حدثت؟', [15, 30, 36, 6], '`6 × 5 ÷ 2 = 15`.', ['عدّ كل مصافحة مرتين', 'ضرب ٦ × ٦', 'عدّ الأشخاص']],
+  ['كم عددًا من ١ إلى ١٠٠ يقبل القسمة على ٧؟', [14, 15, 13, 7], '`7 × 14 = 98`.', ['قرّب ١٠٠ ÷ ٧ للأعلى', 'نسي العدد ٩٨', 'خلط بين العدد والقاسم']],
+  ['سياج طوله ٢٠ مترًا، نضع عمودًا كل ٤ أمتار بما في ذلك الطرفان. كم عمودًا؟', [6, 5, 4, 80], '`20 ÷ 4 + 1 = 6`.', ['نسي عمود البداية', 'نسي الطرفين', 'ضرب بدل القسمة']],
+  ['كم رقمًا نكتب لترقيم صفحات كتاب من ١ إلى ٢٥؟', [41, 25, 50, 39], '٩ صفحات برقم واحد و ١٦ برقمين: `9 + 32 = 41`.', ['عدّ الصفحات لا الأرقام', 'اعتبر كل صفحة رقمين', 'أخطأ في عدّ الصفحات ذات الرقمين']],
+]);
+D('t6', [
+  ['ما مجموع الأعداد من ١ إلى ٢٠؟', [210, 200, 420, 190], '`20 × 21 ÷ 2 = 210`.', ['ضرب ٢٠ في ١٠', 'نسي القسمة على ٢', 'جمع حتى ١٩ فقط']],
+  ['ما مجموع الأعداد الزوجية من ٢ إلى ٢٠؟', [110, 100, 210, 220], '١٠ حدود متوسطها ١١: `10 × 11 = 110`.', ['أخطأ في المتوسط', 'جمع كل الأعداد', 'ضاعف ولم يقسم']],
+  ['ما مجموع: ١ + ٣ + ٥ + … + ١٩؟', [100, 190, 81, 200], '١٠ أعداد فردية: `10² = 100`.', ['جمع كل الأعداد حتى ١٩', 'عدّ ٩ حدود فقط', 'ضاعف']],
+  ['خمسة أعداد صحيحة متتالية مجموعها ٦٥. ما أكبرها؟', [15, 13, 17, 11], 'الأوسط `65 ÷ 5 = 13`، والأكبر ١٥.', ['أخذ الأوسط', 'أضاف ٤ للأوسط', 'أخذ الأصغر']],
+]);
+
+D('a1', [
+  ['إذا كان `س = 3`، فما قيمة `2س² − س`؟', [15, 33, 9, 3], '`2 × 9 − 3 = 15`.', ['ربّع ٢س كاملة: `(2س)²`', 'ضاعف بدل التربيع', 'أخطأ في التعويض']],
+  ['بسّط: `3(س + 4) − 2س`', ['`س + 12`', '`س + 4`', '`5س + 12`', '`س + 7`'], '`3س + 12 − 2س`.', ['ضرب ٣ في س فقط', 'جمع ٢س بدل طرحها', 'جمع ٣ بدل الضرب']],
+  ['إذا كان `ص = 2س + 1` و `س = -3`، فما قيمة ص؟', [-5, 7, -7, -6], '`2 × (-3) + 1 = -5`.', ['أهمل الإشارة السالبة', 'طرح ١ بدل الجمع', 'نسي إضافة ١']],
+  ['عمر خالد س سنة. أي عبارة تمثل «ضعف عمره بعد ٥ سنوات»؟', ['`2(س + 5)`', '`2س + 5`', '`س + 10`', '`2س − 5`'], 'عمره بعد ٥ سنوات `س + 5`، وضعفه `2(س + 5)`.', ['ضاعف س فقط', 'ضاعف الخمسة فقط', 'طرح بدل الجمع']],
+]);
+D('a2', [
+  ['حلّ: `3س + 7 = 22`', [5, '[[29/3]]', 15, 45], '`3س = 15` ← `س = 5`.', ['جمع ٧ بدل طرحها', 'نسي القسمة على ٣', 'ضرب بدل القسمة']],
+  ['حلّ: `س/4 − 2 = 3`', [20, 4, 5, 1.25], '`س/4 = 5` ← `س = 20`.', ['طرح ٢ بدل جمعها', 'نسي الضرب في ٤', 'قسم بدل الضرب']],
+  ['حلّ: `5 − 2س = 11`', [-3, 3, 8, -8], '`-2س = 6` ← `س = -3`.', ['أهمل الإشارة السالبة', 'جمع بدل الطرح', 'أخطأ في نقل الحدود']],
+  ['حلّ: `2(س − 3) = س + 4`', [10, 7, 1, 2], '`2س − 6 = س + 4` ← `س = 10`.', ['نسي ضرب −٣ في ٢', 'أخطأ في نقل الحدود', 'أخطأ في نقل الحدود']],
+]);
+D('a3', [
+  ['عدد إذا ضُرب في ٣ ثم طُرح منه ٥ كان الناتج ١٦. ما العدد؟', [7, '[[11/3]]', 48, 3], '`3س − 5 = 16` ← `س = 7`.', ['طرح ٥ بدل جمعها', 'ضرب ١٦ في ٣', 'أخطأ في الترجمة']],
+  ['مجموع عددين ٣٠ والفرق بينهما ٦. ما العدد الأكبر؟', [18, 12, 24, 15], '`(30 + 6) ÷ 2 = 18`.', ['أخذ الأصغر', 'طرح الفرق من المجموع فقط', 'قسم المجموع على ٢']],
+  ['اشترت سارة ٣ دفاتر وقلمين بـ ٢٧ ريالًا، وثمن القلم ٣ ريالات. كم ثمن الدفتر؟', [7, 8, 9, 5.4], '`3د + 6 = 27` ← `د = 7`.', ['طرح ثمن قلم واحد فقط', 'قسم ٢٧ على ٣ ونسي الأقلام', 'قسم على ٥']],
+  ['ثلاثة أمثال عدد تزيد على نصفه بمقدار ١٠. ما العدد؟', [4, 20, 2, 5], '`3س − س/2 = 10` ← `2.5س = 10`.', ['أخطأ في ترجمة «تزيد على»', 'أخطأ في الترجمة', 'ترجم «تزيد على» إلى جمع']],
+]);
+D('a4', [
+  ['عمر الأب الآن ٤٠ وعمر ابنه ١٠. بعد كم سنة يصبح عمر الأب ضعف عمر ابنه؟', [20, 10, 15, 30], '`40 + ن = 2(10 + ن)` ← `ن = 20`.', ['لم يضف السنوات للعمرين', 'خمّن ولم يتحقق', 'أخذ الفرق بين العمرين']],
+  ['عمر سعد ضعف عمر أخيه، ومجموع عمريهما ٣٦. كم عمر سعد؟', [24, 12, 18, 72], '٣ أجزاء = ٣٦ ← الجزء ١٢، وسعد جزءان.', ['أخذ عمر الأخ', 'قسم المجموع على ٢', 'ضاعف المجموع']],
+  ['قبل ٥ سنوات كان عمر هند ثلاثة أمثال عمر أختها، ومجموع عمريهما الآن ٣٠. كم عمر هند الآن؟', [20, 15, 10, 25], 'الآن ٢٠ و ١٠، وقبل ٥ سنوات ١٥ و ٥.', ['أعطى عمرها قبل ٥ سنوات', 'أعطى عمر الأخت', 'أخطأ في المعادلة']],
+  ['مجموع أعمار ٣ إخوة الآن ٤٥. كم سيكون مجموعها بعد ٤ سنوات؟', [57, 49, 53, 60], 'كل واحد يكبر ٤: `45 + 12 = 57`.', ['أضاف ٤ مرة واحدة', 'أضاف ٤ لاثنين فقط', 'أخطأ في الجمع']],
+]);
+D('a5', [
+  ['ثلاثة أعداد صحيحة متتالية مجموعها ٧٢. ما أكبرها؟', [25, 24, 23, 26], 'الأوسط `72 ÷ 3 = 24`، والأكبر ٢٥.', ['أخذ الأوسط', 'أخذ الأصغر', 'أضاف ٢ للأوسط']],
+  ['عددان زوجيان متتاليان مجموعهما ٥٠. ما أصغرهما؟', [24, 25, 26, 23], 'العددان ٢٤ و ٢٦.', ['ظن أن الفرق بينهما ١', 'أخذ الأكبر', 'أخطأ في الحساب']],
+  ['أربعة أعداد فردية متتالية مجموعها ٤٨. ما أصغرها؟', [9, 12, 15, 11], '`9 + 11 + 13 + 15 = 48`.', ['قسم على ٤ وأخذ الناتج', 'أخذ الأكبر', 'أخذ الثاني']],
+  ['حاصل ضرب عددين صحيحين موجبين متتاليين = ١٣٢. ما مجموعهما؟', [23, 22, 24, 66], '`11 × 12 = 132`.', ['أخطأ في العددين', 'أخطأ في العددين', 'قسم ١٣٢ على ٢']],
+]);
+D('a6', [
+  ['حلّ المتباينة: `2س − 3 > 7`', ['`س > 5`', '`س > 2`', '`س < 5`', '`س > 10`'], '`2س > 10` ← `س > 5`.', ['طرح ٣ بدل جمعها', 'قلب الإشارة دون سبب', 'نسي القسمة على ٢']],
+  ['حلّ المتباينة: `-3س ≤ 12`', ['`س ≥ -4`', '`س ≤ -4`', '`س ≥ 4`', '`س ≤ 4`'], 'القسمة على سالب تقلب الإشارة.', ['نسي قلب الإشارة عند القسمة على سالب', 'أهمل الإشارة السالبة', 'أخطأ في الإشارة والقيمة']],
+  ['كم عددًا صحيحًا يحقق `-2 < س ≤ 3`؟', [5, 6, 4, 3], '−١، ٠، ١، ٢، ٣.', ['عدّ −٢ وهي غير داخلة', 'نسي ٣ وهي داخلة', 'نسي الصفر والسالب']],
+  ['إذا كان `س < 0`، فأي العبارات التالية صحيحة دائمًا؟', ['`س² > 0`', '`س³ > 0`', '`2س > س`', '`1/س > 0`'], 'مربع أي عدد سالب موجب.', ['نسي أن الأس الفردي يحفظ السالب', 'نسي أن ضعف السالب أصغر منه', 'نسي أن مقلوب السالب سالب']],
+]);
+D('a7', [
+  ['فك: `(س + 3)²`', ['`س² + 6س + 9`', '`س² + 9`', '`س² + 3س + 9`', '`س² + 6س + 6`'], '`س² + 2 × 3س + 9`.', ['نسي الحد الأوسط', 'لم يضاعف الحد الأوسط', 'ضاعف ٣ بدل تربيعها']],
+  ['إذا كان `س + ص = 7` و `س ص = 10`، فما قيمة `س² + ص²`؟', [29, 49, 39, 69], '`(س + ص)² − 2س ص = 49 − 20`.', ['نسي طرح `2س ص`', 'طرح `س ص` مرة واحدة', 'جمع بدل الطرح']],
+  ['فك: `(س − 5)(س + 5)`', ['`س² − 25`', '`س² − 10س − 25`', '`س² + 25`', '`س² − 10`'], 'فرق بين مربعين.', ['أضاف حدًا أوسط لا وجود له', 'أخطأ في الإشارة', 'ضاعف بدل التربيع']],
+  ['إذا كان `س − 1/س = 3`، فما قيمة `س² + 1/س²`؟', [11, 9, 7, 6], 'نربّع: `س² − 2 + 1/س² = 9`.', ['ربّع الطرفين ونسي الحد الأوسط', 'طرح ٢ بدل جمعها', 'ضاعف بدل التربيع']],
+]);
+D('a8', [
+  ['إذا كان `س + ص = 12` و `س − ص = 4`، فما قيمة س؟', [8, 4, 16, 6], 'نجمع المعادلتين: `2س = 16`.', ['أعطى قيمة ص', 'جمع ونسي القسمة على ٢', 'قسم ١٢ على ٢']],
+  ['إذا كان `2س + ص = 11` و `س + ص = 7`، فما قيمة س؟', [4, 3, 18, 7], 'نطرح المعادلتين: `س = 4`.', ['أعطى قيمة ص', 'جمع المعادلتين بدل طرحهما', 'أخذ ناتج المعادلة الثانية']],
+  ['ثمن ٣ تفاحات وموزتين ١٣ ريالًا، وثمن تفاحة وموزتين ٧ ريالات. كم ثمن التفاحة؟', [3, 2, 6, 4], 'بالطرح: تفاحتان = ٦.', ['أعطى ثمن الموزة', 'نسي القسمة على ٢', 'أخطأ في الطرح']],
+  ['إذا كان `س + 2ص = 10` و `3س − 2ص = 6`، فما قيمة `س × ص`؟', [12, 7, 16, 4], 'بالجمع: `4س = 16` ← `س = 4` و `ص = 3`.', ['جمع س و ص بدل ضربهما', 'توقف بعد جمع المعادلتين', 'أعطى قيمة س فقط']],
+]);
+
+D('g1', [
+  ['كم مستقيمًا يمر بنقطتين مختلفتين؟', ['مستقيم واحد فقط', 'مستقيمان', 'عدد لا نهائي', 'لا يوجد'], 'نقطتان تحددان مستقيمًا واحدًا.', ['خمّن', 'خلط مع المستقيمات التي تمر بنقطة واحدة', 'خمّن']],
+  ['قطعة مستقيمة أب طولها ١٢، و ج منتصفها، و د منتصف أج. كم طول دب؟', [9, 3, 6, 4.5], 'أد = ٣، فـ `دب = 12 − 3 = 9`.', ['أعطى طول أد', 'أعطى طول أج', 'أخطأ في المنتصف']],
+  ['أي الأشكال التالية له بداية وليس له نهاية؟', ['الشعاع', 'القطعة المستقيمة', 'المستقيم', 'النقطة'], 'الشعاع يبدأ من نقطة ويمتد بلا نهاية.', ['القطعة لها نهايتان', 'المستقيم بلا بداية ولا نهاية', 'النقطة مكان فقط']],
+  ['النقاط أ، ب، ج على مستقيم بهذا الترتيب. أب = ٧ و أج = ١٩. كم طول بج؟', [12, 26, 7, 19], '`19 − 7 = 12`.', ['جمع بدل الطرح', 'أعطى أب', 'أعطى أج']],
+]);
+D('g2', [
+  ['زاوية قياسها ١٠٠°. ما نوعها؟', ['منفرجة', 'حادة', 'قائمة', 'مستقيمة'], 'بين ٩٠° و ١٨٠°.', ['خلط بين الحادة والمنفرجة', 'القائمة ٩٠° بالضبط', 'المستقيمة ١٨٠°']],
+  ['زاوية قياسها ٩٠° تسمى:', ['قائمة', 'حادة', 'منفرجة', 'مستقيمة'], 'القائمة = ٩٠°.', ['الحادة أقل من ٩٠°', 'المنفرجة أكبر من ٩٠°', 'المستقيمة ١٨٠°']],
+  ['قياس الزاوية يعتمد على:', ['مقدار الانفتاح بين ضلعيها', 'طول ضلعيها', 'حجم القوس المرسوم عليها', 'مكانها في الصفحة'], 'تطويل الضلعين لا يغيّر الزاوية.', ['ظن أن الأضلاع الأطول تعني زاوية أكبر', 'ظن أن القوس الأكبر يعني زاوية أكبر', 'خمّن']],
+  ['كم درجة يدور عقرب الدقائق في ٢٠ دقيقة؟', [120, 20, 60, 200], 'ثلث الدورة: `360 ÷ 3 = 120`.', ['اعتبر الدقيقة درجة', 'أخطأ في الكسر', 'ضرب في ١٠']],
+]);
+D('g3', [
+  ['مستقيمان متقاطعان، إحدى الزوايا ٦٥°. ما قياس الزاوية المقابلة لها بالرأس؟', [65, 115, 25, 295], 'المتقابلتان بالرأس متساويتان.', ['خلط مع الزاوية المجاورة', 'حسب المتممة', 'طرح من ٣٦٠']],
+  ['زاويتان متكاملتان، إحداهما أربعة أمثال الأخرى. ما الصغرى؟', [36, 18, 45, 144], '`5س = 180` ← `س = 36`.', ['استخدم ٩٠ بدل ١٨٠', 'قسم على ٤ بدل ٥', 'أعطى الكبرى']],
+  ['ما الزاوية بين عقربي الساعة عند ٤:٠٠؟', [120, 40, 90, 240], '٤ أرقام × ٣٠° = ١٢٠°.', ['اعتبر كل رقم ١٠°', 'خمّن', 'أعطى الزاوية الكبرى']],
+  ['متممة الزاوية ٣٥° هي:', ['٥٥°', '١٤٥°', '٣٥°', '٣٢٥°'], 'المتممتان مجموعهما ٩٠°.', ['خلط بين المتممة والمكملة', 'خمّن', 'طرح من ٣٦٠']],
+]);
+D('g4', [
+  ['مستقيمان متوازيان يقطعهما قاطع، وإحدى الزوايا الحادة ٧٠°. كم قياس كل زاوية منفرجة؟', [110, 70, 20, 290], 'الحادة + المنفرجة = ١٨٠°.', ['ظن أن كل الزوايا متساوية', 'حسب المتممة', 'طرح من ٣٦٠']],
+  ['مستقيمان متوازيان وقاطع. زاويتان متبادلتان داخليًا (شكل Z)، إحداهما ٥٥°. كم الأخرى؟', [55, 125, 35, 110], 'المتبادلتان متساويتان.', ['اعتبرهما متكاملتين', 'حسب المتممة', 'ضاعف']],
+  ['مستقيمان متوازيان وقاطع. زاويتان داخليتان في جهة واحدة من القاطع، إحداهما ٨٠°. كم الأخرى؟', [100, 80, 10, 280], 'الداخليتان في جهة واحدة متكاملتان.', ['اعتبرهما متساويتين', 'حسب المتممة', 'طرح من ٣٦٠']],
+  ['زاويتان متبادلتان داخليًا بين متوازيين: `(2س + 10)°` و `(3س − 10)°`. ما قيمة س؟', [20, 36, 10, 50], 'متساويتان: `2س + 10 = 3س − 10`.', ['جعلهما متكاملتين', 'أخطأ في نقل الحدود', 'أعطى قياس الزاوية لا س']],
+]);
+D('g5', [
+  ['في مثلث زاويتان ٤٥° و ٧٥°. ما الزاوية الثالثة؟', [60, 120, 240, 30], '`180 − 120 = 60`.', ['أعطى مجموع الزاويتين', 'طرح من ٣٦٠', 'أخطأ في الطرح']],
+  ['أي الأطوال التالية يمكن أن تكون أضلاع مثلث؟', ['٥، ٦، ١٠', '٣، ٤، ٨', '٢، ٥، ٧', '١، ١، ٣'], 'مجموع أي ضلعين أكبر من الثالث.', ['`3 + 4 < 8`', '`2 + 5 = 7` لا يكفي التساوي', '`1 + 1 < 3`']],
+  ['مثلث متطابق الضلعين زاوية رأسه ٤٠°. كم قياس كل زاوية من زاويتي القاعدة؟', [70, 40, 140, 50], '`(180 − 40) ÷ 2 = 70`.', ['ظن أن الزوايا كلها متساوية', 'نسي القسمة على ٢', 'حسب المتممة']],
+  ['في مثلث زاويتان ٥٠° و ٦٠°. ما قياس الزاوية الخارجية عند الرأس الثالث؟', [110, 70, 180, 120], 'الخارجية = مجموع الداخليتين البعيدتين.', ['أعطى الزاوية الداخلية', 'خمّن', 'أخطأ في الجمع']],
+]);
+D('g6', [
+  ['مستطيل طوله ١٢ وعرضه ٥. ما محيطه؟', [34, 17, 60, 24], '`2 × (12 + 5) = 34`.', ['جمع الطول والعرض مرة واحدة', 'حسب المساحة', 'ضاعف الطول فقط']],
+  ['مربع محيطه ٣٦. ما طول ضلعه؟', [9, 6, 18, 12], '`36 ÷ 4 = 9`.', ['عامل ٣٦ كأنها المساحة', 'قسم على ٢', 'قسم على ٣']],
+  ['مثلث متطابق الأضلاع ضلعه ٨، صنعناه من سلك ثم ثنينا السلك نفسه مربعًا. ما ضلع المربع؟', [6, 8, 24, 4], 'السلك ٢٤ ← `24 ÷ 4 = 6`.', ['ظن أن الضلع لا يتغير', 'توقف عند طول السلك', 'قسم على ٦']],
+  ['مستطيل محيطه ٣٠ وطوله ضعف عرضه. ما طوله؟', [10, 5, 15, 20], '`2(2ع + ع) = 30` ← `ع = 5`.', ['أعطى العرض', 'قسم المحيط على ٢', 'ضاعف ١٠']],
+]);
+D('g7', [
+  ['مثلث قاعدته ١٠ وارتفاعه ٦. ما مساحته؟', [30, 60, 16, 15], '`[[1/2]] × 10 × 6 = 30`.', ['نسي القسمة على ٢', 'جمع بدل الضرب', 'قسم مرتين']],
+  ['متوازي أضلاع قاعدته ٨ وارتفاعه ٥ وضلعه المائل ٦. ما مساحته؟', [40, 48, 20, 26], 'القاعدة × الارتفاع.', ['ضرب في الضلع المائل بدل الارتفاع', 'قسم على ٢ مثل المثلث', 'حسب المحيط']],
+  ['شبه منحرف قاعدتاه ٦ و ١٠ وارتفاعه ٤. ما مساحته؟', [32, 64, 240, 20], '`[[1/2]] × (6 + 10) × 4 = 32`.', ['نسي القسمة على ٢', 'ضرب كل الأعداد', 'جمع الأعداد']],
+  ['إذا ضاعفنا طول مستطيل وعرضه، فإن مساحته:', ['تصبح ٤ أمثالها', 'تصبح مثليها', 'تزيد ٤ وحدات', 'لا تتغير'], '`2 × 2 = 4`.', ['ظن أن المساحة تتضاعف مثل الأضلاع', 'خلط بين الضرب والجمع', 'خمّن']],
+]);
+D('g8', [
+  ['مثلث قائم الزاوية ضلعاه القائمان ٦ و ٨. ما طول الوتر؟', [10, 14, 100, 48], '`√(36 + 64) = 10`.', ['جمع الضلعين', 'نسي الجذر', 'ضرب الضلعين']],
+  ['مثلث قائم وتره ١٣ وأحد ضلعيه ٥. ما الضلع الآخر؟', [12, 8, 18, 144], '`√(169 − 25) = 12`.', ['طرح الأطوال مباشرة', 'جمع الأطوال', 'نسي الجذر']],
+  ['أي الأطوال التالية أضلاع مثلث قائم الزاوية؟', ['٨، ١٥، ١٧', '٤، ٥، ٦', '٥، ١٢، ١٤', '٦، ٨، ١١'], '`64 + 225 = 289 = 17²`.', ['`16 + 25 ≠ 36`', 'خلط مع ٥، ١٢، ١٣', 'خلط مع ٦، ٨، ١٠']],
+  ['سُلّم طوله ١٠ أمتار يستند إلى جدار، وأسفله يبعد ٦ أمتار عن الجدار. كم ارتفاع أعلاه؟', [8, 4, 16, 64], '`√(100 − 36) = 8`.', ['طرح الأطوال مباشرة', 'جمع الأطوال', 'نسي الجذر']],
+]);
+D('g9', [
+  ['دائرة نصف قطرها ٧. كم محيطها؟ (ط = [[22/7]])', [44, 22, 154, 49], '`2 × [[22/7]] × 7 = 44`.', ['استخدم نصف القطر بدل القطر', 'حسب المساحة', 'ربّع نصف القطر']],
+  ['دائرة قطرها ١٠. كم مساحتها؟', ['٢٥ط', '١٠٠ط', '١٠ط', '٥ط'], 'نصف القطر ٥: `ط × 5² = 25ط`.', ['استخدم القطر بدل نصف القطر', 'حسب المحيط', 'نسي التربيع']],
+  ['دائرة مساحتها ٣٦ط. كم مساحة قطاع منها زاويته ٩٠°؟', ['٩ط', '١٨ط', '٩٠ط', '٤ط'], '٩٠° ربع الدائرة.', ['أخذ النصف بدل الربع', 'خلط الدرجات بالمساحة', 'قسم على ٩']],
+  ['إذا ضاعفنا نصف قطر دائرة، فإن مساحتها:', ['تصبح ٤ أمثالها', 'تصبح مثليها', 'تزيد ٢ط', 'تصبح ٨ أمثالها'], 'المساحة تتبع مربع نصف القطر.', ['ظن أن المساحة تتضاعف مثل نصف القطر', 'خلط بين الضرب والجمع', 'خلط المساحة بالحجم']],
+]);
+D('g10', [
+  ['ما مجموع قياسات الزوايا الداخلية للشكل السداسي؟', ['٧٢٠°', '١٠٨٠°', '٣٦٠°', '٥٤٠°'], '`(6 − 2) × 180 = 720`.', ['ضرب ٦ في ١٨٠', 'أعطى مجموع الزوايا الخارجية', 'طرح ٣ بدل ٢']],
+  ['ما قياس كل زاوية داخلية في الخماسي المنتظم؟', ['١٠٨°', '٧٢°', '٥٤٠°', '٩٠°'], '`540 ÷ 5 = 108`.', ['حسب الزاوية الخارجية', 'أعطى المجموع', 'خمّن']],
+  ['أي العبارات التالية صحيحة؟', ['كل مربع معين', 'كل معين مربع', 'كل مستطيل مربع', 'كل متوازي أضلاع مستطيل'], 'المربع أضلاعه متساوية فهو معين.', ['عكس العلاقة', 'عكس العلاقة', 'نسي شرط الزوايا القائمة']],
+  ['كم قطرًا في الشكل الخماسي؟', [5, 10, 2, 3], 'من كل رأس قطران، و `5 × 2 ÷ 2 = 5`.', ['عدّ كل قطر مرتين', 'عدّ الأقطار من رأس واحد', 'خمّن']],
+]);
+D('g11', [
+  ['مكعب طول حرفه ٣. ما حجمه؟', [27, 9, 54, 12], '`3³ = 27`.', ['حسب مساحة وجه واحد', 'حسب المساحة الكلية', 'ضرب في ٤']],
+  ['متوازي مستطيلات أبعاده ٢ و ٣ و ٥. ما حجمه؟', [30, 10, 62, 15], '`2 × 3 × 5 = 30`.', ['جمع الأبعاد', 'حسب المساحة الكلية', 'ضرب بعدين فقط']],
+  ['مكعب مساحة أحد أوجهه ١٦. ما حجمه؟', [64, 96, 16, 256], 'الحرف ٤ ← `4³ = 64`.', ['حسب المساحة الكلية', 'أعطى مساحة الوجه', 'ربّع المساحة']],
+  ['أسطوانة نصف قطر قاعدتها ٣ وارتفاعها ٤. ما حجمها؟', ['٣٦ط', '١٢ط', '٢٤ط', '١٤٤ط'], '`ط × 3² × 4 = 36ط`.', ['نسي تربيع نصف القطر', 'حسب المساحة الجانبية', 'استخدم القطر بدل نصف القطر']],
+]);
+D('g12', [
+  ['في أي ربع تقع النقطة `(-3, 5)`؟', ['الربع الثاني', 'الربع الأول', 'الربع الرابع', 'الربع الثالث'], 'س سالبة و ص موجبة.', ['أهمل الإشارة السالبة', 'بدّل بين س و ص', 'ظن أن أي سالب يعني الثالث']],
+  ['ما المسافة بين النقطتين `(1, 2)` و `(4, 6)`؟', [5, 7, 25, 3], 'الفرقان ٣ و ٤ ← الوتر ٥.', ['جمع الفرقين', 'نسي الجذر', 'أخذ فرقًا واحدًا']],
+  ['ما منتصف القطعة بين `(2, 4)` و `(8, 10)`؟', ['`(5, 7)`', '`(6, 6)`', '`(10, 14)`', '`(3, 3)`'], 'متوسط الإحداثيين.', ['طرح بدل حساب المتوسط', 'جمع ولم يقسم على ٢', 'قسم الفرق على ٢']],
+  ['أي النقاط التالية تقع على محور الصادات؟', ['`(0, 3)`', '`(3, 0)`', '`(3, 3)`', '`(-3, 1)`'], 'على محور ص تكون س = ٠.', ['خلط بين المحورين', 'خمّن', 'خمّن']],
+]);
+D('g13', [
+  ['مثلثان متشابهان نسبة أضلاعهما ١ : ٣. ضلع في الصغير طوله ٤، كم الضلع المناظر في الكبير؟', [12, 7, '[[4/3]]', 36], '`4 × 3 = 12`.', ['أضاف ٣ بدل الضرب', 'قسم بدل الضرب', 'ربّع النسبة']],
+  ['نسبة أضلاع شكلين متشابهين ٢ : ٣. ما نسبة مساحتيهما؟', ['٤ : ٩', '٢ : ٣', '٨ : ٢٧', '٤ : ٦'], 'المساحات بنسبة مربع الأضلاع.', ['ظن أن المساحات بنسبة الأضلاع', 'هذه نسبة الحجوم', 'ضاعف بدل التربيع']],
+  ['عمود طوله ٢ م ظله ٣ م، وفي الوقت نفسه ظل شجرة ١٢ م. كم طول الشجرة؟', [8, 18, 11, 6], '`12 × [[2/3]] = 8`.', ['قلب النسبة', 'أضاف الفرق', 'قسم على ٢']],
+  ['كُبّرت صورة بمعامل ٢٫٥، وكان عرضها ٦ سم. كم عرضها الجديد؟', [15, 8.5, 2.4, 37.5], '`6 × 2.5 = 15`.', ['أضاف بدل الضرب', 'قسم بدل الضرب', 'ضرب مرتين']],
+]);
+
+D('d1', [
+  ['ما المتوسط الحسابي للأعداد: ٢، ٧، ١٥، ١٠، ٦؟', [8, 7, 10, 40], '`40 ÷ 5 = 8`.', ['أخذ الوسيط', 'أخذ العدد الأوسط في الكتابة', 'نسي القسمة على ٥']],
+  ['متوسط ٤ أعداد ١٥. أُضيف عدد خامس فصار المتوسط ١٦. ما العدد الخامس؟', [20, 16, 1, 17], '`5 × 16 − 4 × 15 = 80 − 60 = 20`.', ['ظن أنه يساوي المتوسط الجديد', 'أخذ الفرق بين المتوسطين', 'أخطأ في الحساب']],
+  ['متوسط درجات ٥ طلاب ٨٠. إذا زادت درجة كل طالب ٥، كم يصبح المتوسط؟', [85, 105, 80, 81], 'كل قيمة تزيد ٥ ← المتوسط يزيد ٥.', ['أضاف كل الزيادات للمتوسط', 'ظن أن المتوسط لا يتغير', 'قسم الزيادة على ٥']],
+  ['متوسط ٦ أعداد ١٠، ومتوسط ٤ منها ٨. ما متوسط العددين الباقيين؟', [14, 2, 28, 9], '`(60 − 32) ÷ 2 = 14`.', ['طرح المتوسطين', 'نسي القسمة على ٢', 'أخذ متوسط المتوسطين']],
+]);
+D('d2', [
+  ['ما وسيط الأعداد: ٧، ٢، ٩، ٤، ١١؟', [7, 9, 6.6, 4], 'بعد الترتيب: ٢، ٤، ٧، ٩، ١١.', ['أخذ العدد الأوسط دون ترتيب', 'حسب المتوسط', 'أخطأ في الترتيب']],
+  ['ما وسيط الأعداد: ٣، ٨، ٥، ١٠؟', [6.5, 5, 13, 8], 'الأوسطان ٥ و ٨: `(5 + 8) ÷ 2`.', ['أخذ أحد العددين الأوسطين', 'جمع الأوسطين ولم يقسم', 'لم يرتّب']],
+  ['ما منوال الأعداد: ٤، ٧، ٤، ٩، ٧، ٤، ٢؟', [4, 7, 5.3, 9], 'العدد ٤ تكرر ٣ مرات.', ['أخذ عددًا متكررًا لكنه ليس الأكثر', 'حسب المتوسط', 'أخذ الأكبر']],
+  ['أُضيف العدد ١٠٠ إلى المجموعة: ٢، ٤، ٦. أي القيم التالية تتغير أكثر؟', ['المتوسط', 'الوسيط', 'المنوال', 'لا شيء يتغير'], 'المتوسط يقفز من ٤ إلى ٢٨، والوسيط من ٤ إلى ٥ فقط.', ['ظن أن الوسيط يتأثر بالقيم المتطرفة', 'لا منوال هنا', 'خمّن']],
+]);
+D('d3', [
+  ['في مخطط أعمدة، كل خط على المحور الرأسي يمثل ٥ طلاب، وعمود «كرة القدم» يصل إلى الخط السادس. كم طالبًا اختار كرة القدم؟', [30, 6, 35, 11], '`6 × 5 = 30`.', ['قرأ رقم الخط لا قيمته', 'أخطأ في عدّ الخطوط', 'جمع بدل الضرب']],
+  ['مخطط أعمدة لعدد الزوار: الأحد ١٢، الاثنين ١٨، الثلاثاء ٩. بكم يزيد أعلى يوم على أقل يوم؟', [9, 6, 18, 39], '`18 − 9 = 9`.', ['قارن يومين متجاورين', 'أعطى أعلى قيمة', 'جمع الأيام']],
+  ['مخطط أعمدة لمبيعات ٤ أشهر: ٢٠، ٣٠، ٢٥، ٤٥. ما متوسط المبيعات الشهرية؟', [30, 120, 27.5, 45], '`120 ÷ 4 = 30`.', ['نسي القسمة', 'حسب الوسيط', 'أعطى أعلى قيمة']],
+  ['في مخطط أعمدة يبدأ المحور الرأسي من ٩٠ لا من الصفر. العمود أ يصل إلى ١٠٠ والعمود ب إلى ١١٠، فيبدو ب ضعف أ. كم مرة يساوي ب من أ فعلًا؟', ['حوالي ١٫١ مرة', 'مرتين', '٢٠ مرة', '١٠ مرات'], '`110 ÷ 100 = 1.1`. بداية المحور خدعت العين.', ['صدّق طول العمود دون قراءة المحور', 'خلط الفرق بالنسبة', 'أخذ الفرق']],
+]);
+D('d4', [
+  ['درجات الحرارة: ٦ص ← ١٥، ٩ص ← ٢٢، ١٢ظ ← ٣٠، ٣م ← ٢٨، ٦م ← ٢٠. في أي فترة كان أكبر ارتفاع؟', ['من ٩ص إلى ١٢ظ', 'من ٦ص إلى ٩ص', 'من ١٢ظ إلى ٣م', 'من ٣م إلى ٦م'], 'الارتفاع ٨ درجات.', ['زيادة لكنها ٧ فقط', 'أعلى نقطة ليست أكبر ارتفاع', 'هذه فترة نزول']],
+  ['بالبيانات نفسها: كم انخفضت الحرارة من ١٢ظ إلى ٦م؟', [10, 30, 8, 20], '`30 − 20 = 10`.', ['أعطى أعلى قيمة', 'قارن فترة واحدة', 'أعطى آخر قيمة']],
+  ['خط بياني يصعد ثم يصبح أفقيًا. ماذا يعني الجزء الأفقي؟', ['القيمة ثابتة', 'القيمة صفر', 'القيمة تزيد ببطء', 'انتهى القياس'], 'الخط الأفقي = لا تغيّر.', ['خلط بين الثبات والصفر', 'خلط بين الأفقي والصاعد ببطء', 'خمّن']],
+  ['وزن طفل ٣ كجم عند الولادة، و ٦ كجم في عمر ٤ أشهر. كم متوسط الزيادة الشهرية؟', [0.75, 3, 1.5, 0.5], '`3 ÷ 4 = 0.75`.', ['أعطى الزيادة كلها', 'قسم على ٢', 'أخطأ في القسمة']],
+]);
+D('d5', [
+  ['قطاع دائري يمثل ٢٥٪. كم زاويته؟', ['٩٠°', '٢٥°', '٤٥°', '١٠٠°'], '`25٪ × 360 = 90`.', ['ظن أن الدرجة = النسبة', 'أخطأ في الحساب', 'خلط بين ١٠٠٪ و ١٠٠°']],
+  ['في تمثيل دائري لـ ٥٠٠ طالب، قطاع زاويته ٧٢°. كم طالبًا يمثل؟', [100, 72, 360, 140], '`72 ÷ 360 = 0.2` ← `0.2 × 500 = 100`.', ['أخذ الزاوية كأنها العدد', 'خمّن', 'أخطأ في الحساب']],
+  ['تمثيل دائري فيه ثلاثة قطاعات: ٤٠٪ و ٣٥٪ والباقي. كم زاوية الباقي؟', ['٩٠°', '٢٥°', '٧٥°', '٢٧٠°'], 'الباقي ٢٥٪ = ٩٠°.', ['أعطى النسبة لا الزاوية', 'أعطى مجموع القطاعين', 'أعطى زاوية القطاعين']],
+  ['إنفاق أسرة ٦٠٠٠ ريال، وأكبر قطاع زاويته ١٢٠°. كم ريالًا يمثل؟', [2000, 1200, 720, 3000], '١٢٠° ثلث الدائرة.', ['أخطأ في الكسر', 'ضرب الزاوية في ٦', 'ظن أن ١٢٠° نصف الدائرة']],
+]);
+D('d6', [
+  ['جدول: المدرسة أ: ٢٠٠ بنين و ١٥٠ بنات. المدرسة ب: ١٨٠ بنين و ٢٢٠ بنات. كم عدد البنات في المدرستين؟', [370, 380, 400, 750], '`150 + 220 = 370`.', ['جمع البنين بدل البنات', 'أخذ المدرسة ب كلها', 'جمع الجدول كله']],
+  ['بالجدول نفسه: في أي مدرسة <b>نسبة</b> البنات أكبر؟', ['المدرسة ب', 'المدرسة أ', 'متساويتان', 'لا يمكن المعرفة'], 'ب: ٢٢٠ من ٤٠٠ = ٥٥٪، أ: ١٥٠ من ٣٥٠ ≈ ٤٣٪.', ['قارن الأعداد لا النسب', 'خمّن', 'ظن أن النسبة تحتاج معلومات أكثر']],
+  ['جدول أسعار: الدفتر ٥، القلم ٢، المسطرة ٣. اشترى خالد ٣ دفاتر وقلمين. كم دفع؟', [19, 10, 16, 21], '`3 × 5 + 2 × 2 = 19`.', ['جمع الأسعار فقط', 'أخطأ في الضرب', 'أضاف مسطرة']],
+  ['جدول الزوار: الخميس ١٢٠، الجمعة ٢٠٠. ما نسبة زيادة الجمعة على الخميس تقريبًا؟', ['٦٧٪', '٤٠٪', '٨٠٪', '١٦٧٪'], 'الزيادة ٨٠ من الأصل ١٢٠.', ['قسم على قيمة الجمعة', 'أخذ الفرق كأنه النسبة', 'قسم الجديد على القديم']],
+]);
+D('d7', [
+  ['في فصل ٣٠ طالبًا: ١٨ يحبون الرياضيات، و ١٥ يحبون العلوم، و ٧ يحبون الاثنين. كم طالبًا لا يحب أيًا منهما؟', [4, 0, 11, 7], '`18 + 15 − 7 = 26` ← `30 − 26 = 4`.', ['جمع دون طرح المشترك', 'أخطأ في الطرح', 'أعطى المشترك']],
+  ['٤٠ شخصًا يتكلم كل منهم العربية أو الإنجليزية أو كلتيهما: ٣٠ العربية و ٢٠ الإنجليزية. كم يتكلم اللغتين؟', [10, 50, 20, 0], '`30 + 20 − 40 = 10`.', ['جمع ولم يطرح العدد الكلي', 'أعطى عدد الإنجليزية', 'ظن أنه لا يوجد مشترك']],
+  ['٢٥ طالبًا يلعبون القدم، منهم ١٠ يلعبون القدم والسلة معًا. كم طالبًا يلعب القدم فقط؟', [15, 25, 35, 10], '`25 − 10 = 15`.', ['لم يطرح المشترك', 'جمع بدل الطرح', 'أعطى المشترك']],
+  ['كم عددًا من ١ إلى ٣٠ يقبل القسمة على ٢ أو على ٣؟', [20, 25, 5, 10], '`15 + 10 − 5 = 20` (مضاعفات ٦ عُدّت مرتين).', ['لم يطرح المشترك', 'عدّ المشترك فقط', 'عدّ مضاعفات ٣ فقط']],
+]);
+D('d8', [
+  ['كيس فيه ٣ كرات حمراء و ٥ زرقاء. ما احتمال سحب كرة حمراء؟', ['[[3/8]]', '[[3/5]]', '[[5/8]]', '[[1/3]]'], 'المطلوب ÷ الكل: ٣ من ٨.', ['قسم على الزرقاء لا على الكل', 'حسب الزرقاء', 'خمّن']],
+  ['عند رمي حجر نرد، ما احتمال ظهور عدد أكبر من ٤؟', ['[[1/3]]', '[[1/2]]', '[[2/3]]', '[[1/6]]'], '٥ و ٦ فقط: ٢ من ٦.', ['عدّ ٤ ضمن النتائج', 'حسب الأصغر', 'عدّ نتيجة واحدة']],
+  ['عند رمي قطعة نقود مرتين، ما احتمال ظهور الكتابة في المرتين؟', ['[[1/4]]', '[[1/2]]', '[[1/3]]', '١'], 'النتائج ٤ ومنها واحدة مطلوبة.', ['اعتبرها رمية واحدة', 'عدّ ٣ نتائج فقط', 'خمّن']],
+  ['احتمال نجاح خالد في الاختبار ٠٫٨. ما احتمال <b>عدم</b> نجاحه؟', [0.2, 0.8, 1.8, 0.08], '`1 − 0.8 = 0.2`.', ['أعاد الاحتمال نفسه', 'جمع بدل الطرح', 'أخطأ في الفاصلة']],
+]);
+
+D('c1', [
+  DC('قارن بين:', '`3 × 4 + 1`', '`3 × (4 + 1)`', 1, 'الأولى ١٣ والثانية ١٥.', [ 'لم يحسب بترتيب العمليات', null, 'ظن أن الأقواس لا تغير شيئًا', 'ظن أن المقارنة تحتاج معطيات أكثر' ]),
+  DC('قارن بين:', '`0.5`', '[[1/2]]', 2, 'نصف = ٠٫٥.', [ 'خدعه شكل الكتابة', 'خدعه شكل الكتابة', null, 'ظن أن الكسر والعشري لا يُقارنان' ]),
+  DC('إذا كان س عددًا صحيحًا، قارن بين:', 'س', '`5`', 3, 'س قد تكون أكبر أو أصغر من ٥ أو تساويه.', [ 'جرّب قيمة واحدة كبيرة', 'جرّب قيمة واحدة صغيرة', 'جرّب س = ٥ فقط', null ]),
+  DC('قارن بين:', '٢٠٪ من ٥٠', '٥٠٪ من ٢٠', 2, 'الاثنان ١٠.', [ 'لم يحسب', 'لم يحسب', null, 'ظن أن النسب لا تُقارن' ]),
+]);
+D('c2', [
+  DC('إذا كان `س > 0`، قارن بين:', '`س²`', 'س', 3, 'س = ٢ ← الأولى أكبر، س = [[1/2]] ← الثانية أكبر.', [ 'جرّب أعدادًا صحيحة فقط', 'جرّب كسورًا فقط', 'جرّب س = ١ فقط', null ]),
+  DC('إذا كان `س < 0`، قارن بين:', '`س²`', '`س³`', 0, 'المربع موجب والمكعب سالب.', [ null, 'نسي أن المكعب يحفظ السالب', 'جرّب قيمة غير سالبة', 'لم يلاحظ أن الإشارة تحسم المقارنة' ]),
+  DC('إذا كان `0 < س < 1`، قارن بين:', 'س', '`√س`', 1, 'س = [[1/4]] ← الجذر [[1/2]] أكبر.', [ 'ظن أن الجذر يصغّر دائمًا', null, 'جرّب س = ١ وهي خارج الشرط', 'لم يجرّب كسرًا' ]),
+  DC('إذا كان س عددًا صحيحًا موجبًا، قارن بين:', '`2س`', '`س + 2`', 3, 'س = ١ ← الثانية أكبر، س = ٢ ← متساويتان، س = ٣ ← الأولى أكبر.', [ 'جرّب عددًا كبيرًا فقط', 'جرّب س = ١ فقط', 'جرّب س = ٢ فقط', null ]),
+]);
+D('c3', [
+  DC('إذا كان `أ + ب = 10`، قارن بين:', 'أ', 'ب', 3, 'قد يكون أ = ٧ و ب = ٣ أو العكس.', [ 'افترض حالة واحدة', 'افترض حالة واحدة', 'افترض أنهما متساويان', null ]),
+  DC('إذا كان `أ − ب = 5`، قارن بين:', 'أ', 'ب', 0, 'أ أكبر من ب بـ ٥ دائمًا.', [ null, 'أخطأ في الاتجاه', 'خمّن', 'ظن أن الفرق وحده لا يكفي' ]),
+  DC('إذا كان س و ص عددين موجبين و `س ص = 12`، قارن بين:', 'س', 'ص', 3, '(٣، ٤) أو (٤، ٣) أو (٢، ٦)…', [ 'افترض حالة واحدة', 'افترض حالة واحدة', 'افترض أنهما متساويان', null ]),
+  DC('إذا كان `س + 3 = ص + 1`، قارن بين:', 'س', 'ص', 1, '`ص = س + 2` فالثانية أكبر دائمًا.', [ 'أخطأ في نقل الحدود', null, 'خمّن', 'ظن أن المعادلة الواحدة لا تكفي' ]),
+]);
+D('c4', [
+  DC('قارن بين:', '`37 × 42`', '`36 × 43`', 0, 'المجموع واحد (٧٩)، والعددان الأقرب لبعضهما يعطيان ناتجًا أكبر.', [ null, 'ظن أن العدد الأكبر ٤٣ يحسم المقارنة', 'ظن أن المجموع المتساوي يعني ناتجًا متساويًا', 'ظن أن المقارنة تحتاج حسابًا كاملًا' ]),
+  DC('قارن بين:', '[[17/35]]', '[[1/2]]', 1, 'نصف ٣٥ = ١٧٫٥ وهو أكبر من ١٧.', [ 'لم يقارن بالنصف', null, 'ظن ١٧ نصف ٣٥', 'خمّن' ]),
+  DC('قارن بين:', '`2⁹`', '`500`', 0, '`2⁹ = 512`.', [ null, 'خمّن دون حساب', 'قرّب كثيرًا', 'ظن أن القوة لا تُحسب' ]),
+  DC('قارن بين:', '`0.98 × 50`', '`50 − 1`', 2, '`0.98 × 50 = 49`.', [ 'خمّن دون حساب', 'ظن أن الضرب في عدد أقل من ١ يصغّر كثيرًا', null, 'ظن أن المقارنة تحتاج معطيات' ]),
+]);
+
+/* ================= smart placement test + personal plan =================
+   Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
+   The test keeps, for every skill, how sure we are that the student knows it, and always asks
+   the question that teaches us the most. It stops when it is sure about every skill (or after 35).
+   Result per lesson:  green = knows it (skip)  ·  yellow = knows it but slow/unsure (practice)
+                       red = needs the lesson   ·  check = not sure yet (two questions before the lesson)
+   The numbers below were tuned on simulated students before building (see the plan notes). */
+const DG_BUDGET = 35, DG_LO = 0.12, DG_HI = 0.88, DG_GREEN = 0.75, DG_RED = 0.2, DG_SPREAD = 0.35;
+const DG_LIK = { ok: [0.88, 0.22], wrong: [0.12, 0.62], dk: [0.03, 0.55], timeout: [0.35, 0.40] };
+const DG_ANC_OK = 0.45, DG_DESC_BAD = 0.4;
+const DG_MIN = { red: 20, check: 3, yellow: 6 }; // rough minutes per plan step
+
+let DGG = null;
+function dgGraph() {
+  if (DGG) return DGG;
+  const ids = Object.keys(SKILLS), kids = {}, unit = {};
+  ids.forEach(i => kids[i] = []);
+  ids.forEach(i => (SKILLS[i].pre || []).forEach(p => kids[p] && kids[p].push(i)));
+  for (const d of DISTRICTS) for (const l of d.lessons || []) unit[l.id] = d.id;
+  const clos = (s, rel) => { const out = new Set(), st = [...rel(s)]; while (st.length) { const x = st.pop(); if (!out.has(x)) { out.add(x); st.push(...rel(x)); } } return out; };
+  const anc = {}, desc = {};
+  ids.forEach(i => { anc[i] = clos(i, x => SKILLS[x].pre || []); desc[i] = clos(i, x => kids[x]); });
+  const skills = ids.filter(i => !SKILLS[i].mixed && DIAG[i] && DIAG[i].length);
+  return DGG = { anc, desc, unit, skills };
+}
+const dgLesson = id => { for (const d of DISTRICTS) for (const l of d.lessons || []) if (l.id === id) return { d, l }; return null; };
+function dgLimit(id) {
+  const s = SKILLS[id] || {}; if (s.t) return s.t;
+  if (typeof SKILL_T === 'number') return SKILL_T;
+  return (SKILL_T && SKILL_T[id.replace(/\d+$/, '')]) || 60;
+}
+const dgFast = (t, id) => t < 0.7 * dgLimit(id);
+const dgH = p => p <= 0 || p >= 1 ? 0 : -(p * Math.log2(p) + (1 - p) * Math.log2(1 - p));
+const dgLg = p => Math.log(p / (1 - p)), dgSg = x => 1 / (1 + Math.exp(-x));
+
+/* ---------- the model ---------- */
+function dgNewRun() { return { L: {}, ua: {}, gl: [2, 2], asked: {}, speed: {}, used: {}, n: 0, secs: 0, misses: {}, log: [], t0: Date.now() }; }
+function dgP(R, id) {
+  const G = dgGraph(), u = G.unit[id], [a, b] = R.ua[u] || [1, 1], [ga, gb] = R.gl;
+  const pg = ga / (ga + gb), m = a + b - 2;
+  const pu = Math.min(0.95, Math.max(0.05, (a - 1 + 2 * pg) / (m + 2)));   // this unit so far, pulled toward the student overall
+  return dgSg(dgLg(pu) + (R.L[id] || 0));
+}
+const dgAdd = (R, id, lk, lu) => { R.L[id] = (R.L[id] || 0) + Math.log(lk / lu); };
+function dgPick(R) {
+  const G = dgGraph(), P = {};
+  G.skills.forEach(s => P[s] = dgP(R, s));
+  const open = G.skills.filter(s => P[s] > DG_LO && P[s] < DG_HI && (R.asked[s] || 0) < 2 && (DIAG[s].length > (R.used[s] || []).length));
+  if (!open.length) return null;
+  let best = null, bs = -1;
+  for (const s of open) {
+    let sc = dgH(P[s]);
+    for (const x of G.anc[s]) if (P[x] != null) sc += DG_SPREAD * dgH(P[x]);
+    for (const x of G.desc[s]) if (P[x] != null) sc += DG_SPREAD * dgH(P[x]);
+    sc += Math.random() * 0.05;   // two students never get the exact same test
+    if (sc > bs) { bs = sc; best = s; }
+  }
+  return best;
+}
+function dgQuestion(id, used) {
+  const all = DIAG[id].map((_, i) => i).filter(i => !(used || []).includes(i));
+  const pool = all.length ? all : DIAG[id].map((_, i) => i);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+function dgRecord(R, id, qi, res, secs, chosen) {
+  const G = dgGraph(), u = G.unit[id];
+  R.n++; R.secs += secs; R.asked[id] = (R.asked[id] || 0) + 1; (R.used[id] = R.used[id] || []).push(qi);
+  R.log.push([id, qi, res, Math.round(secs), chosen]);
+  const [lk, lu] = DG_LIK[res]; dgAdd(R, id, lk, lu);
+  const ua = R.ua[u] || (R.ua[u] = [1, 1]);
+  if (res === 'ok') {
+    for (const a of G.anc[id]) dgAdd(R, a, 0.88, DG_ANC_OK);
+    ua[0]++; R.gl[0]++;
+    (R.speed[id] = R.speed[id] || []).push(dgFast(secs, id) ? 1 : 0);
+  } else if (res === 'wrong' || res === 'dk') {
+    for (const d of G.desc[id]) dgAdd(R, d, DG_DESC_BAD, 0.75);
+    ua[1]++; R.gl[1]++;
+    if (res === 'wrong' && chosen != null) { const q = DIAG[id][qi], why = q.miss && q.miss[chosen]; if (why) (R.misses[id] = R.misses[id] || []).push(why); }
+  } else (R.speed[id] = R.speed[id] || []).push(0);
+  /* the predicted score keeps learning from the test too */
+  if (u && WEIGHT[u] != null && res !== 'timeout') { const a = S.skill[u] || (S.skill[u] = []); a.push(res === 'ok' ? 1 : 0); if (a.length > 24) a.shift(); }
+}
+function dgLabels(R) {
+  const G = dgGraph(), status = {}, guessed = {};
+  for (const s of G.skills) {
+    const p = dgP(R, s), sp = R.speed[s];
+    if (p >= DG_GREEN) { status[s] = sp && sp.some(v => !v) ? 'yellow' : 'green'; if (!R.asked[s]) guessed[s] = 1; }
+    else if (p <= DG_RED) status[s] = 'red';
+    else status[s] = 'check';
+  }
+  /* practice-only lessons follow their unit */
+  for (const d of DISTRICTS) for (const l of d.lessons || []) if (SKILLS[l.id] && SKILLS[l.id].mixed) {
+    const mates = d.lessons.filter(x => status[x.id]).map(x => status[x.id]);
+    status[l.id] = mates.every(x => x === 'green') ? 'green' : 'yellow';
+  }
+  return { status, guessed };
+}
+function dgFinish(R) {
+  const { status, guessed } = dgLabels(R);
+  const prev = S.diag || {};
+  S.diag = { v: 1, at: Date.now(), status, guessed, misses: R.misses, used: R.used, n: R.n, secs: Math.round(R.secs), first: prev.first || Object.assign({}, status), history: (prev.history || []).concat([{ at: Date.now(), n: R.n, counts: dgCounts(status) }]).slice(-6), run: null, slips: {} };
+  S.placement = { date: Date.now(), pct: Math.round(100 * R.log.filter(x => x[2] === 'ok').length / Math.max(1, R.n)) };
+  persist();
+}
+function dgCounts(status) { const c = { green: 0, yellow: 0, red: 0, check: 0 }; for (const v of Object.values(status || {})) if (c[v] != null) c[v]++; return c; }
+
+/* ---------- state helpers used by the rest of the app ---------- */
+const dgOn = () => !!(S.diag && S.diag.status);
+const dgState = id => dgOn() ? (S.diag.status[id] || null) : null;
+const cleared = l => !!S.done[l.id] || dgState(l.id) === 'green';
+function dgSet(id, st) { if (!dgOn()) return; S.diag.status[id] = st; if (st !== 'green' && S.diag.guessed) delete S.diag.guessed[id]; persist(); }
+/* the plan: every lesson the student still needs, best order first (prerequisites first, then the most exam points per minute) */
+function dgPlan() {
+  if (!dgOn()) return [];
+  const G = dgGraph(), need = [];
+  for (const d of units()) for (const l of d.lessons) { const st = S.diag.status[l.id]; if (st && st !== 'green' && !S.done[l.id]) need.push({ d, l, st }); }
+  const ids = new Set(need.map(x => x.l.id)), placed = new Set(), out = [];
+  const gap = { red: 1, check: 0.6, yellow: 0.45 };
+  const prio = x => (WEIGHT[x.d.id] || 5) * gap[x.st] / DG_MIN[x.st];
+  const ready = x => {
+    const pre = SKILLS[x.l.id] && SKILLS[x.l.id].mixed ? x.d.lessons.map(m => m.id).filter(m => m !== x.l.id) : [...(G.anc[x.l.id] || [])];
+    return pre.every(a => !ids.has(a) || placed.has(a));
+  };
+  let rest = need;
+  while (rest.length) {
+    const cand = rest.filter(ready), pool = cand.length ? cand : rest;
+    const pick = pool.reduce((a, b) => (prio(b) > prio(a) ? b : a));
+    out.push(pick); placed.add(pick.l.id); rest = rest.filter(x => x !== pick);
+  }
+  return out;
+}
+const dgGuessed = () => dgOn() ? Object.keys(S.diag.guessed || {}).filter(id => S.diag.status[id] === 'green') : [];
+/* next lesson for the home screens: the plan first, otherwise the first lesson not cleared */
+function nextLesson() {
+  const p = dgPlan()[0]; if (p) return { d: p.d, l: p.l, i: p.d.lessons.indexOf(p.l), st: p.st };
+  for (const d of openUnits()) { const i = d.lessons.findIndex(l => !cleared(l)); if (i >= 0) return { d, l: d.lessons[i], i }; }
+  return null;
+}
+/* a wrong answer in a lesson we called "known" twice → we are no longer sure: check it */
+function dgSlip(s, ok) {
+  if (!dgOn() || !s.qid) return;
+  const id = String(s.qid).split(':')[0]; if (dgState(id) !== 'green' || S.done[id]) return;
+  const sl = S.diag.slips || (S.diag.slips = {});
+  if (ok) { if (sl[id]) sl[id] = Math.max(0, sl[id] - 1); return; }
+  sl[id] = (sl[id] || 0) + 1;
+  if (sl[id] >= 2) { S.diag.status[id] = 'check'; sl[id] = 0; }
+}
+
+/* ---------- screens ---------- */
+function dgScreen(title, onExit) {
+  screen();
+  const wrap = h('div', 'player dg');
+  const top = h('div', 'ptop gut');
+  const x = h('button', 'xbtn', ic('close', 22)); x.setAttribute('aria-label', 'خروج'); x.onclick = () => { FX.play('tap'); onExit(); };
+  const pbar = h('div', 'pbar', '<i style="width:0%"></i>');
+  top.append(x, pbar);
+  const strip = h('div', 'phases gut', `<span class="ph on">${title}</span>`);
+  const body = h('div', 'pbody gut'), dock = h('div', 'dock'), dockIn = h('div', 'dock-in gut');
+  dock.appendChild(dockIn); wrap.append(top, strip, body); app.append(wrap, dock);
+  return { body, dock, dockIn, strip, bar: v => { pbar.firstChild.style.width = Math.round(100 * v) + '%'; } };
+}
+/* one question with its own clock. done(result, seconds, chosenText) with result ok / wrong / dk / timeout */
+function dgAsk(V, q, limit, done, opt = {}) {
+  V.body.innerHTML = ''; window.scrollTo(0, 0);
+  window.__dg = { q, id: opt.id }; // read by the automatic tests only
+  if (q.passage) V.body.appendChild(h('div', 'passage', `<div class="ph">${ic('book', 16)}<span>النص</span></div><div class="pt">${fmt(q.passage)}</div>`));
+  const card = h('div', 'qcard dgq');
+  const C = 2 * Math.PI * 19;
+  const ring = h('div', 'dtimer', `<svg viewBox="0 0 44 44" aria-hidden="true"><circle class="tr-bg" cx="22" cy="22" r="19"/><circle class="tr-fg" cx="22" cy="22" r="19" style="stroke-dasharray:${C};stroke-dashoffset:0"/></svg><b></b><small>ثانية</small>`);
+  ring.setAttribute('role', 'timer');
+  if (opt.kick) card.appendChild(h('span', 'kick', opt.kick));
+  card.appendChild(ring);
+  card.appendChild(h('p', 'qtext', fmt(q.q)));
+  V.body.appendChild(card);
+  if (q.a != null) { const c = h('div', 'cmp'); c.innerHTML = `<div><small>القيمة الأولى</small><span>${fmt(q.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(q.b)}</span></div>`; V.body.appendChild(c); }
+  const order = (q.choices === CMP || q.keep) ? q.choices.map((_, i) => i) : shuffle(q.choices.map((_, i) => i));
+  const opts = h('div', 'opts'); let sel = null, over = false;
+  const btns = order.map((ci, k) => {
+    const b = h('button', 'opt', `<span class="k">${LETTERS[k]}</span><span class="ot">${fmt(q.choices[ci])}</span>`);
+    b.onclick = () => { if (over) return; FX.play('select'); sel = ci; btns.forEach(x => x.classList.toggle('sel', x === b)); go.disabled = false; };
+    b.dataset.c = ci; opts.appendChild(b); return b;
+  });
+  V.body.appendChild(opts);
+  V.dock.className = 'dock'; V.dockIn.innerHTML = '';
+  const row = h('div', 'dgrow');
+  const dk = h('button', 'btn dk', 'لا أعرف'), go = h('button', 'cta', opt.last ? 'إنهاء' : 'التالي');
+  go.disabled = true; row.append(dk, go); V.dockIn.appendChild(row);
+  const t0 = performance.now();
+  const secs = () => Math.min(limit, (performance.now() - t0) / 1000);
+  const end = (res) => {
+    if (over) return; over = true; clearInterval(tick);
+    btns.forEach(b => b.disabled = true); dk.disabled = go.disabled = true;
+    const chosen = sel != null ? q.choices[sel] : null;
+    if (res === 'timeout') {
+      ring.classList.add('out'); V.dock.classList.add('bad'); V.dockIn.innerHTML = `<p class="dg-out">${ic('timer', 18)} انتهى الوقت</p>`; FX.play('wrong');
+      setTimeout(() => done('timeout', limit, null), 1100);
+    } else done(res === 'pick' ? (sel === q.answer ? 'ok' : 'wrong') : res, secs(), chosen);
+  };
+  const paint = () => {
+    const left = Math.max(0, limit - secs());
+    ring.querySelector('b').textContent = ar(Math.ceil(left));
+    ring.querySelector('.tr-fg').style.strokeDashoffset = C * (1 - left / limit);
+    ring.classList.toggle('low', left <= 10);
+    if (left <= 0) end('timeout');
+  };
+  const tick = setInterval(paint, 200); paint();
+  cleanupFns.push(() => clearInterval(tick));
+  dk.onclick = () => { FX.play('tap'); end('dk'); };
+  go.onclick = () => { FX.play('tap'); if (sel != null) end('pick'); };
+}
+
+/* the start page */
+function dgIntro() {
+  screen();
+  hud('', showCity).classList.add('over');
+  const w = h('div', 'unitpage');
+  const resume = S.diag && S.diag.run;
+  const again = dgOn();
+  const ex = DISTRICTS.find(d => d.exam) || units()[0];
+  const pv = poster('billboard', ex, `<div class="bb-body"><small class="eyebrow">اختبار المستوى الذكي · ${COURSE.section}</small><h1>نعرف بالضبط ما تحتاجه</h1><p>الاختبار يتغيّر مع إجاباتك، ثم يصنع لك خطة بالدروس التي تحتاجها فقط.</p><div class="bb-act"></div></div>`);
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>${resume ? 'أكمل الاختبار' : again ? 'أعد الاختبار' : 'ابدأ'}</span>`);
+  go.onclick = () => { FX.play('whoosh'); dgRun(); };
+  pv.querySelector('.bb-act').appendChild(go);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg);
+  const rules = h('section', 'dg-rules gut');
+  rules.innerHTML = `<ul>
+    <li><b>من ١٢ إلى ٣٥ سؤالًا تقريبًا</b><span>كلما عرفنا مستواك أسرع، انتهى أسرع.</span></li>
+    <li><b>لكل سؤال وقته</b><span>تراه أعلى السؤال. إذا انتهى ننتقل للسؤال التالي.</span></li>
+    <li><b>لا تخمّن</b><span>اضغط «لا أعرف». التخمين يخرّب خطتك ويخفي عنك ما تحتاجه.</span></li>
+    <li><b>تقدر توقف وتكمل لاحقًا</b><span>إجاباتك محفوظة.</span></li></ul>
+    ${again && !resume ? '<p class="dg-note">إعادة الاختبار تبني خطة جديدة من إجاباتك الجديدة.</p>' : ''}`;
+  w.appendChild(rules);
+  app.appendChild(w);
+}
+/* the test itself */
+function dgRun() {
+  if (!S.diag) S.diag = {};
+  const R = S.diag.run || (S.diag.run = dgNewRun());
+  const V = dgScreen('اختبار المستوى', () => { persist(); showCity(); });
+  const G = dgGraph();
+  const step = () => {
+    const sure = G.skills.filter(s => { const p = dgP(R, s); return p <= DG_LO || p >= DG_HI; }).length;
+    V.bar(Math.max(R.n / DG_BUDGET, sure / G.skills.length));
+    const id = R.n < DG_BUDGET ? dgPick(R) : null;
+    if (!id) { dgFinish(R); FX.play('level'); return dgResult(); }
+    const qi = dgQuestion(id, R.used[id]), q = DIAG[id][qi];
+    dgAsk(V, q, dgLimit(id), (res, secs, chosen) => { dgRecord(R, id, qi, res, secs, chosen); persist(); step(); }, { kick: `سؤال ${ar(R.n + 1)}`, id });
+  };
+  step();
+}
+
+/* the result: what you know, what you need, and the plan */
+const DG_NAME = { green: 'متقن', yellow: 'تمرين', red: 'شرح', check: 'تحقق' };
+const DG_SUB = { green: 'تتخطاه', yellow: 'تمرين سريع بالوقت', red: 'تحتاج الدرس', check: 'سؤالان قبل الدرس' };
+function dgResult() {
+  screen();
+  hud('', showCity).classList.add('over');
+  const w = h('div', 'unitpage dgres');
+  const st = S.diag.status, c = dgCounts(st), skip = c.green;
+  const ex = DISTRICTS.find(d => d.exam) || units()[0];
+  const plan = dgPlan(), mins = plan.reduce((a, x) => a + DG_MIN[x.st], 0);
+  const pv = poster('billboard', ex, `<div class="bb-body"><small class="eyebrow">نتيجة اختبار المستوى · ${ar(S.diag.n)} سؤالًا</small><h1>${skip ? `تتخطى ${ar(skip)} درسًا` : 'خطتك جاهزة'}</h1><p>${plan.length ? `خطتك ${ar(plan.length)} خطوة، تقريبًا ${ar(Math.max(1, Math.round(mins / 60)))} ${Math.round(mins / 60) <= 2 ? 'ساعة' : 'ساعات'} من الدراسة.` : 'أتقنت كل دروس هذا القسم. ركّز على الاختبارات التجريبية.'}</p><div class="bb-act"></div></div>`);
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>${plan.length ? 'ابدأ خطتك' : 'الصفحة الرئيسية'}</span>`);
+  go.onclick = () => { FX.play('whoosh'); if (plan.length) dgOpen(plan[0]); else showCity(); };
+  pv.querySelector('.bb-act').appendChild(go);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg);
+  /* the four counts */
+  const cnt = h('div', 'dg-counts gut');
+  cnt.innerHTML = ['green', 'yellow', 'red', 'check'].map(k => `<div class="dgc ${k}"><b>${ar(c[k])}</b><span>${DG_NAME[k]}</span><small>${DG_SUB[k]}</small></div>`).join('');
+  w.appendChild(cnt);
+  /* what exactly is missing: the biggest gaps, with the slip we saw */
+  const gaps = plan.filter(x => x.st === 'red').slice(0, 3);
+  if (gaps.length) {
+    const g = h('section', 'dg-gaps gut');
+    g.innerHTML = `<h3>أهم ما ينقصك</h3>` + gaps.map(x => { const m = (S.diag.misses[x.l.id] || [])[0];
+      return `<div class="gap"><span class="dot red"></span><div><b>${fmt(x.l.title)}</b><small>${x.d.name}${m ? ` · لاحظنا: ${fmt(m)}` : ''}</small></div></div>`; }).join('');
+    w.appendChild(g);
+  }
+  /* the map: every lesson as a square, unit by unit */
+  const map = h('section', 'dg-map gut');
+  map.innerHTML = `<h3>خريطة دروسك</h3>` + units().map(d => `<div class="mrow"><span class="mname">${d.name}</span><span class="msq">${d.lessons.map(l => { const s = st[l.id] || 'none'; return `<i class="${S.done[l.id] ? 'green' : s}" title="${escHtml(l.title)}"></i>`; }).join('')}</span></div>`).join('') +
+    `<div class="mkey">${['green', 'yellow', 'red', 'check'].map(k => `<span><i class="${k}"></i>${DG_NAME[k]}</span>`).join('')}</div>`;
+  w.appendChild(map);
+  app.appendChild(w);
+}
+
+/* open a plan step */
+function dgOpen(x) {
+  if (x.st === 'check') return dgGate(x.d, x.l);
+  if (x.st === 'yellow') return dgPractice(x.d, x.l);
+  playLesson(x.d, x.l, true);
+}
+/* two of three: one slip never decides alone. onEnd(label) with green / yellow / red */
+function dgTwoOfThree(V, id, onEnd, title) {
+  const res = [];
+  const used = (S.diag.used[id] = S.diag.used[id] || []);
+  const step = () => {
+    const oks = res.filter(r => r[0] === 'ok').length, bad = res.length - oks;
+    V.bar(res.length / 3);
+    if (oks >= 2 || bad >= 2 || res.length >= 3) {
+      let lab = 'red';
+      if (oks >= 2) lab = res.filter(r => r[0] === 'ok').every(r => dgFast(r[1], id)) ? 'green' : 'yellow';
+      else if (res.some(r => r[0] === 'timeout') && res.filter(r => r[0] === 'wrong' || r[0] === 'dk').length < 2) lab = 'yellow';
+      persist(); return onEnd(lab);
+    }
+    const qi = dgQuestion(id, used), q = DIAG[id][qi]; used.push(qi);
+    dgAsk(V, q, dgLimit(id), (r, t) => { res.push([r, t]); step(); }, { kick: title, id });
+  };
+  step();
+}
+/* "check" lessons: two questions before the lesson */
+function dgGate(d, l) {
+  screen(d.color);
+  hud('', () => showDistrict(d)).classList.add('over');
+  const w = h('div', 'unitpage');
+  const pv = poster('billboard short', d, `<div class="bb-body"><small class="eyebrow">${d.name}</small><h1>${fmt(l.title)}</h1><p>لسنا متأكدين هل تحتاج هذا الدرس. أجب عن سؤالين: إذا أصبت تتخطاه، وإلا ندخل الدرس مباشرة.</p><div class="bb-act"></div></div>`);
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>سؤالان للتحقق</span>`), skip = h('button', 'ghost-btn', '<span>ادخل الدرس</span>');
+  go.onclick = () => { FX.play('whoosh'); dgSkipTest(d, l); };
+  skip.onclick = () => { FX.play('tap'); playLesson(d, l, true); };
+  pv.querySelector('.bb-act').append(go, skip);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg); app.appendChild(w);
+}
+/* "skip with two questions" (from a gate, or from any lesson's first screen) */
+function dgSkipTest(d, l) {
+  if (!DIAG[l.id]) return playLesson(d, l, true);
+  const V = dgScreen('تحقق: ' + l.title, () => showDistrict(d));
+  dgTwoOfThree(V, l.id, lab => {
+    if (lab === 'red') { dgSet(l.id, 'red'); toast('نبدأ الدرس، وهو مكتوب لك خطوة بخطوة'); return playLesson(d, l, true); }
+    dgSet(l.id, lab);
+    dgDone(d, lab === 'green' ? 'تخطيت الدرس' : 'تعرف الدرس', lab === 'green' ? 'أجبت صح وبسرعة، فلن تحتاج هذا الدرس.' : 'أجبت صح لكن ببطء. أضفنا لك تمرينًا سريعًا بالوقت في خطتك.');
+  }, 'تحقق');
+}
+/* "yellow" lessons: five timed questions from the lesson itself */
+function dgPractice(d, l) {
+  const own = shuffle(l.steps.filter(s => s.q && !s.check && Array.isArray(s.choices))).slice(0, 5);
+  const qs = own.length >= 4 ? own : own.concat((DIAG[l.id] || []).slice(0, 5 - own.length));
+  const V = dgScreen('تمرين بالوقت: ' + l.title, () => showDistrict(d));
+  let i = 0, ok = 0, fast = 0;
+  const step = () => {
+    V.bar(i / qs.length);
+    if (i >= qs.length) {
+      const lab = ok >= qs.length - 1 && fast >= qs.length - 1 ? 'green' : ok >= qs.length - 2 ? 'yellow' : 'red';
+      dgSet(l.id, lab);
+      if (lab === 'red') return dgDone(d, 'تحتاج الدرس', `أصبت ${ar(ok)} من ${ar(qs.length)}. أضفنا الدرس كاملًا إلى خطتك.`, { d, l });
+      return dgDone(d, lab === 'green' ? 'أتقنته' : 'قريب', lab === 'green' ? `أصبت ${ar(ok)} من ${ar(qs.length)} في الوقت. الدرس متقن.` : `أصبت ${ar(ok)} من ${ar(qs.length)}. أعد التمرين لاحقًا لتصل إلى السرعة المطلوبة.`);
+    }
+    dgAsk(V, qs[i], dgLimit(l.id), (r, t) => { if (r === 'ok') { ok++; if (dgFast(t, l.id)) fast++; } i++; step(); }, { kick: `${ar(i + 1)} من ${ar(qs.length)}`, last: i === qs.length - 1, id: l.id });
+  };
+  step();
+}
+/* lessons we only guessed as known: one quick question each (a miss gets a second chance) */
+function dgConfirm() {
+  const ids = dgGuessed().slice(0, 6);
+  if (!ids.length) return showCity();
+  const V = dgScreen('تحقق سريع', () => showCity());
+  let i = 0, reopened = 0;
+  const one = (id, first) => {
+    const used = (S.diag.used[id] = S.diag.used[id] || []);
+    const qi = dgQuestion(id, used), q = DIAG[id][qi]; used.push(qi);
+    dgAsk(V, q, dgLimit(id), (r, t) => {
+      if (r === 'ok') { S.diag.status[id] = first && dgFast(t, id) ? 'green' : 'yellow'; delete S.diag.guessed[id]; if (S.diag.status[id] !== 'green') reopened++; i++; return step(); }
+      if (first) return one(id, false);
+      S.diag.status[id] = r === 'timeout' ? 'yellow' : 'red'; delete S.diag.guessed[id]; reopened++; i++; step();
+    }, { kick: `${ar(i + 1)} من ${ar(ids.length)}`, id });
+  };
+  const step = () => { V.bar(i / ids.length); persist(); if (i >= ids.length) return dgDone(null, reopened ? `أضفنا ${ar(reopened)} إلى خطتك` : 'كلها مؤكدة', reopened ? 'بعض الدروس التي ظننّاك تعرفها تحتاج مراجعة، فوضعناها في خطتك.' : 'تأكدنا أنك تعرف هذه الدروس.'); one(ids[i], true); };
+  step();
+}
+function dgDone(d, title, text, open) {
+  screen(d && d.color);
+  hud('', showCity).classList.add('over');
+  const w = h('div', 'unitpage');
+  const pv = poster('billboard short', d || DISTRICTS.find(x => x.exam) || units()[0], `<div class="bb-body"><small class="eyebrow">خطتك</small><h1>${title}</h1><p>${text}</p><div class="bb-act"></div></div>`);
+  const nx = dgPlan()[0];
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>${open ? 'ابدأ الدرس' : nx ? 'الخطوة التالية' : 'الصفحة الرئيسية'}</span>`);
+  go.onclick = () => { FX.play('whoosh'); if (open) playLesson(open.d, open.l, true); else if (nx) dgOpen(nx); else showCity(); };
+  const home = h('button', 'ghost-btn', '<span>الرئيسية</span>'); home.onclick = () => { FX.play('tap'); showCity(); };
+  pv.querySelector('.bb-act').append(go, home);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg); app.appendChild(w);
+}
+/* the plan as a rail of tiles (course home) */
+function dgPlanRail() {
+  const plan = dgPlan(), gs = dgGuessed();
+  if (!plan.length && !gs.length) return null;
+  const [sec, row] = rail('خطتك', `${ar(plan.length)} ${plan.length > 10 ? 'خطوة' : 'خطوات'}`);
+  if (gs.length) { const b = h('button', 'tile dgt confirm'); b.innerHTML = `<span class="t-num">${ic('check', 16)}</span><span class="t-body"><small>تحقق سريع · ${ar(Math.min(6, gs.length))} أسئلة</small><b>دروس ظننّا أنك تعرفها</b></span>`; b.onclick = () => { FX.play('whoosh'); dgConfirm(); }; row.appendChild(b); }
+  plan.slice(0, 12).forEach((x, i) => {
+    const b = h('button', `tile dgt ${x.st}` + (i === 0 ? ' now' : ''));
+    b.style.setProperty('--pc', posterVar(x.d));
+    b.innerHTML = `<span class="t-num">${ar(i + 1)}</span><span class="t-body"><small>${DG_NAME[x.st]} · ${x.d.name}</small><b>${fmt(x.l.title)}</b></span>`;
+    b.onclick = () => { FX.play('whoosh'); dgOpen(x); };
+    row.appendChild(b);
+  });
+  return sec;
+}
+
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET } };
 })();
 (function () {
 /* ================= course block: Qudurat verbal section =================
@@ -8498,6 +9483,7 @@ function recordAnswer(s, ok, mode, conf) {
   S.answered++; if (ok) S.right++;
   if (conf && conf !== 'typed') { const c = S.conf || (S.conf = {}); const e = c[conf] || (c[conf] = [0, 0]); e[0]++; if (ok) e[1]++; }
   const lucky = ok && conf === 'guess';
+  if (mode !== 'placement') dgSlip(s, ok && !lucky);
   if (s.dist && WEIGHT[s.dist] != null) { const a = S.skill[s.dist] || (S.skill[s.dist] = []); a.push(ok ? 1 : 0); if (a.length > 24) a.shift(); }
   const key = mistakeKey(s), m = S.mistakes[key];
   if (!ok || lucky) {
@@ -8556,7 +9542,7 @@ function relationFirst(s) {
   const a = m[1].trim(), b = m[2].trim(), rel = relOf(a, b);
   return rel ? [a, b, rel] : null;
 }
-function lessonsDone(d) { return (d.lessons || []).filter(l => S.done[l.id]).length; }
+function lessonsDone(d) { return (d.lessons || []).filter(l => cleared(l)).length; }
 
 /* ---------- interface colour (unlockable with points) ---------- */
 const ACCENTS = [['emerald', 'زمردي', '#0E6E5C', 0], ['navy', 'كحلي', '#24479E', 0], ['indigo', 'نيلي', '#4B45B8', 150], ['maroon', 'عنابي', '#8E2D45', 150], ['copper', 'نحاسي', '#A65420', 300], ['graphite', 'فحمي', '#323A48', 300]];
@@ -8603,18 +9589,21 @@ function showCity() {
   const bar = hud(`<span class="wordmark">قدرات</span><span class="sec">${COURSE.section}</span>`); bar.classList.add('over');
   if (window.Academy) { const b = h('button', 'xbtn', ic('back', 22)); b.setAttribute('aria-label', 'الأكاديمية'); b.onclick = () => { FX.play('tap'); window.Academy.home(COURSE.id); }; bar.prepend(b); }
   const w = h('div', 'home');
-  let next = null;
-  for (const d of openUnits()) { const i = d.lessons.findIndex(l => !S.done[l.id]); if (i >= 0) { next = { d, l: d.lessons[i], i }; break; } }
+  const next = nextLesson();
   const pred = predictScore(), dte = daysToExam(), target = S.profile.target || 0;
   /* 1 · billboard: the one thing to do now */
   const bb = h('div', 'gut');
-  if (!pred) {
-    const pv = poster('billboard', DISTRICTS.find(d => d.exam) || units()[0], `<div class="bb-body"><small class="eyebrow">الخطوة الأولى</small><h1>اعرف مستواك</h1><p>${qWord(2 * Object.keys(WEIGHT).filter(id => GEN[id]).length)} قصيرة من كل الوحدات، ثم نخبرك من أين تبدأ.</p><div class="bb-act"></div></div>`);
-    const go = h('button', 'play-btn', `${ic('play', 18)}<span>ابدأ اختبار المستوى</span>`); go.onclick = () => { FX.play('whoosh'); playPlacement(); };
+  const testing = S.diag && S.diag.run;
+  if (testing || (!dgOn() && !pred)) {
+    const pv = poster('billboard', DISTRICTS.find(d => d.exam) || units()[0], testing
+      ? `<div class="bb-body"><small class="eyebrow">اختبار المستوى</small><h1>أكمل من حيث توقفت</h1><p>أجبت ${qWord(testing.n)}. إجاباتك محفوظة.</p><div class="bb-act"></div></div>`
+      : `<div class="bb-body"><small class="eyebrow">الخطوة الأولى</small><h1>اعرف مستواك</h1><p>اختبار ذكي يتغيّر مع إجاباتك، ثم يصنع لك خطة بالدروس التي تحتاجها فقط.</p><div class="bb-act"></div></div>`);
+    const go = h('button', 'play-btn', `${ic('play', 18)}<span>${testing ? 'أكمل الاختبار' : 'ابدأ اختبار المستوى'}</span>`); go.onclick = () => { FX.play('whoosh'); testing ? dgRun() : dgIntro(); };
     pv.querySelector('.bb-act').appendChild(go); bb.appendChild(pv);
   } else if (next) {
-    const pv = poster('billboard', next.d, `<div class="bb-body"><small class="eyebrow">الوحدة ${ar(unitNo(next.d))} · الدرس ${ar(next.i + 1)}</small><h1>${fmt(next.l.title)}</h1><p>${fmt(whyOf(next.l))}</p><div class="bb-act"></div></div>`);
-    const go = h('button', 'play-btn', `${ic('play', 18)}<span>${S.answered ? 'تابع الدرس' : 'ابدأ الدرس'}</span>`); go.onclick = () => { FX.play('whoosh'); playLesson(next.d, next.l); };
+    const stp = next.st ? `خطتك · ${DG_NAME[next.st]}` : `الوحدة ${ar(unitNo(next.d))} · الدرس ${ar(next.i + 1)}`;
+    const pv = poster('billboard', next.d, `<div class="bb-body"><small class="eyebrow">${stp}</small><h1>${fmt(next.l.title)}</h1><p>${next.st === 'check' ? 'سؤالان للتحقق: إذا أصبت تتخطى الدرس.' : next.st === 'yellow' ? 'تعرف هذا الدرس. تمرين سريع بالوقت يكفي.' : fmt(whyOf(next.l))}</p><div class="bb-act"></div></div>`);
+    const go = h('button', 'play-btn', `${ic('play', 18)}<span>${next.st === 'check' ? 'تحقق' : next.st === 'yellow' ? 'تمرين بالوقت' : S.answered ? 'تابع الدرس' : 'ابدأ الدرس'}</span>`); go.onclick = () => { FX.play('whoosh'); next.st ? dgOpen(next) : playLesson(next.d, next.l); };
     const more = h('button', 'ghost-btn', `<span>الوحدة</span>`); more.onclick = () => { FX.play('tap'); showDistrict(next.d); };
     pv.querySelector('.bb-act').append(go, more); bb.appendChild(pv);
   } else if (openUnits().length < units().length) {
@@ -8629,11 +9618,13 @@ function showCity() {
     st.onclick = () => { FX.play('tap'); showReport(); };
     w.appendChild(st);
   }
-  /* 3 · rail: the rest of the current unit */
-  if (next) {
+  /* 3 · the personal plan from the placement test */
+  if (dgOn()) { const pr = dgPlanRail(); if (pr) w.appendChild(pr); }
+  /* 3b · rail: the rest of the current unit */
+  if (next && !dgOn()) {
     const [sec, row] = rail(`تابع: ${next.d.name}`, `${ar(lessonsDone(next.d))} من ${ar(next.d.lessons.length)}`);
     next.d.lessons.forEach((l, i) => { if (i < next.i - 1) return;
-      const done = !!S.done[l.id], locked = i > next.i;
+      const done = cleared(l), locked = i > next.i;
       const c = h('button', 'tile' + (done ? ' done' : '') + (locked ? ' locked' : '') + (i === next.i ? ' now' : ''));
       c.style.setProperty('--pc', posterVar(next.d));
       c.innerHTML = `<span class="t-num">${ar(i + 1)}</span><span class="t-body"><small>${done ? 'أنهيته' : i === next.i ? 'التالي' : 'لاحقًا'}</small><b>${fmt(l.title)}</b></span>`;
@@ -8688,17 +9679,19 @@ function showDistrict(d) {
     return;
   }
   const done = lessonsDone(d), total = d.lessons.length;
-  const current = d.lessons.findIndex(l => !S.done[l.id]);
+  const current = d.lessons.findIndex(l => !cleared(l));
   const head = poster('billboard short', d, `<div class="bb-body"><small class="eyebrow">الوحدة ${ar(unitNo(d))} · ${ar(done)} من ${ar(total)} دروس</small><h1>${d.name}</h1><p>${d.desc}</p><div class="bb-act"></div></div>`);
   if (current >= 0) { const go = h('button', 'play-btn', `${ic('play', 18)}<span>${done ? 'تابع' : 'ابدأ'}: ${fmt(d.lessons[current].title)}</span>`); go.onclick = () => { FX.play('whoosh'); playLesson(d, d.lessons[current]); }; head.querySelector('.bb-act').appendChild(go); }
   const hg = h('div', 'gut'); hg.appendChild(head); wrap.appendChild(hg);
   const list = h('div', 'lessons2 gut');
   list.style.setProperty('--pc', posterVar(d));
   d.lessons.forEach((l, i) => {
-    const locked = current !== -1 && i > current, isDone = !!S.done[l.id];
-    const row = h('button', 'lrow' + (locked ? ' locked' : '') + (i === current ? ' current' : '') + (isDone ? ' done' : ''));
-    row.innerHTML = `<span class="num">${ar(i + 1)}</span><span class="lbody"><b>${fmt(l.title)}</b>${i === current ? '<small>التالي</small>' : ''}</span><span class="lstate">${isDone ? ic('check', 18) : ''}</span>`;
-    row.onclick = () => { if (locked) { FX.play('wrong'); toast('أكمل الدرس السابق أولًا'); } else { FX.play('whoosh'); playLesson(d, l); } };
+    const dst = S.done[l.id] ? null : dgState(l.id), planned = dst && dst !== 'green';
+    const locked = !dgOn() && current !== -1 && i > current, isDone = !!S.done[l.id], known = dst === 'green';
+    const row = h('button', 'lrow' + (locked ? ' locked' : '') + (i === current && !dgOn() ? ' current' : '') + (isDone ? ' done' : '') + (dst ? ' st-' + dst : ''));
+    const tag = known ? 'متقن · تتخطاه' : planned ? `في خطتك · ${DG_NAME[dst]}` : i === current && !dgOn() ? 'التالي' : '';
+    row.innerHTML = `<span class="num">${ar(i + 1)}</span><span class="lbody"><b>${fmt(l.title)}</b>${tag ? `<small>${tag}</small>` : ''}</span><span class="lstate">${isDone || known ? ic('check', 18) : planned ? `<i class="sdot ${dst}"></i>` : ''}</span>`;
+    row.onclick = () => { if (locked) { FX.play('wrong'); toast('أكمل الدرس السابق أولًا'); } else { FX.play('whoosh'); if (dst === 'yellow') dgPractice(d, l); else playLesson(d, l); } };
     list.appendChild(row);
   });
   const bossLocked = current !== -1;
@@ -8718,7 +9711,9 @@ function showDistrict(d) {
 }
 
 /* ---------- PLAYER (lessons, practice, unit test, exam) ---------- */
-function playLesson(d, lesson) { runPlayer({ d, mode: 'lesson', lesson, steps: lesson.steps.slice(), title: lesson.title }); }
+function playLesson(d, lesson, direct) {
+  if (!direct && !S.done[lesson.id] && dgState(lesson.id) === 'check') return dgGate(d, lesson);
+  runPlayer({ d, mode: 'lesson', lesson, steps: lesson.steps.slice(), title: lesson.title }); }
 function allQuestions(d, onlyDone) {
   const qs = [];
   for (const l of d.lessons || []) if (!onlyDone || S.done[l.id]) for (const s of l.steps) if (s.q) qs.push(s);
@@ -8737,7 +9732,8 @@ function playEndless(d) {
   runPlayer({ d, mode: 'endless', gen: ids, steps: [genFor(ids)], title: d ? 'تدريب مفتوح · ' + d.name : 'تدريب مفتوح · كل الوحدات' });
 }
 function playReview() { runPlayer({ d: null, mode: 'review', steps: dueMistakes().slice(0, 12), title: 'مراجعة الأخطاء' }); }
-function playPlacement() {
+function playPlacement() { return dgIntro(); }
+function playPlacementOld() {
   const steps = [];
   for (const id of Object.keys(WEIGHT)) { if (!GEN[id]) continue; const gi = shuffle(GEN[id].map((_, i) => i)); steps.push(genQuestion(id, 1, gi[0]), genQuestion(id, 2, gi[1])); }
   runPlayer({ d: null, mode: 'placement', steps: steps.filter(Boolean), title: 'اختبار تحديد المستوى' });
@@ -8818,6 +9814,10 @@ function runPlayer(P) {
     body.appendChild(c);
     if (false) { const pv = h('div', 'preview'); pv.innerHTML = `<small class="eyebrow">بنهاية الدرس ستحل سؤالًا مثل هذا</small><p class="qtext">${fmt(I.preview.q)}</p>${I.preview.a != null ? `<div class="cmp"><div><small>القيمة الأولى</small><span>${fmt(I.preview.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(I.preview.b)}</span></div></div>` : ''}<div class="pv-opts">${I.preview.choices.map((x, k) => `<span><i>${LETTERS[k]}</i>${fmt(x)}</span>`).join('')}</div>`; body.appendChild(pv); }
     setDock('', '', '', 'لنبدأ', next);
+    if (dgOn() && P.lesson && !S.done[P.lesson.id] && DIAG[P.lesson.id]) {
+      const sk = h('button', 'btn skipk', 'أعرف هذا؟ تخطَّه بسؤالين'); sk.onclick = () => { FX.play('tap'); dgSkipTest(P.d, P.lesson); };
+      dockIn.appendChild(sk);
+    }
   }
   /* theory first: the idea in plain words, an example, why it works, and where you will use it */
   function renderExplain(s) {
@@ -10551,8 +11551,650 @@ giveBuild('o2', 0, { h: 210, frames: [
   { say: 'فكرة <b>أضيق</b>: طيور. والنحلة حشرة ← الشاذة', draw(K) { K.rect(94, 62, 252, 56, 'b-okline', 24); K.note(220, 146, 'طيور'); chip(K, 54, 90, 'نحلة', 'b-badbox'); K.note(54, 146, 'حشرة'); } },
 ] });
 
+/* ================= skill map for the smart placement test (verbal) ================= */
+const SKILLS = {
+  w1: { pre: [] }, w2: { pre: [] }, w3: { pre: ['w2'] }, w4: { pre: ['w3'] }, w5: { pre: ['w2'] }, w6: { pre: ['w2'] },
+  a1: { pre: ['w2'] }, a2: { pre: ['a1', 'w5'] }, a3: { pre: ['a1'] }, a4: { pre: ['a1'] }, a5: { pre: ['a1'] }, a6: { pre: ['a1'] },
+  a7: { pre: ['a1'] }, a8: { pre: ['a1'] }, a9: { mixed: true },
+  k1: { pre: ['w3'] }, k2: { pre: ['k1'] }, k3: { pre: ['k1'] }, k4: { pre: ['k1', 'w6'] }, k5: { pre: ['k2', 'k3'], t: 60 }, k6: { mixed: true },
+  e1: { pre: ['w2'] }, e2: { pre: ['e1'] }, e3: { pre: ['e1'] }, e4: { pre: ['e2'] }, e5: { mixed: true },
+  r1: { pre: [] }, r2: { pre: ['r1'] }, r3: { pre: ['r1'] }, r4: { pre: ['r3'] }, r5: { pre: ['r1', 'w3'] }, r6: { pre: ['r3'] },
+  r7: { pre: ['r2'] }, r8: { mixed: true }, r9: { pre: ['r1'] }, r10: { pre: ['r1'] },
+  o1: { pre: ['w2'] }, o2: { pre: ['o1'] },
+};
+/* seconds per question by unit; reading includes a short passage */
+const SKILL_T = { w: 40, a: 35, k: 45, e: 40, r: 75, o: 35 };
+
+/* ================= diagnostic questions: only used by the placement test and the lesson checks =================
+   D(lesson, [[question, [right, wrong1, wrong2, wrong3], why, [what wrong1 means, what wrong2 means, ...]], ...])
+   The "what it means" text names the exact slip, so the report can say *why* the student missed. */
+const DIAG = {};
+function D(id, list) {
+  DIAG[id] = list.map(x => {
+    const o = Array.isArray(x) ? { q: x[0], choices: x[1].map(String), answer: 0, why: x[2], m: x[3] || [] } : Object.assign({ answer: 0, m: [] }, x);
+    o.miss = {}; let k = 0;
+    o.choices.forEach((c, i) => { if (i !== o.answer) { if (o.m[k]) o.miss[c] = o.m[k]; k++; } });
+    delete o.m; return o;
+  });
+}
+
+/* ================= diagnostic questions · verbal (original, used only by the placement test and lesson checks) ================= */
+/* completion: the blank is ____ */
+const DK = (s, choices, why, m) => [showBlank(s), choices, why, m];
+/* contextual error: words in {braces} are marked; `bad` = index of the wrong word, `fix` = the right word */
+function DE(s, bad, fix, why) {
+  const words = []; const sent = s.replace(/\{([^}]+)\}/g, (_, w) => { words.push(w); return `<b class="ew">${w}</b>`; });
+  const m = words.map((w, i) => i === bad ? null : `«${w}» تتسق مع المعنى؛ الخطأ في كلمة أخرى`).filter(Boolean);
+  return { q: `حدد الكلمة التي لا يتسق معناها مع سياق الجملة:<br><span class="esent">${sent}</span>`, choices: words, answer: bad, keep: true, why: `${why} والصواب «${fix}».`, m };
+}
+/* odd word: list the four words in the question */
+const DO = (words, odd, why, wrongNote) => ({ q: `ما الكلمة الشاذة؟ <b>${words.join('، ')}</b>`, choices: words, answer: words.indexOf(odd), keep: true, why, m: words.filter(w => w !== odd).map(() => wrongNote) });
+
+D('w1', [
+  ['أي الكلمات التالية <b>ليست</b> من جذر «ع ل م»؟', ['عامِل', 'معلّم', 'علامة', 'عالِم'], '«عامل» من جذر «ع م ل».', ['«معلّم» من «ع ل م»', '«علامة» من «ع ل م»', '«عالِم» من «ع ل م»']],
+  ['«مِفتاح» على وزن «مِفعال»، وهذا الوزن يدل غالبًا على:', ['الأداة', 'المكان', 'من يقوم بالفعل', 'ما وقع عليه الفعل'], 'مِفعال للأداة: مِفتاح، مِنشار.', ['خلط مع وزن «مَفعَل» للمكان', 'خلط مع وزن «فاعِل»', 'خلط مع وزن «مفعول»']],
+  ['أي الكلمات التالية تدل على <b>مكان</b> الفعل؟', ['مَلعَب', 'لاعِب', 'ملعوب', 'لَعِب'], '«مَفعَل» للمكان.', ['«فاعِل» لمن يقوم بالفعل', '«مفعول» لما وقع عليه الفعل', 'هذا الحدث نفسه']],
+  ['ما جذر كلمة «مِبرَد»؟', ['ب ر د', 'م ب ر', 'ب ر م', 'ر د م'], 'الميم زائدة في وزن «مِفعَل».', ['أدخل الحرف الزائد في الجذر', 'أدخل الحرف الزائد وغيّر الترتيب', 'أدخل الحرف الزائد في الجذر']],
+]);
+D('w2', [
+  ['ما مرادف «الوَهَن»؟', ['الضعف', 'القوة', 'الخوف', 'الحزن'], 'الوهن = الضعف.', ['اختار المضاد', 'كلمة قريبة في الجو لكن معناها مختلف', 'كلمة قريبة في الجو لكن معناها مختلف']],
+  ['ما مضاد «شحيح»؟', ['كريم', 'بخيل', 'فقير', 'قليل'], 'الشحيح البخيل، وضده الكريم.', ['اختار المرادف في سؤال المضاد', 'ربط البخل بالفقر', 'معنى قريب لا مضاد']],
+  ['ما مرادف «يُجِلّ»؟', ['يحترم', 'يحتقر', 'يخاف', 'يُسرع'], 'أجلّه: عظّمه واحترمه.', ['اختار المضاد', 'خلط الاحترام بالخوف', 'اشتبهت عليه بكلمة «يعجّل»']],
+  ['ما مضاد «الإسهاب»؟', ['الإيجاز', 'الإطالة', 'الإسراع', 'الوضوح'], 'الإسهاب الإطالة في الكلام، وضده الإيجاز.', ['اختار المرادف في سؤال المضاد', 'خلط بين الإسهاب والسرعة', 'معنى غير مرتبط']],
+]);
+D('w3', [
+  ['«كان الطالب <b>مُثابرًا</b>، لم يترك المسألة حتى حلّها». معنى «مثابر»:', ['مستمر لا يستسلم', 'ذكي سريع', 'متردد', 'محظوظ'], 'القرينة: «لم يترك المسألة حتى حلّها».', ['ربطها بالحل لا بالاستمرار', 'عكس ما تدل عليه القرينة', 'تخمين بلا قرينة']],
+  ['«<b>اكفهرّ</b> الجو، فأسرع الناس إلى بيوتهم قبل المطر». معنى «اكفهرّ»:', ['أظلم وتلبّد بالغيوم', 'صفا', 'اشتدّ حرّه', 'هدأ'], 'القرينة: الإسراع قبل المطر.', ['عكس ما تدل عليه القرينة', 'تجاهل قرينة المطر', 'تخمين بلا قرينة']],
+  ['«لم يكن خالد <b>مُقتّرًا</b> في الإنفاق، بل كان يعطي بسخاء». معنى «مقتّر»:', ['بخيل', 'كريم', 'غني', 'مسرف'], '«لم يكن… بل» تعني أن المقتّر عكس السخي.', ['لم ينتبه إلى «لم يكن… بل»', 'ربط الإنفاق بالغنى', 'خلط بين البخل والإسراف']],
+  ['«جاءت النتائج <b>مُخيّبة</b>؛ فقد توقعنا أكثر بكثير». معنى «مخيّبة»:', ['أقل من المتوقع', 'مفرحة', 'مفاجئة بالخير', 'سريعة'], 'القرينة: «توقعنا أكثر».', ['عكس القرينة', 'عكس القرينة', 'تخمين بلا قرينة']],
+]);
+D('w4', [
+  ['«<b>ضرب</b> الرحّالة في الأرض شهورًا». معنى «ضرب» هنا:', ['سافر', 'عاقب', 'زرع', 'حفر'], '«ضرب في الأرض» = سافر.', ['أخذ المعنى الأشهر للكلمة', 'ربط الأرض بالزراعة', 'ربط الأرض بالحفر']],
+  ['«<b>رفع</b> القاضي الجلسة». معنى «رفع» هنا:', ['أنهى', 'حمل إلى الأعلى', 'بدأ', 'أجّل'], 'رفع الجلسة = أنهاها.', ['أخذ المعنى الحرفي', 'عكس المعنى', 'معنى قريب لكنه غير دقيق']],
+  ['«<b>نزل</b> الأب عند رأي ابنه». معنى «نزل عند رأيه»:', ['قبِله', 'هبط', 'رفضه', 'ناقشه'], 'نزل عند رأيه = وافقه وقبِله.', ['أخذ المعنى الحرفي', 'عكس المعنى', 'معنى قريب لكنه غير دقيق']],
+  ['«<b>قطع</b> المتسابق المسافة في دقيقة». معنى «قطع» هنا:', ['اجتاز', 'فصل بسكين', 'أوقف', 'قصّر'], 'قطع المسافة = اجتازها.', ['أخذ المعنى الحرفي', 'معنى لا يناسب الجملة', 'معنى لا يناسب الجملة']],
+]);
+D('w5', [
+  ['رتّب الكلمات من الأخف إلى الأشد: غضب، سخط، استياء', ['استياء ← غضب ← سخط', 'سخط ← غضب ← استياء', 'غضب ← استياء ← سخط', 'استياء ← سخط ← غضب'], 'الاستياء أخف، والسخط غضب شديد.', ['رتّب من الأشد إلى الأخف', 'أخطأ في درجة الاستياء', 'أخطأ في درجة السخط']],
+  ['أي الكلمات التالية أشد حرارة؟', ['لاهب', 'دافئ', 'فاتر', 'حار'], 'فاتر ← دافئ ← حار ← لاهب.', ['أخف درجة', 'أخف درجة', 'قريبة لكنها أخف من لاهب']],
+  [showBlank('«كان المريض متعبًا، ثم صار ____ من شدة المرض». الكلمة التي تدل على الاشتداد:'), ['مُنهَكًا', 'نشيطًا', 'مرتاحًا', 'متعبًا'], 'المنهك أشد من المتعب.', ['عكس المعنى', 'عكس المعنى', 'الكلمة نفسها لا تدل على الاشتداد']],
+  ['أي الأزواج التالية علاقته <b>تدرّج</b> لا ترادف؟', ['خوف – رعب', 'شجاع – مقدام', 'طويل – قصير', 'بيت – منزل'], 'الرعب خوف شديد.', ['هذا ترادف', 'هذا تضاد', 'هذا ترادف']],
+]);
+D('w6', [
+  DK('«____ الطالب جهدًا كبيرًا».', ['بذل', 'أحرز', 'اتخذ', 'ألقى'], 'نقول: بذل جهدًا.', ['صحبة خاطئة: نقول أحرز هدفًا', 'صحبة خاطئة: نقول اتخذ قرارًا', 'صحبة خاطئة: نقول ألقى كلمة']),
+  DK('«____ المدير قرارًا حاسمًا».', ['اتخذ', 'بذل', 'أحرز', 'ألقى'], 'نقول: اتخذ قرارًا.', ['صحبة خاطئة: بذل جهدًا', 'صحبة خاطئة: أحرز هدفًا', 'صحبة خاطئة: ألقى كلمة']),
+  DK('«____ الطالب كلمة في الحفل».', ['ألقى', 'بذل', 'اتخذ', 'أحرز'], 'نقول: ألقى كلمة.', ['صحبة خاطئة', 'صحبة خاطئة', 'صحبة خاطئة']),
+  ['أي العبارات التالية صحيحة الاستعمال؟', ['أحرز الفريق تقدمًا', 'اتخذ الفريق جهدًا', 'ألقى الفريق هدفًا', 'بذل الفريق قرارًا'], 'نقول: أحرز تقدمًا.', ['صحبة خاطئة', 'صحبة خاطئة', 'صحبة خاطئة']],
+]);
+
+D('a1', [
+  [PR('قلم', 'كتابة'), ['مقص : قص', 'ورقة : شجرة', 'قلم : حبر', 'كتاب : مكتبة'], 'الشيء ووظيفته: نكتب بالقلم ونقص بالمقص.', ['علاقة جزء من كل', 'كرّر الكلمة الأولى بدل العلاقة', 'علاقة مكان']],
+  [PR('عطش', 'ماء'), ['جوع : طعام', 'ماء : نهر', 'نار : دخان', 'عطش : صيف'], 'الحاجة وما يسدّها.', ['علاقة مكان', 'علاقة سبب ونتيجة', 'كرّر الكلمة الأولى']],
+  [PR('طبيب', 'مستشفى'), ['معلم : مدرسة', 'طبيب : دواء', 'مريض : طبيب', 'مستشفى : سرير'], 'المهنة ومكان العمل.', ['كرّر الكلمة الأولى بعلاقة أداة', 'علاقة مختلفة', 'الاتجاه والعلاقة مختلفان']],
+  [PR('سيارة', 'عجلة'), ['شجرة : غصن', 'صفحة : كتاب', 'كتاب : قارئ', 'قلم : مسطرة'], 'الكل ثم جزؤه.', ['العلاقة نفسها لكنها مقلوبة', 'علاقة مختلفة', 'علاقة مختلفة']],
+]);
+D('a2', [
+  [PR('غاضب', 'ثائر'), ['خائف : مذعور', 'سعيد : فرحان', 'طويل : قصير', 'قلم : ورقة'], 'تدرّج: الثانية أشد من الأولى.', ['ترادف لا تدرّج', 'تضاد', 'علاقة مختلفة']],
+  [PR('أمين', 'خائن'), ['صادق : كاذب', 'كريم : سخي', 'دافئ : حار', 'باب : بيت'], 'تضاد.', ['ترادف', 'تدرّج', 'جزء من كل']],
+  [PR('بيت', 'منزل'), ['عام : سنة', 'يوم : ليلة', 'دقيقة : ساعة', 'صغير : كبير'], 'ترادف.', ['تضاد', 'جزء من كل', 'تضاد']],
+  [PR('نسيم', 'عاصفة'), ['رذاذ : وابل', 'ريح : هواء', 'برد : حر', 'عاصفة : نسيم'], 'تدرّج من الأخف إلى الأشد.', ['ترادف تقريبي', 'تضاد', 'التدرّج نفسه لكن مقلوب']],
+]);
+D('a3', [
+  [PR('إصبع', 'يد'), ['غرفة : منزل', 'تفاح : فاكهة', 'يد : ذراع', 'قلم : كتابة'], 'جزء من كل.', ['نوع من فئة لا جزء', 'اختار زوجًا من الموضوع نفسه', 'الشيء ووظيفته']],
+  [PR('ورد', 'زهرة'), ['نسر : طائر', 'جناح : طائر', 'زهرة : حديقة', 'ورقة : غصن'], 'نوع من فئة: الورد زهرة.', ['جزء لا نوع', 'علاقة مكان', 'جزء من كل']],
+  [PR('جيش', 'جندي'), ['سرب : طائر', 'جندي : جيش', 'بحر : سمك', 'سلاح : جندي'], 'المجموعة وفردها.', ['العلاقة نفسها لكنها مقلوبة', 'علاقة مكان', 'أداة ومستخدمها']],
+  [PR('برتقال', 'حمضيات'), ['ذهب : معدن', 'قشرة : برتقال', 'معدن : حديد', 'عصير : برتقال'], 'نوع من فئة.', ['جزء من كل', 'النوع نفسه لكن مقلوب', 'المنتج ومصدره']],
+]);
+D('a4', [
+  [PR('نجار', 'منشار'), ['خياط : إبرة', 'مقص : قص', 'نحلة : عسل', 'طبيب : مريض'], 'صاحب المهنة وأداته.', ['الشيء ووظيفته', 'المنتِج وإنتاجه', 'المهنة ومن يستفيد منها']],
+  [PR('مفتاح', 'فتح'), ['ميزان : وزن', 'حداد : مطرقة', 'باب : قفل', 'بقرة : حليب'], 'الشيء ووظيفته.', ['المهنة وأداتها', 'علاقة مجاورة', 'المنتِج وإنتاجه']],
+  [PR('نحلة', 'عسل'), ['دودة القز : حرير', 'نحلة : خلية', 'مزارع : محراث', 'شجرة : ورقة'], 'المنتِج وإنتاجه.', ['الحيوان ومسكنه', 'المهنة وأداتها', 'الكل وجزؤه']],
+  [PR('رسام', 'فرشاة'), ['جرّاح : مشرط', 'رسام : لوحة', 'فرشاة : ألوان', 'مشرط : جرح'], 'صاحب المهنة وأداته.', ['المهنة وإنتاجها لا أداتها', 'علاقة مختلفة', 'الأداة وأثرها']],
+]);
+D('a5', [
+  [PR('طائرة', 'مطار'), ['سفينة : ميناء', 'طيار : طائرة', 'سيارة : وقود', 'قطار : مسافر'], 'الشيء ومكانه.', ['المهنة وأداتها', 'الشيء وما يحتاجه', 'الوسيلة ومن يستخدمها']],
+  [PR('أسد', 'عرين'), ['نحل : خلية', 'طائر : جناح', 'أسد : شبل', 'ثعلب : دجاجة'], 'الحيوان ومسكنه.', ['الكل وجزؤه', 'الحيوان وصغيره', 'المفترس وفريسته']],
+  [PR('دواء', 'صيدلية'), ['كتاب : مكتبة', 'دواء : مريض', 'طبيب : صيدلية', 'قلم : ورقة'], 'الشيء ومكان بيعه أو حفظه.', ['الشيء ومن يستفيد منه', 'علاقة مختلفة', 'علاقة مجاورة']],
+  [PR('حصان', 'إسطبل'), ['بقرة : حظيرة', 'حصان : فارس', 'إسطبل : حصان', 'حصان : مُهر'], 'الحيوان ومسكنه.', ['الحيوان ومن يستخدمه', 'العلاقة نفسها لكنها مقلوبة', 'الحيوان وصغيره']],
+]);
+D('a6', [
+  [PR('أسد', 'شبل'), ['حصان : مُهر', 'أسد : زئير', 'أسد : لبؤة', 'بقرة : حليب'], 'الحيوان وصغيره.', ['الحيوان وصوته', 'الحيوان وأنثاه', 'الحيوان وإنتاجه']],
+  [PR('حصان', 'صهيل'), ['ذئب : عواء', 'حصان : فرس', 'كلب : جرو', 'حصان : إسطبل'], 'الحيوان وصوته.', ['الحيوان وأنثاه', 'الحيوان وصغيره', 'الحيوان ومسكنه']],
+  [PR('جمل', 'ناقة'), ['ديك : دجاجة', 'جمل : حُوار', 'جمل : رُغاء', 'خروف : صوف'], 'الذكر وأنثاه.', ['الحيوان وصغيره', 'الحيوان وصوته', 'الحيوان وإنتاجه']],
+  [PR('بقرة', 'عِجل'), ['شاة : حَمَل', 'بقرة : خُوار', 'ثور : بقرة', 'عجل : بقرة'], 'الحيوان وصغيره.', ['الحيوان وصوته', 'الذكر وأنثاه', 'العلاقة نفسها لكنها مقلوبة']],
+]);
+D('a7', [
+  [PR('خشب', 'كرسي'), ['قطن : قميص', 'كرسي : خشب', 'نجار : كرسي', 'خشب : شجرة'], 'المادة ثم ما يُصنع منها.', ['العلاقة نفسها لكنها مقلوبة', 'الصانع ومصنوعه', 'المادة ومصدرها']],
+  [PR('إهمال', 'فشل'), ['اجتهاد : نجاح', 'فشل : إهمال', 'نجاح : تفوق', 'كسل : خمول'], 'السبب ثم النتيجة.', ['العلاقة نفسها لكنها مقلوبة', 'تدرّج', 'ترادف']],
+  [PR('زجاج', 'رمل'), ['خبز : قمح', 'رمل : زجاج', 'زجاج : نافذة', 'صحراء : رمل'], 'المصنوع ثم مادته.', ['العلاقة نفسها لكنها مقلوبة', 'المادة ثم ما يُصنع منها (اتجاه معاكس)', 'المكان وما فيه']],
+  [PR('مطر', 'سيل'), ['زلزال : دمار', 'سيل : مطر', 'مطر : غيم', 'ريح : هواء'], 'السبب ثم النتيجة.', ['العلاقة نفسها لكنها مقلوبة', 'النتيجة ثم السبب', 'ترادف']],
+]);
+D('a8', [
+  [PR('طائر', 'عش'), ['نحل : خلية', 'خلية : نحل', 'عش : شجرة', 'طائر : جناح'], 'الساكن ثم المسكن.', ['العلاقة صحيحة لكنها مقلوبة', 'المسكن ومكانه', 'الكل وجزؤه']],
+  [PR('بذرة', 'شجرة'), ['بيضة : طائر', 'شجرة : بذرة', 'ورقة : شجرة', 'طائر : عش'], 'الأصل ثم ما ينمو منه.', ['العلاقة صحيحة لكنها مقلوبة', 'الجزء والكل', 'الساكن والمسكن']],
+  [PR('مؤلف', 'كتاب'), ['ملحّن : لحن', 'كتاب : مؤلف', 'قارئ : كتاب', 'مؤلف : قلم'], 'المبدع ثم عمله.', ['العلاقة صحيحة لكنها مقلوبة', 'المستفيد لا المبدع', 'الأداة لا العمل']],
+  [PR('صوف', 'خروف'), ['حليب : بقرة', 'خروف : صوف', 'صوف : قميص', 'خروف : مرعى'], 'الإنتاج ثم مصدره.', ['العلاقة صحيحة لكنها مقلوبة', 'المادة وما يُصنع منها', 'الحيوان ومكانه']],
+]);
+
+D('k1', [
+  DK('«يحرص الرياضي على ____ تمارينه يوميًا ليحافظ على لياقته».', ['ممارسة', 'ترك', 'نسيان', 'تأجيل'], 'الحفاظ على اللياقة يحتاج ممارسة.', ['عكس المعنى', 'عكس المعنى', 'لا يحقق الغرض']),
+  DK('«لا يكفي أن تقرأ الكتاب، بل ينبغي أن ____ ما فيه لتستفيد منه».', ['تفهم', 'تشتري', 'تنسى', 'تحمل'], 'الاستفادة تحتاج فهمًا.', ['لا يحقق الاستفادة', 'عكس المعنى', 'لا يحقق الاستفادة']),
+  DK('«يعتمد المزارعون على ____ لسقي محاصيلهم في الصيف».', ['الآبار', 'الأسمدة', 'المحاريث', 'الحصاد'], 'السقي يحتاج ماء.', ['مرتبطة بالزراعة لا بالسقي', 'مرتبطة بالزراعة لا بالسقي', 'مرتبطة بالزراعة لا بالسقي']),
+  DK('«أغلق الطالب هاتفه قبل الاختبار كي لا ____ انتباهه».', ['يشتّت', 'يجمع', 'يقوّي', 'يزيد'], 'إغلاق الهاتف يمنع التشتت.', ['عكس المقصود', 'عكس المقصود', 'عكس المقصود']),
+]);
+D('k2', [
+  DK('«رغم ____ الطريق، وصلنا مبكرين».', ['طول', 'قِصَر', 'سهولة', 'جمال'], '«رغم» تأتي بعكس النتيجة: الطريق الطويل لا يُتوقع معه الوصول المبكر.', ['تجاهل إشارة «رغم»', 'تجاهل إشارة «رغم»', 'لا تعاكس النتيجة']),
+  DK('«كان الفريق متأخرًا في الشوط الأول، لكنه ____ في النهاية».', ['فاز', 'خسر', 'تأخر', 'انسحب'], '«لكن» تقلب الاتجاه.', ['تجاهل إشارة «لكن»', 'تجاهل إشارة «لكن»', 'تجاهل إشارة «لكن»']),
+  DK('«مع أن الدواء مُرّ، ____ المريض بانتظام».', ['تناوله', 'رفضه', 'سكبه', 'نسيه'], '«مع أن» تعني أن ما بعدها عكس المتوقع.', ['تجاهل إشارة «مع أن»', 'تجاهل إشارة «مع أن»', 'تجاهل «بانتظام»']),
+  DK('«لم يكن الامتحان صعبًا كما توقعنا، بل كان ____».', ['سهلًا', 'معقدًا', 'طويلًا', 'مرهقًا'], '«لم يكن… بل» تأتي بالعكس.', ['تجاهل «لم يكن… بل»', 'لا يعاكس الصعوبة', 'لا يعاكس الصعوبة']),
+]);
+D('k3', [
+  DK('«بسبب ____ الأمطار، امتلأت السدود».', ['غزارة', 'قلة', 'انقطاع', 'تأخر'], '«بسبب» تربط سببًا بنتيجة متفقة معه.', ['عكس الإشارة', 'عكس الإشارة', 'عكس الإشارة']),
+  DK('«كان العامل مجتهدًا، لذلك ____ مديره».', ['كافأه', 'عاقبه', 'فصله', 'تجاهله'], '«لذلك» تأتي بنتيجة متفقة.', ['عكس الإشارة', 'عكس الإشارة', 'لا يتفق مع الاجتهاد']),
+  DK('«بفضل ____ الطبيب، تعافى المريض سريعًا».', ['مهارة', 'إهمال', 'غياب', 'تأخر'], '«بفضل» لا تأتي إلا مع شيء إيجابي.', ['عكس الإشارة', 'عكس الإشارة', 'عكس الإشارة']),
+  DK('«يحب سعد القراءة، فهو ____ إلى المكتبة كل أسبوع».', ['يذهب', 'لا يذهب', 'يكره الذهاب', 'نادرًا ما يذهب'], 'الفاء هنا تفسير متفق: المحب يذهب.', ['عكس الإشارة', 'عكس الإشارة', 'لا يتفق مع «كل أسبوع»']),
+]);
+D('k4', [
+  DK('«أبدى الطالب ____ على المشروع».', ['ملاحظاته', 'جهده', 'قراره', 'هدفه'], 'نقول: أبدى ملاحظاته على…', ['صحبة خاطئة: بذل جهده', 'صحبة خاطئة: اتخذ قراره', 'صحبة خاطئة: أحرز هدفه']),
+  DK('«رغب الزاهد ____ الدنيا، فلم يهتم بزينتها».', ['عن', 'في', 'إلى', 'على'], 'رغب عن = ترك، والجملة تقول إنه لم يهتم بها.', ['«رغب في» = أراد، عكس المعنى', 'حرف لا يُستعمل مع رغب هنا', 'حرف لا يُستعمل مع رغب']),
+  DK('«اتخذت المدرسة ____ لحماية الطلاب».', ['إجراءات', 'جهودًا', 'أهدافًا', 'كلمات'], 'نقول: اتخذ إجراءات.', ['صحبة خاطئة: نقول بذلت جهودًا', 'صحبة خاطئة', 'صحبة خاطئة']),
+  DK('«____ المدرب ثقته في اللاعبين».', ['أعرب عن', 'أحرز', 'بذل', 'ألقى'], 'نقول: أعرب عن ثقته.', ['صحبة خاطئة', 'صحبة خاطئة', 'صحبة خاطئة']),
+]);
+D('k5', [
+  DK('«كلما ____ الإنسان في العلم، ____ تواضعه».', ['تعمّق – زاد', 'تعمّق – قلّ', 'ابتعد – زاد', 'توقف – زاد'], 'العلم الحقيقي يزيد التواضع.', ['الكلمة الأولى صحيحة والثانية تعكس المعنى', 'الكلمة الثانية صحيحة والأولى لا', 'الكلمة الثانية صحيحة والأولى لا']),
+  DK('«إذا ____ الطالب المذاكرة، ____ نتيجته».', ['أهمل – ساءت', 'أهمل – تحسنت', 'واصل – ساءت', 'أهمل – ثبتت'], 'الإهمال يؤدي إلى نتيجة سيئة.', ['اكتفى بالكلمة الأولى', 'اكتفى بالكلمة الثانية', 'اكتفى بالكلمة الأولى']),
+  DK('«لم يكن القرار ____، بل كان ____ بعد دراسة طويلة».', ['متسرعًا – مدروسًا', 'مدروسًا – متسرعًا', 'متسرعًا – سريعًا', 'صائبًا – خاطئًا'], '«لم يكن… بل» تأتي بالعكس، و«بعد دراسة طويلة» تحدد الثانية.', ['قلب الفراغين', 'الكلمة الثانية لا تعاكس الأولى', 'الثانية تناقض «بعد دراسة طويلة»']),
+  DK('«رغم ____ الإمكانات، ____ الفريق نتائج مبهرة».', ['قلة – حقق', 'كثرة – حقق', 'قلة – خسر', 'كثرة – خسر'], '«رغم» تجمع بين قلة الإمكانات والنتيجة المبهرة.', ['تجاهل «رغم»', 'الكلمة الثانية لا تناسب «نتائج مبهرة»', 'خطأ في الكلمتين']),
+]);
+D('e1', [
+  DE('{حرص} المزارع على {ري} أشجاره، {فذبلت} ثمارها و{كثُر} محصوله.', 2, 'نضجت', 'الحرص على الري لا يُذبل الثمار.'),
+  DE('{أشرقت} الشمس، {فأظلم} المكان و{استيقظ} الأطفال {نشيطين}.', 1, 'أضاء', 'شروق الشمس لا يُظلم المكان.'),
+  DE('كان اللاعب {سريعًا}، {فسبق} منافسيه و{خسر} السباق {بسهولة}.', 2, 'فاز', 'من سبق منافسيه لا يخسر.'),
+  DE('{انخفضت} الأسعار، {فزاد} إقبال الناس على الشراء و{خلت} الأسواق من {المتسوقين}.', 2, 'ازدحمت', 'زيادة الإقبال لا تُخلي الأسواق.'),
+]);
+D('e2', [
+  DE('تُعدّ {الرياضة} مفيدة للجسم؛ فهي {تقوّي} العضلات و{تُضعف} القلب و{تحسّن} النوم.', 2, 'تقوّي', 'الاتجاه مدح الرياضة، و«تُضعف» تعاكسه.'),
+  DE('الصدق {خُلُق} نبيل، يجعل صاحبه {محبوبًا} بين الناس، {موثوقًا} في كلامه، {منبوذًا} في مجتمعه.', 3, 'مقبولًا', 'الاتجاه مدح الصدق، و«منبوذًا» تعاكسه.'),
+  DE('يعاني {المدخّنون} من {أمراض} كثيرة، لأن التدخين {يقوّي} الرئتين ويُتلف {الشرايين}.', 2, 'يُضعف', 'الاتجاه ذمّ التدخين، و«يقوّي» تعاكسه.'),
+  DE('اهتمت الدولة {بالتعليم}، {فأنشأت} المدارس و{أغلقت} الجامعات و{دعمت} المعلمين.', 2, 'افتتحت', 'الاهتمام بالتعليم لا يُغلق الجامعات.'),
+]);
+D('e3', [
+  DE('يرتدي الناس الملابس {الخفيفة} في {الصيف} ليشعروا {بالحرارة} و{الراحة}.', 2, 'بالبرودة', 'ضد «بالحرارة» يُصلح الجملة، فهي الخطأ.'),
+  DE('{أسرع} المسعف إلى المصاب لأن حالته كانت {بسيطة} و{تحتاج} إلى تدخل {عاجل}.', 1, 'خطيرة', 'ضد «بسيطة» يُصلح الجملة.'),
+  DE('يحفظ الطالب {المجتهد} وقته، {فيضيّعه} في {المفيد} من {الأعمال}.', 1, 'فيقضيه', 'من يحفظ وقته لا يضيّعه.'),
+  DE('{جفّت} الأرض و{ذبل} الزرع بسبب {غزارة} {الأمطار}.', 2, 'قلة', 'ضد «غزارة» يُصلح الجملة.'),
+]);
+D('e4', [
+  DE('تأخّر القطار ساعة كاملة، {لذلك} {وصل} المسافرون {مبكرين} إلى {وجهتهم}.', 2, 'متأخرين', 'التأخر سبب لا يؤدي إلى الوصول المبكر.'),
+  DE('بسبب الأمطار الغزيرة {امتلأت} {السدود} و{جفّت} {الأودية}.', 2, 'جرت', 'الأمطار الغزيرة لا تُجفّف الأودية.'),
+  DE('ذاكر خالد بجدّ طوال الفصل، {فرسب} في {الاختبار} و{فرح} {والداه}.', 0, 'فنجح', 'الجد يؤدي إلى النجاح لا الرسوب.'),
+  DE('لأن الجو كان باردًا جدًا، {خلع} الأطفال {معاطفهم} و{خرجوا} إلى {الحديقة}.', 0, 'لبس', 'البرد سبب للبس المعاطف لا خلعها.'),
+]);
+
+const PA = 'يُعدّ الجمل من أكثر الحيوانات تكيّفًا مع الصحراء؛ إذ يستطيع أن يعيش أيامًا طويلة دون أن يشرب، لأنه يخزّن الدهون في سنامه ويستخدمها مصدرًا للطاقة. كما أن رموشه الطويلة تحمي عينيه من الرمال، وأقدامه العريضة تمنعه من الغوص فيها. ولهذا سمّاه العرب «سفينة الصحراء»، وما زال حتى اليوم رمزًا للصبر والتحمّل.';
+const PB = 'اخترع الصينيون الورق قبل نحو ألفي عام، وكانوا يصنعونه من لحاء الشجر والقماش القديم. ثم انتقلت صناعته إلى بغداد في القرن الثامن الميلادي، فانتشرت فيها مصانع الورق، وأصبح الكتاب أرخص ثمنًا وأيسر تداولًا. ومن بغداد عرفت أوروبا هذه الصناعة بعد ذلك بقرون.';
+const PC = 'يظن بعض الناس أن النوم وقت ضائع، لكن الدراسات تشير إلى أن الدماغ يعمل في أثناء النوم على ترتيب المعلومات التي اكتسبها في يومه. لذلك قد يتذكر الطالب الذي ينام جيدًا ما درسه أفضل من زميله الذي يسهر. ولا يعني هذا أن النوم الطويل مفيد دائمًا، فالاعتدال هو الأساس.';
+const PD = 'الشعاب المرجانية كائنات حية دقيقة تعيش في مستعمرات، وتبني حولها هياكل كلسية صلبة تتراكم عبر السنين. وتوفّر هذه الشعاب مأوى لآلاف الأنواع من الأسماك، وهي ظاهرة تُعرف بالتنوع الحيوي. غير أن ارتفاع حرارة المياه يهددها بالابيضاض، أي فقدان ألوانها والطحالب التي تغذيها.';
+const PE = 'بُني المسجد النبوي أول مرة في السنة الأولى للهجرة بجذوع النخل واللبن، ثم وُسّع في عهد الخلفاء مرات عدة. وفي العصر الحديث شهد أكبر توسعة في تاريخه، فصار يتسع لأكثر من مليون مصلٍّ.';
+/* a reading question: passage + question */
+const DR = (p, q, choices, why, m) => ({ passage: p, q, choices, why, m });
+
+D('r1', [
+  DR(PA, 'بحسب النص، لماذا يستطيع الجمل أن يعيش أيامًا دون أن يشرب؟', ['لأنه يخزّن الدهون في سنامه ويستخدمها للطاقة', 'لأنه يخزّن الماء في سنامه', 'لأن رموشه طويلة', 'لأنه رمز للصبر'], 'النص: «يخزّن الدهون في سنامه ويستخدمها مصدرًا للطاقة».', ['أجاب بمعلومة شائعة من خارج النص', 'خلط بين تفاصيل النص', 'خلط بين تفاصيل النص']),
+  DR(PB, 'بحسب النص، مِمّ كان الصينيون يصنعون الورق؟', ['لحاء الشجر والقماش القديم', 'ورق البردي', 'الجلود', 'القطن الجديد'], 'النص: «من لحاء الشجر والقماش القديم».', ['أجاب بمعلومة من خارج النص', 'أجاب بمعلومة من خارج النص', 'غيّر تفصيلًا في النص']),
+  DR(PC, 'بحسب النص، ماذا يفعل الدماغ في أثناء النوم؟', ['يرتّب المعلومات التي اكتسبها', 'يتوقف عن العمل', 'ينسى ما درسه', 'يحلم فقط'], 'النص: «يعمل في أثناء النوم على ترتيب المعلومات».', ['اختار رأي «بعض الناس» الذي ردّه الكاتب', 'عكس النص', 'معلومة من خارج النص']),
+]);
+D('r2', [
+  DR(PA, 'ما أنسب عنوان للنص؟', ['الجمل: سفينة الصحراء وأسرار تكيّفه', 'رموش الجمل الطويلة', 'حيوانات العالم', 'الصبر عند العرب'], 'العنوان يغطي النص كله.', ['ضيق: تفصيل واحد', 'واسع: أكبر من النص', 'تفصيل من آخر النص']),
+  DR(PB, 'ما الفكرة الرئيسة للنص؟', ['انتقال صناعة الورق من الصين إلى العالم', 'مصانع الورق في بغداد', 'تاريخ الكتابة عند البشر', 'أسعار الكتب قديمًا'], 'النص يتتبّع رحلة الورق كلها.', ['تفصيل واحد', 'واسع: أكبر من النص', 'تفصيل واحد']),
+  DR(PD, 'ما أنسب عنوان للنص؟', ['الشعاب المرجانية: حياتها وأهميتها وما يهددها', 'ابيضاض المرجان', 'الحياة في البحار', 'أنواع الأسماك'], 'يجمع أجزاء النص الثلاثة.', ['ضيق: الجزء الأخير فقط', 'واسع: أكبر من النص', 'تفصيل جانبي']),
+]);
+D('r3', [
+  DR(PA, 'بحسب النص، مِمّ تحمي الرموش الطويلة عيني الجمل؟', ['من الرمال', 'من الشمس', 'من الغوص', 'من العطش'], 'الكلمة المفتاحية «رموشه»: «تحمي عينيه من الرمال».', ['معلومة من الذهن لا من النص', 'خلط بين تفصيلين', 'خلط بين تفصيلين']),
+  DR(PB, 'متى انتقلت صناعة الورق إلى بغداد؟', ['في القرن الثامن الميلادي', 'قبل نحو ألفي عام', 'بعد ذلك بقرون', 'في القرن العشرين'], 'النص: «إلى بغداد في القرن الثامن الميلادي».', ['خلط بين تاريخين في النص', 'هذا عن أوروبا', 'تخمين']),
+  DR(PD, 'بحسب النص، ما الذي يهدد الشعاب المرجانية؟', ['ارتفاع حرارة المياه', 'كثرة الأسماك', 'الهياكل الكلسية', 'الصيد الجائر'], 'النص: «ارتفاع حرارة المياه يهددها».', ['خلط بين تفاصيل النص', 'خلط بين تفاصيل النص', 'معلومة صحيحة في الواقع لكن النص لم يذكرها']),
+]);
+D('r4', [
+  DR(PB, 'نستنتج من النص أن انتشار مصانع الورق في بغداد:', ['ساعد على انتشار الكتب والمعرفة', 'جعل الكتب أغلى ثمنًا', 'أوقف صناعة الورق في الصين', 'سبق اختراع الصينيين للورق'], 'الكتاب صار أرخص وأيسر تداولًا ← انتشرت المعرفة.', ['عكس النص', 'لا دليل عليه في النص', 'يناقض ترتيب الأحداث']),
+  DR(PC, 'يُفهم من النص أن الطالب الذي يسهر ليلة الاختبار:', ['قد يتذكر ما درسه بصورة أقل', 'سينسى كل ما درسه حتمًا', 'سيتفوق على زميله', 'لا يتأثر بالسهر'], 'النص قال «قد يتذكر الذي ينام جيدًا أفضل».', ['بالغ: النص قال «قد»', 'عكس النص', 'عكس النص']),
+  DR(PA, 'يُفهم من النص أن أقدام الجمل العريضة تساعده على:', ['المشي فوق الرمال', 'الركض بسرعة', 'السباحة', 'تخزين الدهون'], '«تمنعه من الغوص فيها» ← يمشي فوقها.', ['منطقي لكن لا دليل عليه', 'لا دليل عليه', 'خلط بين تفصيلين']),
+]);
+D('r5', [
+  DR(PB, 'كلمة «تداولًا» في النص تعني:', ['انتقالًا بين الناس', 'صناعة', 'حفظًا', 'كتابة'], 'نعوّض: «أيسر انتقالًا بين الناس» يستقيم.', ['لا تستقيم مكانها', 'لا تستقيم مكانها', 'لا تستقيم مكانها']),
+  DR(PA, 'الضمير في «سمّاه» يعود على:', ['الجمل', 'السنام', 'العرب', 'الصبر'], 'نعوّض: «سمّى العرب الجملَ سفينة الصحراء».', ['اختار أقرب اسم دون تعويض', 'العرب هم الفاعل لا المسمّى', 'اسم جاء بعد الضمير']),
+  DR(PD, 'الضمير في «تغذيها» يعود على:', ['الشعاب المرجانية', 'الطحالب', 'المياه', 'الألوان'], 'الطحالب هي التي تغذي الشعاب.', ['الطحالب هي الفاعل لا المفعول', 'لا يستقيم', 'لا يستقيم']),
+]);
+D('r6', [
+  DR(PC, 'أي العبارات التالية <b>لا تتفق</b> مع النص؟', ['النوم الطويل مفيد دائمًا', 'الدماغ يعمل في أثناء النوم', 'قد يساعد النوم الجيد على التذكر', 'الاعتدال في النوم هو الأساس'], '«دائمًا» تخالف قول النص «لا يعني هذا أن النوم الطويل مفيد دائمًا».', ['هذه تتفق مع النص', 'هذه تتفق مع النص', 'هذه تتفق مع النص']),
+  DR(PA, 'أي العبارات التالية <b>لا تتفق</b> مع النص؟', ['الجمل لا يحتاج إلى الماء أبدًا', 'يستطيع الجمل البقاء أيامًا دون شرب', 'للجمل رموش طويلة', 'سمّى العرب الجمل سفينة الصحراء'], '«أبدًا» كلمة مطلقة، والنص قال «أيامًا طويلة».', ['هذه تتفق مع النص', 'هذه تتفق مع النص', 'هذه تتفق مع النص']),
+  DR(PB, 'أي العبارات التالية <b>تتفق</b> مع النص؟', ['عرفت أوروبا صناعة الورق بعد بغداد', 'كل الكتب في بغداد كانت مجانية', 'العرب هم من اخترع الورق', 'كان الورق الصيني يُصنع من القماش الجديد فقط'], 'النص: «ومن بغداد عرفت أوروبا هذه الصناعة».', ['مبالغة: «أرخص» لا «مجانية»', 'يخالف النص', 'كلمة «فقط» والقماش «القديم»']),
+]);
+D('r7', [
+  DR(PC, 'ما الغرض الأساسي للكاتب؟', ['تصحيح فكرة خاطئة عن النوم', 'الدعوة إلى النوم الطويل', 'سرد قصة طالب', 'وصف مراحل النوم'], 'يبدأ بفكرة شائعة ثم يردّها.', ['النص دعا إلى الاعتدال', 'لا قصة في النص', 'لم يذكر مراحل']),
+  DR(PA, 'ما موقف الكاتب من الجمل؟', ['الإعجاب بقدرته على التحمّل', 'الانتقاد', 'الحياد التام بلا أي وصف', 'الخوف منه'], 'كلمات مثل «أكثر الحيوانات تكيّفًا» و«رمزًا للصبر».', ['لا كلمة انتقاد في النص', 'تجاهل الكلمات الوصفية', 'لا دليل']),
+  DR(PD, 'لماذا ذكر الكاتب الابيضاض في نهاية النص؟', ['للتنبيه إلى خطر يهدد الشعاب', 'لوصف ألوان المرجان الجميلة', 'لشرح طريقة بناء الهياكل', 'لمدح الطحالب'], '«غير أن… يهددها» تنبيه إلى خطر.', ['الابيضاض فقدان للألوان', 'البناء في أول النص', 'لا مدح هنا']),
+]);
+D('r9', [
+  DR(PD, 'ما المقصود بـ «التنوع الحيوي» كما شرحه النص؟', ['وجود أنواع كثيرة من الكائنات في مكان واحد', 'تغيّر ألوان المرجان', 'بناء الهياكل الكلسية', 'ارتفاع حرارة المياه'], 'جاء بعد «مأوى لآلاف الأنواع من الأسماك».', ['خلط بمصطلح الابيضاض', 'خلط بين أجزاء النص', 'خلط بين أجزاء النص']),
+  DR(PD, 'الابيضاض بحسب النص هو:', ['فقدان المرجان ألوانه والطحالب التي تغذيه', 'نمو المرجان بسرعة', 'تراكم الهياكل الكلسية', 'هجرة الأسماك'], 'النص شرحه بعد «أي».', ['لم يقرأ الشرح بعد «أي»', 'خلط بين أجزاء النص', 'لا دليل']),
+  DR(PA, 'ماذا يستخدم الجمل «مصدرًا للطاقة» بحسب النص؟', ['الدهون المخزّنة في سنامه', 'الماء المخزّن في سنامه', 'أشعة الشمس', 'نباتات الصحراء'], 'الشرح في الجملة نفسها.', ['معلومة شائعة لكنها خطأ', 'لا دليل', 'معلومة من خارج النص']),
+]);
+D('r10', [
+  DR(PB, 'ما الترتيب الصحيح للأحداث؟', ['الصين ← بغداد ← أوروبا', 'بغداد ← الصين ← أوروبا', 'الصين ← أوروبا ← بغداد', 'أوروبا ← بغداد ← الصين'], 'تتبّع الكلمات الزمنية: «قبل ألفي عام» ثم «ثم» ثم «بعد ذلك بقرون».', ['أخطأ في البداية', 'أخطأ في الخطوة الثانية', 'قلب الترتيب']),
+  DR(PB, 'ما الذي حدث بعد انتقال صناعة الورق إلى بغداد مباشرة؟', ['انتشرت مصانع الورق فيها', 'اخترعه الصينيون', 'صُنع من لحاء الشجر', 'توقف استعمال الكتب'], 'الفاء في «فانتشرت» تعني بعده مباشرة.', ['هذا حدث قبله', 'هذا تفصيل عن الصين', 'عكس النص']),
+  DR(PE, 'متى كانت أكبر توسعة للمسجد النبوي بحسب النص؟', ['في العصر الحديث', 'في السنة الأولى للهجرة', 'في عهد الخلفاء', 'لم يذكرها النص'], 'النص: «وفي العصر الحديث شهد أكبر توسعة».', ['خلط بين البناء والتوسعة', 'توسعات لكنها ليست الأكبر', 'لم يقرأ الجملة الأخيرة']),
+]);
+D('o1', [
+  DO(['تفاح', 'موز', 'عنب', 'خيار'], 'خيار', 'الثلاث فواكه، والخيار خضار.', 'هي من المجموعة نفسها (فواكه)'),
+  DO(['الأحد', 'الاثنين', 'رمضان', 'الخميس'], 'رمضان', 'الثلاث أيام، ورمضان شهر.', 'هي من المجموعة نفسها (أيام)'),
+  DO(['قلم', 'دفتر', 'مسطرة', 'وسادة'], 'وسادة', 'الثلاث أدوات مدرسية.', 'هي من المجموعة نفسها (أدوات مدرسية)'),
+  DO(['أحمر', 'أزرق', 'أخضر', 'كبير'], 'كبير', 'الثلاث ألوان، و«كبير» حجم.', 'هي من المجموعة نفسها (ألوان)'),
+]);
+D('o2', [
+  DO(['نسر', 'صقر', 'حمامة', 'خفاش'], 'خفاش', 'كلها تطير، لكن الثلاث طيور والخفاش من الثدييات.', 'اكتفى بفكرة عامة (كلها تطير)'),
+  DO(['حوت', 'دلفين', 'فقمة', 'قرش'], 'قرش', 'كلها في البحر، لكن الثلاث ثدييات والقرش سمكة.', 'اكتفى بفكرة عامة (كلها تعيش في البحر)'),
+  DO(['ذهب', 'فضة', 'نحاس', 'ألماس'], 'ألماس', 'كلها ثمينة، لكن الثلاث معادن والألماس حجر كريم.', 'اكتفى بفكرة عامة (كلها ثمينة)'),
+  DO(['قمح', 'شعير', 'أرز', 'فول'], 'فول', 'الثلاث حبوب، والفول من البقوليات.', 'اكتفى بفكرة عامة (كلها تُؤكل)'),
+]);
+
+/* ================= smart placement test + personal plan =================
+   Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
+   The test keeps, for every skill, how sure we are that the student knows it, and always asks
+   the question that teaches us the most. It stops when it is sure about every skill (or after 35).
+   Result per lesson:  green = knows it (skip)  ·  yellow = knows it but slow/unsure (practice)
+                       red = needs the lesson   ·  check = not sure yet (two questions before the lesson)
+   The numbers below were tuned on simulated students before building (see the plan notes). */
+const DG_BUDGET = 35, DG_LO = 0.12, DG_HI = 0.88, DG_GREEN = 0.75, DG_RED = 0.2, DG_SPREAD = 0.35;
+const DG_LIK = { ok: [0.88, 0.22], wrong: [0.12, 0.62], dk: [0.03, 0.55], timeout: [0.35, 0.40] };
+const DG_ANC_OK = 0.45, DG_DESC_BAD = 0.4;
+const DG_MIN = { red: 20, check: 3, yellow: 6 }; // rough minutes per plan step
+
+let DGG = null;
+function dgGraph() {
+  if (DGG) return DGG;
+  const ids = Object.keys(SKILLS), kids = {}, unit = {};
+  ids.forEach(i => kids[i] = []);
+  ids.forEach(i => (SKILLS[i].pre || []).forEach(p => kids[p] && kids[p].push(i)));
+  for (const d of DISTRICTS) for (const l of d.lessons || []) unit[l.id] = d.id;
+  const clos = (s, rel) => { const out = new Set(), st = [...rel(s)]; while (st.length) { const x = st.pop(); if (!out.has(x)) { out.add(x); st.push(...rel(x)); } } return out; };
+  const anc = {}, desc = {};
+  ids.forEach(i => { anc[i] = clos(i, x => SKILLS[x].pre || []); desc[i] = clos(i, x => kids[x]); });
+  const skills = ids.filter(i => !SKILLS[i].mixed && DIAG[i] && DIAG[i].length);
+  return DGG = { anc, desc, unit, skills };
+}
+const dgLesson = id => { for (const d of DISTRICTS) for (const l of d.lessons || []) if (l.id === id) return { d, l }; return null; };
+function dgLimit(id) {
+  const s = SKILLS[id] || {}; if (s.t) return s.t;
+  if (typeof SKILL_T === 'number') return SKILL_T;
+  return (SKILL_T && SKILL_T[id.replace(/\d+$/, '')]) || 60;
+}
+const dgFast = (t, id) => t < 0.7 * dgLimit(id);
+const dgH = p => p <= 0 || p >= 1 ? 0 : -(p * Math.log2(p) + (1 - p) * Math.log2(1 - p));
+const dgLg = p => Math.log(p / (1 - p)), dgSg = x => 1 / (1 + Math.exp(-x));
+
+/* ---------- the model ---------- */
+function dgNewRun() { return { L: {}, ua: {}, gl: [2, 2], asked: {}, speed: {}, used: {}, n: 0, secs: 0, misses: {}, log: [], t0: Date.now() }; }
+function dgP(R, id) {
+  const G = dgGraph(), u = G.unit[id], [a, b] = R.ua[u] || [1, 1], [ga, gb] = R.gl;
+  const pg = ga / (ga + gb), m = a + b - 2;
+  const pu = Math.min(0.95, Math.max(0.05, (a - 1 + 2 * pg) / (m + 2)));   // this unit so far, pulled toward the student overall
+  return dgSg(dgLg(pu) + (R.L[id] || 0));
+}
+const dgAdd = (R, id, lk, lu) => { R.L[id] = (R.L[id] || 0) + Math.log(lk / lu); };
+function dgPick(R) {
+  const G = dgGraph(), P = {};
+  G.skills.forEach(s => P[s] = dgP(R, s));
+  const open = G.skills.filter(s => P[s] > DG_LO && P[s] < DG_HI && (R.asked[s] || 0) < 2 && (DIAG[s].length > (R.used[s] || []).length));
+  if (!open.length) return null;
+  let best = null, bs = -1;
+  for (const s of open) {
+    let sc = dgH(P[s]);
+    for (const x of G.anc[s]) if (P[x] != null) sc += DG_SPREAD * dgH(P[x]);
+    for (const x of G.desc[s]) if (P[x] != null) sc += DG_SPREAD * dgH(P[x]);
+    sc += Math.random() * 0.05;   // two students never get the exact same test
+    if (sc > bs) { bs = sc; best = s; }
+  }
+  return best;
+}
+function dgQuestion(id, used) {
+  const all = DIAG[id].map((_, i) => i).filter(i => !(used || []).includes(i));
+  const pool = all.length ? all : DIAG[id].map((_, i) => i);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+function dgRecord(R, id, qi, res, secs, chosen) {
+  const G = dgGraph(), u = G.unit[id];
+  R.n++; R.secs += secs; R.asked[id] = (R.asked[id] || 0) + 1; (R.used[id] = R.used[id] || []).push(qi);
+  R.log.push([id, qi, res, Math.round(secs), chosen]);
+  const [lk, lu] = DG_LIK[res]; dgAdd(R, id, lk, lu);
+  const ua = R.ua[u] || (R.ua[u] = [1, 1]);
+  if (res === 'ok') {
+    for (const a of G.anc[id]) dgAdd(R, a, 0.88, DG_ANC_OK);
+    ua[0]++; R.gl[0]++;
+    (R.speed[id] = R.speed[id] || []).push(dgFast(secs, id) ? 1 : 0);
+  } else if (res === 'wrong' || res === 'dk') {
+    for (const d of G.desc[id]) dgAdd(R, d, DG_DESC_BAD, 0.75);
+    ua[1]++; R.gl[1]++;
+    if (res === 'wrong' && chosen != null) { const q = DIAG[id][qi], why = q.miss && q.miss[chosen]; if (why) (R.misses[id] = R.misses[id] || []).push(why); }
+  } else (R.speed[id] = R.speed[id] || []).push(0);
+  /* the predicted score keeps learning from the test too */
+  if (u && WEIGHT[u] != null && res !== 'timeout') { const a = S.skill[u] || (S.skill[u] = []); a.push(res === 'ok' ? 1 : 0); if (a.length > 24) a.shift(); }
+}
+function dgLabels(R) {
+  const G = dgGraph(), status = {}, guessed = {};
+  for (const s of G.skills) {
+    const p = dgP(R, s), sp = R.speed[s];
+    if (p >= DG_GREEN) { status[s] = sp && sp.some(v => !v) ? 'yellow' : 'green'; if (!R.asked[s]) guessed[s] = 1; }
+    else if (p <= DG_RED) status[s] = 'red';
+    else status[s] = 'check';
+  }
+  /* practice-only lessons follow their unit */
+  for (const d of DISTRICTS) for (const l of d.lessons || []) if (SKILLS[l.id] && SKILLS[l.id].mixed) {
+    const mates = d.lessons.filter(x => status[x.id]).map(x => status[x.id]);
+    status[l.id] = mates.every(x => x === 'green') ? 'green' : 'yellow';
+  }
+  return { status, guessed };
+}
+function dgFinish(R) {
+  const { status, guessed } = dgLabels(R);
+  const prev = S.diag || {};
+  S.diag = { v: 1, at: Date.now(), status, guessed, misses: R.misses, used: R.used, n: R.n, secs: Math.round(R.secs), first: prev.first || Object.assign({}, status), history: (prev.history || []).concat([{ at: Date.now(), n: R.n, counts: dgCounts(status) }]).slice(-6), run: null, slips: {} };
+  S.placement = { date: Date.now(), pct: Math.round(100 * R.log.filter(x => x[2] === 'ok').length / Math.max(1, R.n)) };
+  persist();
+}
+function dgCounts(status) { const c = { green: 0, yellow: 0, red: 0, check: 0 }; for (const v of Object.values(status || {})) if (c[v] != null) c[v]++; return c; }
+
+/* ---------- state helpers used by the rest of the app ---------- */
+const dgOn = () => !!(S.diag && S.diag.status);
+const dgState = id => dgOn() ? (S.diag.status[id] || null) : null;
+const cleared = l => !!S.done[l.id] || dgState(l.id) === 'green';
+function dgSet(id, st) { if (!dgOn()) return; S.diag.status[id] = st; if (st !== 'green' && S.diag.guessed) delete S.diag.guessed[id]; persist(); }
+/* the plan: every lesson the student still needs, best order first (prerequisites first, then the most exam points per minute) */
+function dgPlan() {
+  if (!dgOn()) return [];
+  const G = dgGraph(), need = [];
+  for (const d of units()) for (const l of d.lessons) { const st = S.diag.status[l.id]; if (st && st !== 'green' && !S.done[l.id]) need.push({ d, l, st }); }
+  const ids = new Set(need.map(x => x.l.id)), placed = new Set(), out = [];
+  const gap = { red: 1, check: 0.6, yellow: 0.45 };
+  const prio = x => (WEIGHT[x.d.id] || 5) * gap[x.st] / DG_MIN[x.st];
+  const ready = x => {
+    const pre = SKILLS[x.l.id] && SKILLS[x.l.id].mixed ? x.d.lessons.map(m => m.id).filter(m => m !== x.l.id) : [...(G.anc[x.l.id] || [])];
+    return pre.every(a => !ids.has(a) || placed.has(a));
+  };
+  let rest = need;
+  while (rest.length) {
+    const cand = rest.filter(ready), pool = cand.length ? cand : rest;
+    const pick = pool.reduce((a, b) => (prio(b) > prio(a) ? b : a));
+    out.push(pick); placed.add(pick.l.id); rest = rest.filter(x => x !== pick);
+  }
+  return out;
+}
+const dgGuessed = () => dgOn() ? Object.keys(S.diag.guessed || {}).filter(id => S.diag.status[id] === 'green') : [];
+/* next lesson for the home screens: the plan first, otherwise the first lesson not cleared */
+function nextLesson() {
+  const p = dgPlan()[0]; if (p) return { d: p.d, l: p.l, i: p.d.lessons.indexOf(p.l), st: p.st };
+  for (const d of openUnits()) { const i = d.lessons.findIndex(l => !cleared(l)); if (i >= 0) return { d, l: d.lessons[i], i }; }
+  return null;
+}
+/* a wrong answer in a lesson we called "known" twice → we are no longer sure: check it */
+function dgSlip(s, ok) {
+  if (!dgOn() || !s.qid) return;
+  const id = String(s.qid).split(':')[0]; if (dgState(id) !== 'green' || S.done[id]) return;
+  const sl = S.diag.slips || (S.diag.slips = {});
+  if (ok) { if (sl[id]) sl[id] = Math.max(0, sl[id] - 1); return; }
+  sl[id] = (sl[id] || 0) + 1;
+  if (sl[id] >= 2) { S.diag.status[id] = 'check'; sl[id] = 0; }
+}
+
+/* ---------- screens ---------- */
+function dgScreen(title, onExit) {
+  screen();
+  const wrap = h('div', 'player dg');
+  const top = h('div', 'ptop gut');
+  const x = h('button', 'xbtn', ic('close', 22)); x.setAttribute('aria-label', 'خروج'); x.onclick = () => { FX.play('tap'); onExit(); };
+  const pbar = h('div', 'pbar', '<i style="width:0%"></i>');
+  top.append(x, pbar);
+  const strip = h('div', 'phases gut', `<span class="ph on">${title}</span>`);
+  const body = h('div', 'pbody gut'), dock = h('div', 'dock'), dockIn = h('div', 'dock-in gut');
+  dock.appendChild(dockIn); wrap.append(top, strip, body); app.append(wrap, dock);
+  return { body, dock, dockIn, strip, bar: v => { pbar.firstChild.style.width = Math.round(100 * v) + '%'; } };
+}
+/* one question with its own clock. done(result, seconds, chosenText) with result ok / wrong / dk / timeout */
+function dgAsk(V, q, limit, done, opt = {}) {
+  V.body.innerHTML = ''; window.scrollTo(0, 0);
+  window.__dg = { q, id: opt.id }; // read by the automatic tests only
+  if (q.passage) V.body.appendChild(h('div', 'passage', `<div class="ph">${ic('book', 16)}<span>النص</span></div><div class="pt">${fmt(q.passage)}</div>`));
+  const card = h('div', 'qcard dgq');
+  const C = 2 * Math.PI * 19;
+  const ring = h('div', 'dtimer', `<svg viewBox="0 0 44 44" aria-hidden="true"><circle class="tr-bg" cx="22" cy="22" r="19"/><circle class="tr-fg" cx="22" cy="22" r="19" style="stroke-dasharray:${C};stroke-dashoffset:0"/></svg><b></b><small>ثانية</small>`);
+  ring.setAttribute('role', 'timer');
+  if (opt.kick) card.appendChild(h('span', 'kick', opt.kick));
+  card.appendChild(ring);
+  card.appendChild(h('p', 'qtext', fmt(q.q)));
+  V.body.appendChild(card);
+  if (q.a != null) { const c = h('div', 'cmp'); c.innerHTML = `<div><small>القيمة الأولى</small><span>${fmt(q.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(q.b)}</span></div>`; V.body.appendChild(c); }
+  const order = (q.choices === CMP || q.keep) ? q.choices.map((_, i) => i) : shuffle(q.choices.map((_, i) => i));
+  const opts = h('div', 'opts'); let sel = null, over = false;
+  const btns = order.map((ci, k) => {
+    const b = h('button', 'opt', `<span class="k">${LETTERS[k]}</span><span class="ot">${fmt(q.choices[ci])}</span>`);
+    b.onclick = () => { if (over) return; FX.play('select'); sel = ci; btns.forEach(x => x.classList.toggle('sel', x === b)); go.disabled = false; };
+    b.dataset.c = ci; opts.appendChild(b); return b;
+  });
+  V.body.appendChild(opts);
+  V.dock.className = 'dock'; V.dockIn.innerHTML = '';
+  const row = h('div', 'dgrow');
+  const dk = h('button', 'btn dk', 'لا أعرف'), go = h('button', 'cta', opt.last ? 'إنهاء' : 'التالي');
+  go.disabled = true; row.append(dk, go); V.dockIn.appendChild(row);
+  const t0 = performance.now();
+  const secs = () => Math.min(limit, (performance.now() - t0) / 1000);
+  const end = (res) => {
+    if (over) return; over = true; clearInterval(tick);
+    btns.forEach(b => b.disabled = true); dk.disabled = go.disabled = true;
+    const chosen = sel != null ? q.choices[sel] : null;
+    if (res === 'timeout') {
+      ring.classList.add('out'); V.dock.classList.add('bad'); V.dockIn.innerHTML = `<p class="dg-out">${ic('timer', 18)} انتهى الوقت</p>`; FX.play('wrong');
+      setTimeout(() => done('timeout', limit, null), 1100);
+    } else done(res === 'pick' ? (sel === q.answer ? 'ok' : 'wrong') : res, secs(), chosen);
+  };
+  const paint = () => {
+    const left = Math.max(0, limit - secs());
+    ring.querySelector('b').textContent = ar(Math.ceil(left));
+    ring.querySelector('.tr-fg').style.strokeDashoffset = C * (1 - left / limit);
+    ring.classList.toggle('low', left <= 10);
+    if (left <= 0) end('timeout');
+  };
+  const tick = setInterval(paint, 200); paint();
+  cleanupFns.push(() => clearInterval(tick));
+  dk.onclick = () => { FX.play('tap'); end('dk'); };
+  go.onclick = () => { FX.play('tap'); if (sel != null) end('pick'); };
+}
+
+/* the start page */
+function dgIntro() {
+  screen();
+  hud('', showCity).classList.add('over');
+  const w = h('div', 'unitpage');
+  const resume = S.diag && S.diag.run;
+  const again = dgOn();
+  const ex = DISTRICTS.find(d => d.exam) || units()[0];
+  const pv = poster('billboard', ex, `<div class="bb-body"><small class="eyebrow">اختبار المستوى الذكي · ${COURSE.section}</small><h1>نعرف بالضبط ما تحتاجه</h1><p>الاختبار يتغيّر مع إجاباتك، ثم يصنع لك خطة بالدروس التي تحتاجها فقط.</p><div class="bb-act"></div></div>`);
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>${resume ? 'أكمل الاختبار' : again ? 'أعد الاختبار' : 'ابدأ'}</span>`);
+  go.onclick = () => { FX.play('whoosh'); dgRun(); };
+  pv.querySelector('.bb-act').appendChild(go);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg);
+  const rules = h('section', 'dg-rules gut');
+  rules.innerHTML = `<ul>
+    <li><b>من ١٢ إلى ٣٥ سؤالًا تقريبًا</b><span>كلما عرفنا مستواك أسرع، انتهى أسرع.</span></li>
+    <li><b>لكل سؤال وقته</b><span>تراه أعلى السؤال. إذا انتهى ننتقل للسؤال التالي.</span></li>
+    <li><b>لا تخمّن</b><span>اضغط «لا أعرف». التخمين يخرّب خطتك ويخفي عنك ما تحتاجه.</span></li>
+    <li><b>تقدر توقف وتكمل لاحقًا</b><span>إجاباتك محفوظة.</span></li></ul>
+    ${again && !resume ? '<p class="dg-note">إعادة الاختبار تبني خطة جديدة من إجاباتك الجديدة.</p>' : ''}`;
+  w.appendChild(rules);
+  app.appendChild(w);
+}
+/* the test itself */
+function dgRun() {
+  if (!S.diag) S.diag = {};
+  const R = S.diag.run || (S.diag.run = dgNewRun());
+  const V = dgScreen('اختبار المستوى', () => { persist(); showCity(); });
+  const G = dgGraph();
+  const step = () => {
+    const sure = G.skills.filter(s => { const p = dgP(R, s); return p <= DG_LO || p >= DG_HI; }).length;
+    V.bar(Math.max(R.n / DG_BUDGET, sure / G.skills.length));
+    const id = R.n < DG_BUDGET ? dgPick(R) : null;
+    if (!id) { dgFinish(R); FX.play('level'); return dgResult(); }
+    const qi = dgQuestion(id, R.used[id]), q = DIAG[id][qi];
+    dgAsk(V, q, dgLimit(id), (res, secs, chosen) => { dgRecord(R, id, qi, res, secs, chosen); persist(); step(); }, { kick: `سؤال ${ar(R.n + 1)}`, id });
+  };
+  step();
+}
+
+/* the result: what you know, what you need, and the plan */
+const DG_NAME = { green: 'متقن', yellow: 'تمرين', red: 'شرح', check: 'تحقق' };
+const DG_SUB = { green: 'تتخطاه', yellow: 'تمرين سريع بالوقت', red: 'تحتاج الدرس', check: 'سؤالان قبل الدرس' };
+function dgResult() {
+  screen();
+  hud('', showCity).classList.add('over');
+  const w = h('div', 'unitpage dgres');
+  const st = S.diag.status, c = dgCounts(st), skip = c.green;
+  const ex = DISTRICTS.find(d => d.exam) || units()[0];
+  const plan = dgPlan(), mins = plan.reduce((a, x) => a + DG_MIN[x.st], 0);
+  const pv = poster('billboard', ex, `<div class="bb-body"><small class="eyebrow">نتيجة اختبار المستوى · ${ar(S.diag.n)} سؤالًا</small><h1>${skip ? `تتخطى ${ar(skip)} درسًا` : 'خطتك جاهزة'}</h1><p>${plan.length ? `خطتك ${ar(plan.length)} خطوة، تقريبًا ${ar(Math.max(1, Math.round(mins / 60)))} ${Math.round(mins / 60) <= 2 ? 'ساعة' : 'ساعات'} من الدراسة.` : 'أتقنت كل دروس هذا القسم. ركّز على الاختبارات التجريبية.'}</p><div class="bb-act"></div></div>`);
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>${plan.length ? 'ابدأ خطتك' : 'الصفحة الرئيسية'}</span>`);
+  go.onclick = () => { FX.play('whoosh'); if (plan.length) dgOpen(plan[0]); else showCity(); };
+  pv.querySelector('.bb-act').appendChild(go);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg);
+  /* the four counts */
+  const cnt = h('div', 'dg-counts gut');
+  cnt.innerHTML = ['green', 'yellow', 'red', 'check'].map(k => `<div class="dgc ${k}"><b>${ar(c[k])}</b><span>${DG_NAME[k]}</span><small>${DG_SUB[k]}</small></div>`).join('');
+  w.appendChild(cnt);
+  /* what exactly is missing: the biggest gaps, with the slip we saw */
+  const gaps = plan.filter(x => x.st === 'red').slice(0, 3);
+  if (gaps.length) {
+    const g = h('section', 'dg-gaps gut');
+    g.innerHTML = `<h3>أهم ما ينقصك</h3>` + gaps.map(x => { const m = (S.diag.misses[x.l.id] || [])[0];
+      return `<div class="gap"><span class="dot red"></span><div><b>${fmt(x.l.title)}</b><small>${x.d.name}${m ? ` · لاحظنا: ${fmt(m)}` : ''}</small></div></div>`; }).join('');
+    w.appendChild(g);
+  }
+  /* the map: every lesson as a square, unit by unit */
+  const map = h('section', 'dg-map gut');
+  map.innerHTML = `<h3>خريطة دروسك</h3>` + units().map(d => `<div class="mrow"><span class="mname">${d.name}</span><span class="msq">${d.lessons.map(l => { const s = st[l.id] || 'none'; return `<i class="${S.done[l.id] ? 'green' : s}" title="${escHtml(l.title)}"></i>`; }).join('')}</span></div>`).join('') +
+    `<div class="mkey">${['green', 'yellow', 'red', 'check'].map(k => `<span><i class="${k}"></i>${DG_NAME[k]}</span>`).join('')}</div>`;
+  w.appendChild(map);
+  app.appendChild(w);
+}
+
+/* open a plan step */
+function dgOpen(x) {
+  if (x.st === 'check') return dgGate(x.d, x.l);
+  if (x.st === 'yellow') return dgPractice(x.d, x.l);
+  playLesson(x.d, x.l, true);
+}
+/* two of three: one slip never decides alone. onEnd(label) with green / yellow / red */
+function dgTwoOfThree(V, id, onEnd, title) {
+  const res = [];
+  const used = (S.diag.used[id] = S.diag.used[id] || []);
+  const step = () => {
+    const oks = res.filter(r => r[0] === 'ok').length, bad = res.length - oks;
+    V.bar(res.length / 3);
+    if (oks >= 2 || bad >= 2 || res.length >= 3) {
+      let lab = 'red';
+      if (oks >= 2) lab = res.filter(r => r[0] === 'ok').every(r => dgFast(r[1], id)) ? 'green' : 'yellow';
+      else if (res.some(r => r[0] === 'timeout') && res.filter(r => r[0] === 'wrong' || r[0] === 'dk').length < 2) lab = 'yellow';
+      persist(); return onEnd(lab);
+    }
+    const qi = dgQuestion(id, used), q = DIAG[id][qi]; used.push(qi);
+    dgAsk(V, q, dgLimit(id), (r, t) => { res.push([r, t]); step(); }, { kick: title, id });
+  };
+  step();
+}
+/* "check" lessons: two questions before the lesson */
+function dgGate(d, l) {
+  screen(d.color);
+  hud('', () => showDistrict(d)).classList.add('over');
+  const w = h('div', 'unitpage');
+  const pv = poster('billboard short', d, `<div class="bb-body"><small class="eyebrow">${d.name}</small><h1>${fmt(l.title)}</h1><p>لسنا متأكدين هل تحتاج هذا الدرس. أجب عن سؤالين: إذا أصبت تتخطاه، وإلا ندخل الدرس مباشرة.</p><div class="bb-act"></div></div>`);
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>سؤالان للتحقق</span>`), skip = h('button', 'ghost-btn', '<span>ادخل الدرس</span>');
+  go.onclick = () => { FX.play('whoosh'); dgSkipTest(d, l); };
+  skip.onclick = () => { FX.play('tap'); playLesson(d, l, true); };
+  pv.querySelector('.bb-act').append(go, skip);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg); app.appendChild(w);
+}
+/* "skip with two questions" (from a gate, or from any lesson's first screen) */
+function dgSkipTest(d, l) {
+  if (!DIAG[l.id]) return playLesson(d, l, true);
+  const V = dgScreen('تحقق: ' + l.title, () => showDistrict(d));
+  dgTwoOfThree(V, l.id, lab => {
+    if (lab === 'red') { dgSet(l.id, 'red'); toast('نبدأ الدرس، وهو مكتوب لك خطوة بخطوة'); return playLesson(d, l, true); }
+    dgSet(l.id, lab);
+    dgDone(d, lab === 'green' ? 'تخطيت الدرس' : 'تعرف الدرس', lab === 'green' ? 'أجبت صح وبسرعة، فلن تحتاج هذا الدرس.' : 'أجبت صح لكن ببطء. أضفنا لك تمرينًا سريعًا بالوقت في خطتك.');
+  }, 'تحقق');
+}
+/* "yellow" lessons: five timed questions from the lesson itself */
+function dgPractice(d, l) {
+  const own = shuffle(l.steps.filter(s => s.q && !s.check && Array.isArray(s.choices))).slice(0, 5);
+  const qs = own.length >= 4 ? own : own.concat((DIAG[l.id] || []).slice(0, 5 - own.length));
+  const V = dgScreen('تمرين بالوقت: ' + l.title, () => showDistrict(d));
+  let i = 0, ok = 0, fast = 0;
+  const step = () => {
+    V.bar(i / qs.length);
+    if (i >= qs.length) {
+      const lab = ok >= qs.length - 1 && fast >= qs.length - 1 ? 'green' : ok >= qs.length - 2 ? 'yellow' : 'red';
+      dgSet(l.id, lab);
+      if (lab === 'red') return dgDone(d, 'تحتاج الدرس', `أصبت ${ar(ok)} من ${ar(qs.length)}. أضفنا الدرس كاملًا إلى خطتك.`, { d, l });
+      return dgDone(d, lab === 'green' ? 'أتقنته' : 'قريب', lab === 'green' ? `أصبت ${ar(ok)} من ${ar(qs.length)} في الوقت. الدرس متقن.` : `أصبت ${ar(ok)} من ${ar(qs.length)}. أعد التمرين لاحقًا لتصل إلى السرعة المطلوبة.`);
+    }
+    dgAsk(V, qs[i], dgLimit(l.id), (r, t) => { if (r === 'ok') { ok++; if (dgFast(t, l.id)) fast++; } i++; step(); }, { kick: `${ar(i + 1)} من ${ar(qs.length)}`, last: i === qs.length - 1, id: l.id });
+  };
+  step();
+}
+/* lessons we only guessed as known: one quick question each (a miss gets a second chance) */
+function dgConfirm() {
+  const ids = dgGuessed().slice(0, 6);
+  if (!ids.length) return showCity();
+  const V = dgScreen('تحقق سريع', () => showCity());
+  let i = 0, reopened = 0;
+  const one = (id, first) => {
+    const used = (S.diag.used[id] = S.diag.used[id] || []);
+    const qi = dgQuestion(id, used), q = DIAG[id][qi]; used.push(qi);
+    dgAsk(V, q, dgLimit(id), (r, t) => {
+      if (r === 'ok') { S.diag.status[id] = first && dgFast(t, id) ? 'green' : 'yellow'; delete S.diag.guessed[id]; if (S.diag.status[id] !== 'green') reopened++; i++; return step(); }
+      if (first) return one(id, false);
+      S.diag.status[id] = r === 'timeout' ? 'yellow' : 'red'; delete S.diag.guessed[id]; reopened++; i++; step();
+    }, { kick: `${ar(i + 1)} من ${ar(ids.length)}`, id });
+  };
+  const step = () => { V.bar(i / ids.length); persist(); if (i >= ids.length) return dgDone(null, reopened ? `أضفنا ${ar(reopened)} إلى خطتك` : 'كلها مؤكدة', reopened ? 'بعض الدروس التي ظننّاك تعرفها تحتاج مراجعة، فوضعناها في خطتك.' : 'تأكدنا أنك تعرف هذه الدروس.'); one(ids[i], true); };
+  step();
+}
+function dgDone(d, title, text, open) {
+  screen(d && d.color);
+  hud('', showCity).classList.add('over');
+  const w = h('div', 'unitpage');
+  const pv = poster('billboard short', d || DISTRICTS.find(x => x.exam) || units()[0], `<div class="bb-body"><small class="eyebrow">خطتك</small><h1>${title}</h1><p>${text}</p><div class="bb-act"></div></div>`);
+  const nx = dgPlan()[0];
+  const go = h('button', 'play-btn', `${ic('play', 18)}<span>${open ? 'ابدأ الدرس' : nx ? 'الخطوة التالية' : 'الصفحة الرئيسية'}</span>`);
+  go.onclick = () => { FX.play('whoosh'); if (open) playLesson(open.d, open.l, true); else if (nx) dgOpen(nx); else showCity(); };
+  const home = h('button', 'ghost-btn', '<span>الرئيسية</span>'); home.onclick = () => { FX.play('tap'); showCity(); };
+  pv.querySelector('.bb-act').append(go, home);
+  const hg = h('div', 'gut'); hg.appendChild(pv); w.appendChild(hg); app.appendChild(w);
+}
+/* the plan as a rail of tiles (course home) */
+function dgPlanRail() {
+  const plan = dgPlan(), gs = dgGuessed();
+  if (!plan.length && !gs.length) return null;
+  const [sec, row] = rail('خطتك', `${ar(plan.length)} ${plan.length > 10 ? 'خطوة' : 'خطوات'}`);
+  if (gs.length) { const b = h('button', 'tile dgt confirm'); b.innerHTML = `<span class="t-num">${ic('check', 16)}</span><span class="t-body"><small>تحقق سريع · ${ar(Math.min(6, gs.length))} أسئلة</small><b>دروس ظننّا أنك تعرفها</b></span>`; b.onclick = () => { FX.play('whoosh'); dgConfirm(); }; row.appendChild(b); }
+  plan.slice(0, 12).forEach((x, i) => {
+    const b = h('button', `tile dgt ${x.st}` + (i === 0 ? ' now' : ''));
+    b.style.setProperty('--pc', posterVar(x.d));
+    b.innerHTML = `<span class="t-num">${ar(i + 1)}</span><span class="t-body"><small>${DG_NAME[x.st]} · ${x.d.name}</small><b>${fmt(x.l.title)}</b></span>`;
+    b.onclick = () => { FX.play('whoosh'); dgOpen(x); };
+    row.appendChild(b);
+  });
+  return sec;
+}
+
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET } };
 })();
 /* ================= academy shell =================
    Hosts every course block (window.AcademyCourses) in one page:
@@ -10606,7 +12248,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
   }
   function poster(cls, pc, glyph, inner) { const p = el('div', 'poster ' + cls); p.style.setProperty('--pc', pc); p.innerHTML = `<span class="glyph" aria-hidden="true">${glyph}</span>${inner}`; return p; }
   function rail(title, meta) { const sec = el('section', 'rail'); sec.innerHTML = `<div class="rail-h gut"><h3>${title}</h3>${meta ? `<small>${meta}</small>` : ''}</div>`; const row = el('div', 'rail-row gut'); sec.appendChild(row); return [sec, row]; }
-  function nextOf(id) { const api = C[id].api; for (const d of (api.openUnits ? api.openUnits() : api.units())) { const i = d.lessons.findIndex(l => !api.S.done[l.id]); if (i >= 0) return { d, l: d.lessons[i], i }; } return null; }
+  function nextOf(id) { const api = C[id].api; if (api.nextLesson) return api.nextLesson(); for (const d of (api.openUnits ? api.openUnits() : api.units())) { const i = d.lessons.findIndex(l => !api.S.done[l.id]); if (i >= 0) return { d, l: d.lessons[i], i }; } return null; }
   const unitNo = (api, d) => api.units().indexOf(d) + 1;
   const whyOf = l => { const st = l.steps.find(s => s.intro); return st ? st.intro.why : (l.sub || ''); };
 
