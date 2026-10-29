@@ -853,6 +853,13 @@ h1,h2,h3{font-weight:500}
 @media (max-width:360px){.dg-counts{grid-template-columns:repeat(2,1fr)}}
 .dtimer.out .tr-fg{opacity:0} .dtimer.out b{animation:none}
 .dg .opt:disabled{opacity:.55}
+.dgfig{margin:0 0 12px}
+.dg-red{fill:var(--bad)} .dg-blue{fill:var(--chk)}
+.dgtable{margin:0 0 12px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.dgtable table{width:100%;border-collapse:collapse;text-align:center;font-size:15px}
+.dgtable th{background:var(--bg-2);font-weight:600;padding:9px 6px}
+.dgtable td{padding:9px 6px;border-top:1px solid var(--line)}
+.dgtable td+td,.dgtable th+th{border-inline-start:1px solid var(--line)}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -7836,6 +7843,132 @@ D('c4', [
   DC('قارن بين:', '`0.98 × 50`', '`50 − 1`', 2, '`0.98 × 50 = 49`.', [ 'خمّن دون حساب', 'ظن أن الضرب في عدد أقل من ١ يصغّر كثيرًا', null, 'ظن أن المقارنة تحتاج معطيات' ]),
 ]);
 
+/* ================= figures for the diagnostic questions =================
+   Like the real exam: geometry, charts, tables and Venn questions come with a drawing.
+   DF(lesson, index, height, draw, newQuestionText) · DT(lesson, index, tableHtml, newQuestionText) */
+function DF(id, i, hh, draw, q) {
+  const o = DIAG[id] && DIAG[id][i]; if (!o) { console.warn('DF: no question', id, i); return; }
+  if (q) o.q = q;
+  o.fig = body => { const box = h('div', 'bfig dgfig'); const svg = sv('svg', { viewBox: `0 0 360 ${hh}`, style: 'direction:ltr' }, box); body.appendChild(box); draw(buildKit(svg, sv('g', {}, svg))); };
+}
+function DT(id, i, rows, q) {
+  const o = DIAG[id] && DIAG[id][i]; if (!o) { console.warn('DT: no question', id, i); return; }
+  if (q) o.q = q;
+  o.fig = body => { const t = h('div', 'dgtable'); t.innerHTML = `<table>${rows.map((r, k) => `<tr>${r.map(c => k ? `<td>${fmt(String(c))}</td>` : `<th>${fmt(String(c))}</th>`).join('')}</tr>`).join('')}</table>`; body.appendChild(t); };
+}
+const dqScale = K => K.note(350, 12, 'الرسم ليس بمقياس', 'end');
+const dqTri = (K, pts, cls = 's-fill') => K.path('M' + pts.map(p => p.join(',')).join(' L') + ' Z', cls);
+const dqTick = (K, a, b) => { const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy), nx = -dy / L * 7, ny = dx / L * 7; K.line(mx - nx, my - ny, mx + nx, my + ny, 's-line'); };
+const dqRight = (K, x, y, sx, sy, s = 14) => K.path(`M${x + sx * s},${y} V${y + sy * s} H${x}`, 's-thin');
+/* bars: data = [[label, value]], axis from lo to hi step st */
+function dqBars(K, data, lo, hi, st, { top = 24, bot = 186, left = 50, right = 340 } = {}) {
+  const Y = v => bot - (v - lo) / (hi - lo) * (bot - top);
+  for (let v = lo; v <= hi + 1e-9; v += st) { K.line(left, Y(v), right, Y(v), 's-grid'); K.note(left - 18, Y(v), String(v)); }
+  K.line(left, bot, right, bot, 's-axis'); K.line(left, top - 6, left, bot, 's-axis');
+  const w = (right - left) / data.length;
+  data.forEach(([lab, v], k) => { const x = right - (k + 1) * w + w * 0.2; K.rect(x, Y(v), w * 0.6, bot - Y(v), k % 2 ? 's-fill2' : 's-fill', 3); K.note(x + w * 0.3, bot + 16, lab); });
+}
+function dqPie(K, cx, cy, r, parts) { // parts: [[degrees, cls, label]]
+  let a = 90;
+  K.circle(cx, cy, r, 's-unit');
+  parts.forEach(([deg, cls, lab]) => { if (cls) K.path(arcPath(cx, cy, r, a - deg, a), cls); K.line(cx, cy, ...polar(cx, cy, r, a), 's-thin'); if (lab) { const [x, y] = polar(cx, cy, r * 0.6, a - deg / 2); K.label(x, y, lab); } a -= deg; });
+}
+function dqVenn(K, l, r, mid, outside, total) {
+  K.rect(14, 8, 332, 202, 's-mute', 14);
+  K.circle(215, 120, 72, 's-fill'); K.circle(145, 120, 72, 's-fill2');
+  K.note(262, 28, l[0]); K.note(98, 28, r[0]);
+  if (l[1] != null) K.label(258, 120, l[1]); if (r[1] != null) K.label(102, 120, r[1]);
+  if (mid != null) K.label(180, 120, mid);
+  if (outside != null) K.label(36, 196, outside);
+  if (total) K.note(290, 200, total);
+}
+function dqPlane(K, pts, { cx = 70, cy = 200, u = 22, nx = 12, ny = 9 } = {}) {
+  for (let i = 0; i <= nx; i++) K.line(cx + i * u, cy, cx + i * u, cy - ny * u, 's-grid');
+  for (let j = 0; j <= ny; j++) K.line(cx, cy - j * u, cx + nx * u, cy - j * u, 's-grid');
+  K.line(cx, cy, cx + nx * u + 10, cy, 's-axis'); K.line(cx, cy, cx, cy - ny * u - 10, 's-axis');
+  K.note(cx + nx * u + 14, cy + 2, 'س'); K.note(cx, cy - ny * u - 18, 'ص'); K.note(cx - 10, cy + 12, '0');
+  pts.forEach(([x, y, lab]) => { K.circle(cx + x * u, cy - y * u, 6, 's-hi'); K.note(cx + x * u, cy - y * u - 16, lab); });
+  return (x, y) => [cx + x * u, cy - y * u];
+}
+function dqBox(K, x0, y0, a, b, c, u) { // a along right-down, b along left-down, c up
+  const P = (i, j, k) => [x0 + (i - j) * u * 0.866, y0 + (i + j) * u * 0.5 - k * u];
+  const dqPoly = (pts, cls) => K.path('M' + pts.map(p => P(...p).join(',')).join(' L') + ' Z', cls);
+  dqPoly([[0, b, 0], [a, b, 0], [a, b, c], [0, b, c]], 's-face2');
+  dqPoly([[a, 0, 0], [a, b, 0], [a, b, c], [a, 0, c]], 's-face3');
+  dqPoly([[0, 0, c], [a, 0, c], [a, b, c], [0, b, c]], 's-face1');
+  return P;
+}
+
+/* ---- fractions ---- */
+DF('f1', 2, 110, K => { K.bar(30, 30, 300, 50, 6, 4, 's-fill'); }, 'قُسّم الشريط إلى أجزاء متساوية كما في الشكل. ما الكسر <b>غير</b> الملوّن؟');
+
+/* ---- geometry ---- */
+DF('g1', 1, 110, K => { K.line(40, 60, 320, 60, 's-line'); [[320, 'أ'], [40, 'ب'], [180, 'ج'], [250, 'د']].forEach(([x, s]) => { K.circle(x, 60, 6, 's-pt'); K.label(x, 34, s); }); K.note(180, 92, 'أب = ١٢'); });
+DF('g1', 3, 130, K => { K.line(30, 50, 330, 50, 's-line'); const A = 320, B = 320 - 7 * 14, C = 320 - 19 * 14; [[A, 'أ'], [B, 'ب'], [C, 'ج']].forEach(([x, s]) => { K.circle(x, 50, 6, 's-pt'); K.label(x, 24, s); });
+  K.path(`M${A},70 v8 H${B} v-8`, 's-thin'); K.note((A + B) / 2, 92, '7'); K.path(`M${A},100 v8 H${C} v-8`, 's-thin'); K.note((A + C) / 2, 122, '19'); }, 'النقاط أ، ب، ج على مستقيم كما في الشكل. كم طول بج؟');
+DF('g2', 0, 170, K => { const [x, y] = [200, 140]; ray(K, x, y, 0, 120); ray(K, x, y, 100, 120); ang(K, x, y, 0, 100, 30); K.label(x + 20, y - 52, '100°'); K.circle(x, y, 4, 's-pt'); }, 'ما نوع الزاوية المرسومة؟');
+DF('g3', 0, 220, K => { dqScale(K); K.line(30, 110, 330, 110, 's-line'); const [a, b] = polar(180, 110, 150, 65), [c, d] = polar(180, 110, 150, 245); K.line(a, b, c, d, 's-line');
+  ang(K, 180, 110, 0, 65, 34); ang(K, 180, 110, 180, 245, 34, 's-fill2'); K.label(236, 86, '65°'); K.label(128, 136, 'س'); }, 'مستقيمان متقاطعان كما في الشكل. ما قيمة س؟');
+DF('g3', 1, 180, K => { dqScale(K); K.line(30, 150, 330, 150, 's-line'); ray(K, 180, 150, 36, 130, 's-line'); ang(K, 180, 150, 0, 36, 46); ang(K, 180, 150, 36, 180, 30, 's-fill2'); K.label(250, 132, 'س'); K.label(150, 104, '4س'); K.circle(180, 150, 4, 's-pt'); }, 'في الشكل زاويتان على خط مستقيم. ما قيمة س؟');
+DF('g3', 2, 230, K => { clockFace(K); ray(K, 110, 115, 90, 70, 's-line'); ray(K, 110, 115, -30, 50, 's-line'); K.circle(110, 115, 5, 's-pt'); }, 'كم درجة الزاوية بين عقربي الساعة في الشكل (الساعة ٤:٠٠)؟');
+const dqParallel = (K, th) => { K.line(20, 70, 340, 70, 's-line'); K.line(20, 160, 340, 160, 's-line'); const [a, b] = polar(180, 115, 140, th), [c, d] = polar(180, 115, 140, th + 180); K.line(a, b, c, d, 's-line2');
+  const k = 45 / Math.tan(th * D2R); return [[180 + k, 70], [180 - k, 160]]; };
+DF('g4', 0, 220, K => { dqScale(K); const [T, B] = dqParallel(K, 70); ang(K, T[0], T[1], 0, 70, 22); K.label(T[0] + 34, T[1] - 18, '70°'); ang(K, B[0], B[1], 70, 180, 20, 's-fill2'); K.label(B[0] - 30, B[1] - 20, 'س'); }, 'مستقيمان متوازيان يقطعهما قاطع كما في الشكل. ما قيمة س؟');
+DF('g4', 1, 220, K => { dqScale(K); const [T, B] = dqParallel(K, 55); ang(K, T[0], T[1], 180, 235, 24); K.label(T[0] - 40, T[1] + 18, '55°'); ang(K, B[0], B[1], 0, 55, 24, 's-fill2'); K.label(B[0] + 40, B[1] - 16, 'س'); }, 'مستقيمان متوازيان يقطعهما قاطع كما في الشكل. ما قيمة س؟');
+DF('g4', 2, 220, K => { dqScale(K); const [T, B] = dqParallel(K, 80); ang(K, T[0], T[1], 180, 260, 22); K.label(T[0] - 36, T[1] + 18, '80°'); ang(K, B[0], B[1], 80, 180, 20, 's-fill2'); K.label(B[0] - 34, B[1] - 20, 'س'); }, 'مستقيمان متوازيان يقطعهما قاطع كما في الشكل. ما قيمة س؟');
+DF('g4', 3, 220, K => { dqScale(K); const [T, B] = dqParallel(K, 55); ang(K, T[0], T[1], 180, 235, 24); K.label(T[0] - 62, T[1] + 22, '(2س + 10)°'); ang(K, B[0], B[1], 0, 55, 24, 's-fill2'); K.label(B[0] + 64, B[1] - 20, '(3س − 10)°'); }, 'مستقيمان متوازيان يقطعهما قاطع كما في الشكل. ما قيمة س؟');
+DF('g5', 0, 210, K => { dqScale(K); const A = [80, 185], C = [280, 185], B = [237.7, 27]; dqTri(K, [A, C, B]); K.label(128, 170, '45°'); K.label(254, 168, '75°'); K.label(236, 58, 'س'); }, 'ما قيمة س في المثلث المرسوم؟');
+DF('g5', 2, 210, K => { dqScale(K); const A = [180, 30], L = [125, 185], R = [235, 185]; dqTri(K, [A, L, R]); dqTick(K, A, L); dqTick(K, A, R); K.label(180, 70, '40°'); K.label(146, 170, 'س'); }, 'المثلث المرسوم متطابق الضلعين. ما قيمة س؟');
+DF('g5', 3, 220, K => { dqScale(K); const A = [50, 195], C = [250, 195], B = [189.5, 29]; dqTri(K, [A, C, B]); K.line(250, 195, 345, 195, 's-thin'); ang(K, 250, 195, 0, 110, 26, 's-fill2'); K.label(92, 182, '50°'); K.label(188, 62, '60°'); K.label(292, 168, 'س'); }, 'في الشكل مُدّ أحد أضلاع المثلث. ما قيمة الزاوية الخارجية س؟');
+DF('g6', 0, 160, K => { K.rect(60, 30, 240, 100, 's-fill', 3); K.label(180, 148, '12'); K.label(44, 80, '5'); }, 'ما محيط المستطيل المرسوم؟');
+DF('g6', 3, 160, K => { K.rect(60, 30, 240, 100, 's-fill', 3); K.label(180, 148, '2ع'); K.label(44, 80, 'ع'); }, 'محيط المستطيل المرسوم ٣٠. ما طوله؟');
+DF('g7', 0, 180, K => { dqScale(K); dqTri(K, [[60, 160], [300, 160], [220, 30]]); K.line(220, 30, 220, 160, 'b-cut'); dqRight(K, 220, 160, -1, -1); K.label(180, 176, '10'); K.label(234, 96, '6'); }, 'ما مساحة المثلث المرسوم؟');
+DF('g7', 1, 180, K => { dqScale(K); K.path('M50,160 L250,160 L310,40 L110,40 Z', 's-fill'); K.line(110, 40, 110, 160, 'b-cut'); dqRight(K, 110, 160, 1, -1); K.label(150, 176, '8'); K.label(96, 100, '5'); K.label(296, 104, '6'); }, 'ما مساحة متوازي الأضلاع المرسوم؟');
+DF('g7', 2, 180, K => { dqScale(K); K.path('M40,160 L320,160 L250,50 L110,50 Z', 's-fill'); K.line(110, 50, 110, 160, 'b-cut'); dqRight(K, 110, 160, 1, -1); K.label(180, 36, '6'); K.label(180, 176, '10'); K.label(96, 106, '4'); }, 'ما مساحة شبه المنحرف المرسوم؟');
+DF('g8', 0, 200, K => { dqScale(K); dqTri(K, [[250, 170], [90, 170], [250, 50]]); dqRight(K, 250, 170, -1, -1); K.label(170, 188, '8'); K.label(268, 110, '6'); K.label(150, 98, 'س'); }, 'ما طول الضلع س في المثلث القائم؟');
+DF('g8', 1, 200, K => { dqScale(K); dqTri(K, [[250, 170], [90, 170], [250, 50]]); dqRight(K, 250, 170, -1, -1); K.label(170, 188, 'س'); K.label(268, 110, '5'); K.label(150, 98, '13'); }, 'ما طول الضلع س في المثلث القائم؟');
+DF('g8', 3, 210, K => { dqScale(K); K.rect(250, 20, 18, 170, 's-mute', 0); K.line(40, 190, 340, 190, 's-axis'); K.line(250, 46, 130, 190, 's-line2'); dqRight(K, 250, 190, -1, -1); K.label(176, 110, '10'); K.label(190, 204, '6'); K.label(236, 120, 'س'); }, 'سُلّم يستند إلى جدار كما في الشكل. ما الارتفاع س؟');
+DF('g9', 0, 190, K => { K.circle(180, 95, 80, 's-fill'); K.circle(180, 95, 4, 's-pt'); K.line(180, 95, 260, 95, 's-line'); K.label(220, 80, '7'); }, 'ما محيط الدائرة المرسومة؟ (ط = [[22/7]])');
+DF('g9', 1, 190, K => { K.circle(180, 95, 80, 's-fill'); K.circle(180, 95, 4, 's-pt'); K.line(100, 95, 260, 95, 's-line'); K.label(180, 80, '10'); }, 'ما مساحة الدائرة المرسومة؟');
+DF('g9', 2, 190, K => { K.circle(180, 95, 80, 's-unit'); K.path(arcPath(180, 95, 80, 0, 90), 's-fill2'); dqRight(K, 180, 95, 1, -1, 12); K.note(300, 170, 'مساحة الدائرة ٣٦ط'); }, 'ما مساحة الجزء الملوّن من الدائرة؟');
+const dqPoly = (K, n, r = 85, cx = 180, cy = 105, cls = 's-fill') => { const pts = Array.from({ length: n }, (_, i) => polar(cx, cy, r, 90 + i * 360 / n)); K.path('M' + pts.map(p => p.join(',')).join(' L') + ' Z', cls); return pts; };
+DF('g10', 0, 210, K => { dqPoly(K, 6); }, 'ما مجموع قياسات الزوايا الداخلية للشكل المرسوم؟');
+DF('g10', 1, 210, K => { const p = dqPoly(K, 5); K.label(p[0][0], p[0][1] + 26, 'س'); }, 'الشكل خماسي منتظم. ما قيمة س؟');
+DF('g11', 0, 200, K => { dqBox(K, 150, 105, 3, 3, 3, 30); K.label(250, 180, '3'); }, 'ما حجم المكعب المرسوم؟');
+DF('g11', 1, 200, K => { dqBox(K, 140, 85, 5, 2, 3, 24); K.label(258, 170, '5'); K.label(100, 150, '2'); K.label(318, 100, '3'); }, 'ما حجم متوازي المستطيلات المرسوم؟');
+DF('g11', 3, 210, K => { K.path('M100,170 V50 a80,22 0 0,1 160,0 V170', 's-fill'); K.path('M100,170 a80,22 0 1,0 160,0', 's-fill'); K.path('M100,50 a80,22 0 1,0 160,0 a80,22 0 1,0 -160,0', 's-face1'); K.line(180, 50, 260, 50, 's-line'); K.label(220, 36, '3'); K.label(286, 112, '4'); }, 'ما حجم الأسطوانة المرسومة؟');
+DF('g12', 1, 230, K => { dqPlane(K, [[1, 2, 'أ'], [4, 6, 'ب']]); }, 'في الشكل النقطتان أ `(1, 2)` و ب `(4, 6)`. ما المسافة بينهما؟');
+DF('g12', 2, 260, K => { dqPlane(K, [[2, 4, 'أ'], [8, 10, 'ب']], { cy: 245, u: 20, ny: 11 }); }, 'في الشكل النقطتان أ `(2, 4)` و ب `(8, 10)`. ما منتصف القطعة أب؟');
+DF('g13', 0, 212, K => { dqScale(K); dqTri(K, [[30, 180], [100, 180], [70, 130]]); dqTri(K, [[140, 180], [340, 180], [250, 40]], 's-fill2'); K.label(65, 196, '4'); K.label(240, 196, 'س'); }, 'المثلثان في الشكل متشابهان، ونسبة أضلاعهما ١ : ٣. ما قيمة س؟');
+DF('g13', 2, 200, K => { dqScale(K); K.line(10, 170, 350, 170, 's-axis'); K.line(300, 170, 300, 130, 's-line'); K.line(300, 130, 240, 170, 'b-cut'); K.label(316, 150, '2'); K.label(270, 186, '3');
+  K.rect(150, 40, 10, 130, 's-face2', 2); K.circle(155, 40, 26, 's-fill'); K.line(155, 20, 20, 170, 'b-cut'); K.label(88, 186, '12'); K.label(176, 110, 'س'); }, 'عمود وشجرة وظلّاهما في الوقت نفسه كما في الشكل. ما طول الشجرة س؟');
+
+/* ---- data ---- */
+DF('d3', 0, 210, K => { dqBars(K, [['القدم', 30], ['السلة', 15], ['السباحة', 20]], 0, 35, 5); }, 'المخطط يبيّن عدد الطلاب حسب الرياضة. كم طالبًا اختار كرة القدم؟');
+DF('d3', 1, 210, K => { dqBars(K, [['الأحد', 12], ['الاثنين', 18], ['الثلاثاء', 9]], 0, 18, 3); }, 'المخطط يبيّن عدد الزوار في ثلاثة أيام. بكم يزيد أعلى يوم على أقل يوم؟');
+DF('d3', 2, 210, K => { dqBars(K, [['محرّم', 20], ['صفر', 30], ['ربيع ١', 25], ['ربيع ٢', 45]], 0, 50, 10); }, 'المخطط يبيّن مبيعات أربعة أشهر. ما متوسط المبيعات الشهرية؟');
+DF('d3', 3, 210, K => { dqBars(K, [['أ', 100], ['ب', 110]], 90, 110, 5); }, 'في المخطط يبدو العمود ب ضعف العمود أ. كم مرة يساوي ب من أ فعلًا؟');
+const dqTemp = K => { const T = [['٦ص', 15], ['٩ص', 22], ['١٢ظ', 30], ['٣م', 28], ['٦م', 20]], Y = v => 186 - (v - 10) / 25 * 160;
+  for (let v = 10; v <= 35; v += 5) { K.line(50, Y(v), 340, Y(v), 's-grid'); K.note(32, Y(v), String(v)); }
+  K.line(50, 186, 340, 186, 's-axis'); K.line(50, 20, 50, 186, 's-axis');
+  const X = k => 76 + k * 66; K.path('M' + T.map(([, v], k) => `${X(k)},${Y(v)}`).join(' L'), 's-line'); T.forEach(([lab, v], k) => { K.circle(X(k), Y(v), 5, 's-pt'); K.note(X(k), 204, lab); }); };
+DF('d4', 0, 215, dqTemp, 'الشكل يبيّن درجات الحرارة خلال يوم. في أي فترة كان أكبر ارتفاع؟');
+DF('d4', 1, 215, dqTemp, 'الشكل يبيّن درجات الحرارة خلال يوم. كم انخفضت الحرارة من ١٢ظ إلى ٦م؟');
+DF('d4', 2, 180, K => { K.line(40, 160, 340, 160, 's-axis'); K.line(40, 20, 40, 160, 's-axis'); K.path('M60,150 L150,60 L320,60', 's-line'); K.note(235, 44, '؟'); }, 'في الخط البياني المرسوم، ماذا يعني الجزء الأفقي؟');
+DF('d5', 1, 200, K => { dqPie(K, 180, 100, 85, [[72, 's-fill2', '72°'], [140, null, ''], [148, null, '']]); }, 'التمثيل الدائري لـ ٥٠٠ طالب. كم طالبًا يمثّل القطاع الملوّن؟');
+DF('d5', 2, 200, K => { dqPie(K, 180, 100, 85, [[144, 's-fill', '٤٠٪'], [126, 's-fill2', '٣٥٪'], [90, null, 'س']]); }, 'في التمثيل الدائري، ما قياس زاوية القطاع س؟');
+DF('d5', 3, 200, K => { dqPie(K, 180, 100, 85, [[120, 's-fill2', '120°'], [140, null, ''], [100, null, '']]); }, 'إنفاق أسرة ٦٠٠٠ ريال كما في التمثيل الدائري. كم ريالًا يمثّل القطاع الملوّن؟');
+DT('d6', 0, [['المدرسة', 'بنون', 'بنات'], ['أ', 200, 150], ['ب', 180, 220]], 'من الجدول: كم عدد البنات في المدرستين؟');
+DT('d6', 1, [['المدرسة', 'بنون', 'بنات'], ['أ', 200, 150], ['ب', 180, 220]], 'من الجدول: في أي مدرسة <b>نسبة</b> البنات أكبر؟');
+DT('d6', 2, [['الصنف', 'السعر (ريال)'], ['دفتر', 5], ['قلم', 2], ['مسطرة', 3]], 'من الجدول: اشترى خالد ٣ دفاتر وقلمين. كم دفع؟');
+DT('d6', 3, [['اليوم', 'عدد الزوار'], ['الخميس', 120], ['الجمعة', 200]], 'من الجدول: ما نسبة زيادة زوار الجمعة على الخميس تقريبًا؟');
+DF('d7', 0, 218, K => dqVenn(K, ['الرياضيات ١٨'], ['العلوم ١٥'], '7', '؟', 'الفصل ٣٠ طالبًا'), 'في الشكل: كم طالبًا لا يحب الرياضيات ولا العلوم؟');
+DF('d7', 1, 218, K => dqVenn(K, ['العربية ٣٠'], ['الإنجليزية ٢٠'], '؟', null, 'المجموع ٤٠'), 'كل شخص من الأربعين يتكلم لغة واحدة على الأقل كما في الشكل. كم شخصًا يتكلم اللغتين؟');
+DF('d7', 2, 218, K => dqVenn(K, ['القدم ٢٥', '؟'], ['السلة'], '10', null, ''), 'في الشكل: كم طالبًا يلعب القدم فقط؟');
+DF('d8', 0, 170, K => { K.path('M90,40 Q60,160 180,160 Q300,160 270,40 Z', 's-mute'); const cols = ['dg-red', 'dg-red', 'dg-red', 'dg-blue', 'dg-blue', 'dg-blue', 'dg-blue', 'dg-blue'];
+  dqMix(cols).forEach((c, i) => K.circle(118 + (i % 4) * 42, 82 + Math.floor(i / 4) * 40, 15, c)); }, 'في الكيس ٣ كرات حمراء و ٥ زرقاء كما في الشكل. ما احتمال سحب كرة حمراء؟');
+function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
+
 /* ================= smart placement test + personal plan =================
    Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
    The test keeps, for every skill, how sure we are that the student knows it, and always asks
@@ -8010,6 +8143,7 @@ function dgAsk(V, q, limit, done, opt = {}) {
   card.appendChild(ring);
   card.appendChild(h('p', 'qtext', fmt(q.q)));
   V.body.appendChild(card);
+  if (q.fig) q.fig(V.body);
   if (q.a != null) { const c = h('div', 'cmp'); c.innerHTML = `<div><small>القيمة الأولى</small><span>${fmt(q.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(q.b)}</span></div>`; V.body.appendChild(c); }
   const order = (q.choices === CMP || q.keep) ? q.choices.map((_, i) => i) : shuffle(q.choices.map((_, i) => i));
   const opts = h('div', 'opts'); let sel = null, over = false;
@@ -8233,7 +8367,7 @@ function dgPlanRail() {
 }
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen } };
 })();
 (function () {
 /* ================= course block: Qudurat verbal section =================
@@ -11971,6 +12105,7 @@ function dgAsk(V, q, limit, done, opt = {}) {
   card.appendChild(ring);
   card.appendChild(h('p', 'qtext', fmt(q.q)));
   V.body.appendChild(card);
+  if (q.fig) q.fig(V.body);
   if (q.a != null) { const c = h('div', 'cmp'); c.innerHTML = `<div><small>القيمة الأولى</small><span>${fmt(q.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(q.b)}</span></div>`; V.body.appendChild(c); }
   const order = (q.choices === CMP || q.keep) ? q.choices.map((_, i) => i) : shuffle(q.choices.map((_, i) => i));
   const opts = h('div', 'opts'); let sel = null, over = false;
@@ -12194,7 +12329,7 @@ function dgPlanRail() {
 }
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen } };
 })();
 /* ================= academy shell =================
    Hosts every course block (window.AcademyCourses) in one page:
