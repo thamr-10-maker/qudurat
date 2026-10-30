@@ -8987,9 +8987,11 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
 {
   const { FR } = ACT;
   /* place-value chart: digits written right to left under their column names */
+  /* numbers are written with the biggest place on the LEFT (also in Arabic), so the chart runs left to right */
+  const colX = (i, n = 4, w = 70) => 180 - (n * w) / 2 + i * w;
   const chart = (K, digits, cols = ['آلاف', 'مئات', 'عشرات', 'آحاد'], hl = -1) => {
-    const n = cols.length, w = 70, x0 = 180 + (n * w) / 2;
-    cols.forEach((c, i) => { const x = x0 - (i + 1) * w; K.rect(x, 30, w - 6, 34, 'act-card', 8); K.note(x + (w - 6) / 2, 47, c); K.rect(x, 70, w - 6, 64, i === hl ? 'act-card on' : 'act-card', 10); if (digits[i] != null) K.text(x + (w - 6) / 2, 103, String(digits[i]), 'act-fnum'); });
+    const n = cols.length, w = 70;
+    cols.forEach((c, i) => { const x = colX(i, n, w); K.rect(x, 30, w - 6, 34, 'act-card', 8); K.note(x + (w - 6) / 2, 47, c); K.rect(x, 70, w - 6, 64, i === hl ? 'act-card on' : 'act-card', 10); if (digits[i] != null) K.text(x + (w - 6) / 2, 103, String(digits[i]), 'act-fnum'); });
   };
   /* a number line from a to b with a movable marker */
   const line = (K, st, a, b, start, y = 80) => { const X = K.numline(28, 332, y, a, b, 1); st.X = X; st.v = start; st.m = K.circle(X(start), y, 11, 's-hi'); };
@@ -9000,7 +9002,7 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
   /* ---------- n1 · place value ---------- */
   ACT.lesson('n1', [
     { h: 170, beats: [
-      { say: 'عندك ٣ حزم، في كل حزمة ١٠ أقلام، و ٤ أقلام وحدها. كم قلمًا؟', draw(K) { for (let b = 0; b < 3; b++) { const x = 300 - b * 56; for (let i = 0; i < 10; i++) K.rect(x + i * 4, 30, 3, 100, 'pen', 1); K.rect(x - 3, 70, 46, 10, 'band', 3); } for (let i = 0; i < 4; i++) K.rect(110 - i * 18, 30, 6, 100, 'pen', 2); },
+      { say: 'عندك ٣ حزم، في كل حزمة ١٠ أقلام، و ٤ أقلام وحدها. كم قلمًا؟', draw(K) { for (let b = 0; b < 3; b++) { const x = 40 + b * 56; for (let i = 0; i < 10; i++) K.rect(x + i * 4, 30, 3, 100, 'pen', 1); K.rect(x - 3, 70, 46, 10, 'band', 3); } for (let i = 0; i < 4; i++) K.rect(250 + i * 18, 30, 6, 100, 'pen', 2); K.note(80, 150, 'عشرات'); K.note(277, 150, 'آحاد'); },
         ask: { choices: [34, 7, 43], answer: 34, wrong: { 7: 'كل حزمة فيها ١٠ أقلام، لا قلم واحد.', 43: 'انتبه للترتيب: الحزم ٣ والأقلام الوحيدة ٤.' } },
         msg: 'الرقم ٣ يعدّ الحزم: هذه <b>خانة العشرات</b>. والرقم ٤ يعدّ الأقلام الوحيدة: هذه <b>خانة الآحاد</b>.' },
     ] },
@@ -9011,7 +9013,7 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
     ] },
     { h: 150, beats: [
       { say: 'نريد العدد: ٥ آلاف و ٣ عشرات و ٨ آحاد، ولا شيء في المئات. ماذا نكتب في خانة المئات؟', draw(K) { chart(K, [5, null, 3, 8], undefined, 1); }, ask: { choices: ['٠', 'نتركها فارغة', '٥'], answer: '٠', wrong: { 'نتركها فارغة': 'لو تركناها لانزلقت الأرقام وصار العدد ٥٣٨.' } },
-        ok(K) { K.text(180 + 70 - 3 - 70 / 2 + 0, 103, '0', 'act-fnum n act-pop'); } },
+        ok(K) { K.text(colX(1) + 32, 103, '0', 'act-fnum n act-pop'); } },
       { say: 'ما العدد؟', ask: { choices: [5038, 538, 5308], answer: 5038 }, msg: 'الصفر <b>يحجز</b> الخانة الفارغة، وبدونه يتغير العدد كله.' },
     ] },
     { h: 120, beats: [
