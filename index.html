@@ -904,6 +904,15 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 @media (prefers-reduced-motion:no-preference){.eqb .t{animation:eqin .4s ease both}@keyframes eqin{from{opacity:0;transform:translateY(12px)}}
   .eqb .res{animation:eqin .4s ease both,eqglow 1.2s ease .2s both}@keyframes eqglow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--theme) 45%,transparent)}100%{box-shadow:0 0 0 14px transparent}}}
 .eqb .row{color:var(--ink)}
+.st{fill:#F7E6BE;stroke:#B9783A;stroke-width:2;transition:fill .15s} .st.on{fill:var(--c-num)} .st.nope{fill:var(--bad-soft)}
+.st.dim{fill:var(--bg-2);stroke:var(--line)} .st.half{fill:color-mix(in srgb,var(--c-num) 45%,#F7E6BE)}
+.st-edge{fill:none;stroke:var(--c-den);stroke-width:3}
+.act-card{fill:var(--card);stroke:var(--line);stroke-width:2;transition:fill .15s,stroke .15s} .act-card.on{fill:var(--ok-soft);stroke:var(--ok);stroke-width:3}
+.act-hit.nope{fill:color-mix(in srgb,var(--bad) 18%,transparent)}
+.act-fsm{fill:var(--ink);font-family:var(--f-display);font-weight:600;font-size:22px} .act-fsm.n{fill:var(--c-num)} .act-fsm.d{fill:var(--c-den)}
+.act-dot{fill:#8B4A22;stroke:#5E2F12;stroke-width:1.5} .act-dot.on{fill:var(--c-num);stroke:var(--c-den)}
+.eqb .t .fr{font-size:.8em}
+.eqb .row.long{font-size:21px;gap:6px}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1764,7 +1773,17 @@ const PLUS = {};
 const DROPPED = []; // text steps replaced by theory cards (kept for review)
 function applyPlus() {
   for (const d of DISTRICTS) for (const l of d.lessons || []) {
-    const P = PLUS[l.id]; if (!P || l.steps.some(s => s.intro)) continue;
+    const P = PLUS[l.id]; if (!P) continue;
+    if (P.flow && l.steps.some(s => s.intro)) { // a lesson written with its own intro: keep its intro, example, practice and summary, swap the teaching for the steps
+      const st = l.steps, pick = k => st.find(s => s[k]), qs = st.filter(s => s.q && !s.check), out = [pick('intro')];
+      out.push(...P.flow.map(a => ({ act: a })));
+      const ex = P.example ? { example: P.example } : pick('example'), gu = P.guided ? { guided: P.guided } : pick('guided');
+      if (ex) out.push(ex); if (gu) out.push(gu);
+      out.push(...(P.keepQs ? qs.filter((_, i) => P.keepQs.includes(i)) : qs), ...(P.qs || []));
+      const sm = P.summary ? { summary: P.summary } : pick('summary'); if (sm) out.push(sm);
+      l.steps = out; continue;
+    }
+    if (l.steps.some(s => s.intro)) continue;
     const teach = l.steps.filter(s => !s.q), qs = l.steps.filter(s => s.q), out = [];
     if (P.intro) out.push({ intro: P.intro });
     const extra = (P.rules || []).map(r => ({ rule: r, after: r.after })).concat((P.checks || []).map(c => Object.assign({ check: true }, c)));
@@ -2199,6 +2218,7 @@ function runPlayer(P) {
     const A = s.act, c = h('section', 'act');
     c.innerHTML = `<small class="eyebrow">${A.kicker || ''}</small><p class="act-say"></p>`;
     const fig = h('div', 'bfig act-fig'), svg = sv('svg', { viewBox: `0 0 360 ${A.h || 240}`, style: 'direction:ltr' }); fig.appendChild(svg);
+    if (A.h === 0) fig.hidden = true; // a step that is only a question has no picture box
     const pick = h('div', 'act-pick'), msg = h('p', 'act-msg');
     c.append(fig, pick, msg); body.appendChild(c);
     const btn = setDock('', '', '', A.cta || 'التالي', next, false);
@@ -2218,8 +2238,8 @@ function runPlayer(P) {
       done() { if (finished) return; finished = true; btn.disabled = false; FX.play('correct'); },
       /* an equation written token by token: lines = [[ [text, cls], ... , note? ], ...] */
       board(lines, gap = 260) {
-        const b = h('div', 'eqb'); let k = 0;
-        lines.forEach(line => { const r = h('div', 'row'); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
+        const b = h('div', 'eqb'); let k = 0; const total = lines.reduce((n, l) => n + l.filter(t => typeof t !== 'string').length, 0); gap = Math.min(gap, 2400 / Math.max(1, total));
+        lines.forEach(line => { const r = h('div', 'row' + (line.filter(t => typeof t !== 'string').length > 7 ? ' long' : '')); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
           const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms'; r.appendChild(sp); }); b.appendChild(r); });
         c.insertBefore(b, msg); return b;
       },
@@ -7399,6 +7419,99 @@ giveBuild('c5', 0, { h: 220, frames: [
   { say: '٣) الحساب سهل؟ ← <b>احسب</b> مباشرة', draw(K) { K.rect(20, 152, 140, 46, 's-hi-box', 14); K.label(90, 175, 'احسب'); K.arrow(140, 136, 120, 152, 0); } },
 ] });
 
+/* ================= step kit: write a hands-on lesson as a list of small beats =================
+   ACT.lesson(id, [ {h, beats:[...]}, ... ], extra) turns each item into one "الخطوة n من N".
+   A beat does ONE thing, then the next beat starts by itself:
+     { say }                         a short line (what to do / what to notice)
+     { draw(K, st, c) }              draw on a fresh layer (st = shared state of the step)
+     { ask: {choices, answer, wrong} }   pick one; wrong = 'text' | {value: 'text', '*': 'text'} | fn(v)
+     { tap: {targets(st), need, wrongIdx, over, progress, mark} }   deliberate taps, one at a time
+     { button: 'نصّ الزر' }           one press (e.g. «قسّم»)
+   and after it succeeds: { ok(K, st, c), board: [...rows], msg: 'the name / the idea' }
+   The last beat unlocks «التالي». No beat ever moves on by itself while something is asked. */
+const ACT = {};
+ACT.FR = (a, b) => `<span class="fr frc"><span>${a}</span><span>${b}</span></span>`;
+ACT.FRI = (a, b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+ACT.NUM = '<b class="cn">البسط</b>'; ACT.DEN = '<b class="cd">المقام</b>';
+ACT.val = (f, st) => typeof f === 'function' ? f(st) : f;
+ACT.beats = list => c => {
+  const st = {}; let i = -1;
+  const go = () => { i++; if (i >= list.length) return c.done(); run(list[i]); };
+  function run(b) {
+    window.__beat = { b, st }; // read by the automatic tests only
+    if (b.say) c.say(ACT.val(b.say, st));
+    if (b.msg0 !== undefined) c.msg(ACT.val(b.msg0, st));
+    if (b.draw) b.draw(c.layer(), st, c);
+    const last = i === list.length - 1;
+    const finish = () => {
+      if (b.ok) b.ok(c.layer(), st, c);
+      if (b.board) c.board(ACT.val(b.board, st));
+      c.msg(b.msg ? ACT.val(b.msg, st) : '', b.msg ? 'ok' : '');
+      if (last) c.done(); else c.later(go, b.pause != null ? b.pause : (b.msg || b.board ? 1100 : 450));
+    };
+    if (b.ask) {
+      const A = b.ask;
+      c.choices(ACT.val(A.choices, st), (v, btn) => {
+        if (String(v) === String(ACT.val(A.answer, st))) { c.ok(); c.clearChoices(); return finish(); }
+        c.no(); btn.disabled = true; btn.classList.add('nope');
+        let w = A.wrong; if (typeof w === 'function') w = w(v, st); else if (w && typeof w === 'object') w = w[v] != null ? w[v] : w['*'];
+        if (w) c.msg(w, 'bad');
+        if (A.onWrong) A.onWrong(v, c.layer(), st, c);
+      });
+      return;
+    }
+    if (b.tap) {
+      const T = b.tap, els = T.targets(st), on = new Set(), bad = new Set(T.wrongIdx || []); let locked = false;
+      const mark = T.mark || ((el, v) => el.classList.toggle('on', v));
+      els.forEach((el, k) => c.tap(el, () => {
+        if (locked) return;
+        if (bad.has(k)) { c.no(); el.classList.add('nope'); c.msg(ACT.val(T.wrongMsg, st) || 'ليس هذا.', 'bad'); return; }
+        c.tick();
+        if (T.once) { if (on.has(k)) return; on.add(k); mark(el, true, k, st); }
+        else { on.has(k) ? on.delete(k) : on.add(k); mark(el, on.has(k), k, st); }
+        st.picked = [...on]; const n = on.size;
+        if (n > T.need) return c.msg(T.over || 'أكثر من المطلوب. اضغط على أحد المختار لإلغائه.', 'bad');
+        if (n === T.need) { locked = true; c.msg(''); return c.later(finish, 380); }
+        c.msg(T.progress ? T.progress(n) : '');
+      }));
+      return;
+    }
+    if (b.button) { c.choices([b.button], () => { c.tick(); c.clearChoices(); finish(); }); return; }
+    finish();
+  }
+  go();
+};
+ACT.lesson = (id, acts, extra) => {
+  const N = acts.length;
+  if (!PLUS[id]) PLUS[id] = {};
+  Object.assign(PLUS[id], { flow: acts.map((a, i) => ({ kicker: `الخطوة ${ar(i + 1)} من ${ar(N)}`, h: a.h != null ? a.h : 230, run: a.run || ACT.beats(a.beats) })) }, extra || {});
+};
+
+/* ---------- drawing pieces ---------- */
+const ACT_EQ = n => Array.from({ length: n }, (_, i) => [90 - (i + 1) * 360 / n, 90 - i * 360 / n]);
+ACT.pizza = (K, cx, cy, r, n, on = []) => { K.circle(cx, cy, r + 7, 'pz-crust'); return ACT_EQ(n).map((sp, i) => K.path(arcPath(cx, cy, r, sp[0], sp[1]), on.includes(i) ? 'pz on' : 'pz')); };
+ACT.pizzaNums = (K, cx, cy, r, n) => ACT_EQ(n).forEach((sp, i) => { const [x, y] = polar(cx, cy, r * 0.6, (sp[0] + sp[1]) / 2); K.label(x, y, String(i + 1)); });
+/* a strip cut in n equal parts; parts are filled from the right (reading direction) */
+ACT.strip = (K, x, y, w, hh, n, on = [], cls = 'st') => { const pw = w / n; const els = Array.from({ length: n }, (_, i) => K.rect(x + w - (i + 1) * pw, y, pw, hh, cls + (on.includes(i) ? ' on' : ''), 0)); K.rect(x, y, w, hh, 'st-edge', 6); return els; };
+ACT.range = (a, b) => Array.from({ length: b - a }, (_, i) => a + i);
+/* a coloured fraction drawn in the picture: top = taken (orange), bottom = the whole (brown) */
+ACT.frac = (K, x, y, n, d, { size = 'act-fnum', pop = false, tagN, tagD } = {}) => {
+  K.line(x - 22, y, x + 22, y, 'act-fline');
+  if (n != null) K.text(x, y - 24, String(n), `${size} n${pop ? ' act-pop' : ''}`);
+  if (d != null) K.text(x, y + 26, String(d), `${size} d${pop ? ' act-pop' : ''}`);
+  if (tagN) K.text(x, y - 54, tagN, 's-txt-s act-tag n'); if (tagD) K.text(x, y + 56, tagD, 's-txt-s act-tag d');
+};
+/* a small tappable card holding a fraction (for "tap every …" beats) */
+ACT.cards = (K, items, y = 60, w = 60, hh = 92) => {
+  const gap = (360 - items.length * w) / (items.length + 1);
+  return items.map(([n, d], k) => { const x = 360 - (k + 1) * (gap + w); const r = K.rect(x, y, w, hh, 'act-card', 14); ACT.frac(K, x + w / 2, y + hh / 2, n, d, { size: 'act-fsm' }); const hit = K.rect(x, y, w, hh, 'act-hit', 14); hit._card = r; return hit; });
+};
+ACT.cardMark = (el, v) => el._card.classList.toggle('on', v);
+/* dots / items in a grid (cookies, dates, people…) */
+ACT.dots = (K, x, y, n, cols, gap, r, cls = 'act-dot') => Array.from({ length: n }, (_, i) => K.circle(x - (i % cols) * gap, y + Math.floor(i / cols) * gap, r, cls));
+/* a 10 × 10 grid (hundredths / percent) with the first k squares filled */
+ACT.grid100 = (K, x, y, s, k) => { for (let i = 0; i < 100; i++) K.rect(x + (9 - i % 10) * s, y + Math.floor(i / 10) * s, s - 1.5, s - 1.5, i < k ? 'st on' : 'st', 2); };
+
 /* ================= skill map for the smart placement test =================
    Every lesson is one skill. `pre` = the lessons it is built on (direct only).
    `t` = seconds per question for this skill. `mixed` = a practice lesson, not a skill of its own:
@@ -8196,6 +8309,211 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
     ] },
     summary: ['المقام (تحت الخط): كم جزءًا متساويًا قسمنا الشيء كله', 'البسط (فوق الخط): كم جزءًا أخذنا', 'الأجزاء يجب أن تكون متساوية', 'كسر من عدد: نقسم على المقام، ثم نضرب في البسط'],
   });
+}
+
+/* ================= fractions unit (f2–f8) rebuilt as small hands-on steps ================= */
+{
+  const { FR, FRI } = ACT, NUM = ACT.NUM, DEN = ACT.DEN;
+  const S2 = (K, y, n, on, x = 90, w = 250) => ACT.strip(K, x, y, w, 40, n, on);
+  const lab = (K, y, n, d) => ACT.frac(K, 45, y + 20, n, d, { size: 'act-fsm' });
+
+  /* ---------- f2 · equivalent fractions and simplest form ---------- */
+  ACT.lesson('f2', [
+    { h: 200, beats: [
+      { say: 'الشريطان بالطول نفسه، وفي كل منهما نصف ملوّن.', draw(K) { ACT.strip(K, 30, 40, 300, 40, 2, [0]); ACT.strip(K, 30, 120, 300, 40, 2, [0]); } },
+      { say: 'اضغط «قسّم» لتقسيم كل قطعة في الشريط السفلي إلى قطعتين.', button: 'قسّم', ok(K) { ACT.strip(K, 30, 120, 300, 40, 4, [0, 1]); } },
+      { say: 'هل الملوّن في الشريطين بالطول نفسه؟', ask: { choices: ['نعم', 'لا'], answer: 'نعم', wrong: 'انظر: الجزء الملوّن ينتهي في المكان نفسه.' },
+        msg: `الأعلى ${FR(1, 2)} والأسفل ${FR(2, 4)}: الكمية نفسها بأرقام مختلفة. نسميهما <b>كسرين متكافئين</b>.` },
+    ] },
+    { h: 200, beats: [
+      { say: `ماذا حدث للأرقام؟ ${DEN} كان ٢ وصار ٤. ضُرب في كم؟`, draw(K) { S2(K, 25, 2, [0]); lab(K, 25, 1, 2); S2(K, 130, 4, [0, 1]); lab(K, 130, 2, 4); }, ask: { choices: [2, 3, 4], answer: 2, wrong: 'كم مرة نضرب ٢ لنصل إلى ٤؟' } },
+      { say: `و${NUM} كان ١. صار كم؟`, ask: { choices: [1, 2, 4], answer: 2 },
+        board: [[[FR(1, 2)], ['=', 'op'], [FR('1 × 2', '2 × 2')], ['=', 'op'], [FR(2, 4), 'res']]], msg: 'نضرب البسط والمقام في <b>العدد نفسه</b>، فتبقى الكمية نفسها.' },
+    ] },
+    { h: 220, beats: [
+      { say: `لوّن في الشريط السفلي ما يساوي ${FR(2, 3)} في الأعلى. اضغط على القطع واحدة بعد الأخرى.`, draw(K, st) { ACT.strip(K, 30, 40, 300, 40, 3, [0, 1]); st.els = ACT.strip(K, 30, 130, 300, 40, 12, []); },
+        tap: { targets: st => st.els, need: 8, progress: n => `لوّنت ${ar(n)}. هل وصلت إلى طول الأعلى؟`, over: 'زاد التلوين عن الشريط الأعلى. اضغط على قطعة ملوّنة لتلغيها.' } },
+      { say: `إذن ${FR(2, 3)} = ${FRI('؟', 12)}. ما ${NUM}؟`, ask: { choices: [6, 8, 9], answer: 8, wrong: 'عُدّ القطع الملوّنة.' },
+        board: [[[FR(2, 3)], ['=', 'op'], [FR('2 × 4', '3 × 4')], ['=', 'op'], [FR(8, 12), 'res']]], msg: 'المقام ٣ صار ١٢ (ضربناه في ٤)، فضربنا البسط في ٤ أيضًا.' },
+    ] },
+    { h: 220, beats: [
+      { say: `${FR(8, 12)} أرقامه كبيرة. لنفعل العكس: نقسم البسط والمقام على العدد نفسه. أي عدد يقسم ٨ و ١٢ معًا ويعطي أصغر أرقام؟`, draw(K) { ACT.strip(K, 30, 40, 300, 40, 12, ACT.range(0, 8)); },
+        ask: { choices: [2, 3, 4], answer: 4, wrong: { 2: 'يصح، لكن ستحتاج قسمة ثانية. ابحث عن أكبر عدد يقسم الاثنين.', 3: '٣ لا يقسم ٨.' } },
+        ok(K) { ACT.strip(K, 30, 130, 300, 40, 3, [0, 1]); },
+        board: [[[FR(8, 12)], ['=', 'op'], [FR('8 ÷ 4', '12 ÷ 4')], ['=', 'op'], [FR(2, 3), 'res']]], msg: `${FR(2, 3)} هو <b>أبسط صورة</b>: لا يوجد عدد غير ١ يقسم البسط والمقام معًا.` },
+    ] },
+    { h: 200, beats: [
+      { say: `اضغط على <b>كل</b> كسر يكافئ ${FR(2, 3)}.`, draw(K, st) { st.c = ACT.cards(K, [[4, 6], [3, 4], [6, 9], [4, 5], [10, 15]]); },
+        tap: { targets: st => st.c, need: 3, once: true, wrongIdx: [1, 3], wrongMsg: 'لا يكافئه. جرّب أن تبسّطه.', mark: ACT.cardMark, progress: () => 'صحيح. هل يوجد غيره؟' },
+        msg: `كلها تساوي ${FR(2, 3)}، لكن ${FR(2, 3)} وحده في أبسط صورة. في الاختبار: احذر الخيار المكافئ غير المبسّط.` },
+    ] },
+  ]);
+
+  /* ---------- f3 · comparing fractions ---------- */
+  ACT.lesson('f3', [
+    { h: 195, beats: [
+      { say: 'المقام نفسه في الكسرين. أيهما أكبر؟', draw(K) { S2(K, 20, 5, [0, 1]); lab(K, 20, 2, 5); S2(K, 125, 5, [0, 1, 2, 3]); lab(K, 125, 4, 5); },
+        ask: { choices: [FR(2, 5), FR(4, 5)], answer: FR(4, 5) }, msg: 'المقام نفسه ← القطع بالحجم نفسه، فالأكثر قطعًا هو الأكبر.' },
+    ] },
+    { h: 195, beats: [
+      { say: 'البسط نفسه هذه المرة. أيهما أكبر؟', draw(K) { S2(K, 20, 3, [0]); lab(K, 20, 1, 3); S2(K, 125, 6, [0]); lab(K, 125, 1, 6); },
+        ask: { choices: [FR(1, 3), FR(1, 6)], answer: FR(1, 3), wrong: 'ستة أكبر من ثلاثة، لكن انظر إلى حجم القطعة.' }, msg: 'كلما زاد عدد القطع صغرت القطعة. البسط نفسه ← المقام <b>الأصغر</b> يعني كسرًا أكبر.' },
+    ] },
+    { h: 195, beats: [
+      { say: 'الآن البسط والمقام مختلفان. من الرسم: أيهما أكبر؟', draw(K) { S2(K, 20, 3, [0, 1]); lab(K, 20, 2, 3); S2(K, 125, 5, [0, 1, 2]); lab(K, 125, 3, 5); }, ask: { choices: [FR(2, 3), FR(3, 5)], answer: FR(2, 3) } },
+      { say: 'ولو لم يكن عندنا رسم؟ نضرب كل بسط في مقام الكسر الآخر:',
+        board: [[['2', 'n'], ['×', 'op'], ['5', 'd'], ['=', 'op'], ['10', 'res'], 'للكسر الأول'], [['3', 'n'], ['×', 'op'], ['3', 'd'], ['=', 'op'], ['9'], 'للكسر الثاني']],
+        msg: 'هذه الطريقة اسمها <b>الضرب التبادلي</b>: الناتج الأكبر يدل على الكسر الأكبر.' },
+    ] },
+    { h: 120, beats: [
+      { say: `قارن ${FR(3, 4)} و ${FR(5, 7)} بالضرب التبادلي. كم ٣ × ٧؟`, draw(K) { ACT.frac(K, 250, 60, 3, 4); ACT.frac(K, 110, 60, 5, 7); }, ask: { choices: [21, 20, 12], answer: 21 } },
+      { say: 'وكم ٥ × ٤؟', ask: { choices: [20, 21, 35], answer: 20 } },
+      { say: 'أيهما أكبر؟', ask: { choices: [FR(3, 4), FR(5, 7)], answer: FR(3, 4) }, msg: '٢١ أكبر من ٢٠، فالكسر الأول أكبر.' },
+    ] },
+    { h: 195, beats: [
+      { say: 'كل كسر ينقصه قطعة واحدة ليصبح ١. أي القطعتين الناقصتين أصغر؟', draw(K) { S2(K, 20, 8, ACT.range(0, 7)); lab(K, 20, 7, 8); S2(K, 125, 10, ACT.range(0, 9)); lab(K, 125, 9, 10); },
+        ask: { choices: [FR(1, 8), FR(1, 10)], answer: FR(1, 10) } },
+      { say: 'إذن أي الكسرين أكبر؟', ask: { choices: [FR(7, 8), FR(9, 10)], answer: FR(9, 10) }, msg: 'الذي ينقصه أقل هو الأكبر. حيلة سريعة للكسور القريبة من ١.' },
+    ] },
+  ]);
+
+  /* ---------- f4 · adding and subtracting ---------- */
+  ACT.lesson('f4', [
+    { h: 140, beats: [
+      { say: `عندك ${FR(1, 5)}. أضف ${FR(2, 5)}: اضغط على قطعتين جديدتين.`, draw(K, st) { st.els = ACT.strip(K, 30, 50, 300, 44, 5, [0]); }, tap: { targets: st => st.els.slice(1), need: 2 } },
+      { say: 'كم الملوّن الآن؟', ask: { choices: [FR(3, 5), FR(3, 10), FR(2, 5)], answer: FR(3, 5), wrong: { [FR(3, 10)]: 'الشريط ما زال ٥ قطع، فالمقام لا يتغير.', '*': 'عُدّ القطع الملوّنة.' } },
+        board: [[[FR(1, 5)], ['+', 'op'], [FR(2, 5)], ['=', 'op'], [FR(3, 5), 'res'], 'نجمع البسط فقط']], msg: 'المقام نفسه ← نجمع البسط، والمقام يبقى. <b>لا نجمع المقامات أبدًا</b>.' },
+    ] },
+    { h: 190, beats: [
+      { say: 'نريد جمع نصف وثلث. هل القطع بالحجم نفسه؟', draw(K) { ACT.strip(K, 30, 40, 300, 40, 2, [0]); ACT.strip(K, 30, 120, 300, 40, 3, [0]); }, ask: { choices: ['لا', 'نعم'], answer: 'لا' }, msg: 'لا نجمع قطعًا مختلفة الحجم. نحتاج تقسيمًا واحدًا للاثنين.' },
+      { say: 'اضغط لتقسيم الشريطين إلى ٦ قطع.', button: 'قسّم إلى ٦', ok(K) { ACT.strip(K, 30, 40, 300, 40, 6, [0, 1, 2]); ACT.strip(K, 30, 120, 300, 40, 6, [0, 1]); } },
+      { say: `${FR(1, 2)} صار كم سدسًا؟`, ask: { choices: [3, 2, 1], answer: 3 } },
+      { say: `و ${FR(1, 3)}؟`, ask: { choices: [2, 3, 1], answer: 2 } },
+      { say: 'كم المجموع؟', ask: { choices: [FR(5, 6), FR(5, 12), FR(2, 5)], answer: FR(5, 6), wrong: { [FR(2, 5)]: 'هذا جمع للبسطين والمقامين، وهو أشهر خطأ.', '*': 'المقام بقي ٦.' } },
+        board: [[[FR(1, 2)], ['+', 'op'], [FR(1, 3)], ['=', 'op'], [FR(3, 6)], ['+', 'op'], [FR(2, 6)], ['=', 'op'], [FR(5, 6), 'res']]] },
+    ] },
+    { h: 100, beats: [
+      { say: 'لماذا ٦؟ لأنه أصغر عدد يقبل القسمة على ٢ و ٣ معًا. ما المقام الموحّد لـ [[1/4]] و [[1/6]]؟', draw(K) { ACT.frac(K, 250, 50, 1, 4); ACT.frac(K, 110, 50, 1, 6); },
+        ask: { choices: [12, 10, 24], answer: 12, wrong: { 10: 'لا نجمع المقامات.', 24: 'يصح، لكنه ليس الأصغر، والأرقام ستكبر بلا داعٍ.' } }, msg: 'هذا هو <b>المضاعف المشترك الأصغر</b> للمقامين.' },
+    ] },
+    { h: 100, beats: [
+      { say: `اطرح ${FR(3, 4)} − ${FR(2, 3)}. أولًا: ما المقام الموحّد؟`, draw(K) { ACT.frac(K, 250, 50, 3, 4); K.text(180, 52, '−', 'act-fnum'); ACT.frac(K, 110, 50, 2, 3); }, ask: { choices: [12, 7, 1], answer: 12, wrong: { 7: 'لا نجمع المقامات ولا نطرحها.' } } },
+      { say: `${FR(3, 4)} = ${FRI('؟', 12)}`, ask: { choices: [9, 8, 6], answer: 9 } },
+      { say: `${FR(2, 3)} = ${FRI('؟', 12)}`, ask: { choices: [8, 9, 6], answer: 8 } },
+      { say: 'الناتج؟', ask: { choices: [FR(1, 12), FR(1, 1), FR(1, 7)], answer: FR(1, 12) }, board: [[[FR(9, 12)], ['−', 'op'], [FR(8, 12)], ['=', 'op'], [FR(1, 12), 'res']]] },
+    ] },
+    { h: 130, beats: [
+      { say: `الكتاب كله = ١ = ${FR(12, 12)}. قرأت سارة ${FR(7, 12)} منه. كم بقي؟`, draw(K) { ACT.strip(K, 30, 45, 300, 44, 12, ACT.range(0, 7)); },
+        ask: { choices: [FR(5, 12), FR(7, 12), FR(1, 12)], answer: FR(5, 12) }, msg: 'الباقي = ١ − ما أُخذ. ونكتب الواحد بالمقام نفسه.' },
+    ] },
+  ]);
+
+  /* ---------- f5 · multiplying and dividing ---------- */
+  ACT.lesson('f5', [
+    { h: 140, beats: [
+      { say: `عندك ${FR(1, 3)} كعكة. اضغط «خذ نصفها».`, draw(K) { ACT.strip(K, 30, 50, 300, 44, 3, [0]); }, button: 'خذ نصفها',
+        ok(K) { const e = ACT.strip(K, 30, 50, 300, 44, 6, [0]); e[1].setAttribute('class', 'st half'); } },
+      { say: 'أخذت كم من الكعكة <b>كلها</b>؟', ask: { choices: [FR(1, 6), FR(1, 5), FR(2, 3)], answer: FR(1, 6), wrong: 'انظر: الكعكة كلها صارت ٦ قطع بهذا الحجم.' },
+        board: [[[FR(1, 2)], ['×', 'op'], [FR(1, 3)], ['=', 'op'], [FR(1, 6), 'res'], '«نصف من ثلث»']], msg: 'كلمة «من» تعني <b>ضربًا</b>: بسط × بسط، ومقام × مقام.' },
+    ] },
+    { h: 100, beats: [
+      { say: `احسب ${FR(2, 3)} × ${FR(3, 4)}. البسط: ٢ × ٣ = ؟`, draw(K) { ACT.frac(K, 250, 50, 2, 3); K.text(180, 52, '×', 'act-fnum'); ACT.frac(K, 110, 50, 3, 4); }, ask: { choices: [6, 5, 2], answer: 6 } },
+      { say: 'والمقام: ٣ × ٤ = ؟', ask: { choices: [12, 7, 9], answer: 12 } },
+      { say: `${FR(6, 12)} في أبسط صورة؟`, ask: { choices: [FR(1, 2), FR(2, 4), FR(6, 12)], answer: FR(1, 2), wrong: 'مكافئ، لكن ليس الأبسط.' } },
+    ] },
+    { h: 100, beats: [
+      { say: `اختصار: قبل الضرب، إذا وُجد العدد نفسه فوق وتحت نشطبه. في ${FR(2, 3)} × ${FR(3, 4)}، أي عدد مكرر؟`, draw(K) { ACT.frac(K, 250, 50, 2, 3); K.text(180, 52, '×', 'act-fnum'); ACT.frac(K, 110, 50, 3, 4); },
+        ask: { choices: [3, 2, 4], answer: 3 }, ok(K) { K.line(236, 88, 264, 64, 's-bad'); K.line(96, 38, 124, 14, 's-bad'); },
+        msg: `نشطب الثلاثتين فيبقى ${FR(2, 4)} = ${FR(1, 2)}: الجواب نفسه بأرقام أصغر.` },
+    ] },
+    { h: 210, beats: [
+      { say: 'كم نصفًا في ٣ كعكات؟ اضغط على كل نصف لتعدّه.', draw(K, st) { st.els = [30, 95, 160].flatMap(y => ACT.strip(K, 60, y, 240, 40, 2, [])); }, tap: { targets: st => st.els, need: 6, once: true, progress: n => ar(n) } },
+      { say: 'كم نصفًا؟', ask: { choices: [6, 3, '١٫٥'], answer: 6 },
+        board: [[['3'], ['÷', 'op'], [FR(1, 2)], ['=', 'op'], ['3'], ['×', 'op'], ['2', 'n'], ['=', 'op'], ['6', 'res']]],
+        msg: `القسمة على كسر = الضرب في <b>مقلوبه</b>. مقلوب ${FR(1, 2)} هو ${FR(2, 1)} = ٢: نقلب البسط والمقام.` },
+    ] },
+    { h: 100, beats: [
+      { say: `احسب ${FR(2, 5)} ÷ ${FR(4, 5)}. ما مقلوب ${FR(4, 5)}؟`, draw(K) { ACT.frac(K, 250, 50, 2, 5); K.text(180, 52, '÷', 'act-fnum'); ACT.frac(K, 110, 50, 4, 5); }, ask: { choices: [FR(5, 4), FR(4, 5), FR(1, 5)], answer: FR(5, 4) } },
+      { say: `${FR(2, 5)} × ${FR(5, 4)} = ؟`, ask: { choices: [FR(1, 2), FR(8, 25), '٢'], answer: FR(1, 2), wrong: { [FR(8, 25)]: 'هذا ضرب دون قلب.' } }, msg: `${FR(10, 20)} = ${FR(1, 2)}.` },
+    ] },
+  ]);
+
+  /* ---------- f6 · mixed numbers ---------- */
+  ACT.lesson('f6', [
+    { h: 190, beats: [
+      { say: 'أكلت ٧ قطع، وكل قطعة ربع بيتزا. اضغط ٧ مرات.', draw(K, st) { st.els = ACT.pizza(K, 260, 95, 72, 4).concat(ACT.pizza(K, 100, 95, 72, 4)); },
+        tap: { targets: st => st.els, need: 7, once: true, progress: n => ar(n), mark(el, v, k, st) { const n = (st.cnt = (st.cnt || 0) + 1); st.els.forEach((e, j) => e.classList.toggle('on', j < n)); } } },
+      { say: 'كم بيتزا <b>كاملة</b> أكلت؟', ask: { choices: [1, 2, 7], answer: 1 } },
+      { say: 'وكم قطعة من البيتزا الثانية؟', ask: { choices: [3, 4, 7], answer: 3 }, msg: `${FR(7, 4)} = بيتزا كاملة و ${FR(3, 4)}، ونكتبها [[1 3/4]]. هذا اسمه <b>عدد كسري</b>: عدد صحيح ومعه كسر.` },
+    ] },
+    { h: 90, beats: [
+      { say: `حوّل ${FR(17, 5)} إلى عدد كسري: كم مرة يدخل ٥ في ١٧؟ وكم يبقى؟`, draw(K) { ACT.frac(K, 180, 45, 17, 5); }, ask: { choices: ['٣ والباقي ٢', '٢ والباقي ٧', '٣ والباقي ١'], answer: '٣ والباقي ٢' },
+        board: [[['17', 'n'], ['÷', 'op'], ['5', 'd'], ['=', 'op'], ['3', 'res'], 'والباقي ٢']], msg: 'الناتج هو العدد الصحيح، والباقي يصير البسط: [[3 2/5]].' },
+    ] },
+    { h: 150, beats: [
+      { say: 'هذا [[2 3/4]]. كم قطعة ربع في البيتزتين الكاملتين؟', draw(K) { ACT.pizza(K, 296, 75, 46, 4, [0, 1, 2, 3]); ACT.pizza(K, 182, 75, 46, 4, [0, 1, 2, 3]); ACT.pizza(K, 68, 75, 46, 4, [0, 1, 2]); }, ask: { choices: [8, 6, 4], answer: 8 } },
+      { say: 'ومع القطع الثلاث من الثالثة؟', ask: { choices: [11, 9, 5], answer: 11 },
+        board: [[['2'], ['×', 'op'], ['4', 'd'], ['+', 'op'], ['3', 'n'], ['=', 'op'], ['11', 'res']]], msg: `[[2 3/4]] = ${FR(11, 4)}: الصحيح × المقام + البسط.` },
+    ] },
+    { h: 0, beats: [
+      { say: '[[1 1/2]] + [[2 3/4]]. اجمع الصحيحين أولًا: ١ + ٢ = ؟', ask: { choices: [3, 2, 4], answer: 3 } },
+      { say: `والكسرين: ${FR(1, 2)} + ${FR(3, 4)} = ؟`, ask: { choices: [FR(5, 4), FR(4, 6), FR(1, 4)], answer: FR(5, 4), wrong: { [FR(4, 6)]: 'جمعت المقامين. وحّد المقام أولًا.' } } },
+      { say: `${FR(5, 4)} أكبر من ١، فهو [[1 1/4]]. إذن المجموع؟`, ask: { choices: ['[[4 1/4]]', '[[3 5/4]]', '[[3 1/4]]'], answer: '[[4 1/4]]', wrong: { '[[3 5/4]]': 'صحيح القيمة، لكن الكسر أكبر من ١: انقل الواحد إلى الصحيح.' } }, msg: 'الصحيح مع الصحيح، والكسر مع الكسر، ثم انقل أي واحد زائد.' },
+    ] },
+  ]);
+
+  /* ---------- f7 · decimals ---------- */
+  ACT.lesson('f7', [
+    { h: 140, beats: [
+      { say: 'الشريط ١٠ قطع. اضغط على ٧ منها.', draw(K, st) { st.els = ACT.strip(K, 30, 50, 300, 44, 10, []); }, tap: { targets: st => st.els, need: 7 } },
+      { say: 'ما الكسر الملوّن؟', ask: { choices: [FR(7, 10), FR(7, 100), FR(1, 7)], answer: FR(7, 10) }, msg: 'ونكتبه أيضًا `0.7`: أول رقم بعد الفاصلة اسمه <b>الأعشار</b>.' },
+    ] },
+    { h: 230, beats: [
+      { say: 'هذا مربع مقسوم إلى ١٠٠ قطعة. كم قطعة ملوّنة؟', draw(K) { ACT.grid100(K, 85, 20, 19, 7); }, ask: { choices: [7, 70, 10], answer: 7 }, msg: `${FR(7, 100)} = \`0.07\`: الرقم الثاني بعد الفاصلة هو <b>الأجزاء من مئة</b>.` },
+      { say: 'أيهما أكبر؟', ask: { choices: ['`0.7`', '`0.07`'], answer: '`0.7`' }, msg: '`0.7` سبعون من مئة، و `0.07` سبعة فقط.' },
+    ] },
+    { h: 0, beats: [
+      { say: 'أيهما أكبر: `0.5` أم `0.45`؟ أولًا أكمل الأصفار: `0.5` = ؟', ask: { choices: ['`0.50`', '`0.05`', '`5.0`'], answer: '`0.50`' } },
+      { say: 'الآن قارن `0.50` و `0.45`:', ask: { choices: ['`0.5`', '`0.45`'], answer: '`0.5`', wrong: 'خدعك عدد الأرقام. قارن ٥٠ مع ٤٥.' }, msg: 'لا تنخدع بعدد الأرقام: أكمل الأصفار حتى يتساوى عدد المنازل، ثم قارن.' },
+    ] },
+    { h: 0, beats: [
+      { say: '`0.3 × 0.2`: انسَ الفاصلة أولًا. ٣ × ٢ = ؟', ask: { choices: [6, 5, 32], answer: 6 } },
+      { say: 'كم رقمًا بعد الفاصلة في العددين معًا؟', ask: { choices: [2, 1, 0], answer: 2 } },
+      { say: 'إذن الناتج؟', ask: { choices: ['`0.06`', '`0.6`', '`6`'], answer: '`0.06`' }, board: [[['0.3'], ['×', 'op'], ['0.2'], ['=', 'op'], ['0.06', 'res'], 'رقمان بعد الفاصلة']] },
+    ] },
+    { h: 0, beats: [
+      { say: `${FR(1, 4)} = ربع ١٠٠. كم من ١٠٠؟`, ask: { choices: [25, 4, 40], answer: 25 }, msg: `${FR(1, 4)} = \`0.25\`.` },
+      { say: `${FR(1, 8)} نصف ${FR(1, 4)}. نصف \`0.25\` = ؟`, ask: { choices: ['`0.125`', '`0.12`', '`0.5`'], answer: '`0.125`' } },
+      { say: `${FR(3, 8)} = ٣ × \`0.125\` = ؟`, ask: { choices: ['`0.375`', '`0.38`', '`0.83`'], answer: '`0.375`' }, msg: `احفظ: ${FR(1, 8)} = \`0.125\`، ومنه تحسب ${FR(3, 8)} و ${FR(5, 8)} و ${FR(7, 8)}.` },
+    ] },
+  ]);
+
+  /* ---------- f8 · fraction, decimal, percent ---------- */
+  ACT.lesson('f8', [
+    { h: 230, beats: [
+      { say: 'كم قطعة ملوّنة من ١٠٠؟', draw(K) { ACT.grid100(K, 85, 20, 19, 25); }, ask: { choices: [25, 4, 75], answer: 25 },
+        msg: `«بالمئة» تعني «من ١٠٠»: ٢٥٪ = ${FR(25, 100)} = ${FR(1, 4)} = \`0.25\`. ثلاثة أشكال لقيمة واحدة.` },
+    ] },
+    { h: 0, beats: [
+      { say: '٤٠٪ = كم من ١٠٠؟', ask: { choices: [40, 4, '`0.4`'], answer: 40 } },
+      { say: `بسّط ${FR(40, 100)}:`, ask: { choices: [FR(2, 5), FR(4, 10), FR(1, 4)], answer: FR(2, 5), wrong: { [FR(4, 10)]: 'مكافئ، لكن ليس الأبسط.' } }, msg: 'نسبة ← كسر: اكتبها على ١٠٠ ثم بسّط.' },
+    ] },
+    { h: 0, beats: [
+      { say: `${FR(1, 8)} = \`0.125\`. لتحويله إلى نسبة نضرب في ١٠٠. كم؟`, ask: { choices: ['١٢٫٥٪', '١٫٢٥٪', '١٢٥٪'], answer: '١٢٫٥٪' }, msg: 'عشري ← نسبة: اضرب في ١٠٠ (حرّك الفاصلة منزلتين).' },
+    ] },
+    { h: 0, beats: [
+      { say: `أي نسبة تساوي ${FR(1, 2)}؟`, ask: { choices: ['٥٠٪', '١٢٪', '٢٠٪'], answer: '٥٠٪' } },
+      { say: `و ${FR(1, 5)}؟`, ask: { choices: ['٢٠٪', '١٥٪', '٥٠٪'], answer: '٢٠٪', wrong: 'الخُمس: ١٠٠ ÷ ٥.' } },
+      { say: `و ${FR(3, 4)}؟`, ask: { choices: ['٧٥٪', '٣٤٪', '٧٠٪'], answer: '٧٥٪' },
+        board: [[[FR(1, 2)], ['=', 'op'], ['٥٠٪'], ['=', 'op'], ['0.5']], [[FR(1, 4)], ['=', 'op'], ['٢٥٪'], ['=', 'op'], ['0.25']], [[FR(1, 5)], ['=', 'op'], ['٢٠٪'], ['=', 'op'], ['0.2']], [[FR(3, 4)], ['=', 'op'], ['٧٥٪'], ['=', 'op'], ['0.75']]],
+        msg: 'هذه الأزواج المشهورة توفّر عليك وقتًا كثيرًا في الاختبار.' },
+    ] },
+    { h: 0, beats: [
+      { say: `أيها الأكبر: ${FR(5, 8)} أم \`0.6\` أم ٦٢٪؟ نحوّل الكل إلى عشري. ${FR(5, 8)} = ؟`, ask: { choices: ['`0.625`', '`0.58`', '`0.8`'], answer: '`0.625`' } },
+      { say: '٦٢٪ = ؟', ask: { choices: ['`0.62`', '`6.2`', '`0.062`'], answer: '`0.62`' } },
+      { say: 'إذن الأكبر؟', ask: { choices: [FR(5, 8), '٦٢٪', '`0.6`'], answer: FR(5, 8) }, msg: 'للمقارنة بين أشكال مختلفة: حوّل الكل إلى عشري.' },
+    ] },
+  ]);
 }
 
 /* ================= smart placement test + personal plan =================
@@ -9754,7 +10072,17 @@ const PLUS = {};
 const DROPPED = []; // text steps replaced by theory cards (kept for review)
 function applyPlus() {
   for (const d of DISTRICTS) for (const l of d.lessons || []) {
-    const P = PLUS[l.id]; if (!P || l.steps.some(s => s.intro)) continue;
+    const P = PLUS[l.id]; if (!P) continue;
+    if (P.flow && l.steps.some(s => s.intro)) { // a lesson written with its own intro: keep its intro, example, practice and summary, swap the teaching for the steps
+      const st = l.steps, pick = k => st.find(s => s[k]), qs = st.filter(s => s.q && !s.check), out = [pick('intro')];
+      out.push(...P.flow.map(a => ({ act: a })));
+      const ex = P.example ? { example: P.example } : pick('example'), gu = P.guided ? { guided: P.guided } : pick('guided');
+      if (ex) out.push(ex); if (gu) out.push(gu);
+      out.push(...(P.keepQs ? qs.filter((_, i) => P.keepQs.includes(i)) : qs), ...(P.qs || []));
+      const sm = P.summary ? { summary: P.summary } : pick('summary'); if (sm) out.push(sm);
+      l.steps = out; continue;
+    }
+    if (l.steps.some(s => s.intro)) continue;
     const teach = l.steps.filter(s => !s.q), qs = l.steps.filter(s => s.q), out = [];
     if (P.intro) out.push({ intro: P.intro });
     const extra = (P.rules || []).map(r => ({ rule: r, after: r.after })).concat((P.checks || []).map(c => Object.assign({ check: true }, c)));
@@ -10189,6 +10517,7 @@ function runPlayer(P) {
     const A = s.act, c = h('section', 'act');
     c.innerHTML = `<small class="eyebrow">${A.kicker || ''}</small><p class="act-say"></p>`;
     const fig = h('div', 'bfig act-fig'), svg = sv('svg', { viewBox: `0 0 360 ${A.h || 240}`, style: 'direction:ltr' }); fig.appendChild(svg);
+    if (A.h === 0) fig.hidden = true; // a step that is only a question has no picture box
     const pick = h('div', 'act-pick'), msg = h('p', 'act-msg');
     c.append(fig, pick, msg); body.appendChild(c);
     const btn = setDock('', '', '', A.cta || 'التالي', next, false);
@@ -10208,8 +10537,8 @@ function runPlayer(P) {
       done() { if (finished) return; finished = true; btn.disabled = false; FX.play('correct'); },
       /* an equation written token by token: lines = [[ [text, cls], ... , note? ], ...] */
       board(lines, gap = 260) {
-        const b = h('div', 'eqb'); let k = 0;
-        lines.forEach(line => { const r = h('div', 'row'); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
+        const b = h('div', 'eqb'); let k = 0; const total = lines.reduce((n, l) => n + l.filter(t => typeof t !== 'string').length, 0); gap = Math.min(gap, 2400 / Math.max(1, total));
+        lines.forEach(line => { const r = h('div', 'row' + (line.filter(t => typeof t !== 'string').length > 7 ? ' long' : '')); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
           const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms'; r.appendChild(sp); }); b.appendChild(r); });
         c.insertBefore(b, msg); return b;
       },
