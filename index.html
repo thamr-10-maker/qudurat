@@ -80,14 +80,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .dim{color:var(--ink-2)}.small{font-size:13px;margin-top:14px}
 
 /* math */
-.m{direction:rtl;unicode-bidi:isolate;display:inline-block;white-space:nowrap;font-variant-numeric:tabular-nums}
+.m{direction:rtl;unicode-bidi:isolate;display:inline-block;white-space:nowrap;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:500;letter-spacing:.2px}
+.m .mo{color:var(--theme);font-weight:400;margin:0 .12em}
 .sq{display:inline-flex;align-items:flex-start;direction:rtl}
 .sq .rad{display:inline-block;transform:scaleX(-1);line-height:1.1}
 .sq .rc{border-top:2px solid currentColor;padding:0 2px;line-height:1.25;margin-top:.12em}
 sup{font-size:.62em;line-height:0}
-.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;font-size:.88em;margin:0 2px;font-variant-numeric:tabular-nums}
-.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
-.mx{display:inline-flex;align-items:center;gap:2px;white-space:nowrap}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.12;font-size:.95em;margin:0 3px;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:600}
+.fr>span{padding:0 4px}
+.fr>span:first-child{border-bottom:2.5px solid currentColor;border-radius:1px;padding-bottom:1px}
+.fr>span:last-child{padding-top:1px}
+.mx{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;font-family:var(--f-display);font-weight:600;font-size:1.08em}
+.mx .fr{font-size:.88em}
 
 /* ---------- top bar ---------- */
 .hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);
@@ -870,9 +874,9 @@ h1,h2,h3{font-weight:500}
 .act-msg{min-height:28px;font-size:16px;line-height:1.8;color:var(--ink-2);margin:4px 0 0;text-align:center}
 .act-msg.ok{color:var(--ink)} .act-msg.ok b{color:var(--ok)} .act-msg.bad b{color:var(--bad)} .act-msg.bad{color:var(--bad)}
 .pz{fill:#F7E6BE;stroke:#B9783A;stroke-width:2.5;stroke-linejoin:round;transition:fill .15s}
-.pz.on{fill:#E39B37}
+.pz.on{fill:var(--c-num)}
 .pz.big{fill:#F2B9A6;stroke:var(--bad)} .pz.small{fill:#F2B9A6;stroke:var(--bad)}
-.pz-crust{fill:#D7964F}
+.pz-crust{fill:var(--c-den)}
 .act-hit{fill:transparent;stroke:none}
 .act-ring{fill:none;stroke-width:4} .act-ring.ok{stroke:var(--ok)} .act-ring.take{stroke:var(--theme);stroke-dasharray:8 6}
 .act-fline{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
@@ -881,6 +885,25 @@ h1,h2,h3{font-weight:500}
 .cup{fill:none;stroke:var(--ink-2);stroke-width:2.5;stroke-linejoin:round} .cup-w{fill:#7FB5E6}
 .date{fill:#8B4A22;stroke:#5E2F12;stroke-width:1.5}
 .grp{fill:var(--bg-2);stroke:var(--line);stroke-width:2}
+
+/* the two parts of a fraction keep the colours of what they stand for: taken pieces / the whole */
+:root{--c-num:#D2771F;--c-den:#8E5A2E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-num:#F2A34E;--c-den:#D8A574}}
+:root[data-theme="dark"]{--c-num:#F2A34E;--c-den:#D8A574}
+.fr.frc>span:first-child{color:var(--c-num);border-bottom-color:var(--ink)} .fr.frc>span:last-child{color:var(--c-den)}
+b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
+.act-fnum.n{fill:var(--c-num)} .act-fnum.d{fill:var(--c-den)}
+.act-tag.n{fill:var(--c-num)} .act-tag.d{fill:var(--c-den)}
+@media (prefers-reduced-motion:no-preference){.act-pop{animation:actpop .45s cubic-bezier(.2,.9,.3,1.3) both;transform-box:fill-box;transform-origin:center}@keyframes actpop{from{opacity:0;transform:translateY(10px) scale(.6)}}}
+/* equation board: a teacher writing one line at a time */
+.eqb{display:flex;flex-direction:column;align-items:center;gap:8px;margin:10px auto 4px;padding:14px 18px;border-radius:18px;background:var(--card);border:1px solid var(--line);width:fit-content;max-width:100%}
+.eqb .row{display:flex;align-items:center;gap:10px;direction:rtl;font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1}
+.eqb .row small{font-family:var(--f-body);font-size:13px;font-weight:500;color:var(--ink-3);margin-inline-start:6px}
+.eqb .t{display:inline-block} .eqb .op{color:var(--theme);font-weight:400}
+.eqb .n{color:var(--c-num)} .eqb .d{color:var(--c-den)} .eqb .res{background:var(--brand-soft);border-radius:10px;padding:2px 10px}
+@media (prefers-reduced-motion:no-preference){.eqb .t{animation:eqin .4s ease both}@keyframes eqin{from{opacity:0;transform:translateY(12px)}}
+  .eqb .res{animation:eqin .4s ease both,eqglow 1.2s ease .2s both}@keyframes eqglow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--theme) 45%,transparent)}100%{box-shadow:0 0 0 14px transparent}}}
+.eqb .row{color:var(--ink)}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1034,7 +1057,8 @@ const frH = (a, b, w) => (w != null && w !== '' ? `<span class="mx">${ar(w)}` : 
 function fmt(s) {
   s = String(s).split('`').map((seg, i) => i % 2 ? seg : seg.replace(/<(?![a-zA-Z\/])/g, '&lt;')).join('`');
   s = s.replace(/\[\[(?:(\d+) )?([^\]\/]+)\/([^\]]+)\]\]/g, (_, w, a, b) => frH(a, b, w));
-  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b)) + '</span>');
+  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
+    .replace(/ ([×÷+=−≈]|-) /g, (_, o) => ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
@@ -2192,6 +2216,13 @@ function runPlayer(P) {
       ok() { FX.play('correct'); }, no() { FX.play('wrong'); }, tick() { FX.play('select'); },
       later(fn, ms) { const t = setTimeout(fn, ms); stepCleanup.push(() => clearTimeout(t)); },
       done() { if (finished) return; finished = true; btn.disabled = false; FX.play('correct'); },
+      /* an equation written token by token: lines = [[ [text, cls], ... , note? ], ...] */
+      board(lines, gap = 260) {
+        const b = h('div', 'eqb'); let k = 0;
+        lines.forEach(line => { const r = h('div', 'row'); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
+          const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms'; r.appendChild(sp); }); b.appendChild(r); });
+        c.insertBefore(b, msg); return b;
+      },
     };
     window.__actSkip = () => ctx.done(); // automatic tests only
     A.run(ctx);
@@ -8034,11 +8065,14 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
     K.line(x - 26, y, x + 26, y, 'act-fline');
     const slots = {};
     return {
-      bot(v, tag) { if (slots.bot) slots.bot.remove(); K.text(x, y + 30, String(v), 'act-fnum'); if (tag) K.note(x, y + 62, tag); },
-      top(v, tag) { if (slots.top) slots.top.remove(); K.text(x, y - 28, String(v), 'act-fnum'); if (tag) K.note(x, y - 62, tag); },
+      bot(v, tag, pop = true) { if (slots.bot) slots.bot.remove(); K.text(x, y + 30, String(v), 'act-fnum d' + (pop ? ' act-pop' : '')); if (tag) K.text(x, y + 62, tag, 's-txt-s act-tag d'); },
+      top(v, tag, pop = true) { if (slots.top) slots.top.remove(); K.text(x, y - 28, String(v), 'act-fnum n' + (pop ? ' act-pop' : '')); if (tag) K.text(x, y - 62, tag, 's-txt-s act-tag n'); },
       empty(pos) { slots[pos] = K.rect(x - 18, pos === 'top' ? y - 50 : y + 8, 36, 42, 'b-slot', 8); },
     };
   };
+  /* a coloured fraction for the text: top = taken pieces, bottom = the whole */
+  const FR = (a, b) => `<span class="fr frc"><span>${a}</span><span>${b}</span></span>`;
+  const NUM = '<b class="cn">البسط</b>', DEN = '<b class="cd">المقام</b>';
   const wrongChip = (c, b, text) => { c.no(); b.disabled = true; b.classList.add('nope'); if (text) c.msg(text, 'bad'); };
   const N = 6, K_ = i => `الخطوة ${ar(i)} من ${ar(N)}`;
 
@@ -8064,14 +8098,14 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
         if (v !== 4) { wrongChip(c, b, 'عُدّ القطع واحدة بعد الأخرى.'); nums(c.layer(), 130, 118, 88, EQ(4)); return; }
         c.ok(); c.clearChoices(); const L = c.layer(); nums(L, 130, 118, 88, EQ(4));
         const F = fracAt(L, 300, 112); F.empty('top'); F.bot(4, 'المقام');
-        c.msg('هذا العدد اسمه <b>المقام</b>: كم قطعة متساوية قسمنا إليها الشيء كله. ويُكتب <b>تحت</b> الخط.', 'ok'); c.done();
+        c.msg(`هذا العدد اسمه ${DEN}: كم قطعة متساوية قسمنا إليها الشيء كله. ويُكتب <b>تحت</b> الخط.`, 'ok'); c.done();
       });
     } },
     /* 3 · take pieces with your own hands → the numerator */
     { kicker: K_(3), h: 240, run(c) {
       c.say('أكلتَ <b>٣</b> قطع. اضغط على ٣ قطع، واحدة بعد الأخرى.');
       const K = c.layer(); const sl = pizza(K, 130, 118, 88, EQ(4));
-      const F = fracAt(K, 300, 112); F.empty('top'); F.bot(4, 'المقام');
+      const F = fracAt(K, 300, 112); F.empty('top'); F.bot(4, 'المقام', false);
       const on = new Set(); let locked = false;
       sl.forEach((el, i) => c.tap(el, () => {
         if (locked) return; c.tick(); on.has(i) ? on.delete(i) : on.add(i); setOn(el, on.has(i));
@@ -8082,17 +8116,17 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
         c.later(() => { c.say('كم قطعة <b>أخذت</b>؟'); c.choices([1, 2, 3, 4], (v, b) => {
           if (v !== 3) return wrongChip(c, b, 'عُدّ القطع الملوّنة.');
           c.ok(); c.clearChoices(); F.top(3, 'البسط');
-          c.msg('هذا العدد اسمه <b>البسط</b>: كم قطعة أخذنا. ويُكتب <b>فوق</b> الخط.<br>والكسر كله [[3/4]]، ونقرؤه: <b>ثلاثة أرباع</b>.', 'ok'); c.done();
+          c.msg(`هذا العدد اسمه ${NUM}: كم قطعة أخذنا. ويُكتب <b>فوق</b> الخط.<br>والكسر كله ${FR(3, 4)}، ونقرؤه: <b>ثلاثة أرباع</b>.`, 'ok'); c.done();
         }); }, 450);
       }));
     } },
     /* 4 · the reverse: read a fraction and build it */
     { kicker: K_(4), h: 240, run(c) {
-      c.say('هذا الكسر [[2/5]]. أولًا: إلى كم قطعة <b>نقسم</b> البيتزا؟');
-      const base = c.layer(); const F = fracAt(base, 300, 112); F.top(2); F.bot(5);
+      c.say(`هذا الكسر ${FR(2, 5)}. أولًا: إلى كم قطعة <b>نقسم</b> البيتزا؟`);
+      const base = c.layer(); const F = fracAt(base, 300, 112); F.top(2, '', false); F.bot(5, '', false);
       let P = c.layer(); P.circle(130, 118, 95, 'pz-crust'); P.circle(130, 118, 88, 'pz');
       c.choices([2, 3, 5, 7], (v, b) => {
-        if (v === 2) return wrongChip(c, b, 'انتبه: الرقم <b>السفلي</b> (المقام) يقول كم قطعة نقسم، والعلوي (البسط) يقول كم نأخذ. جرّب مرة ثانية.');
+        if (v === 2) return wrongChip(c, b, `انتبه: الرقم <b>السفلي</b> (${DEN}) يقول كم قطعة نقسم، والعلوي (${NUM}) يقول كم نأخذ. جرّب مرة ثانية.`);
         if (v !== 5) return wrongChip(c, b, 'انظر إلى الرقم السفلي في الكسر.');
         c.ok(); c.clearChoices(); P.g.remove(); P = c.layer();
         const sl = pizza(P, 130, 118, 88, EQ(5));
@@ -8100,15 +8134,15 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
         const on = new Set(); let locked = false;
         sl.forEach((el, i) => c.tap(el, () => {
           if (locked) return; c.tick(); on.has(i) ? on.delete(i) : on.add(i); setOn(el, on.has(i));
-          if (on.size > 2) return c.msg('البسط ٢: خذ قطعتين فقط. اضغط على قطعة ملوّنة لتلغيها.', 'bad');
+          if (on.size > 2) return c.msg(`${NUM} ٢: خذ قطعتين فقط. اضغط على قطعة ملوّنة لتلغيها.`, 'bad');
           if (on.size < 2) return c.msg('');
-          locked = true; c.later(() => { c.msg('صحيح: قسمنا إلى <b>٥</b> قطع (المقام) وأخذنا <b>٢</b> (البسط) ← [[2/5]].', 'ok'); c.done(); }, 350);
+          locked = true; c.later(() => { c.msg(`صحيح: قسمنا إلى ٥ قطع (${DEN}) وأخذنا ٢ (${NUM}) ← ${FR(2, 5)}`, 'ok'); c.done(); }, 350);
         }));
       });
     } },
     /* 5 · the same idea outside the pizza */
     { kicker: K_(5), h: 220, run(c) {
-      c.say('أي هذه الأشكال يمثّل [[3/4]]؟ اضغط على <b>كل</b> شكل صحيح.');
+      c.say(`أي هذه الأشكال يمثّل ${FR(3, 4)}؟ اضغط على <b>كل</b> شكل صحيح.`);
       const K = c.layer();
       pizza(K, 296, 96, 48, EQ(4), [0, 1, 2]); K.note(296, 172, 'بيتزا');
       for (let i = 0; i < 4; i++) K.rect(140 + i * 21, 58, 19, 76, i < 3 ? 'ch on' : 'ch', 3); K.note(181, 172, 'شوكولاتة');
@@ -8118,12 +8152,12 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
       boxes.forEach((bx, i) => { const hit = K.rect(...bx, 'act-hit', 14); c.tap(hit, () => {
         if (got.has(i)) return; got.add(i); c.tick(); c.layer().rect(bx[0] - 3, bx[1] - 3, bx[2] + 6, bx[3] + 6, 'act-ring ok', 16);
         if (got.size < 3) return c.msg('صحيح. هل يوجد شكل آخر؟', 'ok');
-        c.msg('كلها! مهما كان الشيء: <b>المقام</b> كم جزءًا متساويًا، و<b>البسط</b> كم جزءًا أخذنا.', 'ok'); c.done();
+        c.msg(`كلها! مهما كان الشيء: ${DEN} كم جزءًا متساويًا، و${NUM} كم جزءًا أخذنا.`, 'ok'); c.done();
       }); });
     } },
     /* 6 · a fraction of a number, with the same two moves: share into equal groups, then take */
     { kicker: K_(6), h: 230, run(c) {
-      c.say('عندك ١٢ حبة تمر، وتريد أن تعطي صديقك [[3/4]] منها. المقام ٤، فاضغط «قسّم» لتقسيمها إلى ٤ مجموعات متساوية.');
+      c.say(`عندك ١٢ حبة تمر، وتريد أن تعطي صديقك ${FR(3, 4)} منها. ${DEN} ٤، فاضغط «قسّم» لتقسيمها إلى ٤ مجموعات متساوية.`);
       let L = c.layer(); for (let i = 0; i < 12; i++) L.path(`M${30 + i * 27},90 a10,15 0 1,0 0.1,0 Z`, 'date');
       c.choices(['قسّم'], () => {
         c.tick(); c.clearChoices(); L.g.remove(); L = c.layer();
@@ -8131,18 +8165,19 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
         c.say('كم حبة في كل مجموعة؟');
         c.choices([3, 4, 8], (v, b) => {
           if (v !== 3) return wrongChip(c, b, 'عُدّ التمر في مجموعة واحدة.');
-          c.ok(); c.clearChoices(); c.msg('كل مجموعة: `12 ÷ 4 = 3`.', 'ok');
-          c.say('البسط ٣: اضغط على <b>٣ مجموعات</b> لتعطيها صديقك.');
+          c.ok(); c.clearChoices(); c.msg('');
+          c.say(`${NUM} ٣: اضغط على <b>٣ مجموعات</b> لتعطيها صديقك.`);
           const on = new Set(); let locked = false; const rings = [];
           G.forEach((hit, g) => c.tap(hit, () => {
             if (locked) return; c.tick();
             if (on.has(g)) { on.delete(g); rings[g].g.remove(); } else { on.add(g); const R = c.layer(); R.rect(276 - g * 84 - 3, 47, 78, 126, 'act-ring take', 16); rings[g] = R; }
-            if (on.size > 3) return c.msg('البسط ٣: خذ ٣ مجموعات فقط.', 'bad');
+            if (on.size > 3) return c.msg(`${NUM} ٣: خذ ٣ مجموعات فقط.`, 'bad');
             if (on.size < 3) return c.msg('');
             locked = true; c.later(() => { c.say('كم حبة أعطيت صديقك؟'); c.choices([3, 6, 9, 12], (w, b2) => {
               if (w !== 9) return wrongChip(c, b2, 'كل مجموعة ٣ حبات، وأعطيت ٣ مجموعات.');
               c.ok(); c.clearChoices();
-              c.msg('هكذا نحسب كسرًا من عدد: نقسم على <b>المقام</b> (`12 ÷ 4 = 3`)، ثم نضرب في <b>البسط</b> (`3 × 3 = 9`).', 'ok'); c.done();
+              c.board([[['12'], ['÷', 'op'], ['4', 'd'], ['=', 'op'], ['3', 'res'], 'نقسم على المقام'], [['3'], ['×', 'op'], ['3', 'n'], ['=', 'op'], ['9', 'res'], 'ثم نضرب في البسط']]);
+              c.msg(`هكذا نحسب ${FR(3, 4)} من ١٢: نقسم على ${DEN}، ثم نضرب في ${NUM}.`, 'ok'); c.done();
             }); }, 400);
           }));
         });
@@ -8598,7 +8633,8 @@ const frH = (a, b, w) => (w != null && w !== '' ? `<span class="mx">${ar(w)}` : 
 function fmt(s) {
   s = String(s).split('`').map((seg, i) => i % 2 ? seg : seg.replace(/<(?![a-zA-Z\/])/g, '&lt;')).join('`');
   s = s.replace(/\[\[(?:(\d+) )?([^\]\/]+)\/([^\]]+)\]\]/g, (_, w, a, b) => frH(a, b, w));
-  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b)) + '</span>');
+  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
+    .replace(/ ([×÷+=−≈]|-) /g, (_, o) => ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
@@ -10170,6 +10206,13 @@ function runPlayer(P) {
       ok() { FX.play('correct'); }, no() { FX.play('wrong'); }, tick() { FX.play('select'); },
       later(fn, ms) { const t = setTimeout(fn, ms); stepCleanup.push(() => clearTimeout(t)); },
       done() { if (finished) return; finished = true; btn.disabled = false; FX.play('correct'); },
+      /* an equation written token by token: lines = [[ [text, cls], ... , note? ], ...] */
+      board(lines, gap = 260) {
+        const b = h('div', 'eqb'); let k = 0;
+        lines.forEach(line => { const r = h('div', 'row'); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
+          const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms'; r.appendChild(sp); }); b.appendChild(r); });
+        c.insertBefore(b, msg); return b;
+      },
     };
     window.__actSkip = () => ctx.done(); // automatic tests only
     A.run(ctx);
