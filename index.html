@@ -1058,7 +1058,7 @@ function fmt(s) {
   s = String(s).split('`').map((seg, i) => i % 2 ? seg : seg.replace(/<(?![a-zA-Z\/])/g, '&lt;')).join('`');
   s = s.replace(/\[\[(?:(\d+) )?([^\]\/]+)\/([^\]]+)\]\]/g, (_, w, a, b) => frH(a, b, w));
   s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
-    .replace(/ ([×÷+=−≈]|-) /g, (_, o) => ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air
+    .replace(/ ([×÷+=−≈]|-) /g, (all, o) => /√/.test(m) ? all : ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air (not under a root sign, it must stay one piece)
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
@@ -8634,7 +8634,7 @@ function fmt(s) {
   s = String(s).split('`').map((seg, i) => i % 2 ? seg : seg.replace(/<(?![a-zA-Z\/])/g, '&lt;')).join('`');
   s = s.replace(/\[\[(?:(\d+) )?([^\]\/]+)\/([^\]]+)\]\]/g, (_, w, a, b) => frH(a, b, w));
   s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
-    .replace(/ ([×÷+=−≈]|-) /g, (_, o) => ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air
+    .replace(/ ([×÷+=−≈]|-) /g, (all, o) => /√/.test(m) ? all : ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air (not under a root sign, it must stay one piece)
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
