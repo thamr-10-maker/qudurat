@@ -861,6 +861,27 @@ h1,h2,h3{font-weight:500}
 .dgtable td{padding:9px 6px;border-top:1px solid var(--line)}
 .dgtable td+td,.dgtable th+th{border-inline-start:1px solid var(--line)}
 
+/* ===== hands-on lesson steps ===== */
+.act .act-say{font-family:var(--f-display);font-weight:500;font-size:19px;line-height:1.7;margin:4px 0 12px}
+.act-fig{margin-bottom:12px}
+.act-pick{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:4px 0 10px}
+.chip.act-chip{min-width:64px;height:52px;padding:0 18px;font-size:20px;font-family:var(--f-display);background:var(--card);border-radius:16px}
+.chip.act-chip.nope{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);opacity:.7}
+.act-msg{min-height:28px;font-size:16px;line-height:1.8;color:var(--ink-2);margin:4px 0 0;text-align:center}
+.act-msg.ok{color:var(--ink)} .act-msg.ok b{color:var(--ok)} .act-msg.bad b{color:var(--bad)} .act-msg.bad{color:var(--bad)}
+.pz{fill:#F7E6BE;stroke:#B9783A;stroke-width:2.5;stroke-linejoin:round;transition:fill .15s}
+.pz.on{fill:#E39B37}
+.pz.big{fill:#F2B9A6;stroke:var(--bad)} .pz.small{fill:#F2B9A6;stroke:var(--bad)}
+.pz-crust{fill:#D7964F}
+.act-hit{fill:transparent;stroke:none}
+.act-ring{fill:none;stroke-width:4} .act-ring.ok{stroke:var(--ok)} .act-ring.take{stroke:var(--theme);stroke-dasharray:8 6}
+.act-fline{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.act-fnum{fill:var(--ink);font-family:var(--f-display);font-weight:600;font-size:34px}
+.ch{fill:#EBDCCB;stroke:#7A4A2A;stroke-width:2} .ch.on{fill:#7A4A2A}
+.cup{fill:none;stroke:var(--ink-2);stroke-width:2.5;stroke-linejoin:round} .cup-w{fill:#7FB5E6}
+.date{fill:#8B4A22;stroke:#5E2F12;stroke-width:1.5}
+.grp{fill:var(--bg-2);stroke:var(--line);stroke-width:2}
+
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
 .vtitle{font-weight:600;margin-bottom:6px}
@@ -1723,19 +1744,20 @@ function applyPlus() {
     const teach = l.steps.filter(s => !s.q), qs = l.steps.filter(s => s.q), out = [];
     if (P.intro) out.push({ intro: P.intro });
     const extra = (P.rules || []).map(r => ({ rule: r, after: r.after })).concat((P.checks || []).map(c => Object.assign({ check: true }, c)));
-    teach.forEach((t, i) => { (P.explains || []).filter(e => (e.before || 0) === i).forEach(e => out.push({ explain: e }));
+    if (P.flow) out.push(...P.flow.map(a => ({ act: a }))); // a lesson rebuilt as small hands-on steps replaces the old teaching part
+    else teach.forEach((t, i) => { (P.explains || []).filter(e => (e.before || 0) === i).forEach(e => out.push({ explain: e }));
       const here = extra.filter(x => (x.after == null ? teach.length - 1 : x.after) === i);
       if (here.some(x => x.rule) && t.tip) { t = Object.assign({}, t); delete t.tip; } // a rule card replaces the paragraph tip
       const plainText = !t.widget && !t.fig && !t.goal; // with theory cards in place, a bare paragraph is just noise
       if (!(P.drop || []).includes(i) && !(P.explains && plainText)) out.push(t);
       else { DROPPED.push([l.id, t.say || '', t.tip || '']); if (t.tip) out.push({ tip: t.tip }); } // a rule written in the tip is kept on its own
       here.forEach(x => out.push(x)); });
-    if (!teach.length) { (P.explains || []).forEach(e => out.push({ explain: e })); extra.forEach(x => out.push(x)); }
+    if (!teach.length && !P.flow) { (P.explains || []).forEach(e => out.push({ explain: e })); extra.forEach(x => out.push(x)); }
     if (P.example) out.push({ example: P.example });
     if (P.guided) out.push({ guided: P.guided });
     if (P.order) out.push({ order: P.order });
     if (P.fixit) out.push({ fixit: P.fixit });
-    out.push(...qs, ...(P.qs || []));
+    out.push(...(P.keepQs ? qs.filter((_, i) => P.keepQs.includes(i)) : qs), ...(P.qs || []));
     if (P.summary) out.push({ summary: P.summary });
     l.steps = out;
   }
@@ -2096,7 +2118,7 @@ function runPlayer(P) {
   /* lesson phases: intro → learn → worked example → solve together → practice → summary */
   const PHASES = [['intro', 'مقدمة'], ['learn', 'الشرح'], ['example', 'مثال محلول'], ['guided', 'نحل معًا'], ['practice', 'تدريب'], ['summary', 'الخلاصة']];
   const phaseOf = s => s.intro ? 'intro' : s.example ? 'example' : (s.guided || s.order || s.fixit) ? 'guided' : s.summary ? 'summary' : (s.q && !s.check) ? 'practice' : 'learn';
-  const structured = P.mode === 'lesson' && P.steps.some(s => s.intro || s.explain || s.example || s.guided || s.summary || s.order || s.fixit);
+  const structured = P.mode === 'lesson' && P.steps.some(s => s.intro || s.explain || s.act || s.example || s.guided || s.summary || s.order || s.fixit);
   const present = structured ? PHASES.filter(([k]) => P.steps.some(s => phaseOf(s) === k)) : [];
   const strip = h('div', 'phases gut');
   function paintPhase(s) { if (!structured) { strip.innerHTML = `<span class="ph on">${fmt(P.title)}</span>`; return; } const cur = phaseOf(s), ci = present.findIndex(p => p[0] === cur);
@@ -2129,7 +2151,7 @@ function runPlayer(P) {
     window.scrollTo(0, 0);
     const { s, again } = queue[idx];
     paintPhase(s);
-    if (s.intro) renderIntro(s); else if (s.explain) renderExplain(s); else if (s.rule) renderRule(s); else if (s.example) renderExample(s); else if (s.guided) renderGuided(s); else if (s.order) renderOrder(s); else if (s.fixit) renderFixit(s); else if (s.summary) renderSummary(s);
+    if (s.intro) renderIntro(s); else if (s.act) renderAct(s); else if (s.explain) renderExplain(s); else if (s.rule) renderRule(s); else if (s.example) renderExample(s); else if (s.guided) renderGuided(s); else if (s.order) renderOrder(s); else if (s.fixit) renderFixit(s); else if (s.summary) renderSummary(s);
     else if (s.check) renderCheck(s); else if (s.q) renderQuestion(s, again); else renderTeach(s);
   }
 
@@ -2147,6 +2169,32 @@ function runPlayer(P) {
       const sk = h('button', 'btn skipk', 'أعرف هذا؟ تخطَّه بسؤالين'); sk.onclick = () => { FX.play('tap'); dgSkipTest(P.d, P.lesson); };
       dockIn.appendChild(sk);
     }
+  }
+  /* a hands-on step: one idea, the student acts first and the name comes after. The lesson file drives it through ctx. */
+  function renderAct(s) {
+    const A = s.act, c = h('section', 'act');
+    c.innerHTML = `<small class="eyebrow">${A.kicker || ''}</small><p class="act-say"></p>`;
+    const fig = h('div', 'bfig act-fig'), svg = sv('svg', { viewBox: `0 0 360 ${A.h || 240}`, style: 'direction:ltr' }); fig.appendChild(svg);
+    const pick = h('div', 'act-pick'), msg = h('p', 'act-msg');
+    c.append(fig, pick, msg); body.appendChild(c);
+    const btn = setDock('', '', '', A.cta || 'التالي', next, false);
+    const pop = e => { e.classList.remove('pop-in'); void e.offsetWidth; e.classList.add('pop-in'); };
+    let finished = false;
+    const ctx = {
+      svg,
+      layer() { const g = sv('g', {}, svg); return buildKit(svg, g); },
+      wipe() { svg.innerHTML = ''; },
+      say(t) { const e = c.querySelector('.act-say'); e.innerHTML = fmt(t); pop(e); },
+      msg(t, cls = '') { msg.className = 'act-msg ' + cls; msg.innerHTML = t ? fmt(t) : ''; if (t) pop(msg); },
+      choices(list, fn) { pick.innerHTML = ''; list.forEach(v => { const b = h('button', 'chip act-chip', fmt(String(v))); b.onclick = () => { if (b.disabled) return; fn(v, b); }; pick.appendChild(b); }); },
+      clearChoices() { pick.innerHTML = ''; },
+      tap(el, fn) { el.style.cursor = 'pointer'; el.addEventListener('click', e => { e.preventDefault(); fn(e); }); },
+      ok() { FX.play('correct'); }, no() { FX.play('wrong'); }, tick() { FX.play('select'); },
+      later(fn, ms) { const t = setTimeout(fn, ms); stepCleanup.push(() => clearTimeout(t)); },
+      done() { if (finished) return; finished = true; btn.disabled = false; FX.play('correct'); },
+    };
+    window.__actSkip = () => ctx.done(); // automatic tests only
+    A.run(ctx);
   }
   /* theory first: the idea in plain words, an example, why it works, and where you will use it */
   function renderExplain(s) {
@@ -7969,6 +8017,152 @@ DF('d8', 0, 170, K => { K.path('M90,40 Q60,160 180,160 Q300,160 270,40 Z', 's-mu
   dqMix(cols).forEach((c, i) => K.circle(118 + (i % 4) * 42, 82 + Math.floor(i / 4) * 40, 15, c)); }, 'في الكيس ٣ كرات حمراء و ٥ زرقاء كما في الشكل. ما احتمال سحب كرة حمراء؟');
 function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
 
+/* ================= «ما هو الكسر؟» rebuilt as small hands-on steps =================
+   The model for every lesson (agreed with the teacher):
+   one idea per step · the student acts first, the name comes after · taps are deliberate, one at a time
+   · a reverse check proves the idea stuck · then the same idea in a new setting.
+   No word is used before it is taught. */
+{
+  const EQ = n => Array.from({ length: n }, (_, i) => [90 - (i + 1) * 360 / n, 90 - i * 360 / n]);
+  const mid = ([a1, a2]) => (a1 + a2) / 2;
+  /* a pizza: returns the slice elements (index = slice) */
+  const pizza = (K, cx, cy, r, spans, on = []) => { K.circle(cx, cy, r + 7, 'pz-crust'); return spans.map((sp, i) => K.path(arcPath(cx, cy, r, sp[0], sp[1]), on.includes(i) ? 'pz on' : 'pz')); };
+  const setOn = (el, v) => el.setAttribute('class', 'pz' + (v ? ' on' : ''));
+  const nums = (K, cx, cy, r, spans) => spans.forEach((sp, i) => { const [x, y] = polar(cx, cy, r * 0.6, mid(sp)); K.label(x, y, String(i + 1)); });
+  /* the fraction being built on the side: a line, a number under it, a number over it */
+  const fracAt = (K, x, y) => {
+    K.line(x - 26, y, x + 26, y, 'act-fline');
+    const slots = {};
+    return {
+      bot(v, tag) { if (slots.bot) slots.bot.remove(); K.text(x, y + 30, String(v), 'act-fnum'); if (tag) K.note(x, y + 62, tag); },
+      top(v, tag) { if (slots.top) slots.top.remove(); K.text(x, y - 28, String(v), 'act-fnum'); if (tag) K.note(x, y - 62, tag); },
+      empty(pos) { slots[pos] = K.rect(x - 18, pos === 'top' ? y - 50 : y + 8, 36, 42, 'b-slot', 8); },
+    };
+  };
+  const wrongChip = (c, b, text) => { c.no(); b.disabled = true; b.classList.add('nope'); if (text) c.msg(text, 'bad'); };
+  const N = 6, K_ = i => `الخطوة ${ar(i)} من ${ar(N)}`;
+
+  const FLOW = [
+    /* 1 · equal parts: the one idea everything else needs */
+    { kicker: K_(1), h: 230, run(c) {
+      c.say('أربعة أصدقاء سيتقاسمون بيتزا. أي بيتزا قُسمت <b>بالعدل</b>؟ اضغط عليها.');
+      const K = c.layer();
+      const unfair = [[30, 90], [-100, 30], [-170, -100], [-270, -170]];
+      const bad = pizza(K, 268, 118, 72, unfair), good = pizza(K, 92, 118, 72, EQ(4));
+      const hitB = K.circle(268, 118, 82, 'act-hit'), hitG = K.circle(92, 118, 82, 'act-hit');
+      let solved = false;
+      c.tap(hitG, () => { if (solved) return; solved = true; c.layer().circle(92, 118, 86, 'act-ring ok'); c.msg('صحيح. القطع الأربع <b>متساوية</b>، فكل صديق يأخذ الكمية نفسها.', 'ok'); c.done(); });
+      c.tap(hitB, () => { if (solved) return; c.no(); bad[1].setAttribute('class', 'pz big'); bad[0].setAttribute('class', 'pz small');
+        const L = c.layer(); L.note(...polar(268, 118, 44, mid(unfair[1])), 'كبيرة'); L.note(...polar(268, 118, 50, mid(unfair[0])), 'صغيرة');
+        c.msg('انظر: هذه القطعة أكبر بكثير من تلك، فالقسمة <b>ليست عادلة</b>. جرّب البيتزا الأخرى.', 'bad'); });
+    } },
+    /* 2 · count the equal pieces → that number has a name: the denominator */
+    { kicker: K_(2), h: 240, run(c) {
+      c.say('كم قطعة <b>متساوية</b> قُسمت إليها هذه البيتزا؟');
+      const K = c.layer(); pizza(K, 130, 118, 88, EQ(4));
+      c.choices([2, 3, 4, 6], (v, b) => {
+        if (v !== 4) { wrongChip(c, b, 'عُدّ القطع واحدة بعد الأخرى.'); nums(c.layer(), 130, 118, 88, EQ(4)); return; }
+        c.ok(); c.clearChoices(); const L = c.layer(); nums(L, 130, 118, 88, EQ(4));
+        const F = fracAt(L, 300, 112); F.empty('top'); F.bot(4, 'المقام');
+        c.msg('هذا العدد اسمه <b>المقام</b>: كم قطعة متساوية قسمنا إليها الشيء كله. ويُكتب <b>تحت</b> الخط.', 'ok'); c.done();
+      });
+    } },
+    /* 3 · take pieces with your own hands → the numerator */
+    { kicker: K_(3), h: 240, run(c) {
+      c.say('أكلتَ <b>٣</b> قطع. اضغط على ٣ قطع، واحدة بعد الأخرى.');
+      const K = c.layer(); const sl = pizza(K, 130, 118, 88, EQ(4));
+      const F = fracAt(K, 300, 112); F.empty('top'); F.bot(4, 'المقام');
+      const on = new Set(); let locked = false;
+      sl.forEach((el, i) => c.tap(el, () => {
+        if (locked) return; c.tick(); on.has(i) ? on.delete(i) : on.add(i); setOn(el, on.has(i));
+        const n = on.size;
+        if (n > 3) return c.msg('أكلت ٣ فقط. اضغط على قطعة ملوّنة لتلغيها.', 'bad');
+        if (n < 3) return c.msg(n ? `لوّنت ${ar(n)}، استمر.` : '');
+        locked = true; c.msg('');
+        c.later(() => { c.say('كم قطعة <b>أخذت</b>؟'); c.choices([1, 2, 3, 4], (v, b) => {
+          if (v !== 3) return wrongChip(c, b, 'عُدّ القطع الملوّنة.');
+          c.ok(); c.clearChoices(); F.top(3, 'البسط');
+          c.msg('هذا العدد اسمه <b>البسط</b>: كم قطعة أخذنا. ويُكتب <b>فوق</b> الخط.<br>والكسر كله [[3/4]]، ونقرؤه: <b>ثلاثة أرباع</b>.', 'ok'); c.done();
+        }); }, 450);
+      }));
+    } },
+    /* 4 · the reverse: read a fraction and build it */
+    { kicker: K_(4), h: 240, run(c) {
+      c.say('هذا الكسر [[2/5]]. أولًا: إلى كم قطعة <b>نقسم</b> البيتزا؟');
+      const base = c.layer(); const F = fracAt(base, 300, 112); F.top(2); F.bot(5);
+      let P = c.layer(); P.circle(130, 118, 95, 'pz-crust'); P.circle(130, 118, 88, 'pz');
+      c.choices([2, 3, 5, 7], (v, b) => {
+        if (v === 2) return wrongChip(c, b, 'انتبه: الرقم <b>السفلي</b> (المقام) يقول كم قطعة نقسم، والعلوي (البسط) يقول كم نأخذ. جرّب مرة ثانية.');
+        if (v !== 5) return wrongChip(c, b, 'انظر إلى الرقم السفلي في الكسر.');
+        c.ok(); c.clearChoices(); P.g.remove(); P = c.layer();
+        const sl = pizza(P, 130, 118, 88, EQ(5));
+        c.say('ممتاز. والآن <b>خذ</b> العدد الصحيح من القطع: اضغط عليها واحدة بعد الأخرى.'); c.msg('');
+        const on = new Set(); let locked = false;
+        sl.forEach((el, i) => c.tap(el, () => {
+          if (locked) return; c.tick(); on.has(i) ? on.delete(i) : on.add(i); setOn(el, on.has(i));
+          if (on.size > 2) return c.msg('البسط ٢: خذ قطعتين فقط. اضغط على قطعة ملوّنة لتلغيها.', 'bad');
+          if (on.size < 2) return c.msg('');
+          locked = true; c.later(() => { c.msg('صحيح: قسمنا إلى <b>٥</b> قطع (المقام) وأخذنا <b>٢</b> (البسط) ← [[2/5]].', 'ok'); c.done(); }, 350);
+        }));
+      });
+    } },
+    /* 5 · the same idea outside the pizza */
+    { kicker: K_(5), h: 220, run(c) {
+      c.say('أي هذه الأشكال يمثّل [[3/4]]؟ اضغط على <b>كل</b> شكل صحيح.');
+      const K = c.layer();
+      pizza(K, 296, 96, 48, EQ(4), [0, 1, 2]); K.note(296, 172, 'بيتزا');
+      for (let i = 0; i < 4; i++) K.rect(140 + i * 21, 58, 19, 76, i < 3 ? 'ch on' : 'ch', 3); K.note(181, 172, 'شوكولاتة');
+      for (let i = 0; i < 4; i++) { const x = 30 + (i % 2) * 44, y = 50 + Math.floor(i / 2) * 58; K.path(`M${x},${y} h32 l-4,44 h-24 Z`, 'cup'); if (i < 3) K.path(`M${x + 2},${y + 14} h28 l-3,28 h-22 Z`, 'cup-w'); }
+      K.note(66, 172, 'أكواب ماء');
+      const boxes = [[244, 40, 104, 140], [128, 40, 106, 140], [16, 40, 104, 140]], got = new Set();
+      boxes.forEach((bx, i) => { const hit = K.rect(...bx, 'act-hit', 14); c.tap(hit, () => {
+        if (got.has(i)) return; got.add(i); c.tick(); c.layer().rect(bx[0] - 3, bx[1] - 3, bx[2] + 6, bx[3] + 6, 'act-ring ok', 16);
+        if (got.size < 3) return c.msg('صحيح. هل يوجد شكل آخر؟', 'ok');
+        c.msg('كلها! مهما كان الشيء: <b>المقام</b> كم جزءًا متساويًا، و<b>البسط</b> كم جزءًا أخذنا.', 'ok'); c.done();
+      }); });
+    } },
+    /* 6 · a fraction of a number, with the same two moves: share into equal groups, then take */
+    { kicker: K_(6), h: 230, run(c) {
+      c.say('عندك ١٢ حبة تمر، وتريد أن تعطي صديقك [[3/4]] منها. المقام ٤، فاضغط «قسّم» لتقسيمها إلى ٤ مجموعات متساوية.');
+      let L = c.layer(); for (let i = 0; i < 12; i++) L.path(`M${30 + i * 27},90 a10,15 0 1,0 0.1,0 Z`, 'date');
+      c.choices(['قسّم'], () => {
+        c.tick(); c.clearChoices(); L.g.remove(); L = c.layer();
+        const G = [0, 1, 2, 3].map(g => { const x = 276 - g * 84; L.rect(x, 50, 72, 120, 'grp', 14); for (let k = 0; k < 3; k++) L.path(`M${x + 36},${70 + k * 34} a10,15 0 1,0 0.1,0 Z`, 'date'); return L.rect(x, 50, 72, 120, 'act-hit', 14); });
+        c.say('كم حبة في كل مجموعة؟');
+        c.choices([3, 4, 8], (v, b) => {
+          if (v !== 3) return wrongChip(c, b, 'عُدّ التمر في مجموعة واحدة.');
+          c.ok(); c.clearChoices(); c.msg('كل مجموعة: `12 ÷ 4 = 3`.', 'ok');
+          c.say('البسط ٣: اضغط على <b>٣ مجموعات</b> لتعطيها صديقك.');
+          const on = new Set(); let locked = false; const rings = [];
+          G.forEach((hit, g) => c.tap(hit, () => {
+            if (locked) return; c.tick();
+            if (on.has(g)) { on.delete(g); rings[g].g.remove(); } else { on.add(g); const R = c.layer(); R.rect(276 - g * 84 - 3, 47, 78, 126, 'act-ring take', 16); rings[g] = R; }
+            if (on.size > 3) return c.msg('البسط ٣: خذ ٣ مجموعات فقط.', 'bad');
+            if (on.size < 3) return c.msg('');
+            locked = true; c.later(() => { c.say('كم حبة أعطيت صديقك؟'); c.choices([3, 6, 9, 12], (w, b2) => {
+              if (w !== 9) return wrongChip(c, b2, 'كل مجموعة ٣ حبات، وأعطيت ٣ مجموعات.');
+              c.ok(); c.clearChoices();
+              c.msg('هكذا نحسب كسرًا من عدد: نقسم على <b>المقام</b> (`12 ÷ 4 = 3`)، ثم نضرب في <b>البسط</b> (`3 × 3 = 9`).', 'ok'); c.done();
+            }); }, 400);
+          }));
+        });
+      });
+    } },
+  ];
+
+  Object.assign(PLUS.f1, {
+    flow: FLOW,
+    keepQs: [0, 1],
+    qs: [{ q: 'قُسم شريط إلى ٨ أجزاء متساوية، ولُوّن منها ٥. ما الكسر <b>غير</b> الملوّن؟', choices: ['[[3/8]]', '[[5/8]]', '[[3/5]]', '[[8/3]]'], answer: 0, why: 'غير الملوّن ٣ أجزاء من ٨: [[3/8]].' }],
+    guided: { q: 'قُسمت كعكة إلى ٥ قطع متساوية، وأكل خالد قطعتين. ما الكسر الباقي من الكعكة؟', answer: '[[3/5]]', steps: [
+      { ask: 'كم قطعة بقيت؟', choices: ['٣', '٢', '٧'], why: '`5 − 2 = 3`' },
+      { ask: 'كم قطعة متساوية في الكعكة كلها (المقام)؟', choices: ['٥', '٣', '٢'], why: 'قُسمت إلى ٥ قطع.' },
+      { ask: 'الكسر الباقي:', choices: ['[[3/5]]', '[[2/5]]', '[[5/3]]'], why: 'بقي ٣ من ٥.' },
+    ] },
+    summary: ['المقام (تحت الخط): كم جزءًا متساويًا قسمنا الشيء كله', 'البسط (فوق الخط): كم جزءًا أخذنا', 'الأجزاء يجب أن تكون متساوية', 'كسر من عدد: نقسم على المقام، ثم نضرب في البسط'],
+  });
+}
+
 /* ================= smart placement test + personal plan =================
    Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
    The test keeps, for every skill, how sure we are that the student knows it, and always asks
@@ -9528,19 +9722,20 @@ function applyPlus() {
     const teach = l.steps.filter(s => !s.q), qs = l.steps.filter(s => s.q), out = [];
     if (P.intro) out.push({ intro: P.intro });
     const extra = (P.rules || []).map(r => ({ rule: r, after: r.after })).concat((P.checks || []).map(c => Object.assign({ check: true }, c)));
-    teach.forEach((t, i) => { (P.explains || []).filter(e => (e.before || 0) === i).forEach(e => out.push({ explain: e }));
+    if (P.flow) out.push(...P.flow.map(a => ({ act: a }))); // a lesson rebuilt as small hands-on steps replaces the old teaching part
+    else teach.forEach((t, i) => { (P.explains || []).filter(e => (e.before || 0) === i).forEach(e => out.push({ explain: e }));
       const here = extra.filter(x => (x.after == null ? teach.length - 1 : x.after) === i);
       if (here.some(x => x.rule) && t.tip) { t = Object.assign({}, t); delete t.tip; } // a rule card replaces the paragraph tip
       const plainText = !t.widget && !t.fig && !t.goal; // with theory cards in place, a bare paragraph is just noise
       if (!(P.drop || []).includes(i) && !(P.explains && plainText)) out.push(t);
       else { DROPPED.push([l.id, t.say || '', t.tip || '']); if (t.tip) out.push({ tip: t.tip }); } // a rule written in the tip is kept on its own
       here.forEach(x => out.push(x)); });
-    if (!teach.length) { (P.explains || []).forEach(e => out.push({ explain: e })); extra.forEach(x => out.push(x)); }
+    if (!teach.length && !P.flow) { (P.explains || []).forEach(e => out.push({ explain: e })); extra.forEach(x => out.push(x)); }
     if (P.example) out.push({ example: P.example });
     if (P.guided) out.push({ guided: P.guided });
     if (P.order) out.push({ order: P.order });
     if (P.fixit) out.push({ fixit: P.fixit });
-    out.push(...qs, ...(P.qs || []));
+    out.push(...(P.keepQs ? qs.filter((_, i) => P.keepQs.includes(i)) : qs), ...(P.qs || []));
     if (P.summary) out.push({ summary: P.summary });
     l.steps = out;
   }
@@ -9901,7 +10096,7 @@ function runPlayer(P) {
   /* lesson phases: intro → learn → worked example → solve together → practice → summary */
   const PHASES = [['intro', 'مقدمة'], ['learn', 'الشرح'], ['example', 'مثال محلول'], ['guided', 'نحل معًا'], ['practice', 'تدريب'], ['summary', 'الخلاصة']];
   const phaseOf = s => s.intro ? 'intro' : s.example ? 'example' : (s.guided || s.order || s.fixit) ? 'guided' : s.summary ? 'summary' : (s.q && !s.check) ? 'practice' : 'learn';
-  const structured = P.mode === 'lesson' && P.steps.some(s => s.intro || s.explain || s.example || s.guided || s.summary || s.order || s.fixit);
+  const structured = P.mode === 'lesson' && P.steps.some(s => s.intro || s.explain || s.act || s.example || s.guided || s.summary || s.order || s.fixit);
   const present = structured ? PHASES.filter(([k]) => P.steps.some(s => phaseOf(s) === k)) : [];
   const strip = h('div', 'phases gut');
   function paintPhase(s) { if (!structured) { strip.innerHTML = `<span class="ph on">${fmt(P.title)}</span>`; return; } const cur = phaseOf(s), ci = present.findIndex(p => p[0] === cur);
@@ -9934,7 +10129,7 @@ function runPlayer(P) {
     window.scrollTo(0, 0);
     const { s, again } = queue[idx];
     paintPhase(s);
-    if (s.intro) renderIntro(s); else if (s.explain) renderExplain(s); else if (s.rule) renderRule(s); else if (s.example) renderExample(s); else if (s.guided) renderGuided(s); else if (s.order) renderOrder(s); else if (s.fixit) renderFixit(s); else if (s.summary) renderSummary(s);
+    if (s.intro) renderIntro(s); else if (s.act) renderAct(s); else if (s.explain) renderExplain(s); else if (s.rule) renderRule(s); else if (s.example) renderExample(s); else if (s.guided) renderGuided(s); else if (s.order) renderOrder(s); else if (s.fixit) renderFixit(s); else if (s.summary) renderSummary(s);
     else if (s.check) renderCheck(s); else if (s.q) renderQuestion(s, again); else renderTeach(s);
   }
 
@@ -9952,6 +10147,32 @@ function runPlayer(P) {
       const sk = h('button', 'btn skipk', 'أعرف هذا؟ تخطَّه بسؤالين'); sk.onclick = () => { FX.play('tap'); dgSkipTest(P.d, P.lesson); };
       dockIn.appendChild(sk);
     }
+  }
+  /* a hands-on step: one idea, the student acts first and the name comes after. The lesson file drives it through ctx. */
+  function renderAct(s) {
+    const A = s.act, c = h('section', 'act');
+    c.innerHTML = `<small class="eyebrow">${A.kicker || ''}</small><p class="act-say"></p>`;
+    const fig = h('div', 'bfig act-fig'), svg = sv('svg', { viewBox: `0 0 360 ${A.h || 240}`, style: 'direction:ltr' }); fig.appendChild(svg);
+    const pick = h('div', 'act-pick'), msg = h('p', 'act-msg');
+    c.append(fig, pick, msg); body.appendChild(c);
+    const btn = setDock('', '', '', A.cta || 'التالي', next, false);
+    const pop = e => { e.classList.remove('pop-in'); void e.offsetWidth; e.classList.add('pop-in'); };
+    let finished = false;
+    const ctx = {
+      svg,
+      layer() { const g = sv('g', {}, svg); return buildKit(svg, g); },
+      wipe() { svg.innerHTML = ''; },
+      say(t) { const e = c.querySelector('.act-say'); e.innerHTML = fmt(t); pop(e); },
+      msg(t, cls = '') { msg.className = 'act-msg ' + cls; msg.innerHTML = t ? fmt(t) : ''; if (t) pop(msg); },
+      choices(list, fn) { pick.innerHTML = ''; list.forEach(v => { const b = h('button', 'chip act-chip', fmt(String(v))); b.onclick = () => { if (b.disabled) return; fn(v, b); }; pick.appendChild(b); }); },
+      clearChoices() { pick.innerHTML = ''; },
+      tap(el, fn) { el.style.cursor = 'pointer'; el.addEventListener('click', e => { e.preventDefault(); fn(e); }); },
+      ok() { FX.play('correct'); }, no() { FX.play('wrong'); }, tick() { FX.play('select'); },
+      later(fn, ms) { const t = setTimeout(fn, ms); stepCleanup.push(() => clearTimeout(t)); },
+      done() { if (finished) return; finished = true; btn.disabled = false; FX.play('correct'); },
+    };
+    window.__actSkip = () => ctx.done(); // automatic tests only
+    A.run(ctx);
   }
   /* theory first: the idea in plain words, an example, why it works, and where you will use it */
   function renderExplain(s) {
