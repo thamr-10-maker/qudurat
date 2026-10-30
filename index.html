@@ -920,6 +920,9 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .hole{fill:var(--card);stroke:var(--c-num);stroke-width:3} .apple{fill:#D94B3D;stroke:#8F2A21;stroke-width:1.5} .banana{fill:#F2C94C;stroke:#B08A1E;stroke-width:1.5}
 .act-word{font-size:17px;font-weight:700;fill:var(--ink)}
 .act-quote{display:block;background:var(--bg-2);border-inline-start:4px solid var(--c-num);padding:8px 12px;border-radius:8px;margin:4px 0 8px;font-size:.92em;font-weight:500;color:var(--ink)}
+.arcseg{fill:none;stroke:var(--ink-2);stroke-width:2.5;stroke-dasharray:5 5;opacity:.6}
+.arcseg.on{stroke:var(--c-num);stroke-dasharray:none;stroke-width:4.5;opacity:1}
+.arc-hit{fill:none;stroke:transparent;stroke-width:22;pointer-events:stroke;cursor:pointer}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -8728,6 +8731,12 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
   /* unit squares as tappable cells (top-left x,y) */
   const cells = (K, x, y, cols, rows, s = 26, cls = 'st') => { const out = []; for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) out.push(K.rect(x + c * s, y + r * s, s, s, cls, 0)); return out; };
   const pt = (K, x, y, name, dy = -16) => { K.circle(x, y, 5, 's-pt'); if (name) K.label(x, y + dy, name); };
+  /* a straight line with points; every segment drawn as a tappable arch above it (order: from 1st point, then 2nd …) */
+  const M = ACT.cardMark;
+  const segs = (K, P, y = 130) => { K.line(20, y, 340, y, 's-line'); K.path(`M348,${y} l-12,-7 v14 Z`, 's-hi'); K.path(`M12,${y} l12,-7 v14 Z`, 's-hi');
+    const out = []; for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) { const x1 = P[i][1], x2 = P[j][1], h = 22 + (j - i - 1) * 34, d = `M${x1},${y - 8} Q${(x1 + x2) / 2},${y - 8 - 2 * h} ${x2},${y - 8}`;
+      const v = K.path(d, 'arcseg'), hit = K.path(d, 'arc-hit'); hit._card = v; hit._ij = [i, j]; out.push(hit); }
+    P.forEach(([n, x]) => { K.circle(x, y, 6, 's-pt'); K.label(x, y + 24, n); }); return out; };
   /* two crossing lines at (cx,cy), second line at angle th */
   const cross = (K, cx, cy, th) => { K.line(30, cy, 330, cy, 's-line'); const [a, b] = polar(cx, cy, 120, th), [c, d] = polar(cx, cy, 120, th + 180); K.line(a, b, c, d, 's-line'); };
   /* two parallels cut by a line making angle th with them */
@@ -8747,9 +8756,19 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
     { h: 110, beats: [
       { say: 'قطعة طولها ١٢. النقطة م في <b>المنتصف</b> تمامًا. كم طول أم؟', draw(K) { K.line(60, 60, 300, 60, 's-line'); pt(K, 300, 60, 'أ'); pt(K, 60, 60, 'ج'); pt(K, 180, 60, 'م'); K.note(180, 92, '12'); }, ask: { choices: [6, 12, 24], answer: 6 }, msg: 'المنتصف يقسم القطعة إلى نصفين متساويين.' },
     ] },
-    { h: 110, beats: [
-      { say: 'ثلاث نقاط أ، ب، ج على مستقيم. القطع: أب، بج، و…؟', draw(K) { K.line(40, 60, 320, 60, 's-line'); pt(K, 290, 60, 'أ'); pt(K, 180, 60, 'ب'); pt(K, 70, 60, 'ج'); }, ask: { choices: ['أج', 'لا يوجد غيرهما'], answer: 'أج', wrong: 'من أ إلى ج قطعة أيضًا (تمرّ بـ ب).' } },
-      { say: 'إذن ٣ قطع. مع ٤ نقاط: من أ ٣ قطع، ومن ب ٢ جديدتان، ومن ج ١. المجموع؟', ask: { choices: [6, 4, 3], answer: 6 }, msg: '٤ نقاط ← ٣ + ٢ + ١ = ٦ قطع.' },
+    { h: 170, beats: [
+      { say: 'ثلاث نقاط أ، ب، ج على مستقيم. القطعة تصل بين نقطتين. فوق المستقيم رسمنا كل القطع. اضغط على كل قطعة لتعدّها.',
+        draw(K, st) { st.h = segs(K, [['أ', 290], ['ب', 180], ['ج', 70]]); }, tap: { targets: st => st.h, need: 3, once: true, mark: M, progress: n => `عددت ${ar(n)}. هل بقي غيرها؟` } },
+      { say: 'كم قطعة؟', ask: { choices: [3, 2], answer: 3 }, msg: 'أب، بج، و<b>أج</b>: القطعة الطويلة من أ إلى ج تُحسب أيضًا.' },
+    ] },
+    { h: 170, beats: [
+      { say: 'أضفنا النقطة د، فصارت ٤ نقاط. نعدّ بترتيب حتى لا ننسى شيئًا. ابدأ من أ: اضغط على كل قطعة تبدأ من أ.',
+        draw(K, st) { st.P = [['أ', 300], ['ب', 213], ['ج', 126], ['د', 40]]; st.h = segs(K, st.P); st.from = st.h.map(e => e._ij); },
+        tap: { targets: st => st.h, need: 3, once: true, mark: M, wrongIdx: [3, 4, 5], wrongMsg: 'هذه لا تبدأ من أ.', progress: n => ar(n) } },
+      { say: 'الآن من ب. القطعة أب عددناها، فاضغط على القطع <b>الجديدة</b> فقط.',
+        tap: { targets: st => st.h, need: 2, once: true, mark: M, wrongIdx: [0, 1, 2, 5], wrongMsg: 'هذه إما عددناها أو لا تبدأ من ب.', progress: n => ar(n) } },
+      { say: 'ومن ج: القطع الجديدة؟', tap: { targets: st => st.h, need: 1, once: true, mark: M, wrongIdx: [0, 1, 2, 3, 4], wrongMsg: 'هذه عددناها من قبل.' } },
+      { say: 'ومن د لم يبقَ شيء جديد. المجموع؟', ask: { choices: [6, 4, 3], answer: 6, wrong: 'عُدّ القطع الملوّنة.' }, board: [[['من أ 3'], ['+', 'op'], ['من ب 2'], ['+', 'op'], ['من ج 1'], ['=', 'op'], ['6', 'res']]] },
     ] },
     { h: 110, beats: [
       { say: 'أب = ٤ و بج = ٦. منتصف بج يبعد عن ب ٣. كم يبعد عن أ؟', draw(K) { K.line(40, 60, 320, 60, 's-line'); pt(K, 300, 60, 'أ'); pt(K, 220, 60, 'ب'); pt(K, 100, 60, 'ج'); pt(K, 160, 60, 'م'); K.note(260, 90, '4'); K.note(160, 90, '6'); }, ask: { choices: [7, 5, 10], answer: 7 } },
