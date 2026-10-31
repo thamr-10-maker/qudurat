@@ -60,6 +60,7 @@ const fmt = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${
 const iso = d => d.toISOString().slice(0, 10);
 const today = () => iso(new Date());
 const plusMonths = (n, from) => { const d = from ? new Date(from + 'T12:00:00') : new Date(); d.setMonth(d.getMonth() + n); return iso(d); };
+const money = v => (Math.round(+v * 100) / 100).toString();
 const nameOf = id => (COURSES.find(c => c.id === id) || { name: id }).name;
 /* easy to type on a phone, no look-alike characters (0/O, 1/l) */
 const rand = (n, set) => Array.from(crypto.getRandomValues(new Uint32Array(n)), x => set[x % set.length]).join('');
@@ -144,7 +145,9 @@ function newStudent() {
     <div class="row"><label>اسم المستخدم<input id="u" dir="ltr" autocapitalize="none" spellcheck="false" value="${newUsername()}" required></label>
     <label>كلمة المرور<input id="p" dir="ltr" autocapitalize="none" spellcheck="false" value="${newPassword()}" required minlength="6"></label></div>`;
   const picker = coursePicker([]); f.appendChild(picker);
-  f.insertAdjacentHTML('beforeend', '<p class="err" id="e" hidden></p><button class="main" id="go">إنشاء الحساب</button>');
+  f.insertAdjacentHTML('beforeend', `<div class="row"><label>المبلغ المدفوع (ريال)<input id="amt" type="number" inputmode="decimal" min="0" step="any" placeholder="مثل: ٣٩"></label>
+    <label>ملاحظة<input id="note" placeholder="مثل: بث ١"></label></div><p class="muted" style="margin-top:-6px">للمدير فقط، ولا تظهر للطالب.</p>
+    <p class="err" id="e" hidden></p><button class="main" id="go">إنشاء الحساب</button>`);
   view.appendChild(f);
   f.onsubmit = async ev => {
     ev.preventDefault(); const go = f.querySelector('#go'), e = f.querySelector('#e'); e.hidden = true;
@@ -152,7 +155,8 @@ function newStudent() {
     if (!access.length) { e.textContent = 'اختر دورة واحدة على الأقل.'; e.hidden = false; return; }
     if (access.some(a => !a.expires)) { e.textContent = 'حدّد تاريخ الانتهاء لكل دورة مختارة.'; e.hidden = false; return; }
     go.disabled = true; go.textContent = 'جارٍ الإنشاء…';
-    const { error } = await sb.rpc('admin_create_student', { p_username: u, p_password: p, p_name: name, p_access: access });
+    const amt = f.querySelector('#amt').value.trim();
+    const { error } = await sb.rpc('admin_create_student', { p_username: u, p_password: p, p_name: name, p_access: access, p_amount: amt === '' ? null : +amt, p_note: f.querySelector('#note').value.trim() });
     go.disabled = false; go.textContent = 'إنشاء الحساب';
     if (error) { e.textContent = errText(error); e.hidden = false; return; }
     newStudent(); result(document.getElementById('view'), `تم إنشاء حساب ${name}`, message(name, u, p, access));
@@ -163,12 +167,20 @@ async function listStudents() {
   const { data, error } = await sb.rpc('admin_list');
   if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p></div>`; return; }
   students = data || [];
-  view.innerHTML = `<div class="card stack"><label>ابحث بالاسم أو اسم المستخدم<input id="q" placeholder="اكتب للبحث"></label><p class="muted" id="n"></p><div class="list" id="l"></div></div>`;
+  const pays = students.flatMap(s => s.payments || []), total = pays.reduce((n, x) => n + +x.amount, 0);
+  const byPrice = {}; students.forEach(s => { const first = (s.payments || [])[0]; if (first) byPrice[+first.amount] = (byPrice[+first.amount] || 0) + 1; });
+  const since = d => pays.filter(x => new Date(x.at) >= d).reduce((n, x) => n + +x.amount, 0), d7 = new Date(Date.now() - 7 * 864e5);
+  view.innerHTML = `<div class="card"><h2>الدخل</h2><div class="row" style="align-items:stretch">
+      <div><b style="font-size:24px">${ar(money(total))}</b><p class="muted">ريال · الكل</p></div>
+      <div><b style="font-size:24px">${ar(money(since(d7)))}</b><p class="muted">ريال · آخر ٧ أيام</p></div>
+      <div><b style="font-size:24px">${ar(students.length)}</b><p class="muted">طالب</p></div></div>
+      ${Object.keys(byPrice).length ? `<p class="muted" style="margin-top:8px">أول دفعة لكل طالب: ${Object.entries(byPrice).sort((a, b) => b[1] - a[1]).map(([pr, n]) => `${ar(money(pr))} ريال × ${ar(n)}`).join(' · ')}</p>` : ''}</div>
+    <div class="card stack"><label>ابحث بالاسم أو اسم المستخدم<input id="q" placeholder="اكتب للبحث"></label><p class="muted" id="n"></p><div class="list" id="l"></div></div>`;
   const paint = () => {
     const q = view.querySelector('#q').value.trim().toLowerCase();
     const rows = students.filter(s => !q || (s.name || '').toLowerCase().includes(q) || s.username.includes(q));
     view.querySelector('#n').textContent = `${ar(rows.length)} من ${ar(students.length)} طالب`;
-    view.querySelector('#l').innerHTML = rows.map(s => `<button class="stu" data-id="${s.user_id}"><span><b>${esc(s.name || s.username)}</b><small dir="ltr" style="text-align:right">${esc(s.username)}</small></span><span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${(s.access || []).map(a => { const left = (new Date(a.expires) - new Date(today())) / 864e5; return `<span class="pill ${left < 0 ? 'end' : left <= 7 ? 'soon' : 'on'}">${esc(nameOf(a.course).replace('القدرات: ', ''))} · ${fmt(a.expires)}</span>`; }).join('') || '<span class="pill end">بدون دورات</span>'}</span></button>`).join('') || '<p class="muted">لا يوجد طلاب بعد.</p>';
+    view.querySelector('#l').innerHTML = rows.map(s => `<button class="stu" data-id="${s.user_id}"><span><b>${esc(s.name || s.username)}</b><small dir="ltr" style="text-align:right">${esc(s.username)}</small>${(s.payments || []).length ? `<small>دفع ${ar(money((s.payments || []).reduce((n, x) => n + +x.amount, 0)))} ريال</small>` : ''}</span><span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${(s.access || []).map(a => { const left = (new Date(a.expires) - new Date(today())) / 864e5; return `<span class="pill ${left < 0 ? 'end' : left <= 7 ? 'soon' : 'on'}">${esc(nameOf(a.course).replace('القدرات: ', ''))} · ${fmt(a.expires)}</span>`; }).join('') || '<span class="pill end">بدون دورات</span>'}</span></button>`).join('') || '<p class="muted">لا يوجد طلاب بعد.</p>';
     view.querySelectorAll('.stu').forEach(b => b.onclick = () => editStudent(students.find(s => s.user_id === b.dataset.id)));
   };
   view.querySelector('#q').oninput = paint; paint();
@@ -178,12 +190,21 @@ function editStudent(s) {
   const f = document.createElement('form'); f.className = 'card stack';
   f.innerHTML = `<h2>${esc(s.name || s.username)}</h2><p class="muted" dir="ltr" style="text-align:right;margin-top:-8px">${esc(s.username)}</p><label>اسم الطالب<input id="nm" value="${esc(s.name)}"></label>`;
   const picker = coursePicker(s.access); f.appendChild(picker);
-  f.insertAdjacentHTML('beforeend', `<p class="err" id="e" hidden></p><button class="main" id="go">حفظ</button>
+  f.insertAdjacentHTML('beforeend', `<div class="course" style="gap:6px"><b>الدفعات</b><div id="pl">${(s.payments || []).map(x => `<p class="muted" style="margin:0">${ar(money(x.amount))} ريال · ${esc(x.note || 'بدون ملاحظة')} · ${fmt(String(x.at).slice(0, 10))}</p>`).join('') || '<p class="muted" style="margin:0">لا توجد دفعات مسجلة.</p>'}</div>
+    <div class="row"><label>دفعة جديدة (ريال)<input id="amt" type="number" inputmode="decimal" min="0" step="any"></label><label>ملاحظة<input id="note" placeholder="مثل: تجديد"></label></div>
+    <button type="button" id="addpay">سجّل الدفعة</button></div>
+    <p class="err" id="e" hidden></p><button class="main" id="go">حفظ</button>
     <div class="row"><button type="button" id="pw">كلمة مرور جديدة</button><button type="button" id="msg">رسالة الدورات</button></div>
     <button type="button" class="link" id="back">رجوع إلى القائمة</button><button type="button" class="link" id="del" style="color:var(--bad)">حذف الحساب</button>`);
   view.appendChild(f);
   const e = f.querySelector('#e'), fail = err => { e.textContent = errText(err); e.hidden = false; };
   f.querySelector('#back').onclick = () => listStudents();
+  f.querySelector('#addpay').onclick = async () => {
+    e.hidden = true; const v = f.querySelector('#amt').value.trim(); if (v === '') return fail('اكتب المبلغ أولًا.');
+    const note = f.querySelector('#note').value.trim();
+    const { error } = await sb.rpc('admin_add_payment', { p_user: s.user_id, p_amount: +v, p_note: note }); if (error) return fail(error);
+    (s.payments = s.payments || []).push({ amount: +v, note, at: new Date().toISOString() }); editStudent(s);
+  };
   f.onsubmit = async ev => {
     ev.preventDefault(); e.hidden = true; const access = picker.read();
     if (access.some(a => !a.expires)) return fail('حدّد تاريخ الانتهاء لكل دورة مختارة.');
