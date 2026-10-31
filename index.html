@@ -923,6 +923,17 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .arcseg{fill:none;stroke:var(--ink-2);stroke-width:2.5;stroke-dasharray:5 5;opacity:.6}
 .arcseg.on{stroke:var(--c-num);stroke-dasharray:none;stroke-width:4.5;opacity:1}
 .arc-hit{fill:none;stroke:transparent;stroke-width:22;pointer-events:stroke;cursor:pointer}
+/* lessons: one scroll of linked pages */
+.pbody.paged{padding-block:4px 120px}
+.lpage{min-height:calc(100vh - 210px);min-height:calc(100dvh - 210px);display:flex;flex-direction:column;gap:12px}
+.lpage>*{margin-block:0}
+.lpage+.lpage{margin-top:26px;padding-top:22px;border-top:1px dashed var(--line);position:relative}
+.lpage+.lpage::before{content:"";position:absolute;top:-5px;inset-inline-start:50%;width:9px;height:9px;border-radius:50%;background:var(--theme);transform:translateX(50%)}
+.lpage.past{min-height:0;opacity:.78;transition:opacity .3s}
+.lpage.past .act-chip,.lpage.past .cta{display:none}
+@media (prefers-reduced-motion:no-preference){.lpage.pin{animation:pagein .45s cubic-bezier(.2,.8,.2,1) both}@keyframes pagein{from{opacity:0;transform:translateY(46px)}}}
+.lock-edge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;padding:10px;font-size:12.5px;color:var(--ink-3);border-top:1px dashed var(--line)}
+.lock-edge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1814,6 +1825,21 @@ function applyPlus() {
     if (P.summary) out.push({ summary: P.summary });
     l.steps = out;
   }
+  dropRepeats();
+}
+/* a worked example or practice question that only repeats what the hands-on steps just did is dropped,
+   and practice is filled back up with fresh questions of the same lesson (list made by test/norep.js) */
+function dropRepeats() {
+  if (typeof NOREP === 'undefined') return;
+  const key = s => String((s.example && s.example.q) || (s.guided && s.guided.q) || s.q || '').replace(/<[^>]+>/g, ' ').trim().slice(0, 60);
+  for (const d of DISTRICTS) for (const l of d.lessons || []) {
+    const N = NOREP[l.id]; if (!N) continue;
+    const isEx = s => s.example || s.guided || (s.q && !s.check);
+    let st = l.steps.filter(s => !(isEx(s) && N.drop.includes(key(s))));
+    const fresh = (N.fill || []).map(i => DIAG[l.id] && DIAG[l.id][i]).filter(Boolean).map(q => Object.assign({}, q));
+    if (fresh.length) { const at = st.findIndex(s => s.summary); st.splice(at < 0 ? st.length : at, 0, ...fresh); }
+    l.steps = st;
+  }
 }
 /* give every fixed question a stable id and its unit, so mistakes and scores can find it later */
 const QINDEX = {};
@@ -2176,11 +2202,17 @@ function runPlayer(P) {
   const strip = h('div', 'phases gut');
   function paintPhase(s) { if (!structured) { strip.innerHTML = `<span class="ph on">${fmt(P.title)}</span>`; return; } const cur = phaseOf(s), ci = present.findIndex(p => p[0] === cur);
     strip.innerHTML = `<span class="ph on">${present[ci] ? present[ci][1] : ''}</span>`; }
-  const body = h('div', 'pbody gut');
+  const pane = h('div', 'pbody gut');
+  let body = pane; // the page being written now (in a lesson every step gets its own page)
+  /* lessons are one scroll of linked pages: finished steps stay above exactly as the student left them,
+     and nothing below the current page exists yet, so he can look back but never peek ahead */
+  const paged = P.mode === 'lesson';
+  if (paged) pane.classList.add('paged');
+  const edge = h('div', 'lock-edge', `${ic('lock', 14)}<span>أكمل هذه الخطوة لتظهر التالية</span>`);
   const dock = h('div', 'dock');
   const dockIn = h('div', 'dock-in gut');
   dock.appendChild(dockIn);
-  wrap.append(top, strip, body);
+  wrap.append(top, strip, pane);
   app.append(wrap, dock);
   cleanupFns.push(() => { clearInterval(tick); clearInterval(totalTick); dock.remove(); });
 
@@ -2200,9 +2232,14 @@ function runPlayer(P) {
     clearInterval(tick); FX.stop();
     stepCleanup.forEach(f => f()); stepCleanup = [];
     if (idx >= queue.length) return finish();
-    body.innerHTML = '';
-    window.scrollTo(0, 0);
     const { s, again } = queue[idx];
+    if (paged) {
+      const prev = body !== pane ? body : null;
+      if (prev) { prev.classList.add('past'); prev.setAttribute('inert', ''); }
+      body = h('div', 'lpage' + (prev ? ' pin' : '')); pane.appendChild(body); pane.appendChild(edge);
+      if (prev) requestAnimationFrame(() => { const y = body.getBoundingClientRect().top + window.scrollY - top.offsetHeight - 6; window.scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
+      else window.scrollTo(0, 0);
+    } else { body.innerHTML = ''; window.scrollTo(0, 0); }
     paintPhase(s);
     if (s.intro) renderIntro(s); else if (s.act) renderAct(s); else if (s.explain) renderExplain(s); else if (s.rule) renderRule(s); else if (s.example) renderExample(s); else if (s.guided) renderGuided(s); else if (s.order) renderOrder(s); else if (s.fixit) renderFixit(s); else if (s.summary) renderSummary(s);
     else if (s.check) renderCheck(s); else if (s.q) renderQuestion(s, again); else renderTeach(s);
@@ -2576,7 +2613,7 @@ function runPlayer(P) {
 
   function finish() {
     clearInterval(tick); clearInterval(totalTick); FX.stop();
-    body.innerHTML = ''; comboEl.textContent = ''; ttl.remove();
+    pane.innerHTML = ''; body = pane; pane.classList.remove('paged'); window.scrollTo(0, 0); comboEl.textContent = ''; ttl.remove();
     let stars = 0, headline = '';
     const total = exam || P.mode === 'boss' ? queue.length : (endless || P.mode === 'review') ? log.length : log.length;
     const pct = total ? Math.round(100 * correct / total) : 0;
@@ -9922,6 +9959,95 @@ function dqMix(a) { return [a[3], a[0], a[4], a[5], a[1], a[6], a[7], a[2]]; }
   ]);
 }
 
+/* fresh practice for lessons whose old practice only repeated the hands-on steps */
+{
+  const add = (id, list) => { PLUS[id] = PLUS[id] || {}; (PLUS[id].qs = PLUS[id].qs || []).push(...list); };
+  add('f3', [{ q: 'أيهما أكبر: [[5/9]] أم [[4/7]]؟', choices: ['[[4/7]]', '[[5/9]]', 'متساويان'], answer: 0, why: 'الضرب التبادلي: `5 × 7 = 35` و `4 × 9 = 36`، فالثاني أكبر.' }]);
+  add('f6', [
+    { q: 'حوّل [[23/6]] إلى عدد كسري.', choices: ['[[3 5/6]]', '[[3 1/6]]', '[[2 5/6]]', '[[5 3/6]]'], answer: 0, why: '٦ يدخل في ٢٣ ثلاث مرات (١٨) والباقي ٥.' },
+    { q: 'حوّل [[4 2/3]] إلى كسر.', choices: ['[[14/3]]', '[[10/3]]', '[[8/3]]', '[[42/3]]'], answer: 0, why: '`4 × 3 + 2 = 14`، والمقام يبقى ٣.' },
+  ]);
+  add('m6', [{ q: 'قطع سائق ٩٠ كم بسرعة ٣٠ كم/س، ثم ٩٠ كم أخرى بسرعة ٩٠ كم/س. ما متوسط سرعته؟', choices: ['٤٥ كم/س', '٦٠ كم/س', '٥٠ كم/س', '٤٠ كم/س'], answer: 0, why: 'الزمن: ٣ ساعات + ساعة = ٤ ساعات. المسافة ١٨٠ كم. `180 ÷ 4 = 45`.' }]);
+  add('g12', [
+    { q: 'في أي ربع تقع النقطة `(4, -7)`؟', choices: ['الرابع', 'الثاني', 'الأول', 'الثالث'], answer: 0, why: 'س موجب (يمين) و ص سالب (أسفل): الربع الرابع.' },
+    { q: 'ما منتصف القطعة الواصلة بين `(-2, 1)` و `(6, 9)`؟', choices: ['`(2, 5)`', '`(4, 10)`', '`(4, 4)`', '`(8, 8)`'], answer: 0, why: 'متوسط السينات `(-2 + 6) ÷ 2 = 2`، ومتوسط الصادات `(1 + 9) ÷ 2 = 5`.' },
+  ]);
+  add('c5', [
+    { q: 'قارن بين:', a: '`17 × 23`', b: '`23 × 17`', choices: CMP, answer: 2, why: 'ترتيب الضرب لا يغيّر الناتج.' },
+    { q: 'إذا كان `0 < س < 1`، قارن بين:', a: '`س³`', b: '`س²`', choices: CMP, answer: 1, why: 'جرّب س = ½: س³ = ⅛ و س² = ¼. الكسر كلما ضربناه في نفسه صغر.' },
+    { q: 'أحمد أطول من سعد، وخالد أطول من سعد. قارن بين:', a: 'طول أحمد', b: 'طول خالد', choices: CMP, answer: 3, why: 'نعرف أن الاثنين أطول من سعد فقط، ولا نعرف أيهما أطول.' },
+  ]);
+}
+
+/* generated by test/norep.js: steps that repeat the hands-on part (dropped) and fresh placement questions that refill practice */
+const NOREP = {"n1":{"drop":["ما قيمة الرقم ٧ في العدد ٤٧٣٢؟","عدد فيه ٥ آلاف و ٠ مئات و ٣ عشرات و ٨ آحاد. ما هو؟"],
+"fill":[0,1]},"n2":{"drop":["ما ناتج: `-7 + 3`؟","ما ناتج: `(-3) × (-4)`؟","قارن بين:"],
+"fill":[1,2]},"n3":{"drop":["ما ناتج: `24 ÷ 4 × 2`؟","ما ناتج: `10 - 2 × 3`؟","ما ناتج: `6 + 6 ÷ 6`؟","ما ناتج: `(8 - 3) × 2 + 1`؟","ما ناتج: `24 ÷ 4 × 2`؟"],
+"fill":[0,1,2]},"n4":{"drop":["مجموع أي عددين صحيحين متتاليين (مثل ٧ و ٨) يكون:"],
+"fill":[0]},"n5":{"drop":["العدد ٥٣□ يقبل القسمة على ٩. ما الرقم المفقود؟","العدد ٥٣□ يقبل القسمة على ٩. ما الرقم المفقود؟"],
+"fill":[0]},"n6":{"drop":["كم عددًا أوليًا يوجد بين ١٠ و ٢٠؟"],
+"fill":[0]},"n7":{"drop":["كم عددًا من مضاعفات ٧ يقع بين ١ و ٥٠؟","كم عددًا من مضاعفات ٧ يقع بين ١ و ٥٠؟"],
+"fill":[0]},"n8":{"drop":["مصباح يضيء كل ٤ دقائق، وآخر كل ٦ دقائق. أضاءا معًا الآن، بعد","مصباح يضيء كل ٤ دقائق، وآخر كل ٦ دقائق. أضاءا معًا الآن، بعد","شريطان طولاهما ١٢ م و ١٨ م، نريد قصّهما إلى قطع متساوية بأطو","عددان، ق.م.أ لهما ٤ و م.م.أ لهما ٢٤، وأحدهما ٨. ما العدد الآ"],
+"fill":[0,1,2]},"n9":{"drop":["كم عددًا صحيحًا يوجد من ١٥ إلى ٤٠ (مع العددين)؟"],
+"fill":[0]},"f3":{"drop":["قارن بين:","أيهما أكبر: [[5/9]] أم [[4/7]]؟"],
+"fill":[2]},"f4":{"drop":["ما ناتج [[3/4]] − [[2/3]]؟","ما ناتج [[3/4]] − [[2/3]]؟","ما ناتج [[2/5]] + [[3/10]]؟"],
+"fill":[2,3]},"f5":{"drop":["ما ناتج [[2/3]] × [[3/4]]؟","كم يساوي [[3/4]] من ٤٠؟","ما ناتج [[2/5]] ÷ [[4/5]]؟"],
+"fill":[0,1,2]},"f6":{"drop":["ما ناتج [[1 1/2]] + [[2 3/4]]؟","حوّل [[2 3/4]] إلى كسر.","حوّل [[17/5]] إلى عدد كسري.","ما ناتج [[1 1/2]] + [[2 3/4]]؟","حوّل [[4 2/3]] إلى كسر."],
+"fill":[0]},"f7":{"drop":["ما الكسر العشري المساوي لـ [[3/8]]؟","قارن بين:","ما ناتج `0.3 × 0.2`؟","ما الكسر العشري المساوي لـ [[3/8]]؟"],
+"fill":[0,1,2]},"p1":{"drop":["أي الأعداد التالية مربع كامل: ١٢٠ أم ١٢١ أم ١٢٥؟"],
+"fill":[]},"p2":{"drop":["ما ناتج `3⁴ × 3²`؟","ما ناتج `5⁷ ÷ 5⁵`؟"],
+"fill":[]},"p4":{"drop":["ما قيمة `√(16 + 9)`؟","ما قيمة √`(16 + 9)`؟"],
+"fill":[0]},"p5":{"drop":["ما ناتج `3√2 + 5√2`؟"],
+"fill":[0]},"p6":{"drop":["إذا كان `س² − ص² = 24` و `س + ص = 6`، فما قيمة `س − ص`؟","ما قيمة `51² − 49²`؟","ما ناتج `25 × 15`؟ (استخدم الحيلة)","إذا كان `س² − ص² = 24` و `س + ص = 6`، فما قيمة `س − ص`؟"],
+"fill":[1,3]},"p7":{"drop":["ما ناتج `68 × 99`؟","ما ناتج `3003 × 1001`؟","ما ناتج `47 × 11`؟","ما ناتج `36 × 25`؟","ما ناتج `68 × 99`؟"],
+"fill":[0,1,2,3]},"p8":{"drop":["أقرب قيمة لـ `19.8 × 5.1` هي:","أقرب قيمة لـ `49 × 21` هي:","أقرب قيمة لـ `0.98 × 51` هي:","أقرب قيمة لـ `19.8 × 5.1` هي:"],
+"fill":[0,1,2]},"r1":{"drop":["أجاب طالب عن ١٨ سؤالًا صحيحًا من ٢٤. ما نسبة إجاباته الصحيحة","أيهما أكبر: [[7/20]] أم ٣٢٪؟","في فصل ٢٥ طالبًا نجح ٢٠ منهم. ما نسبة الناجحين؟"],
+"fill":[0]},"r2":{"drop":["كم يساوي ٣٠٪ من ٢٠٠؟","كم يساوي ١٥٪ من ٨٠؟","كم يساوي ١٢٠٪ من ٥٠؟","إذا كان ٢٥٪ من عدد يساوي ٤٠، فما العدد؟","كم يساوي ٨٪ من ٥٠؟"],
+"fill":[0,1,2]},"r3":{"drop":["قارن بين:","زاد سعر جهاز من ٤٠ ريالًا إلى ٥٠ ريالًا. ما نسبة الزيادة؟","نقص سعر من ٨٠ إلى ٦٠ ريالًا. ما نسبة النقص؟","قارن بين:"],
+"fill":[0,1,2]},"r4":{"drop":["بعد خصم ٢٥٪ أصبح سعر حقيبة ٩٠ ريالًا. كم كان سعرها الأصلي؟","اشترى تاجر بضاعة بـ ٨٠ ريالًا وباعها بـ ١٠٠. ما نسبة الربح؟","قميص سعره ١٥٠ ريالًا وعليه خصم ٢٠٪. كم سعره بعد الخصم؟","بعد خصم ٢٥٪ أصبح سعر حقيبة ٩٠ ريالًا. كم كان سعرها الأصلي؟","باع تاجر سلعة بـ ١٨٠ ريالًا فربح ٢٠٪. كم كانت التكلفة؟"],
+"fill":[0,1,2,3]},"r5":{"drop":["زاد راتب ٢٠٪ ثم زاد ٢٠٪ مرة أخرى. ما الزيادة الكلية؟","زاد سعر سلعة ١٠٪ ثم نقص ١٠٪. ماذا حدث للسعر؟","زاد راتب ٢٠٪ ثم زاد مرة أخرى ٢٠٪. ما نسبة الزيادة الكلية؟","خصم ٢٠٪ ثم خصم إضافي ١٠٪ على السعر الجديد. كم الخصم الكلي؟"],
+"fill":[0,1,2]},"r6":{"drop":["زوايا مثلث بنسبة `2 : 3 : 4`. كم أكبر زاوية؟","قُسّم ٤٠ بنسبة `3 : 5`. كم النصيب الأصغر؟","نسبة البنين إلى البنات في نادٍ `4 : 5`، وعدد البنات ٣٠. كم ع","زوايا مثلث بنسبة `2 : 3 : 4`. كم أكبر زاوية؟","إذا كان `أ : ب = 2 : 3` و `ب : ج = 3 : 4` ومجموع الثلاثة ٩٠،"],
+"fill":[0,1,2,3]},"r7":{"drop":["سيارة سرعتها ٦٠ كم/س تقطع مسافة في ٤ ساعات. كم ساعة تحتاج بس","٥ أقلام ثمنها ١٥ ريالًا. كم ثمن ٨ أقلام؟","٦ عمال ينهون عملًا في ١٠ أيام. كم يومًا يحتاج ٤ عمال؟","سيارة سرعتها ٦٠ كم/س تقطع مسافة في ٤ ساعات. كم ساعة تحتاج بس","مصنع ينتج طلبًا في ١٢ يومًا بالعمل ٥ ساعات يوميًا. كم يومًا "],
+"fill":[0,2,3]},"r8":{"drop":["رسم مهندس غرفة طولها ٦ م بمقياس `1 : 200`. كم طولها في الرسم","كم دقيقة في ٣ ساعات و ١٥ دقيقة؟","خريطة مقياسها `1 : 50000`. المسافة بين مدينتين عليها ٤ سم. ك","كم دقيقة في ٣ ساعات و ١٥ دقيقة؟","رسم مهندس غرفة طولها ٦ م بمقياس `1 : 200`. كم طولها في الرسم"],
+"fill":[0,1,2]},"m1":{"drop":["كم تحتاج سيارة سرعتها ٦٠ كم/ساعة لتقطع ١٥٠ كم؟","سيارة تسير بسرعة ٩٠ كم/ساعة لمدة ٣ ساعات. كم كيلومترًا تقطع؟","كم تحتاج سيارة سرعتها ٦٠ كم/ساعة لتقطع ١٥٠ كم؟","قطع قطار ٢٤٠ كم في ٤ ساعات. ما سرعته؟","سيارة سرعتها ٨٠ كم/ساعة. كم كيلومترًا تقطع في ٣٠ دقيقة؟"],
+"fill":[0,1,2,3]},"m2":{"drop":["سيارة سبقت أخرى بـ ٣٠ كم وتسير بسرعة ٦٠ كم/ساعة، ولحقتها الث","المسافة بين مدينتين ٣٥٠ كم. انطلقت سيارتان في نفس اللحظة نحو","سيارة سبقت أخرى بـ ٣٠ كم وتسير بسرعة ٦٠ كم/ساعة، ولحقتها الث","انطلق شخصان من نفس النقطة في اتجاهين متعاكسين بسرعتي ٥٠ و ٧٠"],
+"fill":[0,1,2]},"m3":{"drop":["تنجز هند عملًا في ١٠ أيام، وتنجزه أمل في ١٥ يومًا. معًا في ك","أنبوب يملأ خزانًا في ٣ ساعات، وآخر في ٦ ساعات. معًا في كم سا","تنجز هند عملًا في ١٠ أيام، وتنجزه أمل في ١٥ يومًا. معًا في ك","أنبوب يملأ خزانًا في ٤ ساعات، وفتحة تفرغه في ١٢ ساعة. إذا فُ"],
+"fill":[1,3]},"m4":{"drop":["بدأت رحلة الساعة ٩:٤٥ واستمرت ٢ ساعة و ٣٠ دقيقة. متى انتهت؟"],
+"fill":[]},"m6":{"drop":["قطع شخص مسافة بسرعة ٦٠ كم/ساعة، ثم رجع نفس المسافة بسرعة ٤٠.","سار شخص ساعتين بسرعة ٥٠ ثم ٣ ساعات بسرعة ٧٠. ما متوسط سرعته؟","قطع شخص مسافة بسرعة ٦٠ كم/ساعة، ثم رجع نفس المسافة بسرعة ٤٠ ","سار شخص ساعتين بسرعة ٥٠ كم/ساعة، ثم ٣ ساعات بسرعة ٧٠ كم/ساعة"],
+"fill":[1,2]},"t1":{"drop":["كم حدًا في المتتابعة 4 ، 7 ، 10 ، ... ، 40؟","ما الحد الثاني عشر في 50 ، 46 ، 42 ، ...؟","أكمل: 5 ، 8 ، 11 ، 14 ، ...","ما الحد العشرون في المتتابعة 3 ، 7 ، 11 ، ...؟","كم حدًا في المتتابعة 4 ، 7 ، 10 ، ... ، 40؟"],
+"fill":[0,1,2]},"t2":{"drop":["أكمل: 2 ، -4 ، 8 ، -16 ، ...","أكمل: 3 ، 6 ، 12 ، 24 ، ...","ما الحد المفقود: 1 ، 4 ، ؟ ، 64 ، 256","أكمل: 2 ، -4 ، 8 ، -16 ، ..."],
+"fill":[0,1,2]},"t3":{"drop":["أكمل: 2 ، 3 ، 5 ، 7 ، 11 ، 13 ، ...","أكمل: 2 ، 5 ، 10 ، 17 ، 26 ، ...","أكمل: 1 ، 3 ، 6 ، 10 ، 15 ، ...","أكمل: 1 ، 1 ، 2 ، 3 ، 5 ، 8 ، 13 ، ...","أكمل: 2 ، 3 ، 5 ، 7 ، 11 ، 13 ، ..."],
+"fill":[0,1,3]},"t4":{"drop":["أكمل: 1 ، 3 ، 7 ، 15 ، 31 ، ...","أكمل: 2 ، 5 ، 10 ، 17 ، 26 ، ...","أكمل: 1 ، 3 ، 7 ، 15 ، 31 ، ...","أكمل: 1 ، 10 ، 2 ، 20 ، 3 ، ...","أكمل: 1 ، 2 ، 6 ، 24 ، ..."],
+"fill":[0,1,2,3]},"t5":{"drop":["حديقة دائرية محيطها ٦٠ م، نزرع شجرة كل ٥ م. كم شجرة؟","سور مستقيم طوله ٣٠ م، يُوضع عمود كل ٥ م (من البداية إلى النه","حبل طوله ٢٠ م، نريد قصّه إلى قطع طول كل منها ٤ م. كم قصّة نح","حديقة دائرية محيطها ٦٠ م، نزرع شجرة كل ٥ م. كم شجرة؟"],
+"fill":[0,1]},"t6":{"drop":["ما ناتج `2 + 4 + 6 + ... + 40`؟","ما ناتج `1 + 2 + 3 + ... + 20`؟","ما ناتج `1 + 3 + 5 + ... + 19`؟","ما ناتج `2 + 4 + 6 + ... + 40`؟"],
+"fill":[1,2,3]},"a1":{"drop":["إذا كان س = ٤، فما قيمة `3س − 2`؟","إذا كان `2س = 10`، فما قيمة `4س`؟"],
+"fill":[0]},"a2":{"drop":["حل المعادلة: `5س = 2س + 12`","حل المعادلة: `2س + 5 = 17`","حل المعادلة: `3س − 4 = 11`","حل المعادلة: `س ÷ 4 + 2 = 5`","حل المعادلة: `5س = 2س + 12`"],
+"fill":[0,1,3]},"a3":{"drop":["اشترت نورة ٣ أقلام ودفترًا ثمنه ٨ ريالات، ودفعت ٢٠ ريالًا. ك","عدد إذا أُضيف إليه ٧ أصبح ٢٠. ما العدد؟","ثلاثة أمثال عدد مطروحًا منها ٤ تساوي ١١. ما العدد؟","اشترت نورة ٣ أقلام ودفترًا بـ ٢٠ ريالًا. إذا كان ثمن الدفتر "],
+"fill":[0,1,2]},"a4":{"drop":["عمر أب ٤٠ سنة وعمر ابنه ١٠. بعد كم سنة يصبح عمر الأب ٣ أمثال","عمر أب ٤٠ سنة وعمر ابنه ١٠. بعد كم سنة يصبح عمر الأب ٣ أمثال","عمر أحمد ١٢ سنة، وأخوه أصغر منه بـ ٤ سنوات. كم مجموع عمريهما","عمر أم ٣ أمثال عمر ابنتها، ومجموع عمريهما ٤٨. كم عمر البنت؟","عمر علي ١٠ وعمر عمر ١٥. قارن بين:"],
+"fill":[1,2,3]},"a6":{"drop":["حل المتباينة: `-3س < 12`","إذا كان `س > 5`، قارن بين:"],
+"fill":[0,3]},"a7":{"drop":["إذا كان `أ + ب = 7` و `أ × ب = 10`، فما قيمة `أ² + ب²`؟","إذا كان `س − ص = 3` و `س ص = 4`، فما `س² + ص²`؟","إذا كان `أ + ب = 7` و `أ × ب = 10`، فما قيمة `أ² + ب²`؟","إذا كان `س − ص = 3` و `س ص = 4`، فما قيمة `س² + ص²`؟"],
+"fill":[1,2]},"a8":{"drop":["٣ تفاحات وموزتان بـ ١٣ ريالًا، وتفاحة وموزتان بـ ٧ ريالات. ك","إذا كان `س + ص = 10` و `س − ص = 4`، فما قيمة س؟","٣ تفاحات وموزتان بـ ١٣ ريالًا، وتفاحة وموزتان بـ ٧ ريالات. ك"],
+"fill":[0,3]},"g1":{"drop":["أ، ب، ج على مستقيم بالترتيب. أب = ٤ و بج = ٦. ما المسافة بين"],
+"fill":[]},"g3":{"drop":["ما الزاوية بين عقربي الساعة عند الساعة ٥:٠٠ تمامًا؟"],
+"fill":[]},"g4":{"drop":["ل١ يوازي ل٢، وقاطع يصنع مع ل١ زاوية `(2س + 10)°`، والزاوية ا","قطع قاطعٌ مستقيمين متوازيين، فكانت إحدى الزوايا الثماني ١٢٠°"],
+"fill":[0]},"g5":{"drop":["مثلث فيه زاويتان قياساهما ٥٠° و ٦٠°. ما قياس الزاوية الثالثة","زاوية خارجية لمثلث قياسها ١٣٠°، وإحدى الزاويتين الداخليتين ا","مثلث قياسات زواياه س و ٢س و ٣س. قارن بين:"],
+"fill":[0,1]},"g6":{"drop":["مستطيل محيطه ٣٠ سم وطوله ٩ سم. كم عرضه؟","مستطيل محيطه ٣٠ سم وطوله ٩ سم. كم عرضه؟"],
+"fill":[0]},"g7":{"drop":["مربع ضلعه ١٠ وُضع داخله مثلث قاعدته ٤ وارتفاعه ٦ (غير مظلل).","مثلث قاعدته ١٠ سم وارتفاعه ٦ سم. كم مساحته؟"],
+"fill":[]},"g8":{"drop":["سُلّم طوله ١٠ م يستند على حائط، وأسفله يبعد ٦ م عن الحائط. إ","مثلث قائم طولا ضلعي القائمة ٥ و ١٢. كم طول الوتر؟","سُلّم طوله ١٠ م يستند على حائط، وأسفله يبعد ٦ م عن الحائط. إ","مثلث ٣٠-٦٠-٩٠ طول وتره ١٢. كم طول الضلع المقابل للزاوية ٣٠°؟"],
+"fill":[0,1,2]},"g11":{"drop":["أسطوانة قطر قاعدتها ٤ وارتفاعها ١٠. كم حجمها؟","صندوق أبعاده ٢ و ٣ و ٤. كم مساحته الكلية؟","أسطوانة نصف قطر قاعدتها ٣ وارتفاعها ٥. كم حجمها؟"],
+"fill":[0,1]},"g12":{"drop":["كم المسافة بين `(-1, 3)` و `(5, 11)`؟","كم المسافة بين النقطتين `(1, 2)` و `(4, 6)`؟","ما منتصف القطعة الواصلة بين `(2, 4)` و `(8, 10)`؟","في أي ربع تقع النقطة `(-3, 5)`؟","في أي ربع تقع النقطة `(4, -7)`؟"],
+"fill":[1]},"g13":{"drop":["عمود طوله ٢ م وظله ٣ م. في اللحظة نفسها شجرة ظلها ١٢ م. كم ط","مثلثان متشابهان نسبتهما `2 : 5`. مساحة الصغير ٨. كم مساحة ال","مثلثان متشابهان نسبة التشابه بينهما `2 : 5`. ضلع في الصغير ط","عمود طوله ٢ م وظله ٣ م. في نفس اللحظة شجرة ظلها ١٢ م. كم طول"],
+"fill":[0,1]},"d1":{"drop":["متوسط درجات ٤ طلاب ٧٥. انضم طالب خامس فصار المتوسط ٧٨. كم در","إذا كان متوسط الأعداد ٦ ، ٩ ، س يساوي ١٠، فما قيمة س؟","متوسط ٥ أعداد يساوي ٢٠. ما مجموعها؟","إذا كان متوسط الأعداد ٦ ، ٩ ، س يساوي ١٠، فما قيمة س؟","قارن بين:"],
+"fill":[0,1]},"d2":{"drop":["للبيانات ٢ ، ٢ ، ٣ ، ٩: قارن بين المتوسط والوسيط.","ما وسيط القيم: ٧ ، ٣ ، ٩ ، ٥ ، ١؟","ما وسيط القيم: ٢ ، ٤ ، ٦ ، ٨؟","ما منوال القيم: ٣ ، ٥ ، ٣ ، ٧ ، ٥ ، ٣؟","للبيانات ٢ ، ٢ ، ٣ ، ٩. قارن بين:"],
+"fill":[0,1,2,3]},"d3":{"drop":["زوار متحف في ٤ أيام: ٢٥، ٤٠، ١٠، ٢٥. ما الفرق بين أعلى يوم و","الزوار: ٢٥، ٤٠، ١٠، ٢٥. ما نسبة اليوم الثاني (٤٠) من المجموع"],
+"fill":[]},"d4":{"drop":["حرارة كل ساعة: ٧ ← ١٥°، ٨ ← ٢٠°، ٩ ← ٢٢°، ١٠ ← ٢٤°، ١١ ← ٢٣°","في المثال نفسه، ما متوسط الحرارة في الساعات ٨ و ٩ و ١٠؟"],
+"fill":[]},"d5":{"drop":["قطاع زاويته ٥٤° من استبيان شمل ٢٠٠ طالب. كم طالبًا يمثل؟"],
+"fill":[]},"d6":{"drop":["مقهى باع: قهوة (السعر ١٢، الكمية ١٠)، وعصير (السعر ٨، الكمية"],
+"fill":[]},"d7":{"drop":["في فصل ٤٠ طالبًا، ٢٥ يلعبون القدم، و ٢٠ السلة، و ٥ لا يلعبون","فصل ٣٠: ١٨ يحبون الرياضيات، و ١٥ العلوم، و ٦ الاثنين. كم لا ","في فصل ٤٠ طالبًا، ٢٥ يلعبون القدم، و ٢٠ يلعبون السلة، و ٥ لا","في فصل ٣٠ طالبًا، ١٨ يحبون الرياضيات، و ١٥ يحبون العلوم، و ٦"],
+"fill":[0,1]},"d8":{"drop":["كيس فيه ٣ كرات حمراء و ٥ زرقاء و ٢ خضراء. ما احتمال سحب كرة ","في الكيس السابق (٣ حمراء من ١٠)، ما احتمال  ألا  تكون الكرة "],
+"fill":[3]},"c5":{"drop":["قارن بين:","إذا كان `س = -3`، قارن بين:"],
+"fill":[]}};
+
 /* ================= smart placement test + personal plan =================
    Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
    The test keeps, for every skill, how sure we are that the student knows it, and always asks
@@ -11509,6 +11635,21 @@ function applyPlus() {
     if (P.summary) out.push({ summary: P.summary });
     l.steps = out;
   }
+  dropRepeats();
+}
+/* a worked example or practice question that only repeats what the hands-on steps just did is dropped,
+   and practice is filled back up with fresh questions of the same lesson (list made by test/norep.js) */
+function dropRepeats() {
+  if (typeof NOREP === 'undefined') return;
+  const key = s => String((s.example && s.example.q) || (s.guided && s.guided.q) || s.q || '').replace(/<[^>]+>/g, ' ').trim().slice(0, 60);
+  for (const d of DISTRICTS) for (const l of d.lessons || []) {
+    const N = NOREP[l.id]; if (!N) continue;
+    const isEx = s => s.example || s.guided || (s.q && !s.check);
+    let st = l.steps.filter(s => !(isEx(s) && N.drop.includes(key(s))));
+    const fresh = (N.fill || []).map(i => DIAG[l.id] && DIAG[l.id][i]).filter(Boolean).map(q => Object.assign({}, q));
+    if (fresh.length) { const at = st.findIndex(s => s.summary); st.splice(at < 0 ? st.length : at, 0, ...fresh); }
+    l.steps = st;
+  }
 }
 /* give every fixed question a stable id and its unit, so mistakes and scores can find it later */
 const QINDEX = {};
@@ -11871,11 +12012,17 @@ function runPlayer(P) {
   const strip = h('div', 'phases gut');
   function paintPhase(s) { if (!structured) { strip.innerHTML = `<span class="ph on">${fmt(P.title)}</span>`; return; } const cur = phaseOf(s), ci = present.findIndex(p => p[0] === cur);
     strip.innerHTML = `<span class="ph on">${present[ci] ? present[ci][1] : ''}</span>`; }
-  const body = h('div', 'pbody gut');
+  const pane = h('div', 'pbody gut');
+  let body = pane; // the page being written now (in a lesson every step gets its own page)
+  /* lessons are one scroll of linked pages: finished steps stay above exactly as the student left them,
+     and nothing below the current page exists yet, so he can look back but never peek ahead */
+  const paged = P.mode === 'lesson';
+  if (paged) pane.classList.add('paged');
+  const edge = h('div', 'lock-edge', `${ic('lock', 14)}<span>أكمل هذه الخطوة لتظهر التالية</span>`);
   const dock = h('div', 'dock');
   const dockIn = h('div', 'dock-in gut');
   dock.appendChild(dockIn);
-  wrap.append(top, strip, body);
+  wrap.append(top, strip, pane);
   app.append(wrap, dock);
   cleanupFns.push(() => { clearInterval(tick); clearInterval(totalTick); dock.remove(); });
 
@@ -11895,9 +12042,14 @@ function runPlayer(P) {
     clearInterval(tick); FX.stop();
     stepCleanup.forEach(f => f()); stepCleanup = [];
     if (idx >= queue.length) return finish();
-    body.innerHTML = '';
-    window.scrollTo(0, 0);
     const { s, again } = queue[idx];
+    if (paged) {
+      const prev = body !== pane ? body : null;
+      if (prev) { prev.classList.add('past'); prev.setAttribute('inert', ''); }
+      body = h('div', 'lpage' + (prev ? ' pin' : '')); pane.appendChild(body); pane.appendChild(edge);
+      if (prev) requestAnimationFrame(() => { const y = body.getBoundingClientRect().top + window.scrollY - top.offsetHeight - 6; window.scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
+      else window.scrollTo(0, 0);
+    } else { body.innerHTML = ''; window.scrollTo(0, 0); }
     paintPhase(s);
     if (s.intro) renderIntro(s); else if (s.act) renderAct(s); else if (s.explain) renderExplain(s); else if (s.rule) renderRule(s); else if (s.example) renderExample(s); else if (s.guided) renderGuided(s); else if (s.order) renderOrder(s); else if (s.fixit) renderFixit(s); else if (s.summary) renderSummary(s);
     else if (s.check) renderCheck(s); else if (s.q) renderQuestion(s, again); else renderTeach(s);
@@ -12271,7 +12423,7 @@ function runPlayer(P) {
 
   function finish() {
     clearInterval(tick); clearInterval(totalTick); FX.stop();
-    body.innerHTML = ''; comboEl.textContent = ''; ttl.remove();
+    pane.innerHTML = ''; body = pane; pane.classList.remove('paged'); window.scrollTo(0, 0); comboEl.textContent = ''; ttl.remove();
     let stars = 0, headline = '';
     const total = exam || P.mode === 'boss' ? queue.length : (endless || P.mode === 'review') ? log.length : log.length;
     const pct = total ? Math.round(100 * correct / total) : 0;
@@ -14527,6 +14679,43 @@ D('o2', [
     ] },
   ]);
 }
+
+/* fresh practice for lessons whose old practice only repeated the hands-on steps */
+{
+  const add = (id, list) => { PLUS[id] = PLUS[id] || {}; (PLUS[id].qs = PLUS[id].qs || []).push(...list); };
+  const Q = 'حدد الكلمة التي لا يتسق معناها مع سياق الجملة: ';
+  add('w6', [{ q: 'أكمل: «___ الطالب سؤالًا على معلمه».', choices: ['طرح', 'بذل', 'أحرز', 'اتخذ'], answer: 0, why: 'نقول: طرح سؤالًا.' }]);
+  add('e1', [{ q: Q + `يساعد شرب الماء على ${EW('ترطيب')} الجسم ${EW('ويزيد')} العطش ${EW('ويحسّن')} ${EW('الهضم')}.`, choices: ['ويزيد', 'ترطيب', 'ويحسّن', 'الهضم'], answer: 0, why: 'الجملة عن فوائد الماء، فالصواب: «ويقلّل» العطش.' }]);
+  add('e2', [{ q: Q + `المكتبة العامة مكان ${EW('هادئ')}، يجد فيه القارئ الكتب ${EW('الممتعة')} ${EW('والضجيج')} ${EW('المريح')}.`, choices: ['والضجيج', 'هادئ', 'الممتعة', 'المريح'], answer: 0, why: 'الجملة تصف الهدوء، فالصواب: «والجو» المريح.' }]);
+  add('e3', [
+    { q: Q + `يحرص الطبيب ${EW('الماهر')} على ${EW('إهمال')} مرضاه ${EW('ومتابعة')} حالتهم ${EW('بدقة')}.`, choices: ['إهمال', 'الماهر', 'ومتابعة', 'بدقة'], answer: 0, why: 'ضع الضد: «رعاية» مرضاه، فيستقيم المعنى.' },
+    { q: Q + `تتميز الصحراء ${EW('بقلة')} الأمطار ${EW('ووفرة')} المياه ${EW('وارتفاع')} ${EW('الحرارة')}.`, choices: ['ووفرة', 'بقلة', 'وارتفاع', 'الحرارة'], answer: 0, why: 'ضع الضد: «وندرة» المياه، فيستقيم المعنى.' },
+  ]);
+  add('e4', [{ q: Q + `${EW('ازداد')} عدد ${EW('الزوار')} في المعرض، ${EW('فقلّ')} الازدحام عند ${EW('المداخل')}.`, choices: ['فقلّ', 'ازداد', 'الزوار', 'المداخل'], answer: 0, why: 'زيادة الزوار تؤدي إلى زيادة الازدحام، فالصواب: «فزاد».' }]);
+}
+
+/* generated by test/norep.js: steps that repeat the hands-on part (dropped) and fresh placement questions that refill practice */
+const NOREP = {"w3":{"drop":["«أسهب المحاضر في شرحه حتى انتهى الوقت ولم يكمل». معنى «أسهب»","«كان رده مقتضبًا، فلم يزد على كلمتين». معنى «مقتضب»:","في جملة «كان الجو  قائظًا  فاحتمى الناس بالظل»، معنى «قائظ»:","في جملة « أسهب  المحاضر في شرحه حتى انتهى الوقت ولم يكمل»، م"],
+"fill":[0,1]},"w4":{"drop":["«ضرب في الأرض طلبًا للرزق». معنى «ضرب»:","في جملة « ضرب  المعلم مثلًا للطلاب»، معنى «ضرب»:","في جملة « ضرب  في الأرض طلبًا للرزق»، معنى «ضرب»:"],
+"fill":[0,1]},"w5":{"drop":["أي ترتيب صحيح من الأخف إلى الأشد؟","أي ترتيب صحيح من الأخف إلى الأشد؟"],
+"fill":[1,2]},"w6":{"drop":["أكمل: «___ المدير قرارًا حاسمًا بعد الاجتماع».","أكمل: «   الطالب جهدًا كبيرًا في مشروعه».","إذا ترك الإنسان شيئًا وزهد فيه نقول: «رغب    الشيء»."],
+"fill":[2,3]},"k1":{"drop":["يعيش الدب القطبي في مناطق شديدة   ، لذلك يغطيه فرو كثيف.","كان الكتاب   ، فقرأه أخي في ليلة واحدة دون أن يتوقف.","أصبح الطريق    بعد هطول الأمطار الغزيرة، فقاد السائقون ببطء."],
+"fill":[0]},"k2":{"drop":["لم يكن نجاح الشركة   ، بل جاء بعد تخطيط طويل."],
+"fill":[]},"k3":{"drop":["أدى    في استخدام المياه إلى نقص مخزون السد.","حصل على منحة دراسية لأنه كان    في دراسته.","بفضل المدرب الجديد، أحرز الفريق    ملحوظًا."],
+"fill":[0]},"k4":{"drop":["أبدت اللجنة    على التقرير، وطلبت إعادة كتابة فصلين منه.","اختلف الأخوان في   ؛ فأحدهما هادئ والآخر سريع الغضب."],
+"fill":[0]},"k5":{"drop":["تحوّلت الأرض    إلى حقول    بعد حفر الآبار.","كلما زاد    المرء، زاد    في الحكم على الأمور."],
+"fill":[0]},"k6":{"drop":["كان    الطالب سببًا في رسوبه، إذ    المذاكرة إلى ليلة الاختب","لا يُقاس نجاح المرء بما    من مال، بل بما    من أثر طيب."],
+"fill":[]},"e1":{"drop":["أي كلمة تفسد المعنى؟ الطالب  المجتهد  يؤجل  واجباته   دائمًا","حدد الكلمة التي لا يتسق معناها مع سياق الجملة:  يتمتع الصقر "],
+"fill":[]},"e2":{"drop":["حدد الكلمة التي لا يتسق معناها مع سياق الجملة:  الكتاب صديق "],
+"fill":[]},"e3":{"drop":["أدى الجفاف إلى  ذبول  المحاصيل و وفرة  الغذاء.","حدد الكلمة التي لا يتسق معناها مع سياق الجملة:  يحتاج المشرو","حدد الكلمة التي لا يتسق معناها مع سياق الجملة:  تُعرف الحربا"],
+"fill":[]},"e4":{"drop":["تدرّب الفريق  بجد  طوال الموسم،  فخسر  جميع  مبارياته ، واست","اشتد  البرد في الليل،  فخلع  الناس  معاطفهم  واقتربوا من  ال","حدد الكلمة التي لا يتسق معناها مع سياق الجملة:  أدى  انقطاع "],
+"fill":[]},"e5":{"drop":["كلما  زادت  سرعة السيارة،  قلّ  الوقت  اللازم  للوصول  وطالت","ساعد  المطر الغزير على  تأخير  الرحلة، فوصل المسافرون  مبكري"],
+"fill":[]},"r3":{"drop":["بحسب النص، بماذا استعان البحّارة إذا غاب النجم؟"],
+"fill":[]},"r4":{"drop":["يُفهم من النص أن النخلة صارت رمزًا للصبر لأنها:"],
+"fill":[0]},"r8":{"drop":["متى يرسخ الصواب في ذهن المتعلم بحسب النص؟"],
+"fill":[]},"r9":{"drop":["ما وظيفة الجذور الهوائية لأشجار القرم بحسب النص؟","ما الذي يمنح المرجان ألوانه الزاهية؟"],
+"fill":[]},"r10":{"drop":["رتّب: البوصلة، الاعتماد على النجوم، كتب ابن ماجد صارت مرجعًا"],
+"fill":[]}};
 
 /* ================= smart placement test + personal plan =================
    Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
