@@ -1045,10 +1045,14 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .chrow input[type=radio]{width:22px;height:22px;accent-color:var(--ok);flex:none}
 .qform .cta{width:100%;height:52px;font-size:16px}
 
+.legal{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;padding:22px max(16px,env(safe-area-inset-left,0px)) 28px;font:13px/1.7 'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--ink-2,#5B6660);border-top:1px solid var(--line,#E1E3DD)}
+.legal a{color:inherit}.legal span{flex-basis:100%;text-align:center;font-size:12px;opacity:.8}
+body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 </style>
 </head>
 <body>
 <div id="app" dir="rtl" lang="ar"></div>
+<footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
 window.ACADEMY_CONFIG = {"bank": []};
 (function () {
