@@ -1057,6 +1057,68 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .acct-list{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:8px}
 .acct-list li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line)}
 .acct-list li small{color:var(--ink-2)}.acct-list li.off{opacity:.6}.acct-list li.on b::before{content:"● ";color:#2E9E6A}
+/* ================= first visit (landing) ================= */
+.landing{padding-bottom:30px}
+.lp-hero{padding-top:18px;text-align:center}
+.lp-hero h1{font-family:var(--f-display);font-weight:600;font-size:clamp(30px,8.4vw,44px);line-height:1.35;margin:6px 0 6px;letter-spacing:0}
+.lp-hero h1 em{font-style:normal;color:#F0A35A}
+.lp-sub{color:var(--ink-2);margin:0 0 18px;font-size:15.5px}
+.lp-try{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px 16px 18px;max-width:440px;margin:0 auto;box-shadow:var(--shadow)}
+.lp-ask{margin:0 0 6px;font-family:var(--f-display);font-weight:500;font-size:20px}
+.lp-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin:0 4px;font-style:normal;color:#F0A35A;font-weight:600}
+.lp-frac i{font-style:normal;padding:0 4px}.lp-frac i:first-child{border-bottom:2px solid currentColor}
+.lp-frac.big{font-family:var(--f-display);font-size:38px}
+.lp-stage{display:flex;align-items:center;justify-content:center;gap:22px;margin:8px 0 4px}
+.lp-pz{width:min(56vw,210px);height:auto;touch-action:manipulation}
+.lp-crust{fill:#C9874A}
+.lp-sl{fill:#F6E6CF;stroke:#C9874A;stroke-width:3;cursor:pointer;transition:fill .18s,transform .18s;transform-origin:100px 100px}
+.lp-sl:hover{fill:#FBEFDC}.lp-sl:focus{outline:none}.lp-sl:focus-visible{outline:none;stroke:var(--ink);stroke-width:4}
+.lp-sl.on{fill:#F0A35A;animation:lp-pop .28s ease-out}
+@keyframes lp-pop{50%{transform:scale(1.04)}}
+.lp-live{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:74px}
+.lp-live small{color:var(--ink-2);font-size:13px}
+.lp-msg{min-height:3.4em;margin:8px 4px 0;color:var(--ink-2);font-size:15px;line-height:1.7}
+.lp-msg b{color:var(--ink)}.won .lp-msg b{color:var(--ok,#3fbf8f)}
+.lp-try.won{border-color:color-mix(in srgb,#3fbf8f 55%,var(--line))}
+.lp-next{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.lp-next:empty{display:none}
+.lp-next>*{animation:lp-in .35s ease-out both}.lp-next>*:nth-child(2){animation-delay:.08s}
+@keyframes lp-in{from{opacity:0;transform:translateY(8px)}}
+.lp-cta{display:flex;align-items:center;justify-content:center;gap:8px;height:54px;border-radius:999px;background:var(--ink);color:var(--bg);font-family:var(--f-display);font-weight:600;font-size:17px}
+.lp-ghost{height:48px;border-radius:999px;border:1px solid var(--line);color:var(--ink);font-weight:500;font-size:15.5px}
+.lp-sec{margin-top:44px}
+.lp-sec h2{font-family:var(--f-display);font-weight:600;font-size:23px;margin:0 0 14px}
+.lp-how{display:grid;gap:12px}
+.lp-how>div{display:grid;grid-template-columns:52px 1fr;column-gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.lp-how b{font-family:var(--f-display);font-weight:500;font-size:16.5px;grid-column:2}
+.lp-how p{grid-column:2;margin:2px 0 0;color:var(--ink-2);font-size:14.5px;line-height:1.7}
+.lp-ic{grid-row:span 2;width:52px;height:52px;border-radius:14px;background:var(--bg-2);position:relative;overflow:hidden}
+.lp-ic i{position:absolute;display:block}
+.lp-ic.t1 i{width:18px;height:18px;border-radius:50%;background:#F0A35A;top:17px;left:17px;animation:lp-tap 2.2s ease-in-out infinite}
+@keyframes lp-tap{0%,60%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(240,163,90,.6)}30%{transform:scale(.8);box-shadow:0 0 0 12px rgba(240,163,90,0)}}
+.lp-ic.t2 i{width:26px;height:26px;top:13px;left:13px;border-radius:50%;border:3px solid #e0796b;animation:lp-fix 2.6s ease-in-out infinite}
+@keyframes lp-fix{0%,45%{border-color:#e0796b}55%,100%{border-color:#3fbf8f}}
+.lp-ic.t3 i{left:14px;width:24px;height:6px;border-radius:3px;background:var(--ink-3);animation:lp-step 2.4s ease-in-out infinite}
+.lp-ic.t3 i:nth-child(1){top:13px}.lp-ic.t3 i:nth-child(2){top:23px;animation-delay:.4s}.lp-ic.t3 i:nth-child(3){top:33px;animation-delay:.8s}
+@keyframes lp-step{0%,100%{background:var(--ink-3)}30%{background:#F0A35A}}
+.lp-courses{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lp-course{position:relative;text-align:start;display:flex;flex-direction:column;gap:2px;padding:16px;min-height:150px;border-radius:20px;overflow:hidden;color:#fff;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--pc) 85%,#fff 0%),color-mix(in srgb,var(--pc) 70%,#000))}
+.lp-course .glyph{position:absolute;inset-inline-end:-6px;bottom:-14px;font-family:var(--f-display);font-weight:600;font-size:64px;opacity:.18;line-height:1}
+.lp-course b{font-family:var(--f-display);font-weight:600;font-size:18px;margin-top:auto}
+.lp-course small{opacity:.85;font-size:12.5px}
+.lp-free{align-self:flex-start;order:-1;font-size:12px;font-weight:600;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 10px}
+.lp-wa{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 18px;margin-inline:16px;text-align:center}
+.lp-wa p{color:var(--ink-2);margin:0 0 16px;font-size:15px}
+.lp-wabtn{display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:999px;background:#1FAF5A;color:#fff;font-family:var(--f-display);font-weight:600;font-size:17px;text-decoration:none}
+.lp-q{border-bottom:1px solid var(--line);padding:4px 0}
+.lp-q summary{cursor:pointer;list-style:none;padding:12px 0;font-weight:500;font-size:15.5px;display:flex;justify-content:space-between;gap:12px}
+.lp-q summary::-webkit-details-marker{display:none}
+.lp-q summary::after{content:'+';color:var(--ink-3);font-size:20px;line-height:1}
+.lp-q[open] summary::after{content:'−'}
+.lp-q p{margin:0 0 12px;color:var(--ink-2);font-size:14.5px}
+.lp-more{text-align:center;margin-top:28px}
+@media (prefers-reduced-motion:reduce){.lp-ic i,.lp-sl.on,.lp-next>*{animation:none}}
 
 .legal{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;padding:22px max(16px,env(safe-area-inset-left,0px)) 28px;font:13px/1.7 'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--ink-2,#5B6660);border-top:1px solid var(--line,#E1E3DD)}
 .legal a{color:inherit}.legal span{flex-basis:100%;text-align:center;font-size:12px;opacity:.8}
@@ -1068,7 +1130,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793495914"}, "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا للاشتراك"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793539951"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -8221,12 +8283,13 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
    (editors add questions to "drafts", approve them into "bank"; every course reads "bank"). */
 (function () {
   const C = window.AcademyCourses || {};
+  const CFG = window.ACADEMY_CONFIG || {};
   for (const id of Object.keys(C)) if (C[id].init) C[id].init();
   const SECTIONS = [
     { id: 'qudurat-quant', title: 'القسم الكمّي', glyph: '١٢٣', pc: 'var(--p4)' },
     { id: 'qudurat-verbal', title: 'القسم اللفظي', glyph: 'أ ب', pc: 'var(--p3)' },
   ].filter(s => C[s.id]);
-  const SOON = [{ title: 'التحصيلي', glyph: 'ت', pc: 'var(--p7)' }];
+  const SOON = [];
   const KEY = 'qacademy-v1';
   let A = { last: SECTIONS[0] && SECTIONS[0].id, profile: { name: '', examDate: '' } };
   try { const v = JSON.parse(localStorage.getItem(KEY)); if (v) A = Object.assign(A, v); } catch (e) {}
@@ -8271,11 +8334,76 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
   const unitNo = (api, d) => api.units().indexOf(d) + 1;
   const whyOf = l => { const st = l.steps.find(s => s.intro); return st ? st.intro.why : (l.sub || ''); };
 
+  /* ---------- FIRST VISIT (public site): feel a lesson in five seconds, then one clear next step ---------- */
+  const WA = CFG.whatsapp ? `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent('السلام عليكم، أبغى أشترك في دورة القدرات')}` : '';
+  const isNew = () => CFG.landing && !A.browse && !(window.LeenaAuth && window.LeenaAuth.user) &&
+    SECTIONS.every(s => { const S = C[s.id].api.S; return !S.answered && !Object.keys(S.done || {}).length; });
+  function firstLesson(id) { const api = C[id].api, d = (api.openUnits ? api.openUnits() : api.units())[0] || api.units()[0]; return { d, l: d.lessons[0] }; }
+  const startFree = () => { const id = SECTIONS[0].id, f = firstLesson(id); enter(id, a => a.playLesson(f.d, f.l)); };
+  const browse = () => { A.browse = true; save(); home(); };
+  function pizza() {
+    const box = el('div', 'lp-try');
+    const R = 92, P = (a) => `${100 + R * Math.sin(a)} ${100 - R * Math.cos(a)}`;
+    const slices = [0, 1, 2, 3].map(i => `<path class="lp-sl" data-i="${i}" d="M100 100 L${P(i * Math.PI / 2)} A${R} ${R} 0 0 1 ${P((i + 1) * Math.PI / 2)} Z"/>`).join('');
+    box.innerHTML = `<p class="lp-ask">لوّن <b class="lp-frac"><i>٣</i><i>٤</i></b> البيتزا</p>
+      <div class="lp-stage"><svg viewBox="0 0 200 200" class="lp-pz" role="group" aria-label="بيتزا من ٤ قطع، اضغط على القطع لتلوينها"><circle cx="100" cy="100" r="98" class="lp-crust"/>${slices}</svg>
+      <div class="lp-live" aria-live="polite"><b class="lp-frac big"><i class="lp-n">٠</i><i>٤</i></b><small>لوّنت <span class="lp-c">٠</span> من ٤</small></div></div>
+      <p class="lp-msg" aria-live="polite">اضغط على القطع</p><div class="lp-next"></div>`;
+    const on = new Set(), msg = box.querySelector('.lp-msg'), nx = box.querySelector('.lp-next');
+    box.querySelectorAll('.lp-sl').forEach(s => { s.setAttribute('tabindex', '0'); const t = () => {
+      const i = +s.dataset.i; on.has(i) ? on.delete(i) : on.add(i); s.classList.toggle('on', on.has(i));
+      box.querySelector('.lp-n').textContent = ar(on.size); box.querySelector('.lp-c').textContent = ar(on.size);
+      box.classList.toggle('won', on.size === 3);
+      msg.innerHTML = on.size === 3 ? '<b>صح!</b> المقام ٤ عدد القطع كلها، والبسط ٣ القطع اللي لوّنتها. فهمتها بيدك، بدون حفظ.'
+        : on.size === 4 ? 'لوّنت البيتزا كاملة، هذي <b>٤ من ٤</b>. شيل قطعة.' : on.size ? 'كمّل…' : 'اضغط على القطع';
+      if (on.size === 3 && !nx.children.length) {
+        const a = el('button', 'lp-cta', `${ic('play', 18)}<span>ابدأ أول درس مجانًا</span>`); a.onclick = startFree;
+        const b = el('button', 'lp-ghost', '<span>اعرف مستواك أولًا</span>'); b.onclick = () => enter(SECTIONS[0].id, x => x.dgIntro && x.dgIntro());
+        nx.append(a, b); }
+    }; s.onclick = t; s.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } }; });
+    return box;
+  }
+  function landing() {
+    const top = hud(`<span class="wordmark">أكاديمية لينا</span>`);
+    if (window.Academy && window.Academy.accountChip) top.appendChild(window.Academy.accountChip());
+    const w = el('div', 'landing');
+    const hero = el('section', 'lp-hero gut');
+    hero.innerHTML = `<h1>القدرات… تفهمها <em>بيدك</em>،<br>مو بالحفظ</h1><p class="lp-sub">جرّب الحين، بدون تسجيل</p>`;
+    hero.appendChild(pizza()); w.appendChild(hero);
+    const how = el('section', 'lp-sec gut');
+    how.innerHTML = `<h2>كيف تتعلم هنا؟</h2><div class="lp-how">
+      <div><span class="lp-ic t1"><i></i></span><b>تلمس وتجرب</b><p>كل درس خطوات قصيرة، والقاعدة تظهر لك وأنت تجرب.</p></div>
+      <div><span class="lp-ic t2"><i></i></span><b>تغلط وتفهم ليش</b><p>إذا غلطت تشوف السبب بالرسم، مو بس كلمة «خطأ».</p></div>
+      <div><span class="lp-ic t3"><i></i><i></i><i></i></span><b>خطوة بخطوة</b><p>صفحة وحدة تنزل معك، وترجع لأي خطوة متى ما تبي.</p></div></div>`;
+    w.appendChild(how);
+    const cs = el('section', 'lp-sec gut'); cs.innerHTML = '<h2>وش في الدورة؟</h2>'; const grid = el('div', 'lp-courses');
+    for (const s of SECTIONS) { const U = C[s.id].api.units(), total = U.reduce((a, d) => a + d.lessons.length, 0);
+      const b = el('button', 'lp-course'); b.style.setProperty('--pc', s.pc);
+      b.innerHTML = `<span class="glyph" aria-hidden="true">${s.glyph}</span><b>${s.title}</b><small>${ar(U.length)} وحدات · ${ar(total)} درسًا</small><span class="lp-free">الوحدة الأولى مجانية</span>`;
+      b.onclick = () => { A.browse = true; save(); enter(s.id); }; grid.appendChild(b); }
+    cs.appendChild(grid); w.appendChild(cs);
+    if (WA) { const wa = el('section', 'lp-sec gut lp-wa');
+      wa.innerHTML = `<h2>تبي الدورة كاملة؟</h2><p>راسلنا على واتساب، ونرتب اشتراكك ونرسل لك بيانات حسابك.</p>
+        <a class="lp-wabtn" href="${WA}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg><span>راسلنا على واتساب</span></a>`;
+      w.appendChild(wa); }
+    const faq = el('section', 'lp-sec gut'); faq.innerHTML = '<h2>أسئلة شائعة</h2>' + [
+      ['يشتغل على الجوال؟', 'نعم، من المتصفح مباشرة، بدون تطبيق ولا تحميل.'],
+      ['كيف أدفع؟', 'بالتحويل البنكي. راسلنا على واتساب ونرسل لك بيانات الحساب.'],
+      ['متى ينفتح حسابي؟', 'بعد ما نتأكد من التحويل نرسل لك اسم المستخدم وكلمة المرور على واتساب، وتدخل من «دخول المشتركين».'],
+      ['إلى متى الاشتراك؟', 'لكل اشتراك تاريخ انتهاء نتفق عليه قبل الدفع، ويظهر لك داخل حسابك.'],
+      ['وش أقدر أجرب مجانًا؟', 'الوحدة الأولى من كل قسم مفتوحة لك كاملة، بدون تسجيل.'],
+    ].map(([q, a]) => `<details class="lp-q"><summary>${q}</summary><p>${a}</p></details>`).join('');
+    w.appendChild(faq);
+    const more = el('div', 'gut lp-more'); const mb = el('button', 'textlink', 'تصفّح الأقسام كلها'); mb.onclick = browse; more.appendChild(mb); w.appendChild(more);
+    app.appendChild(w);
+  }
+
   /* ---------- HOME ---------- */
   function home(fromId) {
     if (fromId && C[fromId]) syncFrom(fromId);
     if (location.hash === '#bank') { history.replaceState(null, '', location.pathname + location.search); }
     screen();
+    if (isNew()) return landing();
     const top = hud(`<span class="wordmark">أكاديمية لينا</span>`);
     if (window.Academy && window.Academy.accountChip) top.appendChild(window.Academy.accountChip());
     const w = el('div', 'home');
@@ -8434,7 +8562,6 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     else if (location.hash === '#bank' && canEdit && !document.querySelector('.bank')) showBank();
   }
 
-  const CFG = window.ACADEMY_CONFIG || {};
   window.Academy = { home, enter, plan: CFG.plan || null,
     /* used by the test suite only: feed bank rows without a database */
     __dev: { feed(bank, drafts, edit) { bankDocs = bank || []; draftDocs = drafts || []; canEdit = !!edit; db = db || null; pushBank(); refresh(); }, showBank: () => showBank() } };
@@ -8529,7 +8656,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     const b = el('button', 'acct-chip' + (A.user ? ' in' : ''), A.user ? `<span class="dot"></span><span>${esc(A.user.name || A.user.username)}</span>` : '<span>دخول المشتركين</span>');
     b.onclick = () => A.user ? showAccount() : openLogin(); return b;
   };
-  if (document.querySelector('#app .home')) window.Academy.home(); // the home was drawn before this file ran: draw it again with the chip
+  if (document.querySelector('#app .home, #app .landing')) window.Academy.home(); // the home was drawn before this file ran: draw it again with the chip
   start();
 })();
 
