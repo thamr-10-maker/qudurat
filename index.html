@@ -934,6 +934,7 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 @media (prefers-reduced-motion:no-preference){.lpage.pin{animation:pagein .45s cubic-bezier(.2,.8,.2,1) both}@keyframes pagein{from{opacity:0;transform:translateY(46px)}}}
 .lock-edge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;padding:10px;font-size:12.5px;color:var(--ink-3);border-top:1px dashed var(--line)}
 .lock-edge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.act-card.gone,.act-fsm.gone{opacity:.22}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1130,7 +1131,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793539951"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793567258"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3110,6 +3111,13 @@ L.push({ id: 'n1', title: 'الخانات والقيمة المكانية', sub:
   { q: 'ما أكبر عدد من ثلاثة أرقام مختلفة؟', choices: ['٩٨٧', '٩٩٩', '٩٠٠', '٧٨٩'], answer: 0, why: 'نضع أكبر رقم في أكبر خانة: ٩ ثم ٨ ثم ٧. (٩٩٩ أرقامه غير مختلفة.)' },
   { q: 'عدد من رقمين، مجموع رقميه ٩، ورقم عشراته ضعف رقم آحاده. ما هو؟', choices: ['٦٣', '٣٦', '٨١', '٥٤'], answer: 0, why: 'جرّب الخيارات: ٦٣ مجموعه ٩ و ٦ ضعف ٣ ✓. (٣٦ عكسه.)' },
 ]});
+L.push({ id: 'n10', title: 'لا تحسب: حركات الحل السريع', sub: 'القدرات طريقة تفكير، مو حساب', steps: [
+  { q: '`67 × 33 = ؟`', choices: ['٢٢١١', '٢٢١٢', '٢٢١٤', '٢٢١٧'], answer: 0, why: 'حركة آخر رقم: `7 × 3 = 21`، فالجواب ينتهي بـ ١. خيار واحد فقط ينتهي بـ ١.' },
+  { q: '`498 + 302 + 199 = ؟`', choices: ['٩٩٩', '١٠٩٩', '٨٩٩', '٩٨٩'], answer: 0, why: 'حركة التقدير: `500 + 300 + 200 = 1000`، والجواب أقل بقليل لأننا قرّبنا ٤٩٨ و ١٩٩ للأعلى. وآخر رقم: `8 + 2 + 9 = 19` ← ينتهي بـ ٩. إذن ٩٩٩.' },
+  { q: '`11 + 23 + 35 + 47 + 59 = ؟`', choices: ['١٧٥', '١٧٤', '١٧٦', '١٧٨'], answer: 0, why: 'حركة الاستبعاد: ٥ أعداد فردية مجموعها فردي، فنشطب كل خيار زوجي. يبقى ١٧٥.' },
+  { q: 'عدد إذا قسمناه على ٤ ثم طرحنا ٣ صار ٥. ما العدد؟', choices: ['٣٢', '٢٠', '٨', '٢'], answer: 0, why: 'حركة جرّب الخيارات: `32 ÷ 4 = 8`، و `8 − 3 = 5`. ✓' },
+  { q: '`38 × 52 = ؟`', choices: ['١٩٧٦', '١٩٧٢', '٢٩٧٦', '٩٧٦'], answer: 0, why: 'آخر رقم: `8 × 2 = 16` ← ينتهي بـ ٦، فيبقى ١٩٧٦ و ٢٩٧٦ و ٩٧٦. والتقدير: `40 × 50 = 2000`، والأقرب ١٩٧٦.' },
+]});
 L.push({ id: 'n2', title: 'خط الأعداد والأعداد السالبة', sub: 'تحت الصفر أيضًا أعداد', steps: [
   { say: 'تخيّل ميزان الحرارة في الشتاء: تحت الصفر توجد أعداد أيضًا اسمها <b>الأعداد السالبة</b> مثل −٣. على خط الأعداد كلما اتجهنا <b>يمينًا كبر</b> العدد، وكلما اتجهنا <b>يسارًا صغر</b>.' },
   { say: 'اسحب النقطة، أو استخدم الأزرار لتقفز. الجمع = قفز لليمين، والطرح = قفز لليسار:', widget: wNumberLine, goal: true },
@@ -3710,7 +3718,7 @@ ACT.pair = (K, a, b, y = 20, cls = 'act-fsm') => { K.rect(70, y, 220, 60, 'act-c
    its state follows the rest of its unit. */
 const SKILLS = {
   n1: { pre: [] }, n2: { pre: ['n1'] }, n3: { pre: ['n1'] }, n4: { pre: ['n1'] }, n5: { pre: ['n4'] }, n6: { pre: ['n5'] },
-  n7: { pre: ['n6'] }, n8: { pre: ['n7'] }, n9: { pre: ['n1', 'n4', 'n5'], t: 75 },
+  n7: { pre: ['n6'] }, n8: { pre: ['n7'] }, n9: { pre: ['n1', 'n4', 'n5'], t: 75 }, n10: { mixed: true },
   f1: { pre: ['n1'] }, f2: { pre: ['f1', 'n7'] }, f3: { pre: ['f2'] }, f4: { pre: ['f2', 'n8'] }, f5: { pre: ['f1'] },
   f6: { pre: ['f4', 'f5'] }, f7: { pre: ['n1', 'f1'] }, f8: { pre: ['f7', 'f2'] },
   p1: { pre: ['n3'] }, p2: { pre: ['p1'] }, p3: { pre: ['p2', 'f5'] }, p4: { pre: ['p1'] }, p5: { pre: ['p4', 'n7'] },
@@ -4070,9 +4078,54 @@ D('f8', [
   ]);
 }
 
+/* ================= n10 · «لا تحسب»: four named solving moves (last digit · estimate · cross out · try the choices) ================= */
+{
+  /* the question at the top, its four choices as cards under it (right to left, like the exam) */
+  const qcards = (K, q, items, y = 70) => { K.text(180, 34, q, 'act-fsm');
+    const w = 72, hh = 50, gap = (360 - items.length * w) / (items.length + 1);
+    return items.map((t, k) => { const x = 360 - (k + 1) * (gap + w); const r = K.rect(x, y, w, hh, 'act-card', 12); const tx = K.text(x + w / 2, y + hh / 2 + 1, t, 'act-fsm'); const hit = K.rect(x, y, w, hh, 'act-hit', 12); hit._card = r; hit._txt = tx; return hit; }); };
+  const gone = (el, v) => { el._card.classList.toggle('gone', v); el._txt.classList.toggle('gone', v); };
+  ACT.lesson('n10', [
+    { h: 140, beats: [
+      { say: 'نفس السؤال، طالب يحسبه في ٤٠ ثانية وطالب في ٥ ثواني. الفرق: الثاني <b>ما يحسب كل شيء</b>. انظر لآخر رقم في العددين فقط: ٩ و ١. كم ٩ × ١؟',
+        draw(K, st) { st.c = qcards(K, '49 × 21 = ؟', ['980', '1029', '1050', '1100']); }, ask: { choices: [9, 1, 10], answer: 9 }, msg: 'إذن الجواب لازم <b>ينتهي بـ ٩</b>.' },
+      { say: 'اضغط على الخيار الوحيد اللي ينتهي بـ ٩.', tap: { targets: st => st.c, need: 1, wrongIdx: [0, 2, 3], wrongMsg: 'هذا ما ينتهي بـ ٩.', mark: ACT.cardMark },
+        msg: '<b>حركة آخر رقم</b>: في الضرب والجمع، آخر رقم في الجواب يجي من آخر رقم في الأعداد فقط.' },
+    ] },
+    { h: 140, beats: [
+      { say: '١٩٨ × ٥ = ؟ قبل ما تضرب: ١٩٨ قريب من أي عدد سهل؟', draw(K, st) { st.c = qcards(K, '198 × 5 = ؟', ['99', '990', '1990', '9900']); }, ask: { choices: [200, 100, 190], answer: 200 } },
+      { say: 'و ٢٠٠ × ٥ = ؟', ask: { choices: [1000, 100, 10000], answer: 1000 } },
+      { say: 'الجواب قريب من ١٠٠٠. اضغط على الخيار الأقرب.', tap: { targets: st => st.c, need: 1, wrongIdx: [0, 2, 3], wrongMsg: 'هذا بعيد عن ١٠٠٠.', mark: ACT.cardMark },
+        msg: '<b>حركة التقدير</b>: قرّب الأعداد لأعداد سهلة، والخيارات البعيدة تسقط وحدها.' },
+    ] },
+    { h: 140, beats: [
+      { say: 'هنا ٤ أعداد كلها فردية. فكّر في نقاط: كل عدد فردي فيه نقطة بدون شريك. إذا جمعنا فرديين، النقطتان الوحيدتان تصيران شريكتين. فردي + فردي = ؟',
+        draw(K, st) { st.c = qcards(K, '13 + 27 + 35 + 15 = ؟', ['89', '90', '91', '87']); }, ask: { choices: ['زوجي', 'فردي'], answer: 'زوجي' } },
+      { say: 'إذن مجموع ٤ أعداد فردية زوجي. اشطب كل خيار فردي.', tap: { targets: st => st.c, need: 3, once: true, wrongIdx: [1], wrongMsg: '٩٠ زوجي، لا تشطبه.', mark: gone, progress: n => `شطبت ${ar(n)} من ٣` },
+        ok(K, st) { st.c[1]._card.classList.add('on'); }, msg: 'باقي خيار واحد: ٩٠. <b>حركة الاستبعاد</b>: اشطب الخيارات المستحيلة قبل ما تحسب.' },
+    ] },
+    { h: 140, beats: [
+      { say: 'عدد إذا ضربناه في ٣ ثم أضفنا ٤ صار ٢٥. ما هو؟ بدل ما تكتب معادلة، الجواب أمامك: جرّب الخيارات. جرّب ٥: ٥ × ٣ + ٤ = ؟',
+        draw(K, st) { st.c = qcards(K, 'عدد × 3 + 4 = 25', ['5', '6', '7', '8']); }, ask: { choices: [19, 23, 25], answer: 19 }, ok(K, st) { gone(st.c[0], true); }, msg: '١٩ مو ٢٥، نحتاج عددًا أكبر.' },
+      { say: 'جرّب ٧: ٧ × ٣ + ٤ = ؟', ask: { choices: [25, 28, 21], answer: 25 }, ok(K, st) { st.c[2]._card.classList.add('on'); },
+        msg: '<b>حركة جرّب الخيارات</b>: عوّض الخيارات في السؤال، وابدأ بالخيار اللي في النص.' },
+    ] },
+    { h: 0, beats: [
+      { say: 'الحين أنت تختار الحركة. «٢٣ × ٤٧ = ؟» والخيارات: ١٠٨١، ١٠٨٢، ١٠٨٤، ١٠٨٦. أي حركة أسرع؟', ask: { choices: ['آخر رقم', 'التقدير', 'جرّب الخيارات'], answer: 'آخر رقم', wrong: 'الخيارات كلها قريبة من بعض، فالتقدير ما يفرّق بينها. انظر لآخرها.' }, msg: '`3 × 7 = 21` ← ينتهي بـ ١ ← ١٠٨١.' },
+      { say: '«٣٠٢ × ٩ = ؟» والخيارات: ٢٧١٨، ٢٧٨، ٢٧١٨٠، ٣٧١٨. أي حركة؟', ask: { choices: ['التقدير', 'آخر رقم', 'جرّب الخيارات'], answer: 'التقدير', wrong: 'كل الخيارات تنتهي بـ ٨، فآخر رقم ما يكفي. قرّب ٣٠٢.' }, msg: '`300 × 9 = 2700` ← الأقرب ٢٧١٨.' },
+    ] },
+  ], {
+    intro: { goals: ['تعرف ٤ حركات تختصر الحل', 'تحل بدون حساب طويل', 'تختار الحركة المناسبة للسؤال'],
+      why: 'القدرات مو حساب، القدرات طريقة تفكير. هذه الحركات ستستخدمها في كل وحدات الكمّي.',
+      preview: { q: '`49 × 21 = ؟`', choices: ['٩٨٠', '١٠٢٩', '١٠٥٠', '١١٠٠'] } },
+    summary: ['آخر رقم: آخر رقم في الجواب يجي من آخر رقم في الأعداد', 'التقدير: قرّب لأعداد سهلة واختر الأقرب', 'الاستبعاد: اشطب المستحيل (زوجي، فردي، كبير جدًا…)', 'جرّب الخيارات: عوّض الجواب في السؤال', 'قبل ما تحسب، اسأل: هل فيه حركة أسرع؟'],
+  });
+}
+
 /* generated by test/norep.js: steps that repeat the hands-on part (dropped) and fresh placement questions that refill practice */
 const NOREP = {"n1":{"drop":["ما قيمة الرقم ٧ في العدد ٤٧٣٢؟","عدد فيه ٥ آلاف و ٠ مئات و ٣ عشرات و ٨ آحاد. ما هو؟"],
-"fill":[0,1]},"n2":{"drop":["ما ناتج: `-7 + 3`؟","ما ناتج: `(-3) × (-4)`؟","قارن بين:"],
+"fill":[0,1]},"n10":{"drop":["عدد إذا قسمناه على ٤ ثم طرحنا ٣ صار ٥. ما العدد؟"],
+"fill":[]},"n2":{"drop":["ما ناتج: `-7 + 3`؟","ما ناتج: `(-3) × (-4)`؟","قارن بين:"],
 "fill":[1,2]},"n3":{"drop":["ما ناتج: `24 ÷ 4 × 2`؟","ما ناتج: `10 - 2 × 3`؟","ما ناتج: `6 + 6 ÷ 6`؟","ما ناتج: `(8 - 3) × 2 + 1`؟","ما ناتج: `24 ÷ 4 × 2`؟"],
 "fill":[0,1,2]},"n4":{"drop":["مجموع أي عددين صحيحين متتاليين (مثل ٧ و ٨) يكون:"],
 "fill":[0]},"n5":{"drop":["العدد ٥٣□ يقبل القسمة على ٩. ما الرقم المفقود؟","العدد ٥٣□ يقبل القسمة على ٩. ما الرقم المفقود؟"],
