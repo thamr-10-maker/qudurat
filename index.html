@@ -935,6 +935,10 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .lock-edge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;padding:10px;font-size:12.5px;color:var(--ink-3);border-top:1px dashed var(--line)}
 .lock-edge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .act-card.gone,.act-fsm.gone{opacity:.22}
+.tool.move{color:#F0A35A;border-color:color-mix(in srgb,#F0A35A 45%,var(--line))}
+.movebox{border-color:color-mix(in srgb,#F0A35A 45%,var(--line))}
+.movenote{display:block;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:var(--ink)}
+.movenote b{color:#F0A35A}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1131,7 +1135,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793567258"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793567622"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -2032,6 +2036,56 @@ function breakdown(log) {
 }
 /* ---------- "write your answer first" helpers ---------- */
 const AR2EN = t => String(t).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g, '.').replace(/[−–]/g, '-');
+/* «لا تحسب»: a practice question that a named solving move (lesson n10) cracks faster than calculating.
+   Found from the question itself and checked against its own answer, so the note is never wrong. */
+const MOVE_NAMES = { last: 'آخر رقم', est: 'التقدير', odd: 'الاستبعاد', try: 'جرّب الخيارات' };
+const moveCache = new WeakMap();
+function moveOf(s) {
+  if (!s || typeof s !== 'object' || !Array.isArray(s.choices) || s.choices === CMP || s.a != null) return null;
+  if (s.move !== undefined) return s.move;
+  if (moveCache.has(s)) return moveCache.get(s);
+  let r = null;
+  if (typeof MOVES !== 'undefined') { const key = t => String(t || '').replace(/<[^>]+>/g, '').replace(/[`\s]/g, ''), q = key(s.q);
+    const hit = MOVES.find(m => q.includes(key(m[0]))); if (hit) r = { k: hit[1], name: MOVE_NAMES[hit[1]], text: hit[2] }; }
+  if (!r) try { r = detectMove(s); } catch (e) { r = null; }
+  moveCache.set(s, r); return r;
+}
+function detectMove(s) {
+  const plainQ = t => AR2EN(String(t).replace(/<[^>]+>/g, ' '));
+  const intOf = c => { const t = plainQ(c).replace(/[`\s,٬]/g, ''); return /^-?\d+$/.test(t) ? +t : null; };
+  const vals = s.choices.map(intOf); if (vals.some(v => v == null) || new Set(vals).size !== vals.length) return null;
+  const ans = vals[s.answer], q = plainQ(s.q), L10 = v => ((v % 10) + 10) % 10;
+  const exprs = [...q.matchAll(/`([^`]+)`/g)].map(m => m[1]); if (!exprs.length) exprs.push(q.replace(/^.*?:\s*/, ''));
+  const out = (k, t) => ({ k, name: MOVE_NAMES[k], text: ar(t) });
+  for (let e of exprs) {
+    e = e.replace(/[=＝]\s*[؟?]\s*$/, '').replace(/[؟?]\s*$/, '').trim();
+    if (/^\d+(\s*[+×]\s*\d+)+$/.test(e) && !(e.includes('+') && e.includes('×'))) {
+      const op = e.includes('×') ? '×' : '+', nums = e.split(/[+×]/).map(x => +x.trim());
+      const val = op === '×' ? nums.reduce((a, b) => a * b, 1) : nums.reduce((a, b) => a + b, 0);
+      if (val !== ans || Math.max(...nums) < 10) continue;
+      const ld = L10(val);
+      if (vals.filter(v => L10(v) === ld).length === 1) { const parts = nums.map(n => n % 10), pv = op === '×' ? parts.reduce((a, b) => a * b, 1) : parts.reduce((a, b) => a + b, 0);
+        return out('last', `خذ آخر رقم من كل عدد: ${parts.join(` ${op} `)} = ${pv}، إذن الجواب ينتهي بـ ${ld}، وخيار واحد فقط ينتهي بـ ${ld}.`); }
+      if (op === '+' && nums.length >= 3) { const par = L10(val) % 2, odd = nums.filter(n => n % 2).length;
+        if (vals.filter(v => L10(v) % 2 === par).length === 1) return out('odd', `فيه ${odd} من الأعداد فردية، فالمجموع ${par ? 'فردي' : 'زوجي'}. اشطب كل خيار ${par ? 'زوجي' : 'فردي'}، ويبقى خيار واحد.`); }
+      const rd = n => { if (n < 10) return n; const p = 10 ** Math.floor(Math.log10(n)); return Math.round(n / p) * p; };
+      const rn = nums.map(rd); if (rn.every((x, i) => x === nums[i])) continue;
+      const est = op === '×' ? rn.reduce((a, b) => a * b, 1) : rn.reduce((a, b) => a + b, 0);
+      const dist = vals.map(v => Math.abs(v - est) / est), best = dist.indexOf(Math.min(...dist));
+      if (best === s.answer && dist.every((d, i) => i === best || (d > dist[best] * 3 && d > .12)))
+        return out('est', `قرّب الأعداد: ${rn.join(` ${op} `)} = ${est}، والخيار الأقرب له هو الجواب.`);
+      continue;
+    }
+    if (/س/.test(e) && e.split('=').length === 2 && !/[صعن]/.test(e)) {
+      const [Ls, Rs] = e.split('=');
+      const val = (t, v) => { const x = t.replace(/×/g, '*').replace(/÷/g, '/').replace(/[−–]/g, '-').replace(/س²/g, '(س**2)').replace(/(\d)\s*س/g, '$1*س').replace(/(\d|\))\s*\(/g, '$1*(').replace(/س/g, `(${v})`);
+        return /^[\d+\-*/().\s]+$/.test(x) ? Function('"use strict";return (' + x + ')')() : NaN; };
+      const fit = vals.map(v => { const a = val(Ls, v), b = val(Rs, v); return isFinite(a) && isFinite(b) && Math.abs(a - b) < 1e-9; });
+      if (fit.filter(Boolean).length === 1 && fit[s.answer]) return out('try', `بدل ما تحل المعادلة، عوّض الخيارات مكان س: مع س = ${ans} يتساوى الطرفان.`);
+    }
+  }
+  return null;
+}
 function numericAnswer(s) {
   if (!s.choices || s.choices === CMP) return null;
   /* the question itself points at the choices ("which of the following…"), or more than one number could fit: keep the choices */
@@ -2596,6 +2650,11 @@ function runPlayer(P) {
       hb.onclick = () => { if (hinted) return; hinted = true; FX.play('tap'); hb.disabled = true; qt.after(h('div', 'hintbox', fmt(s.hint))); };
       qt.appendChild(hb);
     }
+    if (!exam && moveOf(s)) {
+      const mb = h('button', 'tool move', `<span aria-hidden="true">⚡</span><span>لا تحسب</span>`);
+      mb.onclick = () => { FX.play('tap'); mb.disabled = true; qt.after(h('div', 'hintbox movebox', `فيه طريقة أسرع من الحساب: جرّب <b>حركة ${moveOf(s).name}</b>.`)); };
+      qt.appendChild(mb);
+    }
     const order = (s.choices === CMP || s.keep) ? s.choices.map((_, i) => i) : shuffle(s.choices.map((_, i) => i));
     const opts = h('div', 'opts');
     let sel = null;
@@ -2621,7 +2680,8 @@ function runPlayer(P) {
     check = learning ? confDock() : setDock('', '', '', exam ? 'التالي' : 'تحقّق', () => answer(sel), false);
     let typed = false;
     /* 1) write your own answer first (numeric answers) */
-    const numAns = learning && !again ? numericAnswer(s) : null;
+    const mv = !exam ? moveOf(s) : null; // a smart move exists: keep the choices on screen, they are part of the move
+    const numAns = learning && !again && !mv ? numericAnswer(s) : null;
     /* 2) name the relation first (verbal analogy) */
     const relAns = learning && !again && !numAns ? relationFirst(s) : null;
     if (numAns || relAns) {
@@ -2684,7 +2744,7 @@ function runPlayer(P) {
       } else { FX.play('wrong'); FX.buzz([30, 50, 30]); }
       if (s.sol && s.sol.length) { const sb = solutionBox(s.sol, !ok); body.appendChild(sb); if (!ok) setTimeout(() => { const r = sb.getBoundingClientRect(), over = r.bottom - (innerHeight - dock.offsetHeight) + 12; if (over > 0) window.scrollBy({ top: over, behavior: 'smooth' }); }, 80); }
       const confNote = conf === 'typed' ? 'حللتها بدون خيارات (+١ إضافية). ' : !ok && conf === 'sure' ? 'أخطأت وأنت متأكد: هذا أهم نوع من الأخطاء، وسيعود إليك في المراجعة أولًا. ' : ok && conf === 'guess' ? 'أصبت بالتخمين، لذلك سيعود إليك هذا السؤال في المراجعة لتثبته. ' : '';
-      setDock(ok ? 'ok' : 'bad', ok ? 'إجابة صحيحة' : (timeout ? 'انتهى الوقت' : 'إجابة غير صحيحة'), (confNote ? `<span class="confnote">${confNote}</span>` : '') + (s.why || ''), 'متابعة', () => { idx++; render(); }, true);
+      setDock(ok ? 'ok' : 'bad', ok ? 'إجابة صحيحة' : (timeout ? 'انتهى الوقت' : 'إجابة غير صحيحة'), (confNote ? `<span class="confnote">${confNote}</span>` : '') + (s.why || '') + (mv ? `<span class="movenote">⚡ <b>حركة ${mv.name}</b>: ${mv.text}</span>` : ''), 'متابعة', () => { idx++; render(); }, true);
     }
   }
 
@@ -4122,6 +4182,49 @@ D('f8', [
   });
 }
 
+/* ================= «لا تحسب»: practice questions that a named solving move cracks (see lesson n10) =================
+   [a piece of the question text, move, the note shown after answering]. Each note was checked against the question.
+   Questions not listed here can still get a move found automatically (moveOf in ui.js). */
+const MOVES = [
+  ['مجموع رقميه ٩، ورقم عشراته ضعف رقم آحاده', 'try', 'جرّب الخيارات: ٦٣ ← ٦ + ٣ = ٩، و ٦ ضعف ٣ ✓. ما تحتاج معادلة.'],
+  ['والفرق بينه وبين مقلوبه ٢٧', 'try', 'جرّب الخيارات: ٧٤ ← ٧ + ٤ = ١١، و ٧٤ − ٤٧ = ٢٧ ✓.'],
+  ['ثلاثة أعداد متتالية مجموعها ٤٨. ما أصغرها', 'try', 'جرّب الخيارات: ١٥ + ١٦ + ١٧ = ٤٨ ✓.'],
+  ['خمسة أعداد صحيحة متتالية مجموعها ١٠٠', 'try', 'جرّب الخيارات: لو الأكبر ٢٢ فالأعداد ١٨ إلى ٢٢، ومجموعها ١٠٠ ✓.'],
+  ['العدد ٤□٦ يقبل القسمة على ٣', 'try', 'جرّب كل خيار مكان □: مع ٢ يصير مجموع الأرقام ١٢، وهو يقبل ٣ ✓.'],
+  ['إذا قُسم على ٤ أو على ٥ كان الباقي ٣', 'try', 'جرّب الخيارات من الأصغر: ١٣ ÷ ٤ باقيه ١ ✗. و ٢٣ ÷ ٤ باقيه ٣، و ٢٣ ÷ ٥ باقيه ٣ ✓.'],
+  ['ما مجموع أول أربعة أعداد أولية', 'odd', '٢ زوجي، و ٣ و ٥ و ٧ فردية. ثلاثة أعداد فردية مجموعها فردي، فاشطب كل خيار زوجي: يبقى ١٧.'],
+  ['أنفق موظف ربع راتبه على السكن وثلثه على الطعام', 'try', 'جرّب الخيارات: ٦٠٠٠ ← ربعه ١٥٠٠ وثلثه ٢٠٠٠، والباقي ٦٠٠٠ − ٣٥٠٠ = ٢٥٠٠ ✓.'],
+  ['ما قيمة `13²`', 'last', 'آخر رقم: ٣ × ٣ = ٩، وخيار واحد فقط ينتهي بـ ٩.'],
+  ['زاد عدد بنسبة ٢٠٪ فصار ٧٢', 'try', 'جرّب الخيارات: ٦٠ + ٢٠٪ منه (١٢) = ٧٢ ✓.'],
+  ['بعد خصم ٢٥٪ صار السعر ٩٠ ريالًا', 'try', 'جرّب الخيارات: ١٢٠ − ربعه (٣٠) = ٩٠ ✓.'],
+  ['نسبة البنين إلى البنات ٣ : ٥، وعدد الطلاب ٤٠', 'try', 'جرّب الخيارات: ١٥ بنين ← ٢٥ بنات، و ١٥ : ٢٥ = ٣ : ٥ ✓.'],
+  ['فكان الفرق بين النصيبين ٦٠ ريالًا', 'try', 'جرّب الخيارات: ٣٠٠ ← ١٢٠ و ١٨٠، والفرق ٦٠ ✓.'],
+  ['نسبة عمر الأب إلى عمر ابنه ٧ : ٢، ومجموع عمريهما ٥٤', 'try', 'جرّب الخيارات: الابن ١٢ ← الأب ٤٢، و ٤٢ : ١٢ = ٧ : ٢ ✓.'],
+  ['زاد سعر سلعة ١٠٪ فأصبح ٢٢٠ ريالًا', 'try', 'جرّب الخيارات: ٢٠٠ + ١٠٪ منه (٢٠) = ٢٢٠ ✓.'],
+  ['باع تاجر سلعة بـ ٣٦٠ ريالًا فخسر ١٠٪', 'try', 'جرّب الخيارات: ٤٠٠ − ١٠٪ منه (٤٠) = ٣٦٠ ✓.'],
+  ['قُسّم ٨١ بنسبة', 'odd', 'النصيب الأكبر = ٧ أجزاء، فلازم يقبل القسمة على ٧. اشطب كل خيار ما يقبل ٧: يبقى ٦٣.'],
+  ['بعد كم ساعة تصبح المسافة بينهما ٣٦٠ كم', 'try', 'جرّب الخيارات: في ٣ ساعات تقطعان ١٥٠ + ٢١٠ = ٣٦٠ ✓.'],
+  ['صنبور يملأ حوضًا في ٤ ساعات، وآخر في ١٢ ساعة', 'odd', 'معًا أسرع من الأسرع وحده، فالجواب أقل من ٤ ساعات. اشطب كل خيار ٤ أو أكثر: يبقى ٣.'],
+  ['قطع نصف الطريق بسرعة ٣٠ كم/س والنصف الآخر بسرعة ٦٠', 'odd', 'المتوسط بين ٣٠ و ٦٠، وأقرب للبطيئة لأنه يقضي فيها وقتًا أطول، فهو أقل من ٤٥. خيار واحد فقط بين ٣٠ و ٤٥.'],
+  ['إذا كان `1 + 2 + ... + ن = 45`', 'try', 'جرّب الخيارات: ٩ × ١٠ ÷ ٢ = ٤٥ ✓.'],
+  ['ما ناتج `1 + 2 + ... + 30`', 'odd', 'من ١ إلى ٣٠ فيه ١٥ عددًا فرديًا، وعدد فردي من الفرديات مجموعه فردي. خيار واحد فقط فردي: ٤٦٥.'],
+  ['ما مجموع أول ١٥ عددًا فرديًا', 'odd', '١٥ عددًا فرديًا (عدد فردي منها) مجموعها فردي، وخيار واحد فقط فردي: ٢٢٥.'],
+  ['حلّ: `س/4 − 2 = 3`', 'try', 'جرّب الخيارات: ٢٠ ÷ ٤ = ٥، و ٥ − ٢ = ٣ ✓.'],
+  ['مجموع عددين ٣٠، وأحدهما ضعف الآخر', 'try', 'جرّب الخيارات: ٢٠ ← الآخر ١٠، و ٢٠ ضعف ١٠ ✓.'],
+  ['مجموع عددين ٣٠ والفرق بينهما ٦', 'try', 'جرّب الخيارات: ١٨ ← الآخر ١٢، والفرق ٦ ✓.'],
+  ['اشترت سارة ٣ دفاتر وقلمين بـ ٢٧ ريالًا', 'try', 'جرّب الخيارات: ٣ × ٧ + ٢ × ٣ = ٢١ + ٦ = ٢٧ ✓.'],
+  ['عمر سعد ضعف عمر أخيه، ومجموع عمريهما ٣٦', 'try', 'جرّب الخيارات: ٢٤ ← أخوه ١٢، والمجموع ٣٦ ✓.'],
+  ['قبل ٥ سنوات كان عمر هند ثلاثة أمثال عمر أختها', 'try', 'جرّب الخيارات: هند ٢٠ ← أختها ١٠. قبل ٥ سنوات ١٥ و ٥، و ١٥ = ٣ × ٥ ✓.'],
+  ['ثلاثة أعداد زوجية متتالية مجموعها ٣٦', 'try', 'جرّب الخيارات: ١٠ + ١٢ + ١٤ = ٣٦ ✓.'],
+  ['إذا كان `2س + ص = 11` و `س + ص = 7`', 'try', 'جرّب الخيارات: س = ٤ ← ص = ٣، و ٢ × ٤ + ٣ = ١١ ✓.'],
+  ['ثلاثة أعداد فردية متتالية مجموعها ٥١', 'try', 'جرّب الخيارات: ١٥ + ١٧ + ١٩ = ٥١ ✓.'],
+  ['عمر أب ٤ أمثال عمر ابنه، وبعد ٥ سنوات يصبح ٣ أمثاله', 'try', 'جرّب الخيارات: الأب ٤٠ ← الابن ١٠. بعد ٥ سنوات ٤٥ و ١٥، و ٤٥ = ٣ × ١٥ ✓.'],
+  ['عدد الرؤوس ٢٠ وعدد الأرجل ٥٦', 'try', 'جرّب الخيارات: ١٢ دجاجة (٢٤ رجلًا) و ٨ أبقار (٣٢ رجلًا) ← ٥٦ ✓.'],
+  ['ضعف عدد مضافًا إليه ٧ يساوي ٢٥', 'try', 'جرّب الخيارات: ٢ × ٩ + ٧ = ٢٥ ✓.'],
+  ['١٥ ورقة نقدية من فئتي ٥ و ١٠ ريالات', 'try', 'جرّب الخيارات: ٥ أوراق × ١٠ = ٥٠، و ١٠ أوراق × ٥ = ٥٠ ← ١٠٠ ✓.'],
+  ['فتكوّنت زاويتان داخليتان في جهة واحدة قياساهما ٣س و ٢س', 'try', 'جرّب الخيارات: ٣ × ٣٦ + ٢ × ٣٦ = ١٠٨ + ٧٢ = ١٨٠ ✓.'],
+];
+
 /* generated by test/norep.js: steps that repeat the hands-on part (dropped) and fresh placement questions that refill practice */
 const NOREP = {"n1":{"drop":["ما قيمة الرقم ٧ في العدد ٤٧٣٢؟","عدد فيه ٥ آلاف و ٠ مئات و ٣ عشرات و ٨ آحاد. ما هو؟"],
 "fill":[0,1]},"n10":{"drop":["عدد إذا قسمناه على ٤ ثم طرحنا ٣ صار ٥. ما العدد؟"],
@@ -4590,7 +4693,7 @@ function dgPlanRail() {
 }
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen, moveOf, MOVES: typeof MOVES !== "undefined" ? MOVES : [] } };
 })();
 (function () {
 /* ================= course block: Qudurat verbal section =================
@@ -5905,6 +6008,56 @@ function breakdown(log) {
 }
 /* ---------- "write your answer first" helpers ---------- */
 const AR2EN = t => String(t).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g, '.').replace(/[−–]/g, '-');
+/* «لا تحسب»: a practice question that a named solving move (lesson n10) cracks faster than calculating.
+   Found from the question itself and checked against its own answer, so the note is never wrong. */
+const MOVE_NAMES = { last: 'آخر رقم', est: 'التقدير', odd: 'الاستبعاد', try: 'جرّب الخيارات' };
+const moveCache = new WeakMap();
+function moveOf(s) {
+  if (!s || typeof s !== 'object' || !Array.isArray(s.choices) || s.choices === CMP || s.a != null) return null;
+  if (s.move !== undefined) return s.move;
+  if (moveCache.has(s)) return moveCache.get(s);
+  let r = null;
+  if (typeof MOVES !== 'undefined') { const key = t => String(t || '').replace(/<[^>]+>/g, '').replace(/[`\s]/g, ''), q = key(s.q);
+    const hit = MOVES.find(m => q.includes(key(m[0]))); if (hit) r = { k: hit[1], name: MOVE_NAMES[hit[1]], text: hit[2] }; }
+  if (!r) try { r = detectMove(s); } catch (e) { r = null; }
+  moveCache.set(s, r); return r;
+}
+function detectMove(s) {
+  const plainQ = t => AR2EN(String(t).replace(/<[^>]+>/g, ' '));
+  const intOf = c => { const t = plainQ(c).replace(/[`\s,٬]/g, ''); return /^-?\d+$/.test(t) ? +t : null; };
+  const vals = s.choices.map(intOf); if (vals.some(v => v == null) || new Set(vals).size !== vals.length) return null;
+  const ans = vals[s.answer], q = plainQ(s.q), L10 = v => ((v % 10) + 10) % 10;
+  const exprs = [...q.matchAll(/`([^`]+)`/g)].map(m => m[1]); if (!exprs.length) exprs.push(q.replace(/^.*?:\s*/, ''));
+  const out = (k, t) => ({ k, name: MOVE_NAMES[k], text: ar(t) });
+  for (let e of exprs) {
+    e = e.replace(/[=＝]\s*[؟?]\s*$/, '').replace(/[؟?]\s*$/, '').trim();
+    if (/^\d+(\s*[+×]\s*\d+)+$/.test(e) && !(e.includes('+') && e.includes('×'))) {
+      const op = e.includes('×') ? '×' : '+', nums = e.split(/[+×]/).map(x => +x.trim());
+      const val = op === '×' ? nums.reduce((a, b) => a * b, 1) : nums.reduce((a, b) => a + b, 0);
+      if (val !== ans || Math.max(...nums) < 10) continue;
+      const ld = L10(val);
+      if (vals.filter(v => L10(v) === ld).length === 1) { const parts = nums.map(n => n % 10), pv = op === '×' ? parts.reduce((a, b) => a * b, 1) : parts.reduce((a, b) => a + b, 0);
+        return out('last', `خذ آخر رقم من كل عدد: ${parts.join(` ${op} `)} = ${pv}، إذن الجواب ينتهي بـ ${ld}، وخيار واحد فقط ينتهي بـ ${ld}.`); }
+      if (op === '+' && nums.length >= 3) { const par = L10(val) % 2, odd = nums.filter(n => n % 2).length;
+        if (vals.filter(v => L10(v) % 2 === par).length === 1) return out('odd', `فيه ${odd} من الأعداد فردية، فالمجموع ${par ? 'فردي' : 'زوجي'}. اشطب كل خيار ${par ? 'زوجي' : 'فردي'}، ويبقى خيار واحد.`); }
+      const rd = n => { if (n < 10) return n; const p = 10 ** Math.floor(Math.log10(n)); return Math.round(n / p) * p; };
+      const rn = nums.map(rd); if (rn.every((x, i) => x === nums[i])) continue;
+      const est = op === '×' ? rn.reduce((a, b) => a * b, 1) : rn.reduce((a, b) => a + b, 0);
+      const dist = vals.map(v => Math.abs(v - est) / est), best = dist.indexOf(Math.min(...dist));
+      if (best === s.answer && dist.every((d, i) => i === best || (d > dist[best] * 3 && d > .12)))
+        return out('est', `قرّب الأعداد: ${rn.join(` ${op} `)} = ${est}، والخيار الأقرب له هو الجواب.`);
+      continue;
+    }
+    if (/س/.test(e) && e.split('=').length === 2 && !/[صعن]/.test(e)) {
+      const [Ls, Rs] = e.split('=');
+      const val = (t, v) => { const x = t.replace(/×/g, '*').replace(/÷/g, '/').replace(/[−–]/g, '-').replace(/س²/g, '(س**2)').replace(/(\d)\s*س/g, '$1*س').replace(/(\d|\))\s*\(/g, '$1*(').replace(/س/g, `(${v})`);
+        return /^[\d+\-*/().\s]+$/.test(x) ? Function('"use strict";return (' + x + ')')() : NaN; };
+      const fit = vals.map(v => { const a = val(Ls, v), b = val(Rs, v); return isFinite(a) && isFinite(b) && Math.abs(a - b) < 1e-9; });
+      if (fit.filter(Boolean).length === 1 && fit[s.answer]) return out('try', `بدل ما تحل المعادلة، عوّض الخيارات مكان س: مع س = ${ans} يتساوى الطرفان.`);
+    }
+  }
+  return null;
+}
 function numericAnswer(s) {
   if (!s.choices || s.choices === CMP) return null;
   /* the question itself points at the choices ("which of the following…"), or more than one number could fit: keep the choices */
@@ -6469,6 +6622,11 @@ function runPlayer(P) {
       hb.onclick = () => { if (hinted) return; hinted = true; FX.play('tap'); hb.disabled = true; qt.after(h('div', 'hintbox', fmt(s.hint))); };
       qt.appendChild(hb);
     }
+    if (!exam && moveOf(s)) {
+      const mb = h('button', 'tool move', `<span aria-hidden="true">⚡</span><span>لا تحسب</span>`);
+      mb.onclick = () => { FX.play('tap'); mb.disabled = true; qt.after(h('div', 'hintbox movebox', `فيه طريقة أسرع من الحساب: جرّب <b>حركة ${moveOf(s).name}</b>.`)); };
+      qt.appendChild(mb);
+    }
     const order = (s.choices === CMP || s.keep) ? s.choices.map((_, i) => i) : shuffle(s.choices.map((_, i) => i));
     const opts = h('div', 'opts');
     let sel = null;
@@ -6494,7 +6652,8 @@ function runPlayer(P) {
     check = learning ? confDock() : setDock('', '', '', exam ? 'التالي' : 'تحقّق', () => answer(sel), false);
     let typed = false;
     /* 1) write your own answer first (numeric answers) */
-    const numAns = learning && !again ? numericAnswer(s) : null;
+    const mv = !exam ? moveOf(s) : null; // a smart move exists: keep the choices on screen, they are part of the move
+    const numAns = learning && !again && !mv ? numericAnswer(s) : null;
     /* 2) name the relation first (verbal analogy) */
     const relAns = learning && !again && !numAns ? relationFirst(s) : null;
     if (numAns || relAns) {
@@ -6557,7 +6716,7 @@ function runPlayer(P) {
       } else { FX.play('wrong'); FX.buzz([30, 50, 30]); }
       if (s.sol && s.sol.length) { const sb = solutionBox(s.sol, !ok); body.appendChild(sb); if (!ok) setTimeout(() => { const r = sb.getBoundingClientRect(), over = r.bottom - (innerHeight - dock.offsetHeight) + 12; if (over > 0) window.scrollBy({ top: over, behavior: 'smooth' }); }, 80); }
       const confNote = conf === 'typed' ? 'حللتها بدون خيارات (+١ إضافية). ' : !ok && conf === 'sure' ? 'أخطأت وأنت متأكد: هذا أهم نوع من الأخطاء، وسيعود إليك في المراجعة أولًا. ' : ok && conf === 'guess' ? 'أصبت بالتخمين، لذلك سيعود إليك هذا السؤال في المراجعة لتثبته. ' : '';
-      setDock(ok ? 'ok' : 'bad', ok ? 'إجابة صحيحة' : (timeout ? 'انتهى الوقت' : 'إجابة غير صحيحة'), (confNote ? `<span class="confnote">${confNote}</span>` : '') + (s.why || ''), 'متابعة', () => { idx++; render(); }, true);
+      setDock(ok ? 'ok' : 'bad', ok ? 'إجابة صحيحة' : (timeout ? 'انتهى الوقت' : 'إجابة غير صحيحة'), (confNote ? `<span class="confnote">${confNote}</span>` : '') + (s.why || '') + (mv ? `<span class="movenote">⚡ <b>حركة ${mv.name}</b>: ${mv.text}</span>` : ''), 'متابعة', () => { idx++; render(); }, true);
     }
   }
 
@@ -8328,7 +8487,7 @@ function dgPlanRail() {
 }
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen, moveOf, MOVES: typeof MOVES !== "undefined" ? MOVES : [] } };
 })();
 /* ================= academy shell =================
    Hosts every course block (window.AcademyCourses) in one page:
