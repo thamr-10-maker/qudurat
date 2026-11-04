@@ -1135,7 +1135,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793567622"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793772950"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -1978,14 +1978,17 @@ const units = () => DISTRICTS.filter(d => !d.exam && !d.soon);
 const unitNo = d => units().indexOf(d) + 1;
 /* free plan: the academy can open only the first N units of each section (and keep mock exams for subscribers) */
 const plan = () => (window.Academy && window.Academy.plan) || null;
+const LT = (e, o) => { try { if (window.LeenaTrack) window.LeenaTrack(e, Object.assign({ course: COURSE.id }, o)); } catch (x) {} };
+let LT_LESSON = null; // the lesson being played, for the statistics
 const locked = d => { const p = plan(); if (COURSE.tier === 'full' || !p || p.free == null || !d) return false; /* a subscriber's full course opens everything */ return d.exam ? !!p.lockExams : unitNo(d) > p.free; };
 const openUnits = () => units().filter(d => !locked(d));
 function showPaywall(d) {
+  LT('paywall', { val: d ? d.name : '' });
   screen(d && d.color);
   hud('', showCity).classList.add('over');
   const w = h('div', 'gut unitpage'); const p = plan() || {};
   const pv = poster('billboard short', d || units()[0], `<div class="bb-body"><small class="eyebrow">${d ? d.name : COURSE.section}</small><h1>هذه الوحدة للمشتركين</h1><p>${p.paywall || p.paywallText || `الوحدات الأولى مجانية. الاشتراك يفتح كل الوحدات والاختبارات التجريبية، ويفتح قريبًا.`}</p><div class="bb-act"></div></div>`);
-  if (p.paywallLink) { const a = h('a', 'play-btn', `<span>${p.paywallCta || 'تابعنا لتعرف موعد الاشتراك'}</span>`); a.href = p.paywallLink; a.target = '_blank'; a.rel = 'noopener'; pv.querySelector('.bb-act').appendChild(a); }
+  if (p.paywallLink) { const a = h('a', 'play-btn', `<span>${p.paywallCta || 'تابعنا لتعرف موعد الاشتراك'}</span>`); a.href = p.paywallLink; a.target = '_blank'; a.rel = 'noopener'; a.addEventListener('click', () => LT('wa_click', { val: 'paywall' })); pv.querySelector('.bb-act').appendChild(a); }
   if (window.LeenaAuth) { const li = h('button', p.paywallLink ? 'ghost-btn' : 'play-btn', `<span>${window.LeenaAuth.user ? 'حسابك لا يشمل هذه الدورة' : 'عندي حساب: تسجيل الدخول'}</span>`); li.onclick = () => window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); pv.querySelector('.bb-act').appendChild(li); }
   w.appendChild(pv);
   const free = openUnits(); if (free.length) { const b = h('button', 'textlink', `ارجع إلى الوحدات المجانية (${ar(free.length)})`); b.onclick = showCity; w.appendChild(b); }
@@ -1997,6 +2000,7 @@ const REVIEW_GAPS = [1, 3, 7];
 function mistakeKey(s) { return s.qid || ('g:' + s.q + '|' + (s.a || '') + '|' + (s.b || '')); }
 /* every answer goes through here: skill per topic + the mistakes notebook */
 function recordAnswer(s, ok, mode, conf) {
+  LT('answer', { lesson: LT_LESSON || s.dist, val: ok ? 'ok' : 'no' });
   S.answered++; if (ok) S.right++;
   if (conf && conf !== 'typed') { const c = S.conf || (S.conf = {}); const e = c[conf] || (c[conf] = [0, 0]); e[0]++; if (ok) e[1]++; }
   const lucky = ok && conf === 'guess';
@@ -2319,7 +2323,9 @@ function runPlayer(P) {
   const wrap = h('div', 'player');
   const top = h('div', 'ptop gut');
   const x = h('button', 'xbtn', ic('close', 22)); x.setAttribute('aria-label', 'خروج');
-  x.onclick = () => { FX.play('tap'); if (endless && log.length) { idx = queue.length; render(); } else back(); };
+  const LTL = P.lesson ? P.lesson.id : null; LT_LESSON = LTL || (P.d ? P.d.id : P.mode);
+  LT(P.mode === 'lesson' ? 'lesson_start' : 'start', { lesson: LT_LESSON, val: P.mode });
+  x.onclick = () => { FX.play('tap'); if (idx < queue.length) LT(P.mode === 'lesson' ? 'lesson_exit' : 'quit', { lesson: LT_LESSON, n: idx + 1, val: P.mode }); if (endless && log.length) { idx = queue.length; render(); } else back(); };
   const pbar = h('div', 'pbar', '<i style="width:0%"></i>');
   const comboEl = h('span', 'combo');
   const timerEl = h('span', 'ptimer'); timerEl.hidden = !(P.timer || P.total);
@@ -2652,7 +2658,7 @@ function runPlayer(P) {
     }
     if (!exam && moveOf(s)) {
       const mb = h('button', 'tool move', `<span aria-hidden="true">⚡</span><span>لا تحسب</span>`);
-      mb.onclick = () => { FX.play('tap'); mb.disabled = true; qt.after(h('div', 'hintbox movebox', `فيه طريقة أسرع من الحساب: جرّب <b>حركة ${moveOf(s).name}</b>.`)); };
+      mb.onclick = () => { LT('move_hint', { lesson: LT_LESSON }); FX.play('tap'); mb.disabled = true; qt.after(h('div', 'hintbox movebox', `فيه طريقة أسرع من الحساب: جرّب <b>حركة ${moveOf(s).name}</b>.`)); };
       qt.appendChild(mb);
     }
     const order = (s.choices === CMP || s.keep) ? s.choices.map((_, i) => i) : shuffle(s.choices.map((_, i) => i));
@@ -2756,6 +2762,7 @@ function runPlayer(P) {
   }
 
   function finish() {
+    LT(P.mode === 'lesson' ? 'lesson_done' : 'finish', { lesson: LT_LESSON, n: log.length ? Math.round(100 * correct / log.length) : null, val: P.mode });
     clearInterval(tick); clearInterval(totalTick); FX.stop();
     pane.innerHTML = ''; body = pane; pane.classList.remove('paged'); window.scrollTo(0, 0); comboEl.textContent = ''; ttl.remove();
     let stars = 0, headline = '';
@@ -4393,6 +4400,7 @@ function dgLabels(R) {
   return { status, guessed };
 }
 function dgFinish(R) {
+  LT('placement_done');
   const { status, guessed } = dgLabels(R);
   const prev = S.diag || {};
   S.diag = { v: 1, at: Date.now(), status, guessed, misses: R.misses, used: R.used, n: R.n, secs: Math.round(R.secs), first: prev.first || Object.assign({}, status), history: (prev.history || []).concat([{ at: Date.now(), n: R.n, counts: dgCounts(status) }]).slice(-6), run: null, slips: {} };
@@ -4509,6 +4517,7 @@ function dgAsk(V, q, limit, done, opt = {}) {
 
 /* the start page */
 function dgIntro() {
+  LT('placement_open');
   screen();
   hud('', showCity).classList.add('over');
   const w = h('div', 'unitpage');
@@ -5950,14 +5959,17 @@ const units = () => DISTRICTS.filter(d => !d.exam && !d.soon);
 const unitNo = d => units().indexOf(d) + 1;
 /* free plan: the academy can open only the first N units of each section (and keep mock exams for subscribers) */
 const plan = () => (window.Academy && window.Academy.plan) || null;
+const LT = (e, o) => { try { if (window.LeenaTrack) window.LeenaTrack(e, Object.assign({ course: COURSE.id }, o)); } catch (x) {} };
+let LT_LESSON = null; // the lesson being played, for the statistics
 const locked = d => { const p = plan(); if (COURSE.tier === 'full' || !p || p.free == null || !d) return false; /* a subscriber's full course opens everything */ return d.exam ? !!p.lockExams : unitNo(d) > p.free; };
 const openUnits = () => units().filter(d => !locked(d));
 function showPaywall(d) {
+  LT('paywall', { val: d ? d.name : '' });
   screen(d && d.color);
   hud('', showCity).classList.add('over');
   const w = h('div', 'gut unitpage'); const p = plan() || {};
   const pv = poster('billboard short', d || units()[0], `<div class="bb-body"><small class="eyebrow">${d ? d.name : COURSE.section}</small><h1>هذه الوحدة للمشتركين</h1><p>${p.paywall || p.paywallText || `الوحدات الأولى مجانية. الاشتراك يفتح كل الوحدات والاختبارات التجريبية، ويفتح قريبًا.`}</p><div class="bb-act"></div></div>`);
-  if (p.paywallLink) { const a = h('a', 'play-btn', `<span>${p.paywallCta || 'تابعنا لتعرف موعد الاشتراك'}</span>`); a.href = p.paywallLink; a.target = '_blank'; a.rel = 'noopener'; pv.querySelector('.bb-act').appendChild(a); }
+  if (p.paywallLink) { const a = h('a', 'play-btn', `<span>${p.paywallCta || 'تابعنا لتعرف موعد الاشتراك'}</span>`); a.href = p.paywallLink; a.target = '_blank'; a.rel = 'noopener'; a.addEventListener('click', () => LT('wa_click', { val: 'paywall' })); pv.querySelector('.bb-act').appendChild(a); }
   if (window.LeenaAuth) { const li = h('button', p.paywallLink ? 'ghost-btn' : 'play-btn', `<span>${window.LeenaAuth.user ? 'حسابك لا يشمل هذه الدورة' : 'عندي حساب: تسجيل الدخول'}</span>`); li.onclick = () => window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); pv.querySelector('.bb-act').appendChild(li); }
   w.appendChild(pv);
   const free = openUnits(); if (free.length) { const b = h('button', 'textlink', `ارجع إلى الوحدات المجانية (${ar(free.length)})`); b.onclick = showCity; w.appendChild(b); }
@@ -5969,6 +5981,7 @@ const REVIEW_GAPS = [1, 3, 7];
 function mistakeKey(s) { return s.qid || ('g:' + s.q + '|' + (s.a || '') + '|' + (s.b || '')); }
 /* every answer goes through here: skill per topic + the mistakes notebook */
 function recordAnswer(s, ok, mode, conf) {
+  LT('answer', { lesson: LT_LESSON || s.dist, val: ok ? 'ok' : 'no' });
   S.answered++; if (ok) S.right++;
   if (conf && conf !== 'typed') { const c = S.conf || (S.conf = {}); const e = c[conf] || (c[conf] = [0, 0]); e[0]++; if (ok) e[1]++; }
   const lucky = ok && conf === 'guess';
@@ -6291,7 +6304,9 @@ function runPlayer(P) {
   const wrap = h('div', 'player');
   const top = h('div', 'ptop gut');
   const x = h('button', 'xbtn', ic('close', 22)); x.setAttribute('aria-label', 'خروج');
-  x.onclick = () => { FX.play('tap'); if (endless && log.length) { idx = queue.length; render(); } else back(); };
+  const LTL = P.lesson ? P.lesson.id : null; LT_LESSON = LTL || (P.d ? P.d.id : P.mode);
+  LT(P.mode === 'lesson' ? 'lesson_start' : 'start', { lesson: LT_LESSON, val: P.mode });
+  x.onclick = () => { FX.play('tap'); if (idx < queue.length) LT(P.mode === 'lesson' ? 'lesson_exit' : 'quit', { lesson: LT_LESSON, n: idx + 1, val: P.mode }); if (endless && log.length) { idx = queue.length; render(); } else back(); };
   const pbar = h('div', 'pbar', '<i style="width:0%"></i>');
   const comboEl = h('span', 'combo');
   const timerEl = h('span', 'ptimer'); timerEl.hidden = !(P.timer || P.total);
@@ -6624,7 +6639,7 @@ function runPlayer(P) {
     }
     if (!exam && moveOf(s)) {
       const mb = h('button', 'tool move', `<span aria-hidden="true">⚡</span><span>لا تحسب</span>`);
-      mb.onclick = () => { FX.play('tap'); mb.disabled = true; qt.after(h('div', 'hintbox movebox', `فيه طريقة أسرع من الحساب: جرّب <b>حركة ${moveOf(s).name}</b>.`)); };
+      mb.onclick = () => { LT('move_hint', { lesson: LT_LESSON }); FX.play('tap'); mb.disabled = true; qt.after(h('div', 'hintbox movebox', `فيه طريقة أسرع من الحساب: جرّب <b>حركة ${moveOf(s).name}</b>.`)); };
       qt.appendChild(mb);
     }
     const order = (s.choices === CMP || s.keep) ? s.choices.map((_, i) => i) : shuffle(s.choices.map((_, i) => i));
@@ -6728,6 +6743,7 @@ function runPlayer(P) {
   }
 
   function finish() {
+    LT(P.mode === 'lesson' ? 'lesson_done' : 'finish', { lesson: LT_LESSON, n: log.length ? Math.round(100 * correct / log.length) : null, val: P.mode });
     clearInterval(tick); clearInterval(totalTick); FX.stop();
     pane.innerHTML = ''; body = pane; pane.classList.remove('paged'); window.scrollTo(0, 0); comboEl.textContent = ''; ttl.remove();
     let stars = 0, headline = '';
@@ -8187,6 +8203,7 @@ function dgLabels(R) {
   return { status, guessed };
 }
 function dgFinish(R) {
+  LT('placement_done');
   const { status, guessed } = dgLabels(R);
   const prev = S.diag || {};
   S.diag = { v: 1, at: Date.now(), status, guessed, misses: R.misses, used: R.used, n: R.n, secs: Math.round(R.secs), first: prev.first || Object.assign({}, status), history: (prev.history || []).concat([{ at: Date.now(), n: R.n, counts: dgCounts(status) }]).slice(-6), run: null, slips: {} };
@@ -8303,6 +8320,7 @@ function dgAsk(V, q, limit, done, opt = {}) {
 
 /* the start page */
 function dgIntro() {
+  LT('placement_open');
   screen();
   hud('', showCity).classList.add('over');
   const w = h('div', 'unitpage');
@@ -8489,6 +8507,54 @@ function dgPlanRail() {
 window.AcademyCourses = window.AcademyCourses || {};
 window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, persist, DISTRICTS, units, openUnits, predictScore, dueMistakes, playLesson, playReview, showDistrict, showProfile, nextLesson, dgIntro, dgOn, dgPlan, dgRun }, _dev: { DISTRICTS, runPlayer, playLesson, playBoss, playPractice, showDistrict, showCity, playExam, examPool, allQuestions, playEndless, playReview, playPlacement, showReport, showProfile, showSummaries, DROPPED, numericAnswer, GEN, genQuestion, predictScore, dueMistakes, CMP, S, BANK, sv, svText, svLabel, buildKit, SKILLS, DIAG, dgGraph, dgNewRun, dgP, dgPick, dgRecord, dgLabels, dgFinish, dgPlan, dgIntro, dgRun, dgResult, dgGate, dgPractice, dgConfirm, dgSkipTest, nextLesson, cleared, dgState, dgLesson, dgLimit, dgQuestion, dgFast, DG_BUDGET, dgAsk, dgScreen, moveOf, MOVES: typeof MOVES !== "undefined" ? MOVES : [] } };
 })();
+/* ================= visitor statistics (public site only) =================
+   Small anonymous events go to the events table (site/supabase/003_events.sql); only the admin can read them.
+   No names, no phone numbers: a phone is a random code kept on that phone. A logged-in subscriber's
+   events carry their account (the database fills it in). Nothing here ever blocks or slows the site. */
+(function () {
+  const CFG = (window.ACADEMY_CONFIG || {}).auth;
+  if (!CFG || !window.fetch) return;
+  const rnd = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+  let vid = null, back = 0;
+  try { vid = localStorage.getItem('leena-vid'); back = vid ? 1 : 0; if (!vid) { vid = rnd(); localStorage.setItem('leena-vid', vid); } } catch (e) { vid = vid || rnd(); }
+  const sid = rnd(), q = [];
+  const ua = navigator.userAgent || '';
+  const P = new URLSearchParams(location.search);
+  const ref = (() => { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })();
+  const source = P.get('utm_source') || P.get('src') ||
+    (/musical_ly|tiktok|bytedance/i.test(ua) || /tiktok/.test(ref) ? 'tiktok' : /Instagram/.test(ua) || /instagram/.test(ref) ? 'instagram' : /Snapchat/i.test(ua) ? 'snapchat' :
+     /WhatsApp/i.test(ua) || /whatsapp/.test(ref) ? 'whatsapp' : /twitter|x\.com|t\.co/.test(ref) ? 'x' : /google/.test(ref) ? 'google' : ref && ref !== location.hostname ? ref.slice(0, 30) : 'direct');
+  const device = (/iPhone|iPad|iPod/.test(ua) ? 'ios' : /Android/.test(ua) ? 'android' : 'desktop');
+  function token() { try { const s = JSON.parse(localStorage.getItem('leena-auth') || 'null'); if (s && s.access_token && (!s.expires_at || s.expires_at * 1000 > Date.now() + 30000)) return s.access_token; } catch (e) {} return CFG.key; }
+  function flush(leaving) {
+    if (!q.length) return;
+    const rows = q.splice(0, q.length);
+    try {
+      fetch(CFG.url + '/rest/v1/events', { method: 'POST', keepalive: !!leaving, body: JSON.stringify(rows),
+        headers: { apikey: CFG.key, Authorization: 'Bearer ' + token(), 'Content-Type': 'application/json', Prefer: 'return=minimal' } }).catch(() => {});
+    } catch (e) {}
+  }
+  const seen = new Set();
+  window.LeenaTrack = (ev, o) => {
+    o = o || {};
+    if (o.once) { const k = ev + '|' + (o.lesson || '') + '|' + (o.val || ''); if (seen.has(k)) return; seen.add(k); }
+    const row = { vid, sid, ev: String(ev).slice(0, 30) };
+    if (o.course) row.course = String(o.course).slice(0, 40);
+    if (o.lesson) row.lesson = String(o.lesson).slice(0, 40);
+    if (o.n != null && isFinite(o.n)) row.n = Math.round(o.n);
+    if (o.val != null) row.val = String(o.val).slice(0, 120);
+    q.push(row); if (q.length >= 20) flush();
+  };
+  setInterval(flush, 5000);
+  /* time actually spent on the page (seconds the tab was visible) */
+  let shown = Date.now(), active = 0;
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { active += (Date.now() - shown) / 1000; window.LeenaTrack('leave', { n: active }); flush(true); }
+    else shown = Date.now();
+  });
+  window.LeenaTrack('visit', { n: back, val: `${source}|${device}` });
+})();
+
 /* ================= academy shell =================
    Hosts every course block (window.AcademyCourses) in one page:
    home (continue · standing · sections · practice), a shared profile, and the question bank
@@ -8496,6 +8562,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
 (function () {
   const C = window.AcademyCourses || {};
   const CFG = window.ACADEMY_CONFIG || {};
+  const LT = (e, o) => { try { if (window.LeenaTrack) window.LeenaTrack(e, o); } catch (x) {} };
   for (const id of Object.keys(C)) if (C[id].init) C[id].init();
   const SECTIONS = [
     { id: 'qudurat-quant', title: 'القسم الكمّي', glyph: '١٢٣', pc: 'var(--p4)' },
@@ -8551,8 +8618,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
   const isNew = () => CFG.landing && !A.browse && !(window.LeenaAuth && window.LeenaAuth.user) &&
     SECTIONS.every(s => { const S = C[s.id].api.S; return !S.answered && !Object.keys(S.done || {}).length; });
   function firstLesson(id) { const api = C[id].api, d = (api.openUnits ? api.openUnits() : api.units())[0] || api.units()[0]; return { d, l: d.lessons[0] }; }
-  const startFree = () => { const id = SECTIONS[0].id, f = firstLesson(id); enter(id, a => a.playLesson(f.d, f.l)); };
-  const browse = () => { A.browse = true; save(); home(); };
+  const startFree = () => { LT('cta_free'); const id = SECTIONS[0].id, f = firstLesson(id); enter(id, a => a.playLesson(f.d, f.l)); };
+  const browse = () => { LT('browse_all'); A.browse = true; save(); home(); };
   function pizza() {
     const box = el('div', 'lp-try');
     const R = 92, P = (a) => `${100 + R * Math.sin(a)} ${100 - R * Math.cos(a)}`;
@@ -8563,14 +8630,14 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
       <p class="lp-msg" aria-live="polite">اضغط على القطع</p><div class="lp-next"></div>`;
     const on = new Set(), msg = box.querySelector('.lp-msg'), nx = box.querySelector('.lp-next');
     box.querySelectorAll('.lp-sl').forEach(s => { s.setAttribute('tabindex', '0'); const t = () => {
-      const i = +s.dataset.i; on.has(i) ? on.delete(i) : on.add(i); s.classList.toggle('on', on.has(i));
+      LT('pizza_tap', { once: true }); const i = +s.dataset.i; on.has(i) ? on.delete(i) : on.add(i); if (on.size === 4) LT('pizza_all4', { once: true }); if (on.size === 3) LT('pizza_win', { once: true }); s.classList.toggle('on', on.has(i));
       box.querySelector('.lp-n').textContent = ar(on.size); box.querySelector('.lp-c').textContent = ar(on.size);
       box.classList.toggle('won', on.size === 3);
       msg.innerHTML = on.size === 3 ? '<b>صح!</b> المقام ٤ عدد القطع كلها، والبسط ٣ القطع اللي لوّنتها. فهمتها بيدك، بدون حفظ.'
         : on.size === 4 ? 'لوّنت البيتزا كاملة، هذي <b>٤ من ٤</b>. شيل قطعة.' : on.size ? 'كمّل…' : 'اضغط على القطع';
       if (on.size === 3 && !nx.children.length) {
         const a = el('button', 'lp-cta', `${ic('play', 18)}<span>ابدأ أول درس مجانًا</span>`); a.onclick = startFree;
-        const b = el('button', 'lp-ghost', '<span>اعرف مستواك أولًا</span>'); b.onclick = () => enter(SECTIONS[0].id, x => x.dgIntro && x.dgIntro());
+        const b = el('button', 'lp-ghost', '<span>اعرف مستواك أولًا</span>'); b.onclick = () => { LT('cta_level'); enter(SECTIONS[0].id, x => x.dgIntro && x.dgIntro()); };
         nx.append(a, b); }
     }; s.onclick = t; s.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } }; });
     return box;
@@ -8592,11 +8659,12 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     for (const s of SECTIONS) { const U = C[s.id].api.units(), total = U.reduce((a, d) => a + d.lessons.length, 0);
       const b = el('button', 'lp-course'); b.style.setProperty('--pc', s.pc);
       b.innerHTML = `<span class="glyph" aria-hidden="true">${s.glyph}</span><b>${s.title}</b><small>${ar(U.length)} وحدات · ${ar(total)} درسًا</small><span class="lp-free">الوحدة الأولى مجانية</span>`;
-      b.onclick = () => { A.browse = true; save(); enter(s.id); }; grid.appendChild(b); }
+      b.onclick = () => { LT('course_card', { course: s.id }); A.browse = true; save(); enter(s.id); }; grid.appendChild(b); }
     cs.appendChild(grid); w.appendChild(cs);
     if (WA) { const wa = el('section', 'lp-sec gut lp-wa');
       wa.innerHTML = `<h2>تبي الدورة كاملة؟</h2><p>راسلنا على واتساب، ونرتب اشتراكك ونرسل لك بيانات حسابك.</p>
         <a class="lp-wabtn" href="${WA}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg><span>راسلنا على واتساب</span></a>`;
+      wa.querySelector('.lp-wabtn').addEventListener('click', () => LT('wa_click', { val: 'landing' }));
       w.appendChild(wa); }
     const faq = el('section', 'lp-sec gut'); faq.innerHTML = '<h2>أسئلة شائعة</h2>' + [
       ['يشتغل على الجوال؟', 'نعم، من المتصفح مباشرة، بدون تطبيق ولا تحميل.'],
@@ -8605,6 +8673,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
       ['إلى متى الاشتراك؟', 'لكل اشتراك تاريخ انتهاء نتفق عليه قبل الدفع، ويظهر لك داخل حسابك.'],
       ['وش أقدر أجرب مجانًا؟', 'الوحدة الأولى من كل قسم مفتوحة لك كاملة، بدون تسجيل.'],
     ].map(([q, a]) => `<details class="lp-q"><summary>${q}</summary><p>${a}</p></details>`).join('');
+    faq.querySelectorAll('details').forEach((d, i) => d.addEventListener('toggle', () => { if (d.open) LT('faq_open', { val: d.querySelector('summary').textContent, once: true }); }));
     w.appendChild(faq);
     const more = el('div', 'gut lp-more'); const mb = el('button', 'textlink', 'تصفّح الأقسام كلها'); mb.onclick = browse; more.appendChild(mb); w.appendChild(more);
     app.appendChild(w);
@@ -8615,7 +8684,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     if (fromId && C[fromId]) syncFrom(fromId);
     if (location.hash === '#bank') { history.replaceState(null, '', location.pathname + location.search); }
     screen();
-    if (isNew()) return landing();
+    if (isNew()) { LT('home', { val: 'landing', once: true }); return landing(); }
+    LT('home', { val: 'dashboard', once: true });
     const top = hud(`<span class="wordmark">أكاديمية لينا</span>`);
     if (window.Academy && window.Academy.accountChip) top.appendChild(window.Academy.accountChip());
     const w = el('div', 'home');
@@ -8836,7 +8906,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     box.prepend(x); m.appendChild(box); m.onclick = e => { if (e.target === m) m.remove(); };
     document.body.appendChild(m); return { m, box };
   }
+  const LT = (e, o) => { try { if (window.LeenaTrack) window.LeenaTrack(e, o); } catch (x) {} };
   function openLogin() {
+    LT('login_open');
     const { m, box } = modal(`<h2>تسجيل الدخول</h2><p class="acct-sub">اكتب اسم المستخدم وكلمة المرور اللذين وصلاك.</p>
       <form class="acct-form"><label>اسم المستخدم<input id="lg-user" autocomplete="username" autocapitalize="none" spellcheck="false" dir="ltr" required></label>
       <label>كلمة المرور<input id="lg-pass" type="password" autocomplete="current-password" dir="ltr" required></label>
@@ -8847,6 +8919,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
       e.preventDefault(); err.hidden = true; go.disabled = true; go.querySelector('span').textContent = 'جارٍ الدخول…';
       const u = box.querySelector('#lg-user').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''), p = box.querySelector('#lg-pass').value;
       const { error } = await sb.auth.signInWithPassword({ email: u + '@leena.academy', password: p });
+      LT(error ? 'login_fail' : 'login_ok');
       if (error) { err.textContent = /invalid/i.test(error.message) ? 'اسم المستخدم أو كلمة المرور غير صحيحة.' : 'تعذّر الدخول الآن. تأكد من الإنترنت وحاول مرة ثانية.'; err.hidden = false; go.disabled = false; go.querySelector('span').textContent = 'دخول'; return; }
       go.querySelector('span').textContent = 'نفتح دوراتك…';
       try { await load(); } catch (e2) { console.warn(e2); }

@@ -43,6 +43,17 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 .pill.on{background:var(--accent-soft);color:var(--accent)}.pill.end{background:transparent;color:var(--ink2);border:1px solid var(--line)}.pill.soon{color:var(--warn);border:1px solid currentColor}
 .muted{color:var(--ink2);font-size:14px;margin:0}
 .tabs{display:flex;gap:6px}.tabs button{flex:1}.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:14px}
+.bar i{grid-column:1/-1;height:10px;border-radius:6px;background:var(--line);overflow:hidden;display:block}
+.bar i b{display:block;height:100%;background:var(--accent);border-radius:6px}
+.bar span:last-of-type{color:var(--ink2);font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:13px}
+.big3{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.big3 div{border:1px solid var(--line);border-radius:12px;padding:10px}.big3 b{font-size:24px;display:block}
+.cols{display:flex;align-items:flex-end;gap:4px;height:90px}.cols div{flex:1;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}.tbl th,.tbl td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:start}.tbl th{color:var(--ink2);font-weight:600}
+.tbl td.n{text-align:center;font-variant-numeric:tabular-nums}
+.tip{font-size:13px;color:var(--ink2);margin:6px 0 0}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -53,6 +64,7 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 const CFG = {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y"};
 const COURSES = [{ id: 'qudurat-quant', name: 'القدرات: الكمّي' }, { id: 'qudurat-verbal', name: 'القدرات: اللفظي' }];
 const SITE = 'https://leena-academy.pages.dev/';
+const TITLES = {"a1": "المتغير: صندوق فيه عدد", "a2": "المعادلة ميزان", "a3": "ترجمة الكلام إلى معادلة", "a4": "مسائل الأعمار", "a5": "الأعداد المتتالية", "a6": "المتباينات", "a7": "المتطابقات المشهورة", "a8": "معادلتان في مجهولين", "c1": "الخيارات الأربعة", "c2": "التعويض بالأعداد", "c3": "متى تكون المعطيات غير كافية؟", "c4": "قارن بدون حساب كامل", "c5": "تدريب مختلط", "x1": "اختبار قصير", "x2": "قسم كامل", "x3": "تحدي المقارنات", "x4": "الاختبار الشامل", "d1": "المتوسط الحسابي", "d2": "الوسيط والمنوال", "d3": "الأعمدة البيانية", "d4": "الخط البياني", "d5": "القطاعات الدائرية", "d6": "الجداول", "d7": "أشكال فن", "d8": "الاحتمالات", "f1": "ما هو الكسر؟", "f2": "الكسور المتكافئة والتبسيط", "f3": "مقارنة الكسور", "f4": "جمع الكسور وطرحها", "f5": "ضرب الكسور وقسمتها", "f6": "الأعداد الكسرية", "f7": "الكسور العشرية", "f8": "الكسر والعشري والنسبة", "g1": "النقطة والمستقيم", "g2": "الزاوية", "g3": "أصحاب الزوايا والساعة", "g4": "المستقيمات المتوازية", "g5": "المثلث", "g6": "المحيط", "g7": "المساحة", "g8": "نظرية فيثاغورس", "g9": "الدائرة", "g10": "المضلعات والرباعيات", "g11": "المجسمات والحجم", "g12": "المستوى الإحداثي", "g13": "التشابه", "m1": "المسافة والسرعة والزمن", "m2": "الالتقاء والمطاردة", "m3": "العمل المشترك", "m4": "وحدات الزمن", "m5": "أيام الأسبوع", "m6": "متوسط السرعة", "n1": "الخانات والقيمة المكانية", "n10": "لا تحسب: حركات الحل السريع", "n2": "خط الأعداد والأعداد السالبة", "n3": "ترتيب العمليات", "n4": "الزوجي والفردي", "n5": "قواعد قابلية القسمة", "n6": "الأعداد الأولية", "n7": "العوامل والمضاعفات", "n8": "ق.م.أ و م.م.أ", "n9": "ألغاز الأرقام", "t1": "المتتابعة الحسابية", "t2": "المتتابعة الهندسية", "t3": "أنماط مشهورة", "t4": "أنماط مختلطة", "t5": "ألغاز العد", "t6": "مجموع الأعداد المتتالية", "p1": "المربعات والمكعبات", "p2": "قوانين الأسس", "p3": "الأس صفر والأس السالب", "p4": "الجذور التربيعية", "p5": "تبسيط الجذور", "p6": "الفرق بين مربعين", "p7": "حيل الضرب السريع", "p8": "التقدير والتقريب", "r1": "معنى النسبة المئوية", "r2": "إيجاد نسبة من عدد", "r3": "الزيادة والنقصان", "r4": "الخصم والربح والخسارة", "r5": "النسب المتتالية", "r6": "تقسيم المقدار بنسبة", "r7": "التناسب الطردي والعكسي", "r8": "مقياس الرسم والوحدات", "a9": "الخطة الكاملة", "k1": "خمّن قبل أن تنظر", "k2": "إشارة «انتبه: عكس!»", "k3": "إشارة «متفقان»", "k4": "الصحبة اللغوية", "k5": "سؤال الفراغين", "k6": "تدريب مختلط", "e1": "ما الخطأ السياقي؟", "e2": "الفكرة العامة أولًا", "e3": "اصنع الخطأ بنفسك", "e4": "السبب والنتيجة", "e5": "تدريب مختلط", "o1": "ما المفردة الشاذة؟", "o2": "فخ القريب الشبيه", "x5": "الاختبار الشامل", "r9": "نصوص علمية", "r10": "نصوص من تاريخنا وثقافتنا", "w1": "الجذر وعائلة الكلمة", "w2": "المرادف والمضاد", "w3": "المعنى من السياق", "w4": "كلمة واحدة بعدة معانٍ", "w5": "التدرّج والفروق الدقيقة", "w6": "الكلمات التي تأتي معًا"};
 const app = document.getElementById('app');
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const ar = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
@@ -106,14 +118,59 @@ function loginScreen(msg, setup) {
 /* ---------- the tool ---------- */
 function shell() {
   app.innerHTML = `<header><h1>لوحة لينا</h1><button class="small" id="out">خروج</button></header>
-    <div class="tabs"><button data-t="new">طالب جديد</button><button data-t="list">الطلاب</button></div><div id="view"></div>`;
+    <div class="tabs"><button data-t="new">طالب جديد</button><button data-t="list">الطلاب</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
   document.getElementById('out').onclick = async () => { await sb.auth.signOut(); loginScreen(); };
   app.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.t; draw(); });
   draw();
 }
 function draw() {
   app.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
-  if (tab === 'new') newStudent(); else listStudents();
+  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else listStudents();
+}
+
+/* ---------- statistics: how many came and what they did ---------- */
+let statsDays = 7;
+const FUNNEL = [['visit', 'فتحوا الموقع'], ['pizza_tap', 'جرّبوا البيتزا'], ['pizza_win', 'حلّوا البيتزا'], ['cta_free', 'ضغطوا «ابدأ أول درس»'], ['lesson_start', 'بدأوا درسًا'],
+  ['lesson_done', 'أنهوا درسًا كاملًا'], ['paywall', 'وصلوا لرسالة الاشتراك'], ['wa_click', 'ضغطوا واتساب'], ['login_ok', 'دخلوا بحساب مشترك']];
+const OTHER = [['cta_level', 'ضغطوا «اعرف مستواك»'], ['placement_open', 'فتحوا اختبار المستوى'], ['placement_done', 'أنهوا اختبار المستوى'], ['course_card', 'ضغطوا بطاقة قسم'],
+  ['browse_all', 'ضغطوا «تصفّح الأقسام»'], ['pizza_all4', 'لوّنوا البيتزا كاملة (غلطة)'], ['move_hint', 'ضغطوا «⚡ لا تحسب»'], ['login_open', 'فتحوا نافذة الدخول'], ['login_fail', 'فشل دخولهم']];
+const SRC = { tiktok: 'تيك توك', direct: 'مباشر', whatsapp: 'واتساب', instagram: 'إنستقرام', snapchat: 'سناب', google: 'قوقل', x: 'إكس' };
+const DEV = { ios: 'آيفون', android: 'أندرويد', desktop: 'كمبيوتر' };
+const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b[1] - a[1]); return e.length ? `<div class="chips">${e.map(([k, v]) => `<span>${esc((names && names[k]) || k || '؟')} · <b>${ar(v)}</b></span>`).join('')}</div>` : '<p class="muted">لا يوجد بعد</p>'; };
+const when = t => { const d = new Date(t), m = Math.round((Date.now() - d) / 60000); return m < 60 ? `قبل ${ar(m)} دقيقة` : m < 1440 ? `قبل ${ar(Math.round(m / 60))} ساعة` : fmt(iso(d)); };
+async function stats() {
+  const view = document.getElementById('view');
+  const ranges = [[1, 'اليوم'], [7, 'آخر ٧ أيام'], [30, 'آخر ٣٠ يومًا'], [3650, 'الكل']];
+  view.innerHTML = `<div class="tabs" id="rg">${ranges.map(([d, t]) => `<button class="small${d === statsDays ? ' on' : ''}" data-d="${d}">${t}</button>`).join('')}</div><div id="sv" class="stack" style="margin-top:12px"><div class="card"><p class="muted">جارٍ التحميل…</p></div></div>`;
+  view.querySelectorAll('#rg button').forEach(b => b.onclick = () => { statsDays = +b.dataset.d; stats(); });
+  const from = new Date(); if (statsDays === 1) from.setHours(0, 0, 0, 0); else from.setTime(Date.now() - statsDays * 864e5);
+  const { data: S, error } = await sb.rpc('admin_stats', { p_from: from.toISOString() });
+  const sv = view.querySelector('#sv');
+  if (error) { sv.innerHTML = `<div class="card"><p class="err">${/admin_stats|function/i.test(error.message) ? 'الإحصاءات غير مفعّلة بعد: شغّل ملف الإحصاءات في Supabase مرة واحدة.' : esc(errText(error))}</p></div>`; return; }
+  const F = S.funnel || {}, C = S.counts || {}, V = S.visitors || 0;
+  if (!V) { sv.innerHTML = '<div class="card"><p class="muted">لا زيارات في هذه الفترة بعد. الإحصاءات تبدأ من يوم تفعيلها.</p></div>'; return; }
+  const top = F.visit || V;
+  const days = S.days || [], maxD = Math.max(1, ...days.map(d => d.v));
+  const hours = Object.entries(S.hours || {}).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const lessons = (S.lessons || []).filter(l => l.started || l.done);
+  sv.innerHTML = `
+    <div class="card"><div class="big3">
+      <div><b>${ar(V)}</b><span class="muted">زائر</span></div><div><b>${ar(S.new || 0)}</b><span class="muted">زائر جديد لأول مرة</span></div>
+      <div><b>${ar(S.minutes || 0)}</b><span class="muted">دقيقة متوسط الزيارة</span></div><div><b>${ar(F.wa_click || 0)}</b><span class="muted">ضغطوا واتساب</span></div></div>
+      <p class="tip">${ar(S.visits || 0)} زيارة. الزائر = جوال واحد، حتى لو فتح الموقع أكثر من مرة.</p></div>
+    <div class="card"><h2>رحلة الزائر</h2><div class="bars">${FUNNEL.map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(F[k] || 0)} · ${ar(pct(F[k] || 0, top))}٪</span><i><b style="width:${pct(F[k] || 0, top)}%"></b></i></div>`).join('')}</div>
+      <p class="tip">النسبة من الذين فتحوا الموقع. أكبر نزول بين خطوتين هو المكان اللي نخسر فيه الناس.</p></div>
+    <div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<h2 style="margin-top:12px">أجهزتهم</h2>${chips(S.devices, DEV)}</div>
+    ${days.length > 1 ? `<div class="card"><h2>الزوار كل يوم</h2><div class="cols">${days.map(d => `<div title="${d.d}: ${d.v}" style="height:${100 * d.v / maxD}%"></div>`).join('')}</div>
+      <p class="tip">من ${fmt(days[0].d)} إلى ${fmt(days[days.length - 1].d)} · أعلى يوم ${ar(maxD)} زائر</p></div>` : ''}
+    ${hours.length ? `<div class="card"><h2>أكثر الساعات زيارة</h2>${chips(Object.fromEntries(hours.map(([h, c]) => [`${ar(h)}:٠٠`, c])))}<p class="tip">بتوقيت السعودية. انشر قبلها بساعة تقريبًا.</p></div>` : ''}
+    <div class="card"><h2>الدروس</h2>${lessons.length ? `<table class="tbl"><tr><th>الدرس</th><th>بدأ</th><th>أنهى</th><th>يخرجون عند</th><th>صح</th></tr>${lessons.map(l => `<tr><td>${esc(TITLES[l.lesson] || l.lesson)}</td><td class="n">${ar(l.started)}</td><td class="n">${ar(l.done)}${l.started ? ` <small>(${ar(pct(l.done, l.started))}٪)</small>` : ''}</td><td class="n">${l.exit_step ? 'الخطوة ' + ar(l.exit_step) : '—'}</td><td class="n">${l.right + l.wrong ? ar(pct(l.right, l.right + l.wrong)) + '٪' : '—'}</td></tr>`).join('')}</table>
+      <p class="tip">«يخرجون عند»: أكثر خطوة يقفل عندها الطلاب الدرس قبل ما يكملونه. «صح»: نسبة الإجابات الصحيحة في الدرس.</p>` : '<p class="muted">لم يبدأ أحد درسًا بعد</p>'}</div>
+    <div class="card"><h2>رسالة الاشتراك</h2><p class="muted">ظهرت لهم عند:</p>${chips(S.paywall)}<h2 style="margin-top:12px">ضغطوا واتساب من</h2>${chips(S.wa_from, { landing: 'الصفحة الرئيسية', paywall: 'رسالة الاشتراك' })}</div>
+    <div class="card"><h2>الأسئلة الشائعة اللي فتحوها</h2>${chips(S.faq)}</div>
+    <div class="card"><h2>أشياء أخرى</h2><div class="bars">${OTHER.map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(F[k] || 0)}</span></div>`).join('')}</div></div>
+    <div class="card"><h2>نشاط المشتركين</h2>${(S.students || []).length ? `<table class="tbl"><tr><th>الطالب</th><th>آخر دخول</th><th>زيارات</th><th>دروس أنهاها</th></tr>${S.students.map(s => `<tr><td>${esc(s.name || s.username)}</td><td>${when(s.last)}</td><td class="n">${ar(s.visits)}</td><td class="n">${ar(s.lessons)}</td></tr>`).join('')}</table>` : '<p class="muted">لم يدخل مشترك في هذه الفترة</p>'}</div>`;
 }
 function coursePicker(access) {
   const box = document.createElement('div'); box.className = 'stack';
