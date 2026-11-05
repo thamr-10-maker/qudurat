@@ -1161,6 +1161,16 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .qt-act{display:flex;flex-direction:column;gap:10px;margin-top:18px}
 .qt-act .textlink{align-self:center}
 .qt-note{color:var(--ink-3);font-size:12px;margin-top:16px;line-height:1.7}
+.qt-journey{text-align:start;margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.qt-journey h3{font-family:var(--f-display);font-weight:600;font-size:19px;margin:0}
+.qt-journey>p{color:var(--ink-2);font-size:13.5px;margin:4px 0 10px;line-height:1.6}
+.qt-journey ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;position:relative}
+.qt-journey li{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--bg-2);cursor:pointer}
+.qt-journey .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:600;color:#fff;background:linear-gradient(135deg,#FF3EA5,#00D4FF)}
+.qt-journey li.strong .n{background:var(--line);color:var(--ink-2)}
+.qt-journey .t b{display:block;font-weight:600;font-size:15px}.qt-journey .t small{color:var(--ink-2);font-size:12.5px}
+.qt-journey .f{font-size:12px;color:var(--ok);font-weight:600}
+.qt-journey .more{color:var(--ink-3);font-size:12.5px;margin:8px 2px 0}
 
 .legal{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;padding:22px max(16px,env(safe-area-inset-left,0px)) 28px;font:13px/1.7 'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--ink-2,#5B6660);border-top:1px solid var(--line,#E1E3DD)}
 .legal a{color:inherit}.legal span{flex-basis:100%;text-align:center;font-size:12px;opacity:.8}
@@ -1172,7 +1182,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793865599"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793866196"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -9205,7 +9215,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
   const waLink = msg => CFG.whatsapp ? `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}` : '';
   const WA = waLink('السلام عليكم، أبغى أشترك في دورة القدرات');
   const WA_COURSE = waLink('السلام عليكم، أبغى أحوّل مقرري لتجربة تفاعلية');
-  const isNew = () => CFG.landing && !A.browse && !(window.LeenaAuth && window.LeenaAuth.user) &&
+  const isNew = () => CFG.landing && !A.browse && !A.quick && !(window.LeenaAuth && window.LeenaAuth.user) &&
     SECTIONS.every(s => { const S = C[s.id].api.S; return !S.answered && !Object.keys(S.done || {}).length; });
   function firstLesson(id) { const api = C[id].api, d = (api.openUnits ? api.openUnits() : api.units())[0] || api.units()[0]; return { d, l: d.lessons[0] }; }
   const startFree = () => { LT('cta_free'); const id = SECTIONS[0].id, f = firstLesson(id); enter(id, a => a.playLesson(f.d, f.l)); };
@@ -9285,9 +9295,28 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     const q = part('qudurat-quant'), v = part('qudurat-verbal');
     return { q, v, all: Math.round(q * QT_SHARE['qudurat-quant'] + v * QT_SHARE['qudurat-verbal']) };
   }
+  /* the personal journey made from the 5-minute test: weak areas first (in test order), then a quick review of the rest */
+  function makeJourney(log) {
+    const step = x => { const api = C[x.cid].api, d = api.DISTRICTS.find(u => u.id === x.slot.units[0]); const plan = CFG.plan || {};
+      const free = d ? api.units().indexOf(d) < (plan.free == null ? 99 : plan.free) : false;
+      return { cid: x.cid, key: x.slot.key, name: x.slot.name, unit: x.slot.units[0], weak: !x.ok, free }; };
+    return log.filter(x => !x.ok).map(step).concat(log.filter(x => x.ok).map(step));
+  }
+  function openStep(st) {
+    LT('journey_step', { course: st.cid, val: st.key });
+    enter(st.cid, api => { const d = api.DISTRICTS.find(u => u.id === st.unit); if (d) api.showDistrict(d); });
+  }
+  function journeyBox(J, max = 5) {
+    const box = el('div', 'qt-journey');
+    box.innerHTML = `<h3>رحلتك المصممة لك</h3><p>رتّبناها من نتيجتك: نبدأ باللي ينقصك، وبعدها مراجعة سريعة لنقاط قوتك.</p><ol>${J.slice(0, max).map((s, i) =>
+      `<li class="${s.weak ? 'weak' : 'strong'}"><span class="n">${ar(i + 1)}</span><span class="t"><b>${s.name}</b><small>${s.cid === 'qudurat-quant' ? 'الكمّي' : 'اللفظي'} · ${s.weak ? 'تحتاجه' : 'مراجعة سريعة'}</small></span><span class="f">${s.free ? 'مجاني' : '🔒'}</span></li>`).join('')}</ol>${J.length > max ? `<p class="more">و ${ar(J.length - max)} محطات بعدها</p>` : ''}`;
+    box.querySelectorAll('li').forEach((li, i) => li.onclick = () => openStep(J[i]));
+    return box;
+  }
   function quickResult(log, ms) {
     const sc = quickScore(log), mins = Math.max(1, Math.round(ms / 60000));
-    A.quick = { at: Date.now(), score: sc.all, q: sc.q, v: sc.v }; save();
+    const J = makeJourney(log);
+    A.quick = { at: Date.now(), score: sc.all, q: sc.q, v: sc.v }; A.journey = J; save();
     LT('qt_done', { n: sc.all, val: `${sc.q}|${sc.v}|${Math.round(ms / 1000)}s` });
     screen();
     const top = hud(`<span class="wordmark lp-brand">${LOGO}أكاديمية لينا</span>`, () => home());
@@ -9303,7 +9332,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
       <div class="qt-act"></div>
       <p class="qt-note">نتيجة تقديرية من ${ar(log.length)} سؤالًا في ${mins === 1 ? 'دقيقة' : mins === 2 ? 'دقيقتين' : ar(mins) + ' دقائق'}، وليست بديلًا عن الاختبار الحقيقي.</p>`;
     const act = w.querySelector('.qt-act');
-    const b1 = el('button', 'lp-cta', `${ic('play', 18)}<span>ابدأ أول درس مجانًا</span>`); b1.onclick = () => { LT('qt_cta', { val: 'free' }); startFree(); };
+    act.before(journeyBox(J));
+    const first = J.find(x => x.weak && x.free) || J[0];
+    const b1 = el('button', 'lp-cta', `${ic('play', 18)}<span>ابدأ رحلتك</span>`); b1.onclick = () => { LT('qt_cta', { val: 'journey' }); openStep(first); };
     act.appendChild(b1);
     if (WA) { const a = el('a', 'lp-wabtn', `<span>أبغى الدورة كاملة</span>`); a.href = waLink(`السلام عليكم، سويت اختبار المستوى وطلعت نتيجتي ${sc.all}، أبغى أشترك في دورة القدرات`); a.target = '_blank'; a.rel = 'noopener'; a.addEventListener('click', () => LT('wa_click', { val: 'quick_test' })); act.appendChild(a); }
     const again = el('button', 'textlink', 'أعد الاختبار'); again.onclick = () => { LT('qt_again'); quickTest(); }; act.appendChild(again);
@@ -9349,6 +9380,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     { const [secEl, row] = rail('تدرّب');
       const t = (icon, title, sub, fn, hot) => { const b = el('button', 'ptile' + (hot ? ' hot' : ''), `<span class="pt-ic">${ic(icon, 22)}</span><b>${title}</b><small>${sub}</small>`); b.onclick = fn; row.appendChild(b); };
       for (const s of SECTIONS) { const due = C[s.id].api.dueMistakes().length; if (due) t('review', 'مراجعة الأخطاء', `${s.title} · ${ar(due)}`, () => enter(s.id, a => a.playReview()), true); }
+      if (A.journey && A.journey.length) { const nx = A.journey.find(x => x.weak) || A.journey[0]; t('play', 'كمّل رحلتك', `${nx.name} · ${nx.cid === 'qudurat-quant' ? 'الكمّي' : 'اللفظي'}`, () => openStep(nx), true); }
       if (C['qudurat-quant'] && C['qudurat-verbal']) t('target', 'اختبر مستواك', A.quick ? `آخر نتيجة: ${ar(A.quick.score)} · أقل من ٥ دقائق` : 'الكمّي واللفظي · أقل من ٥ دقائق', () => { LT('qt_tile'); quickTest(); });
       if (canEdit) t('bank', 'بنك الأسئلة', `${ar(bankDocs.length)} منشور · ${ar(draftDocs.length)} للمراجعة`, showBank);
       if (row.children.length) w.appendChild(secEl); }
