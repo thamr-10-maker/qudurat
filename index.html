@@ -1172,6 +1172,42 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .qt-journey .f{font-size:12px;color:var(--ok);font-weight:600}
 .qt-journey .more{color:var(--ink-3);font-size:12.5px;margin:8px 2px 0}
 
+/* landing v4: three Netflix-style posters, one per screen */
+body:has(.lp4){background:#000}
+body:has(.lp4) .hud{background:#000;color:#fff}
+body:has(.lp4) .hud .title,body:has(.lp4) .hud .wordmark{color:#fff}
+body:has(.lp4) footer,body:has(.lp4) .foot,body:has(.lp4) .site-foot{background:#000;color:rgba(255,255,255,.6)}
+.lp4{background:#000;color:#fff}
+.lp4-p{position:relative;min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate}
+.lp4-art{position:absolute;inset:0 0 28% 0;z-index:-2}
+.lp4-fade{position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,#000,rgba(0,0,0,0) 14%),linear-gradient(to top,#000 34%,rgba(0,0,0,.75) 52%,rgba(0,0,0,0) 78%),radial-gradient(120% 60% at 50% 0,transparent 40%,rgba(0,0,0,.6))}
+.lp4-txt{padding-bottom:64px;max-width:560px;width:100%;margin:0 auto;text-align:start}
+.lp4-tag{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;letter-spacing:.3px;color:#ff7cc2}
+.lp4-tag::before{content:'';width:4px;height:16px;border-radius:2px;background:linear-gradient(#FF3EA5,#00D4FF)}
+.p2 .lp4-tag{color:#00D4FF}.p3 .lp4-tag{color:#FFB547}
+.lp4-p h2{font-family:var(--f-display);font-weight:700;font-size:clamp(52px,15vw,84px);line-height:1.1;margin:6px 0 10px;color:#fff}
+.lp4-p p{font-size:18px;color:rgba(255,255,255,.72);margin:0 0 24px}
+.lp4-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 34px;border:0;border-radius:10px;background:#fff;color:#000;font-family:var(--f-display);font-weight:700;font-size:18px;text-decoration:none;cursor:pointer}
+.lp4-btn:active{transform:scale(.97)}
+.lp4-btn.wa{background:#1FAF5A;color:#fff}
+.lp4-down{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:28px;color:rgba(255,255,255,.45);animation:lp4b 1.6s ease-in-out infinite}
+@keyframes lp4b{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+/* poster 1: floating symbols */
+.lp4-glyphs{position:absolute;inset:0}
+.lp4-glyphs span{position:absolute;font-family:var(--f-display);font-weight:700;line-height:1;opacity:.9;text-shadow:0 0 40px currentColor;animation:lp4f 7s ease-in-out infinite}
+@keyframes lp4f{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+.p1 .lp4-art{background:radial-gradient(70% 60% at 60% 40%,rgba(160,64,255,.45),transparent 70%)}
+/* poster 2: the 5-minute ring */
+.p2 .lp4-art{display:grid;place-items:center;background:radial-gradient(60% 55% at 50% 45%,rgba(0,140,255,.45),transparent 70%)}
+.lp4-ring{width:min(78vw,380px);height:auto;font-family:var(--f-display);filter:drop-shadow(0 0 30px rgba(0,212,255,.45));animation:lp4s 6s ease-in-out infinite}
+@keyframes lp4s{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+/* poster 3: a wall of course posters */
+.p3 .lp4-art{background:radial-gradient(70% 60% at 50% 40%,rgba(255,120,60,.35),transparent 70%)}
+.lp4-wall{position:absolute;inset:-12% -30%;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;transform:rotate(-10deg);animation:lp4w 18s linear infinite alternate}
+.lp4-wall i{font-style:normal;aspect-ratio:2/3;border-radius:14px;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:clamp(17px,4.6vw,28px);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+@keyframes lp4w{from{transform:rotate(-10deg) translateY(0)}to{transform:rotate(-10deg) translateY(-8%)}}
+@media (prefers-reduced-motion:reduce){.lp4-glyphs span,.lp4-ring,.lp4-wall,.lp4-down{animation:none}}
+
 .legal{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;padding:22px max(16px,env(safe-area-inset-left,0px)) 28px;font:13px/1.7 'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--ink-2,#5B6660);border-top:1px solid var(--line,#E1E3DD)}
 .legal a{color:inherit}.legal span{flex-basis:100%;text-align:center;font-size:12px;opacity:.8}
 body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
@@ -1182,7 +1218,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793866196"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1793978394"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -9247,23 +9283,27 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
   function landing() {
     const top = hud(`<span class="wordmark lp-brand">${LOGO}أكاديمية لينا</span>`);
     if (window.Academy && window.Academy.accountChip) top.appendChild(window.Academy.accountChip());
-    const w = el('div', 'landing lp2');
-    const hero = el('section', 'lp-hero gut');
-    hero.innerHTML = `<h1>ذاكر أي مقرر<br><em>بالتجربة، مو بالحفظ</em></h1><p class="lp-sub">دروس تضغط فيها وتسحب وتجرب بنفسك</p>`;
-    w.appendChild(hero);
-    const doors = el('section', 'lp-doors gut');
-    const d1 = el('a', 'lp-door d1', `<span class="tag">لأي طالب: جامعة أو مدرسة</span><b>أرسل مقررك، ونحوّله لك</b><small>نحوّله لدروس تفاعلية واختبارات ومراجعة</small><span class="go">📩</span>`);
-    if (WA_COURSE) { d1.href = WA_COURSE; d1.target = '_blank'; d1.rel = 'noopener'; } d1.addEventListener('click', () => LT('wa_click', { val: 'course_door' }));
-    const d2 = el('button', 'lp-door d2', `<span class="tag">مجاني · أقل من ٥ دقائق</span><b>اختبر مستواك في القدرات</b><small>١٢ سؤال كمّي ولفظي، وتطلع لك نتيجة تقديرية</small><span class="go">←</span>`);
-    d2.onclick = () => { LT('qt_door'); quickTest(); };
-    doors.append(d1, d2); w.appendChild(doors);
-    const how = el('section', 'lp-sec gut');
-    how.innerHTML = `<h2>كيف نحوّل مقررك؟</h2><div class="lp-steps"><div><i>📄</i>أرسل الملف على واتساب</div><div><i>✨</i>نحوّله لتجربة تفاعلية</div><div><i>🎮</i>تذاكر وأنت تجرب</div></div>`;
-    w.appendChild(how);
-    const demo = el('section', 'lp-sec gut'); demo.appendChild(pizza(true)); w.appendChild(demo);
-    if (WA_COURSE) { const wa = el('a', 'lp-wabtn gut-m', `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg><span>راسلنا واتساب</span>`); wa.href = WA_COURSE; wa.target = '_blank'; wa.rel = 'noopener';
-      wa.addEventListener('click', () => LT('wa_click', { val: 'landing' })); const box = el('div', 'gut lp-wa2'); box.appendChild(wa); w.appendChild(box); }
-    const more = el('div', 'gut lp-more'); const mb = el('button', 'textlink', 'أو ابدأ أول درس قدرات مجانًا'); mb.onclick = startFree; more.appendChild(mb); w.appendChild(more);
+    const w = el('div', 'landing lp4');
+    const WA_ICON = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+    /* posters: big art on top, a dark fade, then a huge title, one line, one button (Netflix style) */
+    const glyphs = [['√', 8, 14, 120, '#FF3EA5'], ['π', 62, 8, 150, '#a040ff'], ['٣⁄٤', 30, 34, 110, '#FFB547'], ['x²', 74, 40, 96, '#00D4FF'], ['أ', 14, 52, 130, '#ff7cc2'], ['%', 52, 58, 90, '#7CF0A8'], ['∠', 84, 18, 80, '#FFB547'], ['ب', 40, 4, 70, '#00D4FF']];
+    const art1 = glyphs.map(([g, x, y, sz, c], i) => `<span style="right:${x}%;top:${y}%;font-size:${sz}px;color:${c};animation-delay:-${i * 1.3}s">${g}</span>`).join('');
+    const art2 = `<svg viewBox="0 0 400 400" class="lp4-ring"><defs><linearGradient id="lp4g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00D4FF"/><stop offset="1" stop-color="#3a6bff"/></linearGradient></defs><circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="26"/><circle cx="200" cy="200" r="150" fill="none" stroke="url(#lp4g)" stroke-width="26" stroke-linecap="round" stroke-dasharray="942" stroke-dashoffset="190" transform="rotate(-90 200 200)"/><text x="200" y="235" text-anchor="middle" font-size="130" font-weight="700" fill="#fff">٥</text><text x="200" y="285" text-anchor="middle" font-size="30" fill="rgba(255,255,255,.7)">دقائق</text></svg>`;
+    const subj = [['طب', '#FF3EA5,#a040ff'], ['اقتصاد', '#FFB547,#FF3EA5'], ['تاريخ', '#00D4FF,#3a6bff'], ['فيزياء', '#7CF0A8,#00a8cc'], ['برمجة', '#a040ff,#3a6bff'], ['محاسبة', '#FFB547,#ff7a3a'], ['قانون', '#ff7cc2,#a040ff'], ['أحياء', '#1FAF5A,#00D4FF'], ['هندسة', '#ff7a3a,#FF3EA5'], ['كيمياء', '#00D4FF,#7CF0A8'], ['إحصاء', '#FF3EA5,#FFB547'], ['إدارة', '#3a6bff,#a040ff'], ['تمريض', '#ff7cc2,#FFB547'], ['رياضيات', '#a040ff,#00D4FF'], ['جغرافيا', '#1FAF5A,#FFB547'], ['أدب', '#ff7a3a,#a040ff']];
+    const art3 = `<div class="lp4-wall">${subj.map(([n, g]) => `<i style="background:linear-gradient(135deg,${g})">${n}</i>`).join('')}</div>`;
+    const poster = (cls, art, tag, title, line, btn, last) => {
+      const sec = el('section', 'lp4-p ' + cls);
+      sec.innerHTML = `<div class="lp4-art" aria-hidden="true">${art}</div><div class="lp4-fade"></div><div class="lp4-txt gut"><span class="lp4-tag">${tag}</span><h2>${title}</h2><p>${line}</p><div class="lp4-act"></div></div>` + (last ? '' : '<div class="lp4-down" aria-hidden="true">⌄</div>');
+      sec.querySelector('.lp4-act').appendChild(btn); return sec;
+    };
+    const PLAY = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M7 4.5v15l12-7.5z" transform="scale(-1,1) translate(-24,0)"/></svg>';
+    const b1 = el('button', 'lp4-btn', `${PLAY}<span>ابدأ مجانًا</span>`); b1.onclick = () => { LT('course_door'); startFree(); };
+    const b2 = el('button', 'lp4-btn', `${PLAY}<span>ابدأ الاختبار</span>`); b2.onclick = () => { LT('qt_door'); quickTest(); };
+    const b3 = el('a', 'lp4-btn wa', `${WA_ICON}<span>أرسل على واتساب</span>`);
+    if (WA_COURSE) { b3.href = WA_COURSE; b3.target = '_blank'; b3.rel = 'noopener'; } b3.addEventListener('click', () => LT('wa_click', { val: 'course_door' }));
+    w.appendChild(poster('p1', `<div class="lp4-glyphs">${art1}</div>`, 'دورة', 'القدرات', 'كمّي ولفظي… تفهمه بالتجربة', b1));
+    w.appendChild(poster('p2', art2, 'مجاني', 'اختبر مستواك', '٥ دقائق · ١٢ سؤال', b2));
+    w.appendChild(poster('p3', art3, 'لأي طالب', 'أرسل مقررك', 'ونحوّله لتجربة تفاعلية', b3, true));
     app.appendChild(w);
   }
 
