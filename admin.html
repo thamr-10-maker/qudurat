@@ -55,6 +55,8 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 .tbl td.n{text-align:center;font-variant-numeric:tabular-nums}
 .tip{font-size:13px;color:var(--ink2);margin:6px 0 0}
 [hidden]{display:none!important}
+.mebtn{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:12px;background:var(--ink,#eee);color:var(--bg,#111);text-decoration:none;font-weight:600}
+.path{font-size:15px;margin:14px 0 6px}.rg{flex-wrap:wrap}.rg button{flex:1 0 30%}
 </style>
 </head>
 <body>
@@ -129,11 +131,14 @@ function draw() {
 }
 
 /* ---------- statistics: how many came and what they did ---------- */
-let statsDays = 7;
-const FUNNEL = [['visit', 'فتحوا الموقع'], ['pizza_tap', 'جرّبوا البيتزا'], ['pizza_win', 'حلّوا البيتزا'], ['cta_free', 'ضغطوا «ابدأ أول درس»'], ['lesson_start', 'بدأوا درسًا'],
-  ['lesson_done', 'أنهوا درسًا كاملًا'], ['paywall', 'وصلوا لرسالة الاشتراك'], ['wa_click', 'ضغطوا واتساب'], ['login_ok', 'دخلوا بحساب مشترك']];
-const OTHER = [['cta_level', 'ضغطوا «اعرف مستواك»'], ['placement_open', 'فتحوا اختبار المستوى'], ['placement_done', 'أنهوا اختبار المستوى'], ['course_card', 'ضغطوا بطاقة قسم'],
-  ['browse_all', 'ضغطوا «تصفّح الأقسام»'], ['pizza_all4', 'لوّنوا البيتزا كاملة (غلطة)'], ['move_hint', 'ضغطوا «⚡ لا تحسب»'], ['login_open', 'فتحوا نافذة الدخول'], ['login_fail', 'فشل دخولهم']];
+let statsDays = 'd0';
+const PATHS = [
+  ['🎓 دورة القدرات', [['course_door', 'ضغطوا «ادخل الدورة»'], ['course_section', 'اختاروا قسم'], ['lesson_start', 'بدأوا درسًا'], ['lesson_done', 'أنهوا درسًا كاملًا'], ['paywall', 'وصلوا لرسالة الاشتراك']]],
+  ['⏱️ اختبر مستواك', [['qt_start', 'بدأوا الاختبار'], ['qt_done', 'أنهوا الاختبار'], ['journey_step', 'بدأوا رحلتهم']]],
+  ['📩 أرسل مقررك', [['wa_door', 'ضغطوا «أرسل على واتساب»']]],
+];
+const OTHER = [['qt_quit', 'تركوا الاختبار بالنص'], ['qt_again', 'أعادوا الاختبار'], ['wa_click', 'ضغطوا واتساب (من أي مكان)'], ['login_ok', 'دخلوا بحساب مشترك'],
+  ['login_open', 'فتحوا نافذة الدخول'], ['login_fail', 'فشل دخولهم'], ['move_hint', 'ضغطوا «⚡ لا تحسب»']];
 const SRC = { tiktok: 'تيك توك', direct: 'مباشر', whatsapp: 'واتساب', instagram: 'إنستقرام', snapchat: 'سناب', google: 'قوقل', x: 'إكس' };
 const DEV = { ios: 'آيفون', android: 'أندرويد', desktop: 'كمبيوتر' };
 const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
@@ -141,37 +146,49 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const when = t => { const d = new Date(t), m = Math.round((Date.now() - d) / 60000); return m < 60 ? `قبل ${ar(m)} دقيقة` : m < 1440 ? `قبل ${ar(Math.round(m / 60))} ساعة` : fmt(iso(d)); };
 async function stats() {
   const view = document.getElementById('view');
-  const ranges = [[1, 'اليوم'], [7, 'آخر ٧ أيام'], [30, 'آخر ٣٠ يومًا'], [3650, 'الكل']];
-  view.innerHTML = `<div class="tabs" id="rg">${ranges.map(([d, t]) => `<button class="small${d === statsDays ? ' on' : ''}" data-d="${d}">${t}</button>`).join('')}</div><div id="sv" class="stack" style="margin-top:12px"><div class="card"><p class="muted">جارٍ التحميل…</p></div></div>`;
-  view.querySelectorAll('#rg button').forEach(b => b.onclick = () => { statsDays = +b.dataset.d; stats(); });
-  const from = new Date(); if (statsDays === 1) from.setHours(0, 0, 0, 0); else from.setTime(Date.now() - statsDays * 864e5);
-  const { data: S, error } = await sb.rpc('admin_stats', { p_from: from.toISOString() });
+  const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
+  view.innerHTML = `<div class="tabs rg" id="rg">${ranges.map(([d, t]) => `<button class="small${d === statsDays ? ' on' : ''}" data-d="${d}">${t}</button>`).join('')}</div><div id="sv" class="stack" style="margin-top:12px"><div class="card"><p class="muted">جارٍ التحميل…</p></div></div>`;
+  view.querySelectorAll('#rg button').forEach(b => b.onclick = () => { statsDays = b.dataset.d; stats(); });
+  /* days follow Saudi time (UTC+3), whatever the phone's clock is set to */
+  const DAY = 864e5, KSA = 3 * 36e5, midnight = Math.floor((Date.now() + KSA) / DAY) * DAY - KSA;
+  const span = { d0: [midnight, Date.now() + 6e4], d1: [midnight - DAY, midnight], d2: [midnight - 2 * DAY, midnight - DAY], w: [midnight - 6 * DAY, Date.now() + 6e4], m: [midnight - 29 * DAY, Date.now() + 6e4], all: [Date.UTC(2024, 0, 1), Date.now() + 6e4] }[statsDays] || [midnight, Date.now() + 6e4];
+  const from = new Date(span[0]), to = new Date(span[1]);
+  const dayLabel = /^d/.test(statsDays) ? new Date(span[0] + KSA).toLocaleDateString('ar-SA-u-ca-gregory', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
+  const { data: S, error } = await sb.rpc('admin_stats', { p_from: from.toISOString(), p_to: to.toISOString() });
   const sv = view.querySelector('#sv');
   if (error) { sv.innerHTML = `<div class="card"><p class="err">${/admin_stats|function/i.test(error.message) ? 'الإحصاءات غير مفعّلة بعد: شغّل ملف الإحصاءات في Supabase مرة واحدة.' : esc(errText(error))}</p></div>`; return; }
-  const F = S.funnel || {}, C = S.counts || {}, V = S.visitors || 0;
-  if (!V) { sv.innerHTML = '<div class="card"><p class="muted">لا زيارات في هذه الفترة بعد. الإحصاءات تبدأ من يوم تفعيلها.</p></div>'; return; }
+  const F = Object.assign({}, S.funnel || {}, { wa_door: (S.wa_from || {}).course_door || 0 }), C = S.counts || {}, V = S.visitors || 0;
+  if (!V) { sv.innerHTML = '<div class="card"><p class="muted">لا زيارات في هذه الفترة.</p></div>' + meCard(); return; }
   const top = F.visit || V;
   const days = S.days || [], maxD = Math.max(1, ...days.map(d => d.v));
   const hours = Object.entries(S.hours || {}).sort((a, b) => b[1] - a[1]).slice(0, 3);
   const lessons = (S.lessons || []).filter(l => l.started || l.done);
-  sv.innerHTML = `
+  sv.innerHTML = `${dayLabel ? `<p class="muted" style="margin:0 4px">${dayLabel}</p>` : ''}
     <div class="card"><div class="big3">
       <div><b>${ar(V)}</b><span class="muted">زائر</span></div><div><b>${ar(S.new || 0)}</b><span class="muted">زائر جديد لأول مرة</span></div>
       <div><b>${ar(S.minutes || 0)}</b><span class="muted">دقيقة متوسط الزيارة</span></div><div><b>${ar(F.wa_click || 0)}</b><span class="muted">ضغطوا واتساب</span></div></div>
       <p class="tip">${ar(S.visits || 0)} زيارة. الزائر = جوال واحد، حتى لو فتح الموقع أكثر من مرة.</p></div>
-    <div class="card"><h2>رحلة الزائر</h2><div class="bars">${FUNNEL.map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(F[k] || 0)} · ${ar(pct(F[k] || 0, top))}٪</span><i><b style="width:${pct(F[k] || 0, top)}%"></b></i></div>`).join('')}</div>
-      <p class="tip">النسبة من الذين فتحوا الموقع. أكبر نزول بين خطوتين هو المكان اللي نخسر فيه الناس.</p></div>
+    <div class="card"><h2>وش سووا بعد ما فتحوا الموقع؟</h2>${PATHS.map(([name, steps]) => `<h3 class="path">${name}</h3><div class="bars">${steps.map(([k, t]) => { const v = F[k] || 0; return `<div class="bar"><span>${t}</span><span>${ar(v)} · ${ar(pct(v, top))}٪</span><i><b style="width:${pct(v, top)}%"></b></i></div>`; }).join('')}</div>`).join('')}
+      <p class="tip">من ${ar(top)} فتحوا الموقع. النسبة من الكل. أكبر نزول بين خطوتين هو المكان اللي نخسر فيه الناس.</p></div>
     <div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<h2 style="margin-top:12px">أجهزتهم</h2>${chips(S.devices, DEV)}</div>
     ${days.length > 1 ? `<div class="card"><h2>الزوار كل يوم</h2><div class="cols">${days.map(d => `<div title="${d.d}: ${d.v}" style="height:${100 * d.v / maxD}%"></div>`).join('')}</div>
       <p class="tip">من ${fmt(days[0].d)} إلى ${fmt(days[days.length - 1].d)} · أعلى يوم ${ar(maxD)} زائر</p></div>` : ''}
     ${hours.length ? `<div class="card"><h2>أكثر الساعات زيارة</h2>${chips(Object.fromEntries(hours.map(([h, c]) => [`${ar(h)}:٠٠`, c])))}<p class="tip">بتوقيت السعودية. انشر قبلها بساعة تقريبًا.</p></div>` : ''}
     <div class="card"><h2>الدروس</h2>${lessons.length ? `<table class="tbl"><tr><th>الدرس</th><th>بدأ</th><th>أنهى</th><th>يخرجون عند</th><th>صح</th></tr>${lessons.map(l => `<tr><td>${esc(TITLES[l.lesson] || l.lesson)}</td><td class="n">${ar(l.started)}</td><td class="n">${ar(l.done)}${l.started ? ` <small>(${ar(pct(l.done, l.started))}٪)</small>` : ''}</td><td class="n">${l.exit_step ? 'الخطوة ' + ar(l.exit_step) : '—'}</td><td class="n">${l.right + l.wrong ? ar(pct(l.right, l.right + l.wrong)) + '٪' : '—'}</td></tr>`).join('')}</table>
       <p class="tip">«يخرجون عند»: أكثر خطوة يقفل عندها الطلاب الدرس قبل ما يكملونه. «صح»: نسبة الإجابات الصحيحة في الدرس.</p>` : '<p class="muted">لم يبدأ أحد درسًا بعد</p>'}</div>
-    <div class="card"><h2>رسالة الاشتراك</h2><p class="muted">ظهرت لهم عند:</p>${chips(S.paywall)}<h2 style="margin-top:12px">ضغطوا واتساب من</h2>${chips(S.wa_from, { landing: 'الصفحة الرئيسية', paywall: 'رسالة الاشتراك' })}</div>
+    <div class="card"><h2>رسالة الاشتراك</h2><p class="muted">ظهرت لهم عند:</p>${chips(S.paywall)}<h2 style="margin-top:12px">ضغطوا واتساب من</h2>${chips(S.wa_from, { landing: 'الصفحة الرئيسية (قديم)', paywall: 'رسالة الاشتراك', course_door: '«أرسل مقررك»', quick_test: 'نتيجة الاختبار' })}</div>
     <div class="card"><h2>الأسئلة الشائعة اللي فتحوها</h2>${chips(S.faq)}</div>
     <div class="card"><h2>أشياء أخرى</h2><div class="bars">${OTHER.map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(F[k] || 0)}</span></div>`).join('')}</div></div>
-    <div class="card"><h2>نشاط المشتركين</h2>${(S.students || []).length ? `<table class="tbl"><tr><th>الطالب</th><th>آخر دخول</th><th>زيارات</th><th>دروس أنهاها</th></tr>${S.students.map(s => `<tr><td>${esc(s.name || s.username)}</td><td>${when(s.last)}</td><td class="n">${ar(s.visits)}</td><td class="n">${ar(s.lessons)}</td></tr>`).join('')}</table>` : '<p class="muted">لم يدخل مشترك في هذه الفترة</p>'}</div>`;
+    <div class="card"><h2>نشاط المشتركين</h2>${(S.students || []).length ? `<table class="tbl"><tr><th>الطالب</th><th>آخر دخول</th><th>زيارات</th><th>دروس أنهاها</th></tr>${S.students.map(s => `<tr><td>${esc(s.name || s.username)}</td><td>${when(s.last)}</td><td class="n">${ar(s.visits)}</td><td class="n">${ar(s.lessons)}</td></tr>`).join('')}</table>` : '<p class="muted">لم يدخل مشترك في هذه الفترة</p>'}</div>` + meCard();
+  bindMe();
 }
+/* don't count my own phone: the flag lives on the site's address, so the site sets it via #me */
+function meCard() {
+  const site = (window.ACADEMY_SITE || 'https://leena.syyad.net/') + '#me';
+  return `<div class="card" id="me"><h2>لا تحسب جوالي</h2><p class="muted">افتح الرابط من كل جوال تستخدمه، وزياراته الجاية ما تنحسب في الإحصاءات.</p>
+    <a class="mebtn" href="${site}" target="_blank" rel="noopener">لا تحسب هذا الجوال</a></div>`;
+}
+function bindMe() { try { localStorage.setItem('leena-me', '1'); } catch (e) {} }
 function coursePicker(access) {
   const box = document.createElement('div'); box.className = 'stack';
   box.innerHTML = '<label style="margin:0">الدورات وتاريخ الانتهاء</label>' + COURSES.map(c => { const a = (access || []).find(x => x.course === c.id);
