@@ -1039,6 +1039,80 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .dr-cnt{font-size:12px;color:var(--ink-3);margin-top:4px}
 .dr-cnt b{font-family:var(--f-display);font-size:15px;color:var(--ok)}
 
+/* ===== drill lessons: one quiet dark room, everything in the middle (approved design, Nov 2026) ===== */
+body.dz{background:#0B0C0C;color:#F2F3F1}
+body.dz .dz-player{position:relative;min-height:100svh;background:#0B0C0C;color:#F2F3F1;font-family:var(--f-body)}
+.dz-top{position:relative;z-index:2;width:100%;display:flex;align-items:center;gap:14px;padding:14px 18px 0;max-width:520px;margin:0 auto;box-sizing:border-box}
+.dz-btn{width:44px;height:44px;flex:none;border-radius:22px;border:0;background:rgba(255,255,255,.05);color:#C9CCC8;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.dz-track{flex:1;position:relative;height:12px;display:flex;align-items:center;gap:2px;direction:rtl}
+.dz-track i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.12);transition:background .5s}
+.dz-track i.on{background:#5FD3A0}
+.dz-dot{position:absolute;top:0;right:0;width:12px;height:12px;margin-right:-6px;border-radius:6px;background:#F6F7F5;box-shadow:0 0 0 4px rgba(95,211,160,.25),0 0 16px #5FD3A0;transition:right .7s cubic-bezier(.2,.7,.2,1)}
+.dz-glow{position:fixed;left:50%;top:45%;width:540px;height:540px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(95,211,160,.12),rgba(95,211,160,0));pointer-events:none;opacity:0;transition:opacity .8s;z-index:0}
+.dz-glow.on{opacity:1}
+.dz-body{position:relative;z-index:1;width:100%;padding:0!important}
+.dz-stage{max-width:460px;margin:0 auto;min-height:calc(100svh - 160px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:20px 20px 120px;text-align:center;box-sizing:border-box}
+.dz-orb{position:relative;width:140px;height:140px;flex:none}
+.dz-orb svg{overflow:visible}
+.dz-seg{stroke:rgba(255,255,255,.10);transition:stroke .35s}
+.dz-seg.on{stroke:#5FD3A0}
+.dz-seg.dz-lit{stroke:#9BEBC6;stroke-width:8}
+.dz-seg.dz-lost{stroke:rgba(240,138,126,.75)}
+.dz-tbg{stroke:rgba(255,255,255,.07)}
+.dz-tfg{stroke:#F2F3F1;stroke-opacity:.85;transition:stroke-dashoffset .12s linear,stroke .3s}
+.dz-orb.low .dz-tfg{stroke:#F0C27E}
+.dz-orb.off .dz-tfg{stroke-opacity:.2}
+.dz-orb.bare .dz-tbg,.dz-orb.bare .dz-tfg{stroke-width:3}
+.dz-c{position:absolute;inset:0;direction:ltr;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:200;font-size:34px;color:#F6F7F5}
+.dz-c.up{color:#7FE0B4;font-weight:300;animation:dzPop .45s cubic-bezier(.2,.7,.2,1)}
+.dz-c.down{color:#F08A7E;font-weight:300;animation:dzPop .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes dzPop{0%{transform:scale(.6);opacity:0}100%{transform:none;opacity:1}}
+.dz-msg{min-height:28px;margin:-8px 0 0!important;font-size:17px;line-height:1.8;max-width:340px;color:#A9ADA8;background:none!important;border:0!important;padding:0!important}
+.dz-msg.ok{color:#7FE0B4;font-family:var(--f-display);font-size:21px}
+.dz-msg.bad{color:#E9C2BC}
+.dz-coach{display:inline-block;margin-top:2px;color:#F6F7F5;font-weight:500}
+.dz-why{display:inline-block;margin-top:4px;color:#DADDD9}
+.dz-q{margin:0;font-family:var(--f-display);font-weight:300;font-size:34px;line-height:1.55;color:#F6F7F5;transition:color .3s}
+.dz-stage.answered .dz-q{color:rgba(246,247,245,.45)}
+.dz-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-self:stretch;margin-top:-8px}
+.dz-cmp div{border-radius:18px;background:rgba(255,255,255,.04);padding:12px;display:flex;flex-direction:column;gap:4px}
+.dz-cmp small{font-size:12px;color:#7E837E}
+.dz-cmp span{font-family:var(--f-display);font-size:26px;font-weight:300;color:#F6F7F5}
+.dz-opts{align-self:stretch;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dz-opts.one{grid-template-columns:1fr}
+body.dz .opt.dz-o{min-height:76px;height:auto;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#F2F3F1;font-family:var(--f-display);font-size:26px;font-weight:300;display:flex;align-items:center;justify-content:center;padding:8px 12px;box-shadow:none;transition:background .25s,border-color .25s,opacity .3s,transform .15s;cursor:pointer}
+body.dz .dz-opts.one .opt.dz-o{min-height:62px;font-size:20px}
+body.dz .opt.dz-o:active{transform:scale(.98)}
+body.dz .opt.dz-o.ok{border-color:rgba(95,211,160,.7);background:rgba(95,211,160,.14);box-shadow:0 0 28px rgba(95,211,160,.18);color:#F6F7F5;opacity:1}
+body.dz .dz-stage.answered .opt.dz-o:not(.ok){opacity:.3}
+body.dz .opt.dz-o.bad{border-style:dashed;border-color:rgba(240,138,126,.45);background:rgba(240,138,126,.05);color:#8C5952;text-decoration:line-through;text-decoration-thickness:2px}
+body.dz .opt.dz-o .mo,body.dz .dz-q .mo,body.dz .dz-ex .mo{color:#5FD3A0}
+.dz-big{margin:0;font-family:var(--f-display);font-weight:300;font-size:60px;line-height:1.3;color:#F6F7F5;animation:dzIn 1.1s cubic-bezier(.2,.7,.2,1) both}
+.dz-big.out{animation:dzOut .45s ease forwards}
+@keyframes dzIn{0%{opacity:0;transform:scale(.92);letter-spacing:6px;filter:blur(8px)}100%{opacity:1;transform:none;letter-spacing:0;filter:none}}
+@keyframes dzOut{to{opacity:0;transform:scale(1.04);filter:blur(6px)}}
+.dz-line{height:2px;width:0;border-radius:1px;background:#5FD3A0;box-shadow:0 0 12px #5FD3A0;animation:dzLine .9s ease .5s forwards}
+@keyframes dzLine{to{width:56px}}
+.dz-idea{margin:0;font-family:var(--f-display);font-weight:300;font-size:32px;line-height:1.6;color:#F6F7F5;animation:dzRise .8s cubic-bezier(.2,.7,.2,1) both}
+.dz-idea b{font-weight:500;color:#7FE0B4}
+.dz-ex{font-family:var(--f-display);font-weight:200;font-size:30px;line-height:1.9;color:#F6F7F5;animation:dzRise .8s cubic-bezier(.2,.7,.2,1) .6s both}
+@keyframes dzRise{0%{opacity:0;transform:translateY(14px);filter:blur(6px)}100%{opacity:1;transform:none;filter:none}}
+.dz-start{align-items:flex-start;text-align:right;gap:22px}
+.dz-eyebrow{margin:0;font-size:13px;color:#8E938E}
+.dz-title{margin:0;font-family:var(--f-display);font-weight:500;font-size:44px;line-height:1.25;color:#F6F7F5}
+.dz-sub{margin:0;font-size:17px;line-height:1.8;color:#B4B8B3}
+.dz-chips{display:flex;gap:10px;flex-wrap:wrap}
+.dz-chip{display:flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:19px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:14px;color:#DADDD9}
+.dz-ring{width:170px;height:170px;border-radius:50%;box-shadow:inset 0 0 0 6px #5FD3A0,0 0 44px rgba(95,211,160,.32);display:flex;align-items:center;justify-content:center;animation:dzRise .6s both}
+.dz-h{margin:0;font-family:var(--f-display);font-weight:300;font-size:34px;line-height:1.45;color:#F6F7F5;animation:dzRise .7s .15s both}
+.dz-p{margin:0;font-size:16px;line-height:1.8;color:#8E938E;animation:dzRise .7s .3s both}
+.dz-bone{font-size:20px;line-height:2.1;color:#DADDD9;animation:dzRise .7s .2s both}
+body.dz .dock{background:linear-gradient(to top,#0B0C0C 72%,rgba(11,12,12,0));border:0;box-shadow:none}
+body.dz .dock .dock-in{max-width:460px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+body.dz .dock .cta{height:58px;border-radius:29px;background:#F2F3F1;color:#0B0C0C;font-family:var(--f-display);font-weight:500;font-size:18px;box-shadow:none;border:0}
+body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;color:#C9CCC8;border:1px solid rgba(255,255,255,.12)}
+.dz-msg::before,.dz-msg::after{display:none!important;content:none!important}
+
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
 .vtitle{font-weight:600;margin-bottom:6px}
@@ -1331,7 +1405,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794060132"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794065144"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3629,40 +3703,38 @@ function runDrill(d, lesson) {
   let timer = null, gone = false;
   const stopT = () => { clearInterval(timer); timer = null; };
   const seen = new Set();
+  const SVG_X = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const SVG_ON = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>';
+  const SVG_OFF = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>';
+  const SVG_OK = '<svg aria-hidden="true" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
-  const wrap = h('div', 'player drill');
-  const top = h('div', 'ptop gut');
-  const x = h('button', 'xbtn', ic('close', 22)); x.setAttribute('aria-label', 'خروج');
+  /* the whole lesson lives in one quiet dark room: every message shows in the middle of the screen */
+  document.body.classList.add('dz');
+  const wrap = h('div', 'player drill dz-player');
+  const top = h('div', 'dz-top');
+  const x = h('button', 'dz-btn', SVG_X); x.setAttribute('aria-label', 'خروج');
   x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); showDistrict(d); };
-  const snd = h('button', 'xbtn lad-snd'); snd.setAttribute('aria-label', 'الصوت');
-  const paintSnd = () => { const on = !S.settings || S.settings.sound !== false; snd.innerHTML = on ? '🔊' : '🔇'; };
+  const snd = h('button', 'dz-btn'); snd.setAttribute('aria-label', 'الصوت');
+  const paintSnd = () => { snd.innerHTML = !S.settings || S.settings.sound !== false ? SVG_ON : SVG_OFF; };
   snd.onclick = () => { S.settings = S.settings || {}; S.settings.sound = S.settings.sound === false; persist(); paintSnd(); };
   paintSnd();
-  const rail = h('div', 'lad-rail');
-  top.append(x, rail, snd);
-  const pane = h('div', 'pbody gut lad-body dr-body');
+  /* the lesson track: a hairline, one piece per level, and a glowing dot where he is. No numbers. */
+  const track = h('div', 'dz-track', D.levels.map(() => '<i></i>').join('') + '<span class="dz-dot"></span>');
+  track.setAttribute('aria-hidden', 'true');
+  top.append(x, track, snd);
+  const glow = h('div', 'dz-glow');
+  const pane = h('div', 'pbody dz-body');
   const dock = h('div', 'dock'), dockIn = h('div', 'dock-in gut'); dock.appendChild(dockIn);
-  wrap.append(top, pane); app.append(wrap, dock);
-  cleanupFns.push(() => { gone = true; stopT(); dock.remove(); });
+  wrap.append(glow, top, pane); app.append(wrap, dock);
+  cleanupFns.push(() => { gone = true; stopT(); dock.remove(); document.body.classList.remove('dz'); });
 
-  /* top: the lesson's levels as one long bar (how far up the lesson am I) */
-  /* one bar for the whole lesson: every level is a piece (done = green, ahead = grey);
-     the level he is on is wide and shows its point boxes, which light up and go dark as he answers */
-  function paintRail(cur, label, pts) {
-    const m = mem(), done = S.done[id];
-    const segs = D.levels.map((lv, i) => {
-      if (i === cur) { const goal = lv.goal || DR_GOAL; return `<div class="dr-seg cur">${Array.from({ length: goal }, (_, k) => `<i class="${k < (pts || 0) ? 'on' : ''}"></i>`).join('')}</div>`; }
-      return `<div class="dr-seg ${(done && m.finished) || i < m.lv ? 'done' : ''}"></div>`;
-    }).join('');
-    rail.innerHTML = `<div class="lad-name"><b>${fmt(lesson.title)}</b><span>${label}</span></div><div class="dr-rail">${segs}</div>` + (cur != null ? `<div class="dr-cnt"><b>${ar(pts || 0)}</b> من ${ar(D.levels[cur].goal || DR_GOAL)} · املأ المربعات وتطلع للمستوى الجاي</div>` : '');
+  function paintTrack(frac) {
+    const m = mem(), doneN = m.finished && frac == null ? N : Math.min(N, m.lv);
+    track.querySelectorAll('i').forEach((t, i) => t.classList.toggle('on', i < doneN));
+    const f = frac == null ? doneN / N : Math.max(0, Math.min(1, frac));
+    track.querySelector('.dz-dot').style.right = (f * 100) + '%';
   }
-  function setPts(pts, delta) {
-    rail.querySelectorAll('.dr-seg.cur i').forEach((x, k) => x.className = k < pts ? 'on' : '');
-    const c = rail.querySelector('.dr-cnt b'); if (c) c.textContent = ar(pts);
-    if (delta) { const cur = rail.querySelector('.dr-seg.cur'); if (!cur) return; cur.classList.remove('hit', 'miss'); void cur.offsetWidth; cur.classList.add(delta > 0 ? 'hit' : 'miss');
-      const f = h('span', 'dr-delta ' + (delta > 0 ? 'up' : 'down'), delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`); cur.appendChild(f); setTimeout(() => f.remove(), 900); }
-  }
-  function page(cls = '') { stopT(); pane.innerHTML = ''; window.scrollTo(0, 0); const p = h('div', 'lpage lad-page ' + cls); pane.appendChild(p); return p; }
+  function page(cls = '', glowOn) { stopT(); pane.innerHTML = ''; window.scrollTo(0, 0); glow.classList.toggle('on', !!glowOn); const p = h('div', 'lpage lad-page dz-stage ' + cls); pane.appendChild(p); return p; }
   function dockBtn(label, fn, extra) {
     dock.className = 'dock'; dockIn.innerHTML = '';
     const b = h('button', 'cta', label); b.onclick = () => { FX.play('tap'); fn(); }; dockIn.appendChild(b);
@@ -3680,39 +3752,52 @@ function runDrill(d, lesson) {
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
     return Object.assign({}, g, { opts: g.fixed ? opts.sort((x, y) => g.fixed.indexOf(String(x.v)) - g.fixed.indexOf(String(y.v))) : drShuffle(opts) });
   }
-  const qHTML = g => `<p class="qtext dr-qt">${fmt(g.q)}</p>${g.a != null ? `<div class="cmp"><div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div></div>` : ''}`;
 
-  /* one question on screen. done(result) with result = 'fast' | 'ok' | 'miss' | 'time' */
-  function ask(host, g, secs, hints, done, onMiss) {
+  /* the ring: one piece per point of the level around the clock. ring = { pts, goal } or null (time only) */
+  function orbHTML(ring) {
+    let segs = '';
+    if (ring) { const g = ring.goal, len = 100 / g - 5; for (let i = 0; i < g; i++) segs += `<circle class="dz-seg${i < ring.pts ? ' on' : ''}" cx="70" cy="70" r="62" pathLength="100" stroke-width="6" stroke-linecap="round" stroke-dasharray="${len} ${100 - len}" stroke-dashoffset="${-(i * 100 / g + 2.5)}"/>`; }
+    return `<div class="dz-orb${ring ? '' : ' bare'}"><svg width="140" height="140" viewBox="0 0 140 140" fill="none" aria-hidden="true"><g transform="rotate(-90 70 70)">${segs}<circle class="dz-tbg" cx="70" cy="70" r="49" pathLength="100" stroke-width="2"/><circle class="dz-tfg" cx="70" cy="70" r="49" pathLength="100" stroke-width="2" stroke-linecap="round" stroke-dasharray="100 0"/></g></svg><div class="dz-c"></div></div>`;
+  }
+  function ringPts(stage, pts, delta) {
+    const segs = stage.querySelectorAll('.dz-seg');
+    segs.forEach((c, i) => { c.classList.remove('dz-lit', 'dz-lost'); c.classList.toggle('on', i < pts); });
+    if (delta > 0) for (let i = Math.max(0, pts - delta); i < pts; i++) segs[i] && segs[i].classList.add('dz-lit');
+    if (delta < 0 && segs[pts]) { segs[pts].classList.add('dz-lost'); setTimeout(() => segs[pts] && segs[pts].classList.remove('dz-lost'), 700); }
+    const c = stage.querySelector('.dz-c'); if (c && delta) { c.className = 'dz-c ' + (delta > 0 ? 'up' : 'down'); c.textContent = delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`; }
+  }
+
+  /* one question in the middle of the screen. done(result) with result = 'fast' | 'ok' | 'miss' | 'time' */
+  function ask(stage, g, secs, hints, done, onMiss, ring) {
     window.__drQ = g; // automatic tests only
-    const box = h('div', 'lad-q dr-q');
-    const tm = h('div', 'lad-timer', `<svg viewBox="0 0 44 44"><circle class="tr-bg" cx="22" cy="22" r="19"/><circle class="tr-fg" cx="22" cy="22" r="19" pathLength="100"/></svg><b></b>`);
-    box.innerHTML = qHTML(g); box.prepend(tm);
-    const opts = h('div', 'opts dr-opts' + (g.opts.length === 3 && g.a != null ? ' cmp3' : ''));
-    const fb = h('p', 'lad-fb dr-fb');
+    stage.insertAdjacentHTML('beforeend', orbHTML(ring));
+    const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
+    const fb = h('p', 'lad-fb dz-msg'); stage.appendChild(fb);
+    stage.appendChild(h('h1', 'dz-q', fmt(g.q)));
+    if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
+    const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
+    const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
     let missed = false, over = false, t0 = performance.now(), last = secs;
     g.opts.forEach((o, ci) => {
-      const b = h('button', 'opt', `<span class="k">${LETTERS[ci]}</span><span class="ot">${fmt(String(o.v))}</span>`);
+      const b = h('button', 'opt dz-o', fmt(String(o.v)));
       b.onclick = () => {
         if (over || b.disabled) return;
         if (o.key == null) {          // right
-          over = true; stopT(); b.classList.add('ok'); FX.play('correct');
+          over = true; stopT(); b.classList.add('ok'); stage.classList.add('answered'); FX.play('correct');
           opts.querySelectorAll('.opt').forEach(x => x.disabled = true);
           const used = (performance.now() - t0) / 1000;
           done(missed ? 'miss' : used < 5 ? 'fast' : 'ok', fb, used);
           return;
         }
-        // wrong: crossed out, the hint for exactly this mistake, keep picking (the question no longer scores)
-        b.disabled = true; b.classList.add('bad', 'gone'); FX.play('wrong');
-        if (!missed) { missed = true; stopT(); tm.classList.add('off'); if (onMiss) onMiss(); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
-        fb.className = 'lad-fb dr-fb bad'; fb.innerHTML = fmt(hints[o.key] || 'لا، جرّب غيرها.');
-        if (opts.querySelectorAll('.opt:not([disabled])').length === 1) opts.querySelector('.opt:not([disabled])').classList.add('hint');
+        // wrong: crossed out, the hint for exactly this mistake right under the ring, keep picking (the question no longer scores)
+        b.disabled = true; b.classList.add('bad'); FX.play('wrong');
+        if (!missed) { missed = true; stopT(); orb.classList.add('off'); if (onMiss) onMiss(); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
+        fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = fmt(hints[o.key] || 'لا، جرّب غيرها.');
       };
       opts.appendChild(b);
     });
-    box.appendChild(opts); host.append(box, fb);
-    const fg = tm.querySelector('.tr-fg'), num = tm.querySelector('b');
-    const paint = left => { num.textContent = ar(Math.ceil(left)); fg.style.strokeDashoffset = String(100 - 100 * left / secs); tm.classList.toggle('low', left <= 5); };
+    stage.appendChild(opts);
+    const paint = left => { cen.textContent = ar(Math.ceil(left)); fg.style.strokeDashoffset = String(100 - 100 * left / secs); orb.classList.toggle('low', left <= 5); };
     paint(secs);
     timer = setInterval(() => {
       if (gone) return stopT();
@@ -3721,22 +3806,39 @@ function runDrill(d, lesson) {
       const whole = Math.ceil(left);
       if (whole < last) { last = whole; if (whole > 0 && whole <= 5) FX.play('tickHi'); }
       if (left <= 0) {      // time up: counts as a miss, the right answer lights up, next question
-        stopT(); over = true; tm.classList.add('up'); FX.play('wrong');
-        opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok', 'flash'); });
-        fb.className = 'lad-fb dr-fb bad'; fb.textContent = drT('time_up');
+        stopT(); over = true; stage.classList.add('answered'); FX.play('wrong');
+        opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok'); });
+        cen.className = 'dz-c down'; cen.textContent = '⏰';
+        fb.className = 'lad-fb dz-msg bad'; fb.textContent = drT('time_up');
         done('time', fb, secs);
       }
     }, 100);
   }
 
-  /* a new skill: one line, then straight to the questions */
-  function levelIntro(i, back) {
-    const lv = D.levels[i]; paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)}`, mem().lv === i ? mem().pts : 0);
-    const p = page('dr-intro');
-    p.innerHTML = `${back ? `<p class="dr-back">${back}</p>` : ''}<div class="lad-card up dr-card dr-idea"><small class="eyebrow">💡 فكرة جديدة · المستوى ${ar(i + 1)} من ${ar(N)}</small><h2>${fmt(lv.idea)}</h2>
-      ${lv.ex ? `<div class="dr-ex"><small>مثال</small><div>${fmt(lv.ex)}</div></div>` : ''}
-      <p class="dr-rule">⏱️ ${ar(lv.t)} ثواني لكل سؤال · صح = +١ (أقل من ٥ ثواني = +٢) · غلط أو خلص الوقت = −١ · املأ ${ar(lv.goal || DR_GOAL)} مربعات فوق وتطلع</p></div>`;
-    dockBtn(i === 0 && !mem().started ? 'يلا نبدأ' : 'يلا', () => { mem().started = true; persist(); level(i); });
+  /* the first screen: what the lesson is and how long it takes. Nothing else. */
+  function startScreen(resume) {
+    paintTrack();
+    const p = page('dz-start', true);
+    p.innerHTML = `<p class="dz-eyebrow">${fmt(d.name || '')}</p><h1 class="dz-title">${fmt(lesson.title)}</h1><p class="dz-sub">${resume ? 'كمّل من المكان اللي وقفت فيه.' : 'أسئلة سريعة تبني عندك الحسّ، فكرة فكرة.'}</p>
+      <div class="dz-chips"><span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>حوالي ${ar(D.minutes || 20)} دقيقة</span>
+      <span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg>توقف وترجع متى ما تبي</span></div>`;
+    dockBtn(resume ? 'كمّل' : 'ابدأ', () => { mem().started = true; persist(); idea(mem().lv); });
+  }
+
+  /* a new idea: «فكرة جديدة» big in the middle, it fades, the explanation takes its place */
+  function idea(i) {
+    const lv = D.levels[i];
+    paintTrack((i + (mem().lv === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0)) / N);
+    const p = page('dz-idea-page', true);
+    p.innerHTML = '<h1 class="dz-big">فكرة<br>جديدة</h1><div class="dz-line"></div>';
+    dockNone();
+    const show = () => {
+      if (gone) return;
+      p.innerHTML = `<h1 class="dz-idea">${fmt(lv.idea)}</h1>${lv.ex ? `<div class="dz-ex">${fmt(lv.ex)}</div>` : ''}`;
+      dockBtn('فهمت', () => level(i));
+    };
+    const t1 = setTimeout(() => { if (gone) return; const b = p.querySelector('.dz-big'); if (b) b.classList.add('out'); setTimeout(show, 450); }, 1500);
+    p.onclick = () => { clearTimeout(t1); show(); };   // a tap skips the title
   }
 
   /* the drill of one level */
@@ -3745,90 +3847,88 @@ function runDrill(d, lesson) {
     if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
     persist();
     let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0;
-    paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}`, pts);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const next = () => {
       if (gone) return;
-      const p = page('dr-drill');
+      paintTrack((i + pts / goal) / N);
+      const p = page('dz-drill');
       const g = make(lv, k);           // one notch harder for every right answer; a miss stays on the same notch (new question, never an easier one)
       dockNone();
       ask(p, g, lv.t, lv.hints || {}, (res, fb) => {
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
-        if (res !== 'miss') {   // a wrong pick already took its point off the bar the moment he picked it
+        if (res !== 'miss') {   // a wrong pick already took its point off the ring the moment he picked it
           pts = Math.max(0, Math.min(goal, pts + delta)); if (delta > 0) k++;
           m.pts = pts; m.k = k; persist();
-          setPts(pts, delta);
+          ringPts(p, pts, delta); paintTrack((i + pts / goal) / N);
         }
         if (delta > 0) {
           streak++; missRow = 0;
           const line = [3, 5, 8].includes(streak) ? drT('streak_' + streak) : res === 'fast' ? drT('fast') : '';
-          fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drT('right');
-          if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 800);
-          setTimeout(next, 700);
+          fb.className = 'lad-fb dz-msg ok'; fb.textContent = line || drT('right');
+          if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 900);
+          setTimeout(next, 900);
           return;
         }
         streak = 0; missRow++;
-        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dr-coach">${drT('miss_' + tone)}</span>`;
+        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
           missRow = 0; LT('drill_bone', { lesson: id, n: i + 1 });
-          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1500); else dockBtn(drT('stuck_button'), () => bone(i, next));
+          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1600); else dockBtn(drT('stuck_button'), () => bone(i, next));
           return;
         }
-        if (res === 'time') setTimeout(next, 1500);
+        if (res === 'time') setTimeout(next, 1600);
         else dockBtn('التالي', next);
-      }, () => { pts = Math.max(0, pts - 1); m.pts = pts; persist(); setPts(pts, -1); });
+      }, () => { pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal });
     };
     next();
   }
 
   /* stuck: a slightly longer explanation with one worked example, then the questions go on */
   function bone(i, back) {
-    stopT();
     const lv = D.levels[i];
-    const p = page('dr-bone');
-    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">🤝</small><h2>${drT('stuck_title')}</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
+    const p = page('dz-bone-page', true);
+    p.innerHTML = `<h1 class="dz-h">${drT('stuck_title')}</h1><div class="dz-bone">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div>`;
     dockBtn(drT('stuck_done_button'), back);
   }
 
+  /* level done: the ring closes into one glowing circle, a coach line, then the next idea */
   function levelDone(i) {
     const lv = D.levels[i], m = mem();
     FX.play('task');
     LT('drill_level', { lesson: id, n: i + 1 });
     m.lv = i + 1; m.pts = 0; m.k = 0; persist();
+    paintTrack((i + 1) / N);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
-    if (i + 1 >= N) return finalIntro();
-    levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drT('up_' + tone)}`);
+    const p = page('dz-done', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${drT('up_' + tone)}</h1><p class="dz-p">ضبطت «${lv.name}»</p>`;
+    dockBtn('كمّل', () => i + 1 >= N ? finalIntro() : idea(i + 1));
   }
 
   /* the final test: real exam level, mixed skills, more time per question */
   function finalIntro() {
-    paintRail(null, 'الاختبار النهائي');
-    const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">🏁 ${drT('final_intro')}</small><h2>الحين الاختبار النهائي: ${ar(D.final.length)} أسئلة بمستوى القدرات الحقيقي.</h2>
-      <p class="dr-rule">كل سؤال يجمع أكثر من مهارة. عندك ${ar(D.finalT || 40)} ثانية لكل سؤال، ومحاولة وحدة بس، مثل الاختبار.</p></div>`;
+    paintTrack(1);
+    const p = page('dz-final-intro', true);
+    p.innerHTML = `<h1 class="dz-big">الاختبار<br>النهائي</h1><div class="dz-line"></div><p class="dz-p">${drT('final_intro')}. ${ar(D.final.length)} أسئلة بمستوى القدرات، ومحاولة وحدة لكل سؤال.</p>`;
     dockBtn('ابدأ الاختبار', () => final(0, 0));
   }
   function final(i, got) {
     if (i >= D.final.length) return finished(got);
-    paintRail(null, `الاختبار النهائي · ${ar(i + 1)} من ${ar(D.final.length)}`);
-    const p = page('dr-final');
+    const p = page('dz-drill dz-final');
     const s = D.final[i];
     const g = { q: s.q, a: s.a, b: s.b, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
     dockNone();
-    const host = h('div'); p.appendChild(host);
-    // one try only: the first pick is final
-    ask(host, g, D.finalT || 40, { final: '' }, (res, fb) => {
+    ask(p, g, D.finalT || 40, { final: '' }, (res, fb) => {
       const ok = res === 'fast' || res === 'ok';
       LT('drill_final', { lesson: id, n: i + 1, val: ok ? 'ok' : res });
-      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = 'صح ⚡'; }
-      else fb.innerHTML += s.why ? `<br><span class="lad-why">${fmt('الطريقة: ' + s.why)}</span>` : '';
+      if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = drT('right'); }
+      else fb.innerHTML += s.why ? `<br><span class="dz-why">${fmt(s.why)}</span>` : '';
       dockBtn(i + 1 < D.final.length ? 'السؤال التالي' : 'النتيجة', () => final(i + 1, got + (ok ? 1 : 0)));
     });
     // in the final the first wrong pick ends the question: lock the rest and show the right one
-    host.querySelectorAll('.opt').forEach((b, ci) => b.addEventListener('click', () => {
+    p.querySelectorAll('.opt').forEach((b, ci) => b.addEventListener('click', () => {
       if (g.opts[ci].key == null) return;
-      stopT(); host.querySelectorAll('.opt').forEach((x, cj) => { x.disabled = true; if (g.opts[cj].key == null) x.classList.add('ok'); });
-      const fb = host.querySelector('.dr-fb'); fb.className = 'lad-fb dr-fb bad'; fb.innerHTML = fmt(s.why ? 'الطريقة: ' + s.why : '');
+      stopT(); p.classList.add('answered'); p.querySelectorAll('.opt').forEach((x, cj) => { x.disabled = true; if (g.opts[cj].key == null) x.classList.add('ok'); });
+      const fb = p.querySelector('.dz-msg'); fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = s.why ? fmt(s.why) : '';
       LT('drill_final', { lesson: id, n: i + 1, val: 'wrong' });
       dockBtn(i + 1 < D.final.length ? 'السؤال التالي' : 'النتيجة', () => final(i + 1, got));
     }));
@@ -3839,12 +3939,12 @@ function runDrill(d, lesson) {
     mem().finished = true; mem().lv = N; S.done[id] = true; S.stars[id] = Math.max(S.stars[id] || 0, stars);
     const rank = addXP(first ? 20 : 5); bumpStreak(); persist();
     LT('lesson_done', { lesson: id, n: stars, val: 'drill' });
-    paintRail(null, 'خلصت الدرس');
-    const p = page('lad-end');
-    p.appendChild(poster('billboard result', d, `<div class="bb-body"><small class="eyebrow">${fmt(lesson.title)}</small><h1>${got === n ? drT('final_all_right') + ' 🎯' : `حليت ${ar(got)} من ${ar(n)}`}</h1><p>${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p></div>`));
+    paintTrack(1);
+    const p = page('dz-done lad-end', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('final_all_right') : `حليت ${ar(got)} من ${ar(n)}`}</h1><p class="dz-p">${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p>`;
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
-    dockBtn(nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d), ['تدريب مفتوح (أسئلة بلا نهاية)', () => open(0)]);
+    dockBtn(nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d), ['تدريب مفتوح', () => open(0)]);
     levelUp(rank);
   }
 
@@ -3852,35 +3952,33 @@ function runDrill(d, lesson) {
   function open(k, limit, got = 0) {
     if (limit && k >= limit) return reviewed(got, limit);
     const i = Math.floor(Math.random() * N), lv = D.levels[i];
-    paintRail(null, limit ? `مراجعة سريعة · ${ar(k + 1)} من ${ar(limit)}` : `تدريب مفتوح · سؤال ${ar(k + 1)}`);
-    const p = page('dr-drill');
-    p.appendChild(h('small', 'eyebrow lad-kick', lv.name));
+    paintTrack(1);
+    const p = page('dz-drill');
     dockNone();
     ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
-      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
-      else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1500);
+      if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 800); }
+      else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1600);
       else dockBtn('التالي', () => open(k + 1, limit, got));
     });
   }
   function reviewed(got, n) {
-    paintRail(null, 'المراجعة');
-    const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">مراجعة سريعة</small><h2>${got === n ? drT('review_all_right') + ' 👌' : `${ar(got)} من ${ar(n)}. ${drT('review_some_wrong')}`}</h2><p>${got === n ? '' : ''}</p></div>`;
+    const p = page('dz-done', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('review_all_right') : drT('review_some_wrong')}</h1><p class="dz-p">${ar(got)} من ${ar(n)}</p>`;
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
     dockBtn('تدريب مفتوح', () => open(0), [nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d)]);
   }
 
-  /* where to start: a finished lesson opens with a quick review; otherwise go on from the saved level */
+  /* where to start */
   const m = mem();
   if (m.finished) {   // finished THIS lesson before (an old version's "done" doesn't count): he chooses
-    paintRail(null, 'خلّصت هذا الدرس');
-    const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">خلّصت هذا الدرس قبل 👏</small><h2>وش تبغى تسوي الحين؟</h2><p>المراجعة السريعة ٥ أسئلة من كل الدرس. أو ابدأ الدرس من أوله بالشرح.</p></div>`;
-    dockBtn('مراجعة سريعة (٥ أسئلة)', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); levelIntro(0); }]);
+    paintTrack();
+    const p = page('dz-done', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">خلّصت هذا الدرس قبل</h1><p class="dz-p">راجع بخمسة أسئلة سريعة، أو ابدأه من أوله.</p>`;
+    dockBtn('مراجعة سريعة', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); idea(0); }]);
   }
   else if (m.lv >= N) finalIntro();
-  else levelIntro(m.lv, m.lv || m.pts ? `${drT('resume').replace('(رقم)', ar(m.lv + 1))}${m.pts ? ` (معك ${ar(m.pts)} من ${ar(DR_GOAL)})` : ''} 👊` : '');
+  else startScreen(!!(m.started && (m.lv || m.pts)));
 }
 
 /* ================= unit 1 · الحساب السريع (ladder lessons) =================
@@ -4438,7 +4536,7 @@ function runDrill(d, lesson) {
   const lv = (name, t, idea, ex, gen, extra) => Object.assign({ name, t, idea, ex, gen, hints: H }, extra || {});
 
   L.drill = {
-    v: 2, weight: 3, finalT: 40,
+    v: 2, weight: 3, finalT: 40, minutes: 20,
     levels: [
       /* ---------- 1) what a power means ---------- */
       lv('معنى الأس', 25, 'الأس = كم مرة نضرب العدد في نفسه.', '`2³ = 2 × 2 × 2 = 8`',
@@ -8496,40 +8594,38 @@ function runDrill(d, lesson) {
   let timer = null, gone = false;
   const stopT = () => { clearInterval(timer); timer = null; };
   const seen = new Set();
+  const SVG_X = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const SVG_ON = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>';
+  const SVG_OFF = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>';
+  const SVG_OK = '<svg aria-hidden="true" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
-  const wrap = h('div', 'player drill');
-  const top = h('div', 'ptop gut');
-  const x = h('button', 'xbtn', ic('close', 22)); x.setAttribute('aria-label', 'خروج');
+  /* the whole lesson lives in one quiet dark room: every message shows in the middle of the screen */
+  document.body.classList.add('dz');
+  const wrap = h('div', 'player drill dz-player');
+  const top = h('div', 'dz-top');
+  const x = h('button', 'dz-btn', SVG_X); x.setAttribute('aria-label', 'خروج');
   x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); showDistrict(d); };
-  const snd = h('button', 'xbtn lad-snd'); snd.setAttribute('aria-label', 'الصوت');
-  const paintSnd = () => { const on = !S.settings || S.settings.sound !== false; snd.innerHTML = on ? '🔊' : '🔇'; };
+  const snd = h('button', 'dz-btn'); snd.setAttribute('aria-label', 'الصوت');
+  const paintSnd = () => { snd.innerHTML = !S.settings || S.settings.sound !== false ? SVG_ON : SVG_OFF; };
   snd.onclick = () => { S.settings = S.settings || {}; S.settings.sound = S.settings.sound === false; persist(); paintSnd(); };
   paintSnd();
-  const rail = h('div', 'lad-rail');
-  top.append(x, rail, snd);
-  const pane = h('div', 'pbody gut lad-body dr-body');
+  /* the lesson track: a hairline, one piece per level, and a glowing dot where he is. No numbers. */
+  const track = h('div', 'dz-track', D.levels.map(() => '<i></i>').join('') + '<span class="dz-dot"></span>');
+  track.setAttribute('aria-hidden', 'true');
+  top.append(x, track, snd);
+  const glow = h('div', 'dz-glow');
+  const pane = h('div', 'pbody dz-body');
   const dock = h('div', 'dock'), dockIn = h('div', 'dock-in gut'); dock.appendChild(dockIn);
-  wrap.append(top, pane); app.append(wrap, dock);
-  cleanupFns.push(() => { gone = true; stopT(); dock.remove(); });
+  wrap.append(glow, top, pane); app.append(wrap, dock);
+  cleanupFns.push(() => { gone = true; stopT(); dock.remove(); document.body.classList.remove('dz'); });
 
-  /* top: the lesson's levels as one long bar (how far up the lesson am I) */
-  /* one bar for the whole lesson: every level is a piece (done = green, ahead = grey);
-     the level he is on is wide and shows its point boxes, which light up and go dark as he answers */
-  function paintRail(cur, label, pts) {
-    const m = mem(), done = S.done[id];
-    const segs = D.levels.map((lv, i) => {
-      if (i === cur) { const goal = lv.goal || DR_GOAL; return `<div class="dr-seg cur">${Array.from({ length: goal }, (_, k) => `<i class="${k < (pts || 0) ? 'on' : ''}"></i>`).join('')}</div>`; }
-      return `<div class="dr-seg ${(done && m.finished) || i < m.lv ? 'done' : ''}"></div>`;
-    }).join('');
-    rail.innerHTML = `<div class="lad-name"><b>${fmt(lesson.title)}</b><span>${label}</span></div><div class="dr-rail">${segs}</div>` + (cur != null ? `<div class="dr-cnt"><b>${ar(pts || 0)}</b> من ${ar(D.levels[cur].goal || DR_GOAL)} · املأ المربعات وتطلع للمستوى الجاي</div>` : '');
+  function paintTrack(frac) {
+    const m = mem(), doneN = m.finished && frac == null ? N : Math.min(N, m.lv);
+    track.querySelectorAll('i').forEach((t, i) => t.classList.toggle('on', i < doneN));
+    const f = frac == null ? doneN / N : Math.max(0, Math.min(1, frac));
+    track.querySelector('.dz-dot').style.right = (f * 100) + '%';
   }
-  function setPts(pts, delta) {
-    rail.querySelectorAll('.dr-seg.cur i').forEach((x, k) => x.className = k < pts ? 'on' : '');
-    const c = rail.querySelector('.dr-cnt b'); if (c) c.textContent = ar(pts);
-    if (delta) { const cur = rail.querySelector('.dr-seg.cur'); if (!cur) return; cur.classList.remove('hit', 'miss'); void cur.offsetWidth; cur.classList.add(delta > 0 ? 'hit' : 'miss');
-      const f = h('span', 'dr-delta ' + (delta > 0 ? 'up' : 'down'), delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`); cur.appendChild(f); setTimeout(() => f.remove(), 900); }
-  }
-  function page(cls = '') { stopT(); pane.innerHTML = ''; window.scrollTo(0, 0); const p = h('div', 'lpage lad-page ' + cls); pane.appendChild(p); return p; }
+  function page(cls = '', glowOn) { stopT(); pane.innerHTML = ''; window.scrollTo(0, 0); glow.classList.toggle('on', !!glowOn); const p = h('div', 'lpage lad-page dz-stage ' + cls); pane.appendChild(p); return p; }
   function dockBtn(label, fn, extra) {
     dock.className = 'dock'; dockIn.innerHTML = '';
     const b = h('button', 'cta', label); b.onclick = () => { FX.play('tap'); fn(); }; dockIn.appendChild(b);
@@ -8547,39 +8643,52 @@ function runDrill(d, lesson) {
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
     return Object.assign({}, g, { opts: g.fixed ? opts.sort((x, y) => g.fixed.indexOf(String(x.v)) - g.fixed.indexOf(String(y.v))) : drShuffle(opts) });
   }
-  const qHTML = g => `<p class="qtext dr-qt">${fmt(g.q)}</p>${g.a != null ? `<div class="cmp"><div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div></div>` : ''}`;
 
-  /* one question on screen. done(result) with result = 'fast' | 'ok' | 'miss' | 'time' */
-  function ask(host, g, secs, hints, done, onMiss) {
+  /* the ring: one piece per point of the level around the clock. ring = { pts, goal } or null (time only) */
+  function orbHTML(ring) {
+    let segs = '';
+    if (ring) { const g = ring.goal, len = 100 / g - 5; for (let i = 0; i < g; i++) segs += `<circle class="dz-seg${i < ring.pts ? ' on' : ''}" cx="70" cy="70" r="62" pathLength="100" stroke-width="6" stroke-linecap="round" stroke-dasharray="${len} ${100 - len}" stroke-dashoffset="${-(i * 100 / g + 2.5)}"/>`; }
+    return `<div class="dz-orb${ring ? '' : ' bare'}"><svg width="140" height="140" viewBox="0 0 140 140" fill="none" aria-hidden="true"><g transform="rotate(-90 70 70)">${segs}<circle class="dz-tbg" cx="70" cy="70" r="49" pathLength="100" stroke-width="2"/><circle class="dz-tfg" cx="70" cy="70" r="49" pathLength="100" stroke-width="2" stroke-linecap="round" stroke-dasharray="100 0"/></g></svg><div class="dz-c"></div></div>`;
+  }
+  function ringPts(stage, pts, delta) {
+    const segs = stage.querySelectorAll('.dz-seg');
+    segs.forEach((c, i) => { c.classList.remove('dz-lit', 'dz-lost'); c.classList.toggle('on', i < pts); });
+    if (delta > 0) for (let i = Math.max(0, pts - delta); i < pts; i++) segs[i] && segs[i].classList.add('dz-lit');
+    if (delta < 0 && segs[pts]) { segs[pts].classList.add('dz-lost'); setTimeout(() => segs[pts] && segs[pts].classList.remove('dz-lost'), 700); }
+    const c = stage.querySelector('.dz-c'); if (c && delta) { c.className = 'dz-c ' + (delta > 0 ? 'up' : 'down'); c.textContent = delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`; }
+  }
+
+  /* one question in the middle of the screen. done(result) with result = 'fast' | 'ok' | 'miss' | 'time' */
+  function ask(stage, g, secs, hints, done, onMiss, ring) {
     window.__drQ = g; // automatic tests only
-    const box = h('div', 'lad-q dr-q');
-    const tm = h('div', 'lad-timer', `<svg viewBox="0 0 44 44"><circle class="tr-bg" cx="22" cy="22" r="19"/><circle class="tr-fg" cx="22" cy="22" r="19" pathLength="100"/></svg><b></b>`);
-    box.innerHTML = qHTML(g); box.prepend(tm);
-    const opts = h('div', 'opts dr-opts' + (g.opts.length === 3 && g.a != null ? ' cmp3' : ''));
-    const fb = h('p', 'lad-fb dr-fb');
+    stage.insertAdjacentHTML('beforeend', orbHTML(ring));
+    const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
+    const fb = h('p', 'lad-fb dz-msg'); stage.appendChild(fb);
+    stage.appendChild(h('h1', 'dz-q', fmt(g.q)));
+    if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
+    const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
+    const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
     let missed = false, over = false, t0 = performance.now(), last = secs;
     g.opts.forEach((o, ci) => {
-      const b = h('button', 'opt', `<span class="k">${LETTERS[ci]}</span><span class="ot">${fmt(String(o.v))}</span>`);
+      const b = h('button', 'opt dz-o', fmt(String(o.v)));
       b.onclick = () => {
         if (over || b.disabled) return;
         if (o.key == null) {          // right
-          over = true; stopT(); b.classList.add('ok'); FX.play('correct');
+          over = true; stopT(); b.classList.add('ok'); stage.classList.add('answered'); FX.play('correct');
           opts.querySelectorAll('.opt').forEach(x => x.disabled = true);
           const used = (performance.now() - t0) / 1000;
           done(missed ? 'miss' : used < 5 ? 'fast' : 'ok', fb, used);
           return;
         }
-        // wrong: crossed out, the hint for exactly this mistake, keep picking (the question no longer scores)
-        b.disabled = true; b.classList.add('bad', 'gone'); FX.play('wrong');
-        if (!missed) { missed = true; stopT(); tm.classList.add('off'); if (onMiss) onMiss(); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
-        fb.className = 'lad-fb dr-fb bad'; fb.innerHTML = fmt(hints[o.key] || 'لا، جرّب غيرها.');
-        if (opts.querySelectorAll('.opt:not([disabled])').length === 1) opts.querySelector('.opt:not([disabled])').classList.add('hint');
+        // wrong: crossed out, the hint for exactly this mistake right under the ring, keep picking (the question no longer scores)
+        b.disabled = true; b.classList.add('bad'); FX.play('wrong');
+        if (!missed) { missed = true; stopT(); orb.classList.add('off'); if (onMiss) onMiss(); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
+        fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = fmt(hints[o.key] || 'لا، جرّب غيرها.');
       };
       opts.appendChild(b);
     });
-    box.appendChild(opts); host.append(box, fb);
-    const fg = tm.querySelector('.tr-fg'), num = tm.querySelector('b');
-    const paint = left => { num.textContent = ar(Math.ceil(left)); fg.style.strokeDashoffset = String(100 - 100 * left / secs); tm.classList.toggle('low', left <= 5); };
+    stage.appendChild(opts);
+    const paint = left => { cen.textContent = ar(Math.ceil(left)); fg.style.strokeDashoffset = String(100 - 100 * left / secs); orb.classList.toggle('low', left <= 5); };
     paint(secs);
     timer = setInterval(() => {
       if (gone) return stopT();
@@ -8588,22 +8697,39 @@ function runDrill(d, lesson) {
       const whole = Math.ceil(left);
       if (whole < last) { last = whole; if (whole > 0 && whole <= 5) FX.play('tickHi'); }
       if (left <= 0) {      // time up: counts as a miss, the right answer lights up, next question
-        stopT(); over = true; tm.classList.add('up'); FX.play('wrong');
-        opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok', 'flash'); });
-        fb.className = 'lad-fb dr-fb bad'; fb.textContent = drT('time_up');
+        stopT(); over = true; stage.classList.add('answered'); FX.play('wrong');
+        opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok'); });
+        cen.className = 'dz-c down'; cen.textContent = '⏰';
+        fb.className = 'lad-fb dz-msg bad'; fb.textContent = drT('time_up');
         done('time', fb, secs);
       }
     }, 100);
   }
 
-  /* a new skill: one line, then straight to the questions */
-  function levelIntro(i, back) {
-    const lv = D.levels[i]; paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)}`, mem().lv === i ? mem().pts : 0);
-    const p = page('dr-intro');
-    p.innerHTML = `${back ? `<p class="dr-back">${back}</p>` : ''}<div class="lad-card up dr-card dr-idea"><small class="eyebrow">💡 فكرة جديدة · المستوى ${ar(i + 1)} من ${ar(N)}</small><h2>${fmt(lv.idea)}</h2>
-      ${lv.ex ? `<div class="dr-ex"><small>مثال</small><div>${fmt(lv.ex)}</div></div>` : ''}
-      <p class="dr-rule">⏱️ ${ar(lv.t)} ثواني لكل سؤال · صح = +١ (أقل من ٥ ثواني = +٢) · غلط أو خلص الوقت = −١ · املأ ${ar(lv.goal || DR_GOAL)} مربعات فوق وتطلع</p></div>`;
-    dockBtn(i === 0 && !mem().started ? 'يلا نبدأ' : 'يلا', () => { mem().started = true; persist(); level(i); });
+  /* the first screen: what the lesson is and how long it takes. Nothing else. */
+  function startScreen(resume) {
+    paintTrack();
+    const p = page('dz-start', true);
+    p.innerHTML = `<p class="dz-eyebrow">${fmt(d.name || '')}</p><h1 class="dz-title">${fmt(lesson.title)}</h1><p class="dz-sub">${resume ? 'كمّل من المكان اللي وقفت فيه.' : 'أسئلة سريعة تبني عندك الحسّ، فكرة فكرة.'}</p>
+      <div class="dz-chips"><span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>حوالي ${ar(D.minutes || 20)} دقيقة</span>
+      <span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg>توقف وترجع متى ما تبي</span></div>`;
+    dockBtn(resume ? 'كمّل' : 'ابدأ', () => { mem().started = true; persist(); idea(mem().lv); });
+  }
+
+  /* a new idea: «فكرة جديدة» big in the middle, it fades, the explanation takes its place */
+  function idea(i) {
+    const lv = D.levels[i];
+    paintTrack((i + (mem().lv === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0)) / N);
+    const p = page('dz-idea-page', true);
+    p.innerHTML = '<h1 class="dz-big">فكرة<br>جديدة</h1><div class="dz-line"></div>';
+    dockNone();
+    const show = () => {
+      if (gone) return;
+      p.innerHTML = `<h1 class="dz-idea">${fmt(lv.idea)}</h1>${lv.ex ? `<div class="dz-ex">${fmt(lv.ex)}</div>` : ''}`;
+      dockBtn('فهمت', () => level(i));
+    };
+    const t1 = setTimeout(() => { if (gone) return; const b = p.querySelector('.dz-big'); if (b) b.classList.add('out'); setTimeout(show, 450); }, 1500);
+    p.onclick = () => { clearTimeout(t1); show(); };   // a tap skips the title
   }
 
   /* the drill of one level */
@@ -8612,90 +8738,88 @@ function runDrill(d, lesson) {
     if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
     persist();
     let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0;
-    paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}`, pts);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const next = () => {
       if (gone) return;
-      const p = page('dr-drill');
+      paintTrack((i + pts / goal) / N);
+      const p = page('dz-drill');
       const g = make(lv, k);           // one notch harder for every right answer; a miss stays on the same notch (new question, never an easier one)
       dockNone();
       ask(p, g, lv.t, lv.hints || {}, (res, fb) => {
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
-        if (res !== 'miss') {   // a wrong pick already took its point off the bar the moment he picked it
+        if (res !== 'miss') {   // a wrong pick already took its point off the ring the moment he picked it
           pts = Math.max(0, Math.min(goal, pts + delta)); if (delta > 0) k++;
           m.pts = pts; m.k = k; persist();
-          setPts(pts, delta);
+          ringPts(p, pts, delta); paintTrack((i + pts / goal) / N);
         }
         if (delta > 0) {
           streak++; missRow = 0;
           const line = [3, 5, 8].includes(streak) ? drT('streak_' + streak) : res === 'fast' ? drT('fast') : '';
-          fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drT('right');
-          if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 800);
-          setTimeout(next, 700);
+          fb.className = 'lad-fb dz-msg ok'; fb.textContent = line || drT('right');
+          if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 900);
+          setTimeout(next, 900);
           return;
         }
         streak = 0; missRow++;
-        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dr-coach">${drT('miss_' + tone)}</span>`;
+        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
           missRow = 0; LT('drill_bone', { lesson: id, n: i + 1 });
-          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1500); else dockBtn(drT('stuck_button'), () => bone(i, next));
+          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1600); else dockBtn(drT('stuck_button'), () => bone(i, next));
           return;
         }
-        if (res === 'time') setTimeout(next, 1500);
+        if (res === 'time') setTimeout(next, 1600);
         else dockBtn('التالي', next);
-      }, () => { pts = Math.max(0, pts - 1); m.pts = pts; persist(); setPts(pts, -1); });
+      }, () => { pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal });
     };
     next();
   }
 
   /* stuck: a slightly longer explanation with one worked example, then the questions go on */
   function bone(i, back) {
-    stopT();
     const lv = D.levels[i];
-    const p = page('dr-bone');
-    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">🤝</small><h2>${drT('stuck_title')}</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
+    const p = page('dz-bone-page', true);
+    p.innerHTML = `<h1 class="dz-h">${drT('stuck_title')}</h1><div class="dz-bone">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div>`;
     dockBtn(drT('stuck_done_button'), back);
   }
 
+  /* level done: the ring closes into one glowing circle, a coach line, then the next idea */
   function levelDone(i) {
     const lv = D.levels[i], m = mem();
     FX.play('task');
     LT('drill_level', { lesson: id, n: i + 1 });
     m.lv = i + 1; m.pts = 0; m.k = 0; persist();
+    paintTrack((i + 1) / N);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
-    if (i + 1 >= N) return finalIntro();
-    levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drT('up_' + tone)}`);
+    const p = page('dz-done', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${drT('up_' + tone)}</h1><p class="dz-p">ضبطت «${lv.name}»</p>`;
+    dockBtn('كمّل', () => i + 1 >= N ? finalIntro() : idea(i + 1));
   }
 
   /* the final test: real exam level, mixed skills, more time per question */
   function finalIntro() {
-    paintRail(null, 'الاختبار النهائي');
-    const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">🏁 ${drT('final_intro')}</small><h2>الحين الاختبار النهائي: ${ar(D.final.length)} أسئلة بمستوى القدرات الحقيقي.</h2>
-      <p class="dr-rule">كل سؤال يجمع أكثر من مهارة. عندك ${ar(D.finalT || 40)} ثانية لكل سؤال، ومحاولة وحدة بس، مثل الاختبار.</p></div>`;
+    paintTrack(1);
+    const p = page('dz-final-intro', true);
+    p.innerHTML = `<h1 class="dz-big">الاختبار<br>النهائي</h1><div class="dz-line"></div><p class="dz-p">${drT('final_intro')}. ${ar(D.final.length)} أسئلة بمستوى القدرات، ومحاولة وحدة لكل سؤال.</p>`;
     dockBtn('ابدأ الاختبار', () => final(0, 0));
   }
   function final(i, got) {
     if (i >= D.final.length) return finished(got);
-    paintRail(null, `الاختبار النهائي · ${ar(i + 1)} من ${ar(D.final.length)}`);
-    const p = page('dr-final');
+    const p = page('dz-drill dz-final');
     const s = D.final[i];
     const g = { q: s.q, a: s.a, b: s.b, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
     dockNone();
-    const host = h('div'); p.appendChild(host);
-    // one try only: the first pick is final
-    ask(host, g, D.finalT || 40, { final: '' }, (res, fb) => {
+    ask(p, g, D.finalT || 40, { final: '' }, (res, fb) => {
       const ok = res === 'fast' || res === 'ok';
       LT('drill_final', { lesson: id, n: i + 1, val: ok ? 'ok' : res });
-      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = 'صح ⚡'; }
-      else fb.innerHTML += s.why ? `<br><span class="lad-why">${fmt('الطريقة: ' + s.why)}</span>` : '';
+      if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = drT('right'); }
+      else fb.innerHTML += s.why ? `<br><span class="dz-why">${fmt(s.why)}</span>` : '';
       dockBtn(i + 1 < D.final.length ? 'السؤال التالي' : 'النتيجة', () => final(i + 1, got + (ok ? 1 : 0)));
     });
     // in the final the first wrong pick ends the question: lock the rest and show the right one
-    host.querySelectorAll('.opt').forEach((b, ci) => b.addEventListener('click', () => {
+    p.querySelectorAll('.opt').forEach((b, ci) => b.addEventListener('click', () => {
       if (g.opts[ci].key == null) return;
-      stopT(); host.querySelectorAll('.opt').forEach((x, cj) => { x.disabled = true; if (g.opts[cj].key == null) x.classList.add('ok'); });
-      const fb = host.querySelector('.dr-fb'); fb.className = 'lad-fb dr-fb bad'; fb.innerHTML = fmt(s.why ? 'الطريقة: ' + s.why : '');
+      stopT(); p.classList.add('answered'); p.querySelectorAll('.opt').forEach((x, cj) => { x.disabled = true; if (g.opts[cj].key == null) x.classList.add('ok'); });
+      const fb = p.querySelector('.dz-msg'); fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = s.why ? fmt(s.why) : '';
       LT('drill_final', { lesson: id, n: i + 1, val: 'wrong' });
       dockBtn(i + 1 < D.final.length ? 'السؤال التالي' : 'النتيجة', () => final(i + 1, got));
     }));
@@ -8706,12 +8830,12 @@ function runDrill(d, lesson) {
     mem().finished = true; mem().lv = N; S.done[id] = true; S.stars[id] = Math.max(S.stars[id] || 0, stars);
     const rank = addXP(first ? 20 : 5); bumpStreak(); persist();
     LT('lesson_done', { lesson: id, n: stars, val: 'drill' });
-    paintRail(null, 'خلصت الدرس');
-    const p = page('lad-end');
-    p.appendChild(poster('billboard result', d, `<div class="bb-body"><small class="eyebrow">${fmt(lesson.title)}</small><h1>${got === n ? drT('final_all_right') + ' 🎯' : `حليت ${ar(got)} من ${ar(n)}`}</h1><p>${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p></div>`));
+    paintTrack(1);
+    const p = page('dz-done lad-end', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('final_all_right') : `حليت ${ar(got)} من ${ar(n)}`}</h1><p class="dz-p">${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p>`;
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
-    dockBtn(nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d), ['تدريب مفتوح (أسئلة بلا نهاية)', () => open(0)]);
+    dockBtn(nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d), ['تدريب مفتوح', () => open(0)]);
     levelUp(rank);
   }
 
@@ -8719,35 +8843,33 @@ function runDrill(d, lesson) {
   function open(k, limit, got = 0) {
     if (limit && k >= limit) return reviewed(got, limit);
     const i = Math.floor(Math.random() * N), lv = D.levels[i];
-    paintRail(null, limit ? `مراجعة سريعة · ${ar(k + 1)} من ${ar(limit)}` : `تدريب مفتوح · سؤال ${ar(k + 1)}`);
-    const p = page('dr-drill');
-    p.appendChild(h('small', 'eyebrow lad-kick', lv.name));
+    paintTrack(1);
+    const p = page('dz-drill');
     dockNone();
     ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
-      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
-      else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1500);
+      if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 800); }
+      else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1600);
       else dockBtn('التالي', () => open(k + 1, limit, got));
     });
   }
   function reviewed(got, n) {
-    paintRail(null, 'المراجعة');
-    const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">مراجعة سريعة</small><h2>${got === n ? drT('review_all_right') + ' 👌' : `${ar(got)} من ${ar(n)}. ${drT('review_some_wrong')}`}</h2><p>${got === n ? '' : ''}</p></div>`;
+    const p = page('dz-done', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('review_all_right') : drT('review_some_wrong')}</h1><p class="dz-p">${ar(got)} من ${ar(n)}</p>`;
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
     dockBtn('تدريب مفتوح', () => open(0), [nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d)]);
   }
 
-  /* where to start: a finished lesson opens with a quick review; otherwise go on from the saved level */
+  /* where to start */
   const m = mem();
   if (m.finished) {   // finished THIS lesson before (an old version's "done" doesn't count): he chooses
-    paintRail(null, 'خلّصت هذا الدرس');
-    const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">خلّصت هذا الدرس قبل 👏</small><h2>وش تبغى تسوي الحين؟</h2><p>المراجعة السريعة ٥ أسئلة من كل الدرس. أو ابدأ الدرس من أوله بالشرح.</p></div>`;
-    dockBtn('مراجعة سريعة (٥ أسئلة)', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); levelIntro(0); }]);
+    paintTrack();
+    const p = page('dz-done', true);
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">خلّصت هذا الدرس قبل</h1><p class="dz-p">راجع بخمسة أسئلة سريعة، أو ابدأه من أوله.</p>`;
+    dockBtn('مراجعة سريعة', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); idea(0); }]);
   }
   else if (m.lv >= N) finalIntro();
-  else levelIntro(m.lv, m.lv || m.pts ? `${drT('resume').replace('(رقم)', ar(m.lv + 1))}${m.pts ? ` (معك ${ar(m.pts)} من ${ar(DR_GOAL)})` : ''} 👊` : '');
+  else startScreen(!!(m.started && (m.lv || m.pts)));
 }
 
 /* ================= حيّ الكلمات: the vocabulary foundations ================= */
