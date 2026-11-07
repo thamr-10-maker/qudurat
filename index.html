@@ -1134,6 +1134,29 @@ body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;col
 .tun-h.big{font-size:64px;font-weight:300;letter-spacing:.5px}
 .tun-time{margin:0;font-family:var(--f-display);font-weight:300;font-size:22px;color:#7FE0B4}
 .tun-gate .tun-h{font-size:40px}
+.tun-list{justify-content:flex-start;padding-top:90px;gap:26px}
+.tun-hole.sm{width:150px;height:150px}
+.tun-st{list-style:none;margin:0;padding:0;width:100%;max-width:300px;display:flex;flex-direction:column;position:relative;animation:dzRise .9s .25s both}
+.tun-st::before{content:"";position:absolute;right:13px;top:20px;bottom:20px;width:1.5px;background:linear-gradient(rgba(95,211,160,.5),rgba(255,255,255,.08))}
+.tun-st li{position:relative;display:flex;align-items:center;gap:16px;min-height:52px;font-family:var(--f-display);font-weight:300;font-size:20px;color:#6E736E;text-align:right}
+.tun-st .dot{flex:none;width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#121413;border:1.5px solid rgba(255,255,255,.12);color:#6E736E;position:relative;z-index:1}
+.tun-st li.here{color:#F6F7F5;font-size:24px;font-weight:400}
+.tun-st li.here .dot{border-color:#7FE0B4;background:#0B0C0C;box-shadow:0 0 0 5px rgba(95,211,160,.14),0 0 18px rgba(95,211,160,.5)}
+.tun-st li.here .dot::after{content:"";width:10px;height:10px;border-radius:5px;background:#F6F7F5}
+.tun-st li.done{color:#B4B8B3}
+.tun-st li.done .dot{background:#5FD3A0;border-color:#5FD3A0;color:#0B0C0C}
+.tun-list .tun-go{position:sticky;bottom:24px;margin-top:auto}
+.tun-hole.shut i{animation:none;opacity:.22}.tun-hole.shut i:nth-child(2){transform:scale(.75)}.tun-hole.shut i:nth-child(3){transform:scale(.5)}.tun-hole.shut i:nth-child(4){transform:scale(.25)}
+.tun-hole.shut b{opacity:.25;animation:none}
+.tun-lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#F6F7F5}
+.tun-lock svg{width:34px;height:34px}
+.tun-done{margin:0;display:flex;align-items:center;gap:8px;font-size:16px;color:#7FE0B4}
+.tun-msg{margin:0;font-family:var(--f-display);font-weight:300;font-size:22px;color:#B4B8B3}
+.tun-list{overflow:visible;padding-bottom:110px}
+.tun-list .tun-go{position:fixed;bottom:24px;left:0;right:0;margin:0 auto;width:calc(100% - 44px);max-width:416px;z-index:3}
+.tun-list::after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to top,#0B0C0C 55%,rgba(11,12,12,0));pointer-events:none;z-index:2}
+.tun-st li{min-height:44px;font-size:18px}
+.tun-st li.here{font-size:22px}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1427,7 +1450,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794069461"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794070192"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -10617,40 +10640,69 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     const x = el('button', 'dz-btn tun-x', DZ_X); x.setAttribute('aria-label', 'رجوع'); x.onclick = () => home();
     w.appendChild(x); app.appendChild(w); return w;
   }
+  /* stations on a vertical path: done = check, here = glowing dot, ahead = dim with a lock */
+  const LOCK = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+  const TICK = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  const stations = list => `<ol class="tun-st">${list.map(([name, st]) => `<li class="${st}"><span class="dot">${st === 'done' ? TICK : st === 'lock' ? LOCK : ''}</span><span class="nm">${esc(name)}</span></li>`).join('')}</ol>`;
+  const backBtn = (w, fn) => { const x = w.querySelector('.tun-x'); x.onclick = fn; };
+
+  /* 1 · the course door: its stations (quant, verbal). No duration. */
   function tunnel() {
     if (!C[TUN]) return home();
-    const { f, m } = tunState();
-    if (m && m.finished) return gate();
     LT('tunnel_view');
-    const w = darkRoom('tun-door');
-    const going = !!(m && m.started && (m.lv || m.pts));
-    w.insertAdjacentHTML('beforeend', `<div class="tun-hole" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
-      <div class="tun-txt"><h1 class="tun-h big">القدرات</h1><p class="tun-time">${ar((f.l.drill || {}).minutes || 20)} دقيقة</p></div>`);
-    const go = el('button', 'tun-go', going ? 'كمّل' : 'ادخل');
-    go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'new' }); enter(TUN, a => a.playLesson(f.d, f.l)); };
+    const { m } = tunState();
+    const w = darkRoom('tun-door tun-list');
+    w.insertAdjacentHTML('beforeend', `<div class="tun-hole sm" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+      <h1 class="tun-h big">القدرات</h1>${stations([['الكمّي', m && m.finished ? 'here' : 'here'], ['اللفظي', 'lock']])}`);
+    const go = el('button', 'tun-go', 'ادخل'); go.onclick = () => { LT('tunnel_enter', { val: 'course' }); quantDoor(); };
     w.appendChild(go);
   }
-  /* after the first station and its test: the road goes on for subscribers */
+  /* 2 · the quant door: its stations. No duration. */
+  function quantDoor() {
+    const { f, m } = tunState();
+    const units = C[TUN].api.units().filter(u => !u.exam);
+    const w = darkRoom('tun-door tun-list');
+    backBtn(w, tunnel);
+    w.insertAdjacentHTML('beforeend', `<h1 class="tun-h big">الكمّي</h1>${stations(units.map((u, i) => [u.name, i === 0 ? 'here' : 'lock']))}`);
+    const go = el('button', 'tun-go', 'ادخل'); go.onclick = () => { LT('tunnel_enter', { val: 'quant' }); m && m.finished ? gate() : lessonDoor(); };
+    w.appendChild(go);
+  }
+  /* 3 · the lesson door: the first impression of the lesson, and how long it takes */
+  function lessonDoor() {
+    const { f, m } = tunState();
+    if (m && m.finished) return gate();
+    const going = !!(m && m.started && (m.lv || m.pts));
+    const w = darkRoom('tun-door');
+    backBtn(w, quantDoor);
+    w.insertAdjacentHTML('beforeend', `<div class="tun-hole" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+      <div class="tun-txt"><h1 class="tun-h big">${esc(plain(f.l.title))}</h1><p class="tun-time">${ar((f.l.drill || {}).minutes || 20)} دقيقة</p></div>`);
+    const go = el('button', 'tun-go', going ? 'كمّل' : 'ادخل');
+    go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson' }); enter(TUN, a => a.playLesson(f.d, f.l)); };
+    w.appendChild(go);
+  }
+  /* 4 · after the first lesson and its test: the second lesson's door, closed, with the subscription message */
   function gate() {
     if (!C[TUN]) return home();
     const { f } = tunState();
+    const l2 = f.d.lessons[1];
     LT('gate_view');
-    const w = darkRoom('tun-gate');
+    const w = darkRoom('tun-door tun-gate');
+    backBtn(w, quantDoor);
     const sub = subscriber();
-    w.insertAdjacentHTML('beforeend', `<div class="dz-ring" aria-hidden="true"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <div class="tun-txt c"><h1 class="tun-h">خلّصت أول محطة</h1></div>`);
+    w.insertAdjacentHTML('beforeend', `<div class="tun-hole shut" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b><span class="tun-lock">${LOCK}</span></div>
+      <div class="tun-txt"><p class="tun-done">${TICK} ${esc(plain(f.l.title))}</p><h1 class="tun-h big">${esc(plain(l2 ? l2.title : 'الدرس الثاني'))}</h1><p class="tun-msg">${sub ? 'مفتوح لك باشتراكك' : 'للمشتركين'}</p></div>`);
     const act = el('div', 'tun-act');
-    if (sub) { const b = el('button', 'tun-go', 'كمّل الطريق'); b.onclick = () => { LT('gate_continue'); courseHome(); }; act.appendChild(b); }
+    if (sub) { const b = el('button', 'tun-go', 'ادخل'); b.onclick = () => { LT('gate_continue'); courseHome(); }; act.appendChild(b); }
     else {
-      const a = el('a', 'tun-go', 'كمّل الطريق'); a.href = waLink('السلام عليكم، خلصت أول محطة في دورة القدرات وأبغى أكمّل الطريق'); a.target = '_blank'; a.rel = 'noopener';
+      const a = el('a', 'tun-go', 'اشترك وكمّل'); a.href = waLink('السلام عليكم، خلصت أول درس في دورة القدرات وأبغى أشترك وأكمّل'); a.target = '_blank'; a.rel = 'noopener';
       a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
       if (window.LeenaAuth) { const li = el('button', 'tun-ghost', window.LeenaAuth.user ? 'حسابي' : 'عندي حساب'); li.onclick = () => { LT('gate_login'); window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); }; act.appendChild(li); }
     }
-    const tr = el('button', 'tun-ghost', 'تدرّب على المحطة الأولى'); tr.onclick = () => { LT('gate_train'); f.l._drillMode = 'open'; enter(TUN, a => a.playLesson(f.d, f.l)); };
+    const tr = el('button', 'tun-ghost', 'تدرّب على الدرس الأول'); tr.onclick = () => { LT('gate_train'); f.l._drillMode = 'open'; enter(TUN, a => a.playLesson(f.d, f.l)); };
     act.appendChild(tr);
     w.appendChild(act);
   }
-  window.AcademyTunnel = { door: () => tunnel(), gate: () => gate() };
+  window.AcademyTunnel = { door: () => lessonDoor(), gate: () => gate() };
 
   /* the Qudurat course overview (subscribers): pick a section (Netflix-style posters), then its units */
   let backTo = null;
