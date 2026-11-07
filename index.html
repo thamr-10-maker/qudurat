@@ -1331,7 +1331,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794053041"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794060132"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3422,14 +3422,201 @@ function runLadder(d, lesson) {
    Lesson data: lesson.drill = { weight, levels:[{ name, intro, t, tone, gen(stage, rnd) → { q, ans, wr:[[value, key]…], a?, b? }, hints:{key: text}, bone }], final:[{q, choices, answer, why}], finalT }
    Questions are generated fresh every time (never the same question twice in a session). */
 const DR_GOAL = 5;
-const DR_COACH = {
-  up: { strict: ['كفو. هذا المتوقع منك، الحين نشد شوي 💪', 'تمام. لا تفرح كثير، الجاي أصعب.', 'خلصته. بس لا ترتاح، فيه أصعب.'],
-        warm: ['ممتاز! قليل اللي يوصل لهنا 👏', 'أبدعت، كمّل على هالنفس 🔥', 'هذا مستوى قدرات حقيقي، وأنت ضبطته.'] },
-  miss: { strict: ['ركّز، هذي أسهل من كذا.', 'لا تستعجل… بس لا توقف.', 'شوي تركيز وتمشي.'],
-          warm: ['عادي، هذا المستوى صعب. شوف الملاحظة وكمّل.', 'قربت. الجاية لك.', 'كل غلطة هنا توفر عليك سؤال في الاختبار.'] },
-  streak: { 3: '🔥 ٣ ورا بعض', 5: '🚀 ٥ ورا بعض! ماشي صاروخ', 8: '👑 ٨ ورا بعض. ما يوقفك أحد' },
-};
 const drPick = a => a[Math.floor(Math.random() * a.length)];
+/* every encouraging line, in Saudi dialect (rewritten with Grok, Nov 2026): 8 per moment, picked at random */
+const DR_TXT = {
+ "up_strict": [
+  "كفو، بس الجاي أثقل",
+  "تمام، لا تتمدد الحين",
+  "خلصته، شد حيلك أكثر",
+  "متوقع منك، الجاي أصعب",
+  "زين، بس لا تسترخي",
+  "ماشي، الحين نرفع الضغط",
+  "كفو، بس الطريق طول",
+  "تم، الجاي يختبرك زيادة"
+ ],
+ "up_warm": [
+  "يا سلام، قليل يوصل هنا",
+  "أبدعت والله، كمّل كذا",
+  "هذا مستوى قدرات، وأنت فيه",
+  "قوي، استمر على هالنَفَس",
+  "ما شاء الله، ثابت كذا",
+  "ضبطتها، الجاي لك أسهل",
+  "مستوى عالي، وأنت ماشي",
+  "كفو كبير، كمّل بنفس القوة"
+ ],
+ "miss_strict": [
+  "ركز، هذي سهلة عليك",
+  "لا تستعجل، ركز بس",
+  "شوي تركيز وتمشي",
+  "هذي ما لها عذر",
+  "انتبه، السؤال سهل",
+  "لا تطيح في السهل",
+  "ركز أكثر، تمشيها",
+  "هذي أسهل من كذا"
+ ],
+ "miss_warm": [
+  "عادي، المستوى صعب",
+  "قربت، الجاية لك",
+  "كل غلطة هنا تفيدك",
+  "ما عليك، كمّل",
+  "صعبة، بس راح تضبطها",
+  "عادي، شوف الملاحظة",
+  "قربت جدًا، جرب ثاني",
+  "الغلط هنا يعلمك"
+ ],
+ "streak_3": [
+  "🔥 ٣ ورا بعض",
+  "٣ ورا بعض، ماشي",
+  "٣ صح ورا بعض",
+  "كفو، ٣ متتالية",
+  "٣ ورا بعض يا وحش",
+  "٣ صح، استمر",
+  "٣ ورا بعض تمام",
+  "٣ متتالية، قوي"
+ ],
+ "streak_5": [
+  "🚀 ٥ ورا بعض! صاروخ",
+  "٥ ورا بعض، ما توقف",
+  "٥ صح ورا بعض",
+  "صاروخ، ٥ متتالية",
+  "٥ ورا بعض كفو",
+  "٥ صح، ماشي نار",
+  "٥ متتالية، استمر",
+  "٥ ورا بعض يا نجم"
+ ],
+ "streak_8": [
+  "👑 ٨ ورا بعض. ما يوقفك أحد",
+  "٨ ورا بعض، أسطوري",
+  "٨ صح متتالية",
+  "٨ ورا بعض، ما فيه أحد",
+  "٨ متتالية، أنت نار",
+  "٨ ورا بعض كفو كبير",
+  "٨ صح، ما توقف",
+  "٨ ورا بعض يا بطل"
+ ],
+ "right": [
+  "صح ✓",
+  "تمام ✓",
+  "كذا ✓",
+  "زين ✓",
+  "ماشي ✓",
+  "ضبط ✓",
+  "كفو ✓",
+  "تم ✓"
+ ],
+ "fast": [
+  "⚡ سريع! +٢",
+  "⚡ برق +٢",
+  "⚡ سرعة خيالية +٢",
+  "⚡ ما تأخرت +٢",
+  "⚡ سريع جدًا +٢",
+  "⚡ طير +٢",
+  "⚡ وقت قياسي +٢",
+  "⚡ صاروخ +٢"
+ ],
+ "time_up": [
+  "⏰ خلص الوقت، سرّع شوي",
+  "⏰ الوقت انتهى، القدرات بوقت",
+  "⏰ خلص، خلنا نسرّعك",
+  "⏰ الوقت طار، ركز أسرع",
+  "⏰ انتهى الوقت، سرّع",
+  "⏰ الوقت خلص، تدريب السرعة",
+  "⏰ فات الوقت، نسرّع الحين",
+  "⏰ خلص الوقت، القدرات بوقت"
+ ],
+ "stuck_title": [
+  "خلنا نوقف ثانية",
+  "تعثرت كم مرة، عادي",
+  "وقف شوي، نشوفها أوضح",
+  "ثلاث غلطات، خلنا نوضح",
+  "عادي، خلنا نشرحها",
+  "توقف بسيط، نشوفها",
+  "كم غلطة ورا بعض، عادي",
+  "خلنا نوضحها أكثر"
+ ],
+ "stuck_button": [
+  "خلني أفهمها أول",
+  "أبغى الشرح أوضح",
+  "وضحها لي",
+  "خلني أشوف الشرح",
+  "أبي أفهمها صح",
+  "شرح أوضح لو سمحت",
+  "خلني أستوعبها",
+  "أبغى أتأكد منها"
+ ],
+ "stuck_done_button": [
+  "فهمت، كمّل",
+  "تمام، نكمل",
+  "استوعبت، يلا",
+  "فهمتها، كمّل",
+  "زين، نكمل الحين",
+  "واضح، كمّل",
+  "تم، نرجع للأسئلة",
+  "فهمت، يلا نكمل"
+ ],
+ "resume": [
+  "كمّلنا من المستوى (رقم)",
+  "رجعنا للمستوى (رقم)",
+  "نكمل من المستوى (رقم)",
+  "من المستوى (رقم) يلا",
+  "كمّل من المستوى (رقم)",
+  "رجعنا نكمل المستوى (رقم)",
+  "المستوى (رقم) ينتظرك",
+  "نكمل الحين المستوى (رقم)"
+ ],
+ "final_intro": [
+  "خلّصت كل المستويات",
+  "الحين الاختبار النهائي",
+  "كل المستويات تمت",
+  "الحين ٥ أسئلة قدرات",
+  "خلصت التدريب، الاختبار",
+  "المستويات خلصت، النهائي",
+  "الحين الاختبار الحقيقي",
+  "٥ أسئلة بمستوى القدرات"
+ ],
+ "final_all_right": [
+  "الاختبار كله صح",
+  "كل الأسئلة صح",
+  "ضبطت الاختبار كامل",
+  "كله صح، مستوى قدرات",
+  "ما غلطت ولا واحد",
+  "الاختبار كامل تمام",
+  "كل شي صح في الوقت",
+  "مستوى قدرات وأنت فيه"
+ ],
+ "final_some_wrong": [
+  "المهارات صارت عندك",
+  "التدريب المفتوح يسرّعك",
+  "شوي تدريب وتصير أسرع",
+  "المهارات موجودة، سرّع",
+  "راجع شوي وترتاح",
+  "التدريب يخليها أسهل",
+  "صارت عندك، كمّل تدريب",
+  "المرة الجاية أسرع"
+ ],
+ "review_all_right": [
+  "ما نسيت شي",
+  "المهارات ثابتة",
+  "كل شي موجود",
+  "ما طاح منك شي",
+  "ثابت تمام",
+  "المهارات مكانها",
+  "ما نسيت ولا واحدة",
+  "كل المهارات حاضرة"
+ ],
+ "review_some_wrong": [
+  "المهارات تحتاج تسخين",
+  "شوي تدريب ويرجع",
+  "تسخين بسيط ويرجع",
+  "تحتاج تسخين سريع",
+  "شوي مراجعة وتمشي",
+  "التدريب يرجّعها",
+  "تسخين ويرجع كل شي",
+  "شوي تدريب وتصير سريع"
+ ]
+};
+const drT = k => drPick(DR_TXT[k]);
 const drShuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
 function runDrill(d, lesson) {
@@ -3536,7 +3723,7 @@ function runDrill(d, lesson) {
       if (left <= 0) {      // time up: counts as a miss, the right answer lights up, next question
         stopT(); over = true; tm.classList.add('up'); FX.play('wrong');
         opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok', 'flash'); });
-        fb.className = 'lad-fb dr-fb bad'; fb.textContent = '⏰ خلص الوقت. القدرات اختبار بوقت، فخلنا نسرّعك.';
+        fb.className = 'lad-fb dr-fb bad'; fb.textContent = drT('time_up');
         done('time', fb, secs);
       }
     }, 100);
@@ -3574,17 +3761,17 @@ function runDrill(d, lesson) {
         }
         if (delta > 0) {
           streak++; missRow = 0;
-          const line = DR_COACH.streak[streak] || (res === 'fast' ? '⚡ سريع! +٢' : '');
-          fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drPick(['صح ✓', 'صح ✓', 'تمام ✓', 'كذا ✓']);
+          const line = [3, 5, 8].includes(streak) ? drT('streak_' + streak) : res === 'fast' ? drT('fast') : '';
+          fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drT('right');
           if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 800);
           setTimeout(next, 700);
           return;
         }
         streak = 0; missRow++;
-        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dr-coach">${drPick(DR_COACH.miss[tone])}</span>`;
+        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dr-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
           missRow = 0; LT('drill_bone', { lesson: id, n: i + 1 });
-          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1500); else dockBtn('خلني أفهمها أول', () => bone(i, next));
+          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1500); else dockBtn(drT('stuck_button'), () => bone(i, next));
           return;
         }
         if (res === 'time') setTimeout(next, 1500);
@@ -3599,8 +3786,8 @@ function runDrill(d, lesson) {
     stopT();
     const lv = D.levels[i];
     const p = page('dr-bone');
-    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">خلنا نوقف ثانية 🤝</small><h2>تعثرت كم مرة ورا بعض، عادي. خلنا نشوفها بشكل أوضح:</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
-    dockBtn('فهمت، كمّل', back);
+    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">🤝</small><h2>${drT('stuck_title')}</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
+    dockBtn(drT('stuck_done_button'), back);
   }
 
   function levelDone(i) {
@@ -3610,14 +3797,14 @@ function runDrill(d, lesson) {
     m.lv = i + 1; m.pts = 0; m.k = 0; persist();
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     if (i + 1 >= N) return finalIntro();
-    levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drPick(DR_COACH.up[tone])}`);
+    levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drT('up_' + tone)}`);
   }
 
   /* the final test: real exam level, mixed skills, more time per question */
   function finalIntro() {
     paintRail(null, 'الاختبار النهائي');
     const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">خلّصت كل المستويات 🏁</small><h2>الحين الاختبار النهائي: ${ar(D.final.length)} أسئلة بمستوى القدرات الحقيقي.</h2>
+    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">🏁 ${drT('final_intro')}</small><h2>الحين الاختبار النهائي: ${ar(D.final.length)} أسئلة بمستوى القدرات الحقيقي.</h2>
       <p class="dr-rule">كل سؤال يجمع أكثر من مهارة. عندك ${ar(D.finalT || 40)} ثانية لكل سؤال، ومحاولة وحدة بس، مثل الاختبار.</p></div>`;
     dockBtn('ابدأ الاختبار', () => final(0, 0));
   }
@@ -3654,7 +3841,7 @@ function runDrill(d, lesson) {
     LT('lesson_done', { lesson: id, n: stars, val: 'drill' });
     paintRail(null, 'خلصت الدرس');
     const p = page('lad-end');
-    p.appendChild(poster('billboard result', d, `<div class="bb-body"><small class="eyebrow">${fmt(lesson.title)}</small><h1>${got === n ? 'الاختبار كله صح 🎯' : `حليت ${ar(got)} من ${ar(n)}`}</h1><p>${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : 'المهارات صارت عندك. التدريب المفتوح يخليها أسرع، والمراجعة بتجيك المرة الجاية.'}</p></div>`));
+    p.appendChild(poster('billboard result', d, `<div class="bb-body"><small class="eyebrow">${fmt(lesson.title)}</small><h1>${got === n ? drT('final_all_right') + ' 🎯' : `حليت ${ar(got)} من ${ar(n)}`}</h1><p>${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p></div>`));
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
     dockBtn(nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d), ['تدريب مفتوح (أسئلة بلا نهاية)', () => open(0)]);
@@ -3671,7 +3858,7 @@ function runDrill(d, lesson) {
     dockNone();
     ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
-      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? '⚡ سريع' : 'صح ✓'; setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
+      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
       else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1500);
       else dockBtn('التالي', () => open(k + 1, limit, got));
     });
@@ -3679,7 +3866,7 @@ function runDrill(d, lesson) {
   function reviewed(got, n) {
     paintRail(null, 'المراجعة');
     const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">مراجعة سريعة</small><h2>${got === n ? 'ما نسيت شي 👌' : `${ar(got)} من ${ar(n)}. المهارات تحتاج تسخين`}</h2><p>${got === n ? 'المهارات ثابتة عندك.' : 'شوية تدريب ويرجع كل شي سريع.'}</p></div>`;
+    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">مراجعة سريعة</small><h2>${got === n ? drT('review_all_right') + ' 👌' : `${ar(got)} من ${ar(n)}. ${drT('review_some_wrong')}`}</h2><p>${got === n ? '' : ''}</p></div>`;
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
     dockBtn('تدريب مفتوح', () => open(0), [nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d)]);
   }
@@ -3693,7 +3880,7 @@ function runDrill(d, lesson) {
     dockBtn('مراجعة سريعة (٥ أسئلة)', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); levelIntro(0); }]);
   }
   else if (m.lv >= N) finalIntro();
-  else levelIntro(m.lv, m.lv || m.pts ? `كمّلنا من المستوى ${ar(m.lv + 1)}${m.pts ? ` (معك ${ar(m.pts)} من ${ar(DR_GOAL)})` : ''} 👊` : '');
+  else levelIntro(m.lv, m.lv || m.pts ? `${drT('resume').replace('(رقم)', ar(m.lv + 1))}${m.pts ? ` (معك ${ar(m.pts)} من ${ar(DR_GOAL)})` : ''} 👊` : '');
 }
 
 /* ================= unit 1 · الحساب السريع (ladder lessons) =================
@@ -8102,14 +8289,201 @@ function runLadder(d, lesson) {
    Lesson data: lesson.drill = { weight, levels:[{ name, intro, t, tone, gen(stage, rnd) → { q, ans, wr:[[value, key]…], a?, b? }, hints:{key: text}, bone }], final:[{q, choices, answer, why}], finalT }
    Questions are generated fresh every time (never the same question twice in a session). */
 const DR_GOAL = 5;
-const DR_COACH = {
-  up: { strict: ['كفو. هذا المتوقع منك، الحين نشد شوي 💪', 'تمام. لا تفرح كثير، الجاي أصعب.', 'خلصته. بس لا ترتاح، فيه أصعب.'],
-        warm: ['ممتاز! قليل اللي يوصل لهنا 👏', 'أبدعت، كمّل على هالنفس 🔥', 'هذا مستوى قدرات حقيقي، وأنت ضبطته.'] },
-  miss: { strict: ['ركّز، هذي أسهل من كذا.', 'لا تستعجل… بس لا توقف.', 'شوي تركيز وتمشي.'],
-          warm: ['عادي، هذا المستوى صعب. شوف الملاحظة وكمّل.', 'قربت. الجاية لك.', 'كل غلطة هنا توفر عليك سؤال في الاختبار.'] },
-  streak: { 3: '🔥 ٣ ورا بعض', 5: '🚀 ٥ ورا بعض! ماشي صاروخ', 8: '👑 ٨ ورا بعض. ما يوقفك أحد' },
-};
 const drPick = a => a[Math.floor(Math.random() * a.length)];
+/* every encouraging line, in Saudi dialect (rewritten with Grok, Nov 2026): 8 per moment, picked at random */
+const DR_TXT = {
+ "up_strict": [
+  "كفو، بس الجاي أثقل",
+  "تمام، لا تتمدد الحين",
+  "خلصته، شد حيلك أكثر",
+  "متوقع منك، الجاي أصعب",
+  "زين، بس لا تسترخي",
+  "ماشي، الحين نرفع الضغط",
+  "كفو، بس الطريق طول",
+  "تم، الجاي يختبرك زيادة"
+ ],
+ "up_warm": [
+  "يا سلام، قليل يوصل هنا",
+  "أبدعت والله، كمّل كذا",
+  "هذا مستوى قدرات، وأنت فيه",
+  "قوي، استمر على هالنَفَس",
+  "ما شاء الله، ثابت كذا",
+  "ضبطتها، الجاي لك أسهل",
+  "مستوى عالي، وأنت ماشي",
+  "كفو كبير، كمّل بنفس القوة"
+ ],
+ "miss_strict": [
+  "ركز، هذي سهلة عليك",
+  "لا تستعجل، ركز بس",
+  "شوي تركيز وتمشي",
+  "هذي ما لها عذر",
+  "انتبه، السؤال سهل",
+  "لا تطيح في السهل",
+  "ركز أكثر، تمشيها",
+  "هذي أسهل من كذا"
+ ],
+ "miss_warm": [
+  "عادي، المستوى صعب",
+  "قربت، الجاية لك",
+  "كل غلطة هنا تفيدك",
+  "ما عليك، كمّل",
+  "صعبة، بس راح تضبطها",
+  "عادي، شوف الملاحظة",
+  "قربت جدًا، جرب ثاني",
+  "الغلط هنا يعلمك"
+ ],
+ "streak_3": [
+  "🔥 ٣ ورا بعض",
+  "٣ ورا بعض، ماشي",
+  "٣ صح ورا بعض",
+  "كفو، ٣ متتالية",
+  "٣ ورا بعض يا وحش",
+  "٣ صح، استمر",
+  "٣ ورا بعض تمام",
+  "٣ متتالية، قوي"
+ ],
+ "streak_5": [
+  "🚀 ٥ ورا بعض! صاروخ",
+  "٥ ورا بعض، ما توقف",
+  "٥ صح ورا بعض",
+  "صاروخ، ٥ متتالية",
+  "٥ ورا بعض كفو",
+  "٥ صح، ماشي نار",
+  "٥ متتالية، استمر",
+  "٥ ورا بعض يا نجم"
+ ],
+ "streak_8": [
+  "👑 ٨ ورا بعض. ما يوقفك أحد",
+  "٨ ورا بعض، أسطوري",
+  "٨ صح متتالية",
+  "٨ ورا بعض، ما فيه أحد",
+  "٨ متتالية، أنت نار",
+  "٨ ورا بعض كفو كبير",
+  "٨ صح، ما توقف",
+  "٨ ورا بعض يا بطل"
+ ],
+ "right": [
+  "صح ✓",
+  "تمام ✓",
+  "كذا ✓",
+  "زين ✓",
+  "ماشي ✓",
+  "ضبط ✓",
+  "كفو ✓",
+  "تم ✓"
+ ],
+ "fast": [
+  "⚡ سريع! +٢",
+  "⚡ برق +٢",
+  "⚡ سرعة خيالية +٢",
+  "⚡ ما تأخرت +٢",
+  "⚡ سريع جدًا +٢",
+  "⚡ طير +٢",
+  "⚡ وقت قياسي +٢",
+  "⚡ صاروخ +٢"
+ ],
+ "time_up": [
+  "⏰ خلص الوقت، سرّع شوي",
+  "⏰ الوقت انتهى، القدرات بوقت",
+  "⏰ خلص، خلنا نسرّعك",
+  "⏰ الوقت طار، ركز أسرع",
+  "⏰ انتهى الوقت، سرّع",
+  "⏰ الوقت خلص، تدريب السرعة",
+  "⏰ فات الوقت، نسرّع الحين",
+  "⏰ خلص الوقت، القدرات بوقت"
+ ],
+ "stuck_title": [
+  "خلنا نوقف ثانية",
+  "تعثرت كم مرة، عادي",
+  "وقف شوي، نشوفها أوضح",
+  "ثلاث غلطات، خلنا نوضح",
+  "عادي، خلنا نشرحها",
+  "توقف بسيط، نشوفها",
+  "كم غلطة ورا بعض، عادي",
+  "خلنا نوضحها أكثر"
+ ],
+ "stuck_button": [
+  "خلني أفهمها أول",
+  "أبغى الشرح أوضح",
+  "وضحها لي",
+  "خلني أشوف الشرح",
+  "أبي أفهمها صح",
+  "شرح أوضح لو سمحت",
+  "خلني أستوعبها",
+  "أبغى أتأكد منها"
+ ],
+ "stuck_done_button": [
+  "فهمت، كمّل",
+  "تمام، نكمل",
+  "استوعبت، يلا",
+  "فهمتها، كمّل",
+  "زين، نكمل الحين",
+  "واضح، كمّل",
+  "تم، نرجع للأسئلة",
+  "فهمت، يلا نكمل"
+ ],
+ "resume": [
+  "كمّلنا من المستوى (رقم)",
+  "رجعنا للمستوى (رقم)",
+  "نكمل من المستوى (رقم)",
+  "من المستوى (رقم) يلا",
+  "كمّل من المستوى (رقم)",
+  "رجعنا نكمل المستوى (رقم)",
+  "المستوى (رقم) ينتظرك",
+  "نكمل الحين المستوى (رقم)"
+ ],
+ "final_intro": [
+  "خلّصت كل المستويات",
+  "الحين الاختبار النهائي",
+  "كل المستويات تمت",
+  "الحين ٥ أسئلة قدرات",
+  "خلصت التدريب، الاختبار",
+  "المستويات خلصت، النهائي",
+  "الحين الاختبار الحقيقي",
+  "٥ أسئلة بمستوى القدرات"
+ ],
+ "final_all_right": [
+  "الاختبار كله صح",
+  "كل الأسئلة صح",
+  "ضبطت الاختبار كامل",
+  "كله صح، مستوى قدرات",
+  "ما غلطت ولا واحد",
+  "الاختبار كامل تمام",
+  "كل شي صح في الوقت",
+  "مستوى قدرات وأنت فيه"
+ ],
+ "final_some_wrong": [
+  "المهارات صارت عندك",
+  "التدريب المفتوح يسرّعك",
+  "شوي تدريب وتصير أسرع",
+  "المهارات موجودة، سرّع",
+  "راجع شوي وترتاح",
+  "التدريب يخليها أسهل",
+  "صارت عندك، كمّل تدريب",
+  "المرة الجاية أسرع"
+ ],
+ "review_all_right": [
+  "ما نسيت شي",
+  "المهارات ثابتة",
+  "كل شي موجود",
+  "ما طاح منك شي",
+  "ثابت تمام",
+  "المهارات مكانها",
+  "ما نسيت ولا واحدة",
+  "كل المهارات حاضرة"
+ ],
+ "review_some_wrong": [
+  "المهارات تحتاج تسخين",
+  "شوي تدريب ويرجع",
+  "تسخين بسيط ويرجع",
+  "تحتاج تسخين سريع",
+  "شوي مراجعة وتمشي",
+  "التدريب يرجّعها",
+  "تسخين ويرجع كل شي",
+  "شوي تدريب وتصير سريع"
+ ]
+};
+const drT = k => drPick(DR_TXT[k]);
 const drShuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
 function runDrill(d, lesson) {
@@ -8216,7 +8590,7 @@ function runDrill(d, lesson) {
       if (left <= 0) {      // time up: counts as a miss, the right answer lights up, next question
         stopT(); over = true; tm.classList.add('up'); FX.play('wrong');
         opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok', 'flash'); });
-        fb.className = 'lad-fb dr-fb bad'; fb.textContent = '⏰ خلص الوقت. القدرات اختبار بوقت، فخلنا نسرّعك.';
+        fb.className = 'lad-fb dr-fb bad'; fb.textContent = drT('time_up');
         done('time', fb, secs);
       }
     }, 100);
@@ -8254,17 +8628,17 @@ function runDrill(d, lesson) {
         }
         if (delta > 0) {
           streak++; missRow = 0;
-          const line = DR_COACH.streak[streak] || (res === 'fast' ? '⚡ سريع! +٢' : '');
-          fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drPick(['صح ✓', 'صح ✓', 'تمام ✓', 'كذا ✓']);
+          const line = [3, 5, 8].includes(streak) ? drT('streak_' + streak) : res === 'fast' ? drT('fast') : '';
+          fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drT('right');
           if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 800);
           setTimeout(next, 700);
           return;
         }
         streak = 0; missRow++;
-        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dr-coach">${drPick(DR_COACH.miss[tone])}</span>`;
+        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dr-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
           missRow = 0; LT('drill_bone', { lesson: id, n: i + 1 });
-          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1500); else dockBtn('خلني أفهمها أول', () => bone(i, next));
+          if (res === 'time') setTimeout(() => !gone && bone(i, next), 1500); else dockBtn(drT('stuck_button'), () => bone(i, next));
           return;
         }
         if (res === 'time') setTimeout(next, 1500);
@@ -8279,8 +8653,8 @@ function runDrill(d, lesson) {
     stopT();
     const lv = D.levels[i];
     const p = page('dr-bone');
-    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">خلنا نوقف ثانية 🤝</small><h2>تعثرت كم مرة ورا بعض، عادي. خلنا نشوفها بشكل أوضح:</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
-    dockBtn('فهمت، كمّل', back);
+    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">🤝</small><h2>${drT('stuck_title')}</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
+    dockBtn(drT('stuck_done_button'), back);
   }
 
   function levelDone(i) {
@@ -8290,14 +8664,14 @@ function runDrill(d, lesson) {
     m.lv = i + 1; m.pts = 0; m.k = 0; persist();
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     if (i + 1 >= N) return finalIntro();
-    levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drPick(DR_COACH.up[tone])}`);
+    levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drT('up_' + tone)}`);
   }
 
   /* the final test: real exam level, mixed skills, more time per question */
   function finalIntro() {
     paintRail(null, 'الاختبار النهائي');
     const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">خلّصت كل المستويات 🏁</small><h2>الحين الاختبار النهائي: ${ar(D.final.length)} أسئلة بمستوى القدرات الحقيقي.</h2>
+    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">🏁 ${drT('final_intro')}</small><h2>الحين الاختبار النهائي: ${ar(D.final.length)} أسئلة بمستوى القدرات الحقيقي.</h2>
       <p class="dr-rule">كل سؤال يجمع أكثر من مهارة. عندك ${ar(D.finalT || 40)} ثانية لكل سؤال، ومحاولة وحدة بس، مثل الاختبار.</p></div>`;
     dockBtn('ابدأ الاختبار', () => final(0, 0));
   }
@@ -8334,7 +8708,7 @@ function runDrill(d, lesson) {
     LT('lesson_done', { lesson: id, n: stars, val: 'drill' });
     paintRail(null, 'خلصت الدرس');
     const p = page('lad-end');
-    p.appendChild(poster('billboard result', d, `<div class="bb-body"><small class="eyebrow">${fmt(lesson.title)}</small><h1>${got === n ? 'الاختبار كله صح 🎯' : `حليت ${ar(got)} من ${ar(n)}`}</h1><p>${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : 'المهارات صارت عندك. التدريب المفتوح يخليها أسرع، والمراجعة بتجيك المرة الجاية.'}</p></div>`));
+    p.appendChild(poster('billboard result', d, `<div class="bb-body"><small class="eyebrow">${fmt(lesson.title)}</small><h1>${got === n ? drT('final_all_right') + ' 🎯' : `حليت ${ar(got)} من ${ar(n)}`}</h1><p>${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p></div>`));
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
     dockBtn(nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d), ['تدريب مفتوح (أسئلة بلا نهاية)', () => open(0)]);
@@ -8351,7 +8725,7 @@ function runDrill(d, lesson) {
     dockNone();
     ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
-      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? '⚡ سريع' : 'صح ✓'; setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
+      if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
       else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1500);
       else dockBtn('التالي', () => open(k + 1, limit, got));
     });
@@ -8359,7 +8733,7 @@ function runDrill(d, lesson) {
   function reviewed(got, n) {
     paintRail(null, 'المراجعة');
     const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">مراجعة سريعة</small><h2>${got === n ? 'ما نسيت شي 👌' : `${ar(got)} من ${ar(n)}. المهارات تحتاج تسخين`}</h2><p>${got === n ? 'المهارات ثابتة عندك.' : 'شوية تدريب ويرجع كل شي سريع.'}</p></div>`;
+    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">مراجعة سريعة</small><h2>${got === n ? drT('review_all_right') + ' 👌' : `${ar(got)} من ${ar(n)}. ${drT('review_some_wrong')}`}</h2><p>${got === n ? '' : ''}</p></div>`;
     const nextL = d.lessons[d.lessons.indexOf(lesson) + 1];
     dockBtn('تدريب مفتوح', () => open(0), [nextL ? 'الدرس التالي' : 'العودة إلى الوحدة', () => nextL ? playLesson(d, nextL) : showDistrict(d)]);
   }
@@ -8373,7 +8747,7 @@ function runDrill(d, lesson) {
     dockBtn('مراجعة سريعة (٥ أسئلة)', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); levelIntro(0); }]);
   }
   else if (m.lv >= N) finalIntro();
-  else levelIntro(m.lv, m.lv || m.pts ? `كمّلنا من المستوى ${ar(m.lv + 1)}${m.pts ? ` (معك ${ar(m.pts)} من ${ar(DR_GOAL)})` : ''} 👊` : '');
+  else levelIntro(m.lv, m.lv || m.pts ? `${drT('resume').replace('(رقم)', ar(m.lv + 1))}${m.pts ? ` (معك ${ar(m.pts)} من ${ar(DR_GOAL)})` : ''} 👊` : '');
 }
 
 /* ================= حيّ الكلمات: the vocabulary foundations ================= */
