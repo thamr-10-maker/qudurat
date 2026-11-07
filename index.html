@@ -1232,7 +1232,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794001586"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794015053"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -2780,13 +2780,13 @@ function runPlayer(P) {
       dock.classList.add('empty');
       return { set disabled(v) { bs.forEach(b => b.disabled = v); dock.classList.toggle('empty', v); } };
     };
-    check = learning ? confDock() : setDock('', '', '', exam ? 'التالي' : 'تحقّق', () => answer(sel), false);
+    check = learning && !s.direct ? confDock() : setDock('', '', '', exam ? 'التالي' : 'تحقّق', () => answer(sel), false); // s.direct: plain choices (used in the very first lesson)
     let typed = false;
     /* 1) write your own answer first (numeric answers) */
     const mv = !exam ? moveOf(s) : null; // a smart move exists: keep the choices on screen, they are part of the move
-    const numAns = learning && !again && !mv ? numericAnswer(s) : null;
+    const numAns = learning && !again && !mv && !s.direct ? numericAnswer(s) : null;
     /* 2) name the relation first (verbal analogy) */
-    const relAns = learning && !again && !numAns ? relationFirst(s) : null;
+    const relAns = learning && !again && !numAns && !s.direct ? relationFirst(s) : null;
     if (numAns || relAns) {
       opts.hidden = true; check = { set disabled(v) {} };
       dock.className = 'dock empty'; dockIn.innerHTML = '';
@@ -4919,6 +4919,88 @@ const NOREP = {"n1":{"drop":["ما قيمة الرقم ٧ في العدد ٤٧٣
 "fill":[0,1]},"d8":{"drop":["كيس فيه ٣ كرات حمراء و ٥ زرقاء و ٢ خضراء. ما احتمال سحب كرة ","في الكيس السابق (٣ حمراء من ١٠)، ما احتمال  ألا  تكون الكرة "],
 "fill":[3]},"c5":{"drop":["قارن بين:","إذا كان `س = -3`، قارن بين:"],
 "fill":[]}};
+
+/* ================= n1 · the first lesson anyone opens — rebuilt to Qudurat level =================
+   Students left at step 1 (an intro page that called the topic "easy", then counting pencils).
+   Now: no intro page. Step 1 is a real Qudurat-style question to try before any explanation,
+   then the one idea (place = value), the zero trap, and a famous shortcut (a number minus its reverse = 9 × the digit gap).
+   Loaded last (d_zzzz_*) so it replaces the older n1 flow and the old practice fill-ins. */
+{
+  /* big digit cards in a row, left to right as numbers are written; hl = indexes to light up; tags = small labels under */
+  const cards = (K, digits, { hl = [], tags = [], y = 34, w = 76, gap = 14 } = {}) => {
+    const n = digits.length, x0 = 180 - (n * w + (n - 1) * gap) / 2;
+    return digits.map((d, i) => {
+      const x = x0 + i * (w + gap);
+      const r = K.rect(x, y, w, 92, hl.includes(i) ? 'act-card on' : 'act-card', 14);
+      const t = d == null ? null : K.text(x + w / 2, y + 60, String(d), 'act-fnum');
+      if (tags[i]) K.note(x + w / 2, y + 118, tags[i]);
+      return { r, t, x: x + w / 2 };
+    });
+  };
+  const CMP4 = ['الأولى أكبر', 'الثانية أكبر', 'متساويتان', 'المعطيات غير كافية'];
+
+  ACT.lesson('n1', [
+    /* 1 · try it first */
+    { h: 170, beats: [
+      { say: 'جرّبه قبل أي شرح 👇<br>في العدد ٧٤٧: كم الفرق بين قيمة الـ٧ اللي على اليسار، وقيمة الـ٧ اللي على اليمين؟', draw(K, st) { st.c = cards(K, [7, 4, 7], { hl: [0, 2] }); },
+        ask: { choices: [0, 693, 700, 7], answer: 693, wrong: { 0: 'نفس الرقم… بس هل له نفس القيمة؟ انظر مكان كل واحد.', 700: 'هذي قيمة الـ٧ اللي على اليسار بس. والـ٧ اللي على اليمين كم قيمتها؟', 7: 'هذي قيمة الـ٧ اللي على اليمين بس.' } },
+        ok(K, st) { K.note(st.c[0].x, 152, '٧٠٠'); K.note(st.c[1].x, 152, '٤٠'); K.note(st.c[2].x, 152, '٧'); },
+        board: [[['700'], ['−', 'op'], ['7'], ['=', 'op'], ['693', 'res']]],
+        msg: 'نفس الرقم ٧… لكن قيمته تتغير حسب <b>مكانه</b>. هذا الدرس كله في جملة.' },
+    ] },
+    /* 2 · the rule, used fast */
+    { h: 170, beats: [
+      { say: 'في العدد ٥٢٨١، الرقم ٥ في خانة الآلاف. كم قيمته؟', draw(K) { cards(K, [5, 2, 8, 1], { hl: [0], tags: ['آلاف', 'مئات', 'عشرات', 'آحاد'], w: 70 }); },
+        ask: { choices: [5, 500, 5000], answer: 5000, wrong: { 5: 'هذا الرقم نفسه، مو قيمته في خانته.', 500: 'هذي قيمته لو كان في المئات.' } },
+        board: [[['5 × 1000'], ['=', 'op'], ['5000', 'res']]], msg: '<b>قيمة الرقم = الرقم × قيمة خانته.</b>' },
+      { say: 'بسرعة: قيمة الرقم ٥ في ٥٢٣، تقسيم قيمته في ٢٥٣ = ؟',
+        ask: { choices: [1, 10, 100], answer: 10, wrong: { 1: 'الرقم نفسه، بس ٥٠٠ ÷ ٥٠ كم؟', 100: 'في ٢٥٣ الرقم ٥ في العشرات: قيمته ٥٠، مو ٥.' } },
+        board: [[['500'], ['÷', 'op'], ['50'], ['=', 'op'], ['10', 'res']]], msg: 'كل خانة = <b>١٠ أضعاف</b> الخانة اللي على يمينها.' },
+    ] },
+    /* 3 · the zero trap */
+    { h: 170, beats: [
+      { say: 'اكتب العدد: ٣ آلاف و ٢ عشرات و ٥ آحاد. وش نكتب في خانة المئات؟', draw(K, st) { st.c = cards(K, [3, null, 2, 5], { hl: [1], tags: ['آلاف', 'مئات', 'عشرات', 'آحاد'], w: 70 }); },
+        ask: { choices: ['٠', 'نتركها فاضية'], answer: '٠', wrong: { 'نتركها فاضية': 'لو تركناها، تنزلق الأرقام ويصير العدد ٣٢٥، وهذا عدد ثاني تمامًا!' } },
+        ok(K, st) { K.text(st.c[1].x, 94, '0', 'act-fnum n act-pop'); } },
+      { say: 'إذن العدد هو:', ask: { choices: [325, 3025, 3250], answer: 3025, wrong: { 325: 'نسيت الصفر اللي يحجز المئات.', 3250: 'الأرقام انزلقت خانة: الـ٥ مكانها الآحاد.' } },
+        msg: 'الصفر <b>يحجز</b> الخانة الفاضية. فخ مشهور في القدرات.' },
+    ] },
+    /* 4 · the shortcut, discovered */
+    { h: 190, beats: [
+      { say: 'العدد ٥٢ يعني ٥ عشرات و ٢ آحاد. اضغط «اقلبه»:', draw(K, st) { st.c = cards(K, [5, 2], { tags: ['عشرات', 'آحاد'] }); } },
+      { button: 'اقلبه', ok(K, st) { st.c[0].t.textContent = ar('2'); st.c[1].t.textContent = ar('5'); st.c.forEach(c => c.r.setAttribute('class', 'act-card on')); } },
+      { say: 'صار ٢٥. كم الفرق: ٥٢ − ٢٥ ؟', ask: { choices: [33, 27, 37], answer: 27, wrong: { 33: 'احسبها بهدوء: ٥٢ − ٢٥.', 37: 'قريب! احسبها مرة ثانية.' } },
+        board: [[['52'], ['−', 'op'], ['25'], ['=', 'op'], ['27', 'res'], ['=', 'op'], ['9 × 3']]],
+        msg: 'لاحظ: ٢٧ = ٩ × <b>٣</b>… و ٣ هو الفرق بين الرقمين ٥ و ٢!' },
+    ] },
+    /* 5 · use it without calculating */
+    { h: 150, beats: [
+      { say: 'جرّب الحيلة بدون حساب: ٨٣ − ٣٨ = ؟', draw(K) { cards(K, [8, 3], { y: 20, w: 70 }); K.note(180, 132, 'الفرق بين الرقمين: ٨ − ٣ = ٥'); },
+        ask: { choices: [55, 45, 35], answer: 45, wrong: '٩ × الفرق بين الرقمين. الفرق ٥، إذن ٩ × ٥ = ؟' },
+        board: [[['9'], ['×', 'op'], ['(8 − 3)'], ['=', 'op'], ['45', 'res']]],
+        msg: '<b>العدد − مقلوبه = ٩ × الفرق بين رقميه.</b> حيلة توفر عليك وقت في القدرات.' },
+    ] },
+    /* 6 · a real Qudurat-style question */
+    { h: 0, beats: [
+      { say: 'سؤال قدرات 🎯<br>عدد من رقمين، رقم آحاده ٢، وإذا قلبناه <b>نقص ٥٤</b>. ما العدد؟',
+        ask: { choices: [28, 62, 82, 72], answer: 82, wrong: { 28: 'لو قلبنا ٢٨ يصير ٨٢ ويكبر، والسؤال يقول نقص.', 62: '٦٢ − ٢٦ = ٣٦، مو ٥٤.', 72: '٧٢ − ٢٧ = ٤٥، مو ٥٤.' } },
+        board: [[['54'], ['=', 'op'], ['9 × 6', 'res'], 'الفرق بين الرقمين ٦'], [['2 + 6'], ['=', 'op'], ['8'], 'رقم العشرات ← العدد ٨٢']],
+        msg: 'حليتها بالحيلة، بدون تجريب! هذا مستوى القدرات.' },
+    ] },
+  ], {
+    intro: null, example: null, guided: null, fixit: null, order: null, checks: [], rules: [], keepQs: [],
+    qs: [
+      { q: 'من الأرقام ٠ و ٤ و ٧ (بدون تكرار): كم الفرق بين أكبر عدد وأصغر عدد من ثلاثة أرقام؟', choices: ['٣٣٣', '٦٩٣', '٧٠٣', '٢٩٧'], answer: 0, direct: true,
+        why: 'أكبر عدد ٧٤٠، وأصغر عدد ٤٠٧ (العدد ما يبدأ بصفر، فـ ٠٤٧ مو عدد من ثلاثة أرقام). `740 − 407 = 333`.',
+        wrong: { 1: 'هذا لو بدأ أصغر عدد بالصفر (٠٤٧). العدد ما يبدأ بصفر.' } },
+      { q: 'قارن بين:', a: 'قيمة الرقم ٣ في العدد ٤٣١٢', b: 'قيمة الرقم ٢ في العدد ٥٢٠', choices: CMP4, answer: 0, direct: true, keep: true,
+        why: 'الرقم ٣ في المئات: قيمته ٣٠٠. والرقم ٢ في العشرات: قيمته ٢٠. إذن الأولى أكبر.', wrong: { 1: 'لا تقارن الرقمين نفسهما، قارن قيمتيهما حسب الخانة.' } },
+    ],
+    summary: ['قيمة الرقم = الرقم × قيمة خانته', 'كل خانة = ١٠ أضعاف اللي على يمينها', 'الصفر يحجز الخانة الفاضية', 'العدد − مقلوبه = ٩ × الفرق بين رقميه'],
+  });
+  PLUS.n1.flow[0].kicker = 'الخطوة ١ من ٦ · سؤال قدرات حقيقي';
+  if (typeof NOREP !== 'undefined') delete NOREP.n1;   // the old practice fill-ins were primary-level; this lesson has its own
+}
 
 /* ================= smart placement test + personal plan =================
    Every lesson is a skill (SKILLS, with its prerequisites) and has its own test questions (DIAG).
@@ -7293,13 +7375,13 @@ function runPlayer(P) {
       dock.classList.add('empty');
       return { set disabled(v) { bs.forEach(b => b.disabled = v); dock.classList.toggle('empty', v); } };
     };
-    check = learning ? confDock() : setDock('', '', '', exam ? 'التالي' : 'تحقّق', () => answer(sel), false);
+    check = learning && !s.direct ? confDock() : setDock('', '', '', exam ? 'التالي' : 'تحقّق', () => answer(sel), false); // s.direct: plain choices (used in the very first lesson)
     let typed = false;
     /* 1) write your own answer first (numeric answers) */
     const mv = !exam ? moveOf(s) : null; // a smart move exists: keep the choices on screen, they are part of the move
-    const numAns = learning && !again && !mv ? numericAnswer(s) : null;
+    const numAns = learning && !again && !mv && !s.direct ? numericAnswer(s) : null;
     /* 2) name the relation first (verbal analogy) */
-    const relAns = learning && !again && !numAns ? relationFirst(s) : null;
+    const relAns = learning && !again && !numAns && !s.direct ? relationFirst(s) : null;
     if (numAns || relAns) {
       opts.hidden = true; check = { set disabled(v) {} };
       dock.className = 'dock empty'; dockIn.innerHTML = '';
