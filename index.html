@@ -1131,6 +1131,9 @@ body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;col
 .tun-ghost{width:100%;max-width:416px;height:52px;border-radius:26px;background:transparent;color:#DADDD9;border:1px solid rgba(255,255,255,.14);font-family:var(--f-body);font-size:16px;cursor:pointer;animation:dzRise .9s .6s both}
 .tun-link{background:none;border:0;color:#8E938E;font-family:var(--f-body);font-size:14px;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:8px;animation:dzRise .9s .7s both}
 .tun-gate .dz-ring{margin-bottom:4px}
+.tun-h.big{font-size:64px;font-weight:300;letter-spacing:.5px}
+.tun-time{margin:0;font-family:var(--f-display);font-weight:300;font-size:22px;color:#7FE0B4}
+.tun-gate .tun-h{font-size:40px}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1424,7 +1427,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794067625"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794069461"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3796,7 +3799,7 @@ function runDrill(d, lesson) {
     stage.insertAdjacentHTML('beforeend', orbHTML(ring));
     const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
     const fb = h('p', 'lad-fb dz-msg'); stage.appendChild(fb);
-    stage.appendChild(h('h1', 'dz-q', fmt(g.q)));
+    stage.appendChild(h('h1', 'dz-q', fmt(g.q.replace(/ ، /g, '، '))));   // the comma sticks to what's before it, never starts a line
     if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
     const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
@@ -8691,7 +8694,7 @@ function runDrill(d, lesson) {
     stage.insertAdjacentHTML('beforeend', orbHTML(ring));
     const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
     const fb = h('p', 'lad-fb dz-msg'); stage.appendChild(fb);
-    stage.appendChild(h('h1', 'dz-q', fmt(g.q)));
+    stage.appendChild(h('h1', 'dz-q', fmt(g.q.replace(/ ، /g, '، '))));   // the comma sticks to what's before it, never starts a line
     if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
     const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
@@ -10622,10 +10625,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     const w = darkRoom('tun-door');
     const going = !!(m && m.started && (m.lv || m.pts));
     w.insertAdjacentHTML('beforeend', `<div class="tun-hole" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
-      <div class="tun-txt"><p class="tun-eyebrow">دورة القدرات</p><h1 class="tun-h">${going ? 'الطريق ينتظرك' : 'رحلتك تبدأ<br>من هنا'}</h1>
-      <p class="tun-p">${going ? 'كمّل من المكان اللي وقفت فيه.' : 'محطة بعد محطة. ما نقولك وش فيها… تكتشفها بنفسك.'}</p>
-      <span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>أول محطة: حوالي ${ar((f.l.drill || {}).minutes || 20)} دقيقة</span></div>`);
-    const go = el('button', 'tun-go', going ? 'كمّل الرحلة' : 'ادخل');
+      <div class="tun-txt"><h1 class="tun-h big">القدرات</h1><p class="tun-time">${ar((f.l.drill || {}).minutes || 20)} دقيقة</p></div>`);
+    const go = el('button', 'tun-go', going ? 'كمّل' : 'ادخل');
     go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'new' }); enter(TUN, a => a.playLesson(f.d, f.l)); };
     w.appendChild(go);
   }
@@ -10637,15 +10638,15 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     const w = darkRoom('tun-gate');
     const sub = subscriber();
     w.insertAdjacentHTML('beforeend', `<div class="dz-ring" aria-hidden="true"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <div class="tun-txt c"><h1 class="tun-h">خلّصت أول محطة</h1><p class="tun-p">${sub ? 'اشتراكك يفتح لك باقي الطريق.' : 'اللي جاي أعمق وأقوى، وبنفس الطريقة.<br>الطريق يكمل للمشتركين.'}</p></div>`);
+      <div class="tun-txt c"><h1 class="tun-h">خلّصت أول محطة</h1></div>`);
     const act = el('div', 'tun-act');
     if (sub) { const b = el('button', 'tun-go', 'كمّل الطريق'); b.onclick = () => { LT('gate_continue'); courseHome(); }; act.appendChild(b); }
     else {
-      const a = el('a', 'tun-go', 'أبغى أكمّل الطريق'); a.href = waLink('السلام عليكم، خلصت أول محطة في دورة القدرات وأبغى أكمّل الطريق'); a.target = '_blank'; a.rel = 'noopener';
+      const a = el('a', 'tun-go', 'كمّل الطريق'); a.href = waLink('السلام عليكم، خلصت أول محطة في دورة القدرات وأبغى أكمّل الطريق'); a.target = '_blank'; a.rel = 'noopener';
       a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
-      if (window.LeenaAuth) { const li = el('button', 'tun-ghost', window.LeenaAuth.user ? 'حسابي' : 'عندي حساب، سجّل دخولي'); li.onclick = () => { LT('gate_login'); window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); }; act.appendChild(li); }
+      if (window.LeenaAuth) { const li = el('button', 'tun-ghost', window.LeenaAuth.user ? 'حسابي' : 'عندي حساب'); li.onclick = () => { LT('gate_login'); window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); }; act.appendChild(li); }
     }
-    const tr = el('button', 'tun-link', 'تدريب مفتوح على المحطة الأولى'); tr.onclick = () => { LT('gate_train'); f.l._drillMode = 'open'; enter(TUN, a => a.playLesson(f.d, f.l)); };
+    const tr = el('button', 'tun-ghost', 'تدرّب على المحطة الأولى'); tr.onclick = () => { LT('gate_train'); f.l._drillMode = 'open'; enter(TUN, a => a.playLesson(f.d, f.l)); };
     act.appendChild(tr);
     w.appendChild(act);
   }
