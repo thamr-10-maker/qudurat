@@ -1019,6 +1019,21 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .dr-rule{margin-top:14px!important;font-size:13px;color:var(--ink-3)!important;line-height:1.8}
 .dr-back{color:var(--ok)!important;font-weight:600;margin-bottom:6px!important}
 .dr-bonetxt{font-size:18px;line-height:2.1;color:var(--ink);margin-top:10px}
+/* the lesson bar: one piece per level, the current level wide with its point boxes */
+.dr-rail{display:flex;align-items:center;gap:3px;direction:rtl;position:relative}
+.dr-seg{flex:1;min-width:3px;height:8px;border-radius:3px;background:var(--line)}
+.dr-seg.done{background:var(--ok)}
+.dr-seg.cur{flex:0 0 46%;height:auto;display:flex;gap:3px;background:none;padding:3px;border-radius:7px;box-shadow:0 0 0 2px var(--theme,var(--brand));position:relative}
+.dr-seg.cur i{flex:1;height:14px;border-radius:4px;background:var(--line);transition:background .3s}
+.dr-seg.cur i.on{background:var(--ok)}
+.dr-seg.cur.hit{animation:drhit .5s ease} .dr-seg.cur.miss{animation:drmiss .45s ease}
+@keyframes drhit{50%{box-shadow:0 0 0 4px var(--ok)}}
+@keyframes drmiss{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}50%{box-shadow:0 0 0 4px var(--bad)}}
+.dr-seg.cur .dr-delta{top:auto;bottom:-24px}
+.dr-idea h2{font-size:24px;line-height:1.6}
+.dr-ex{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--brand-soft);font-size:22px;line-height:1.9}
+.dr-ex small{display:block;font-size:12px;color:var(--ink-3);margin-bottom:2px}
+.dr-back{font-size:15px;margin:0 0 10px}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1312,7 +1327,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794030636"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794031752"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3439,10 +3454,20 @@ function runDrill(d, lesson) {
   cleanupFns.push(() => { gone = true; stopT(); dock.remove(); });
 
   /* top: the lesson's levels as one long bar (how far up the lesson am I) */
-  function paintRail(cur, label) {
+  /* one bar for the whole lesson: every level is a piece (done = green, ahead = grey);
+     the level he is on is wide and shows its point boxes, which light up and go dark as he answers */
+  function paintRail(cur, label, pts) {
     const m = mem(), done = S.done[id];
-    rail.innerHTML = `<div class="lad-name"><b>${fmt(lesson.title)}</b><span>${label}</span></div>` +
-      `<div class="lad-steps">${D.levels.map((_, i) => `<i class="${i === cur ? 'on' : done || i < m.lv ? 'done' : ''}"></i>`).join('')}</div>`;
+    const segs = D.levels.map((lv, i) => {
+      if (i === cur) { const goal = lv.goal || DR_GOAL; return `<div class="dr-seg cur">${Array.from({ length: goal }, (_, k) => `<i class="${k < (pts || 0) ? 'on' : ''}"></i>`).join('')}</div>`; }
+      return `<div class="dr-seg ${done || i < m.lv ? 'done' : ''}"></div>`;
+    }).join('');
+    rail.innerHTML = `<div class="lad-name"><b>${fmt(lesson.title)}</b><span>${label}</span></div><div class="dr-rail">${segs}</div>`;
+  }
+  function setPts(pts, delta) {
+    rail.querySelectorAll('.dr-seg.cur i').forEach((x, k) => x.className = k < pts ? 'on' : '');
+    if (delta) { const cur = rail.querySelector('.dr-seg.cur'); if (!cur) return; cur.classList.remove('hit', 'miss'); void cur.offsetWidth; cur.classList.add(delta > 0 ? 'hit' : 'miss');
+      const f = h('span', 'dr-delta ' + (delta > 0 ? 'up' : 'down'), delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`); cur.appendChild(f); setTimeout(() => f.remove(), 900); }
   }
   function page(cls = '') { stopT(); pane.innerHTML = ''; window.scrollTo(0, 0); const p = h('div', 'lpage lad-page ' + cls); pane.appendChild(p); return p; }
   function dockBtn(label, fn, extra) {
@@ -3454,9 +3479,9 @@ function runDrill(d, lesson) {
   function dockNone() { dock.className = 'dock empty'; dockIn.innerHTML = ''; }
 
   /* a fresh question from a level: never one he already saw in this session; choices shuffled */
-  function make(lv, stage) {
+  function make(lv, k) {
     let g = null;
-    for (let k = 0; k < 40; k++) { g = lv.gen(Math.max(0, Math.min(4, stage))); if (!seen.has(g.q + '|' + (g.a || '') + '|' + (g.b || ''))) break; }
+    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(g.q + '|' + (g.a || '') + '|' + (g.b || ''))) break; }
     seen.add(g.q + '|' + (g.a || '') + '|' + (g.b || ''));
     const used = new Set([String(g.ans)]), opts = [{ v: g.ans, key: null }];
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
@@ -3511,49 +3536,40 @@ function runDrill(d, lesson) {
     }, 100);
   }
 
-  /* the bar of the current level: 5 points; he sees himself climb and fall back */
-  function bar(host, pts) {
-    const b = h('div', 'dr-bar', `<div class="dr-track">${Array.from({ length: DR_GOAL }, (_, i) => `<i class="${i < pts ? 'on' : ''}"></i>`).join('')}</div><b>${ar(pts)}/${ar(DR_GOAL)}</b>`);
-    host.appendChild(b); return b;
-  }
-  function setBar(b, pts, delta) {
-    b.querySelectorAll('.dr-track i').forEach((x, i) => x.className = i < pts ? 'on' : '');
-    b.querySelector('b').textContent = `${ar(pts)}/${ar(DR_GOAL)}`;
-    if (delta) { const f = h('span', 'dr-delta ' + (delta > 0 ? 'up' : 'down'), delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`); b.appendChild(f); setTimeout(() => f.remove(), 900); }
-  }
-
   /* a new skill: one line, then straight to the questions */
   function levelIntro(i, back) {
-    const lv = D.levels[i]; paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)}`);
+    const lv = D.levels[i]; paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)}`, mem().lv === i ? mem().pts : 0);
     const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}</small>${back ? `<p class="dr-back">${back}</p>` : ''}<h2>${fmt(lv.intro)}</h2>
-      <p class="dr-rule">⏱️ عندك ${ar(lv.t)} ثواني لكل سؤال · صح = +١ · سريع جدًا = +٢ · غلط أو خلص الوقت = −١ · وصّل الشريط ${ar(DR_GOAL)} وتطلع</p></div>`;
+    p.innerHTML = `${back ? `<p class="dr-back">${back}</p>` : ''}<div class="lad-card up dr-card dr-idea"><small class="eyebrow">💡 فكرة جديدة · المستوى ${ar(i + 1)} من ${ar(N)}</small><h2>${fmt(lv.idea)}</h2>
+      ${lv.ex ? `<div class="dr-ex"><small>مثال</small><div>${fmt(lv.ex)}</div></div>` : ''}
+      <p class="dr-rule">⏱️ ${ar(lv.t)} ثواني لكل سؤال · صح = +١ (سريع جدًا = +٢) · غلط أو خلص الوقت = −١ · املأ ${ar(lv.goal || DR_GOAL)} مربعات فوق وتطلع</p></div>`;
     dockBtn(i === 0 && !mem().started ? 'يلا نبدأ' : 'يلا', () => { mem().started = true; persist(); level(i); });
   }
 
   /* the drill of one level */
   function level(i) {
-    const lv = D.levels[i], m = mem(); m.lv = i; persist();
-    paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}`);
-    let pts = m.pts || 0, streak = 0, missRow = 0, n = 0;
+    const lv = D.levels[i], m = mem(), goal = lv.goal || DR_GOAL;
+    if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
+    persist();
+    let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0;
+    paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}`, pts);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const next = () => {
       if (gone) return;
       const p = page('dr-drill');
-      const b = bar(p, pts);
-      const g = make(lv, pts + Math.floor(n / 6));   // the bar is the difficulty: the higher he is, the harder the numbers
-      n++;
+      const g = make(lv, k);           // one notch harder for every right answer; a miss stays on the same notch (new question, never an easier one)
       dockNone();
       ask(p, g, lv.t, lv.hints || {}, (res, fb) => {
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
-        pts = Math.max(0, Math.min(DR_GOAL, pts + delta)); m.pts = pts; persist();
-        setBar(b, pts, delta);
+        pts = Math.max(0, Math.min(goal, pts + delta)); if (delta > 0) k++;
+        m.pts = pts; m.k = k; persist();
+        setPts(pts, delta);
         if (delta > 0) {
           streak++; missRow = 0;
           const line = DR_COACH.streak[streak] || (res === 'fast' ? '⚡ سريع! +٢' : '');
           fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drPick(['صح ✓', 'صح ✓', 'تمام ✓', 'كذا ✓']);
-          if (pts >= DR_GOAL) return setTimeout(() => !gone && levelDone(i), 700);
-          setTimeout(next, 650);
+          if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 800);
+          setTimeout(next, 700);
           return;
         }
         streak = 0; missRow++;
@@ -3575,7 +3591,7 @@ function runDrill(d, lesson) {
     stopT();
     const lv = D.levels[i];
     const p = page('dr-bone');
-    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">خلنا نوقف ثانية 🤝</small><h2>تعثرت كم مرة ورا بعض، عادي. هذي الفكرة بشكل أوضح:</h2><div class="dr-bonetxt">${fmt(lv.bone)}</div></div>`;
+    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">خلنا نوقف ثانية 🤝</small><h2>تعثرت كم مرة ورا بعض، عادي. خلنا نشوفها بشكل أوضح:</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
     dockBtn('فهمت، كمّل', back);
   }
 
@@ -3583,7 +3599,7 @@ function runDrill(d, lesson) {
     const lv = D.levels[i], m = mem();
     FX.play('task');
     LT('drill_level', { lesson: id, n: i + 1 });
-    m.lv = i + 1; m.pts = 0; persist();
+    m.lv = i + 1; m.pts = 0; m.k = 0; persist();
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     if (i + 1 >= N) return finalIntro();
     levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drPick(DR_COACH.up[tone])}`);
@@ -3645,7 +3661,7 @@ function runDrill(d, lesson) {
     const p = page('dr-drill');
     p.appendChild(h('small', 'eyebrow lad-kick', lv.name));
     dockNone();
-    ask(p, make(lv, 2 + Math.floor(Math.random() * 3)), lv.t, lv.hints || {}, (res, fb) => {
+    ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
       if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? '⚡ سريع' : 'صح ✓'; setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
       else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1500);
@@ -4123,151 +4139,229 @@ function runDrill(d, lesson) {
 })();
 
 /* ================= unit 1 · lesson 1 «قوانين الأسس» as a drill (learning by doing) =================
-   13 small skills, each a level of fast fresh questions (engine/drill.js). No gaps: every level adds one small thing.
-   Every wrong choice is a real mistake with its own hint, so a wrong pick tells him exactly what went wrong. */
+   Every new idea is its own level with its own explanation card. Inside a level the numbers only get bigger:
+   gen(k) gets k = how many he answered right in this level (a miss keeps the same k, with a new question).
+   Every wrong choice is a real mistake with its own hint. */
 (() => {
   const L = BUILT.fast.lessons.find(l => l.id === 'fs1'); if (!L) return;
   const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
   const pick = a => a[Math.floor(Math.random() * a.length)];
+  const T = (k, list) => list[Math.min(k, list.length - 1)];          // the notch for k right answers
   const sp = n => String(n).split('').map(c => c === '-' ? '⁻' : c === '+' ? '⁺' : '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]).join('');
-  const P = (b, e) => `${b}${sp(e)}`;                 // a power inside `math`: P(2, 5) → 2⁵
-  const near = (ans) => [[ans + 1, 'count'], [ans + 2, 'count'], [ans > 2 ? ans - 1 : ans + 3, 'count']];   // last resort when the real mistakes collide
+  const P = (b, e) => `${b}${sp(e)}`;
+  const m_ = s => '`' + s + '`';
+  const rep = (b, e, op = ' × ') => Array(e).fill(b).join(op);
+  const near = a => [[a + 1, 'count'], [a + 2, 'count'], [a > 2 ? a - 1 : a + 3, 'count']];
   const CMP3 = ['الأولى أكبر', 'الثانية أكبر', 'متساويتان'];
-  const cmpQ = (a, b, x, y, hint) => {               // compare a (value x) with b (value y)
-    const ans = x > y ? CMP3[0] : x < y ? CMP3[1] : CMP3[2];
-    return { q: 'قارن بين:', a: '`' + a + '`', b: '`' + b + '`', ans, fixed: CMP3, wr: CMP3.filter(c => c !== ans).map(c => [c, ans === CMP3[2] ? 'neq' : c === CMP3[2] ? 'eq' : hint]) };
+  const cmpQ = (a, b, x, y, hint) => {
+    const ans = Math.abs(x - y) < 1e-12 * Math.max(x, y) ? CMP3[2] : x > y ? CMP3[0] : CMP3[1];
+    return { q: 'قارن بين:', a: m_(a), b: m_(b), ans, fixed: CMP3, wr: CMP3.filter(c => c !== ans).map(c => [c, ans === CMP3[2] ? 'neq' : c === CMP3[2] ? 'eq' : hint]) };
   };
-  const COUNT = 'احسبها بهدوء، وعدّ مرة ثانية.';
+
+  /* the three ways to ask about one power: its value, how many times we multiply, what it means */
+  const valQ = (b, e) => { const a = b ** e; return { q: m_(P(b, e)) + ' = ؟', ans: a, wr: [[b * e, 'mul'], [b + e, 'add'], [e ** b <= 99999 ? e ** b : null, 'flip'], [b ** (e - 1), 'less'], [b ** (e + 1), 'more'], ...near(a)] }; };
+  const countQ = (b, e) => ({ q: m_(rep(b, e)) + ' = ' + b + ' أس كم؟', ans: e, wr: [[b ** e, 'val'], [b * e, 'mulc'], [e + 1, 'more'], [e > 2 ? e - 1 : null, 'less'], ...near(e)] });
+  const meanQ = (b, e) => ({ q: m_(P(b, e)) + ' معناها:', ans: m_(rep(b, e)), wr: [[m_(b + ' × ' + e), 'mul'], [b <= 6 && e ** b !== b ** e ? m_(rep(e, b)) : null, 'flip'], [m_(rep(b, e, ' + ')), 'add'], [e > 3 ? m_(rep(b, e - 1)) : null, 'less']] });
+  const powForms = (b, e) => { const f = [valQ, valQ]; if (e <= 6) f.push(countQ); if (e >= 3 && e <= 5) f.push(meanQ); return pick(f)(b, e); };
+
+  const H = {   // what each wrong choice means
+    mul: 'ضربت العدد في الأس. الأس مو ضرب، الأس تكرار: `2⁴ = 2 × 2 × 2 × 2`.',
+    add: 'جمعت. الأس يقول كم مرة <b>نضرب</b> العدد في نفسه.',
+    flip: 'قلبتها. العدد الكبير هو اللي يتكرر، والأس الصغير يقول كم مرة.',
+    less: 'نقصت ضربة. عدد مرات الضرب = الأس بالضبط.',
+    more: 'زدت ضربة. عدد مرات الضرب = الأس بالضبط.',
+    val: 'هذي قيمته. المطلوب الأس: كم مرة تكرر العدد؟',
+    mulc: 'عدّ كم مرة تكرر العدد بس، ما نضرب شي.',
+    count: 'احسبها بهدوء، وعدّ مرة ثانية.',
+    zeros: 'عدّ الأصفار: لازم عددها = الأس.',
+    digits: 'عدّ الأصفار بس، مو كل الأرقام.',
+    div: 'ما نقسم. نعدّ كم مرة نضرب: `2 × 2 × 2 = 8` يعني ٣ مرات.',
+    one: 'أس ١ يعني العدد نفسه: `7¹ = 7`، مو ١.',
+    zero1: 'أس ١ مو صفر: `7¹ = 7`.',
+    sq: 'أس ١ مو تربيع: `7¹ = 7`.',
+    add1: '`7¹` = ٧ بالضبط، ما نزيد شي.',
+    zero: 'أي عدد أس صفر = ١، مو صفر.',
+    self0: 'أس صفر ما يعني العدد نفسه. `7⁰ = 1`.',
+    undef: 'ممكن! أي عدد أس صفر = ١.',
+    both: 'كل عدد أس ٠ = ١، وكل عدد أس ١ = نفسه. احسب كل واحد لحاله.',
+    sign: 'انتبه للإشارة: العدد أس ١ = نفسه، وأس ٠ = ١.',
+    mulx: 'في الضرب <b>نجمع</b> الأسس، ما نضربها.',
+    sub: 'في الضرب نجمع الأسس. الطرح للقسمة.',
+    noone: 'العدد بدون أس، أسه ١: `2⁵ × 2 = 2⁵ × 2¹ = 2⁶`.',
+    mul2: 'العدد بدون أس، أسه ١. نجمع ١، ما نضاعف.',
+    third: 'نسيت وحدة من القوى. اجمع كل الأسس.',
+    addd: 'في القسمة <b>نطرح</b> الأسس، ما نجمع.',
+    divd: 'ما نقسم الأسس، نطرحها.',
+    zeroD: 'أي عدد ÷ نفسه = ١، مو صفر.',
+    selfD: 'أي عدد ÷ نفسه = ١.',
+    exp0: 'الأس صار ٠، والمطلوب القيمة: أي عدد أس ٠ = ١.',
+    val1: 'هذي القيمة. المطلوب الأس: م − م = ٠.',
+    expOnly: 'هذا الأس بس. المطلوب القيمة: احسب العدد أس هذا الرقم.',
+    mulB: 'الأس مو ضرب: `2³ = 8` مو ٦.',
+    addP: 'القوس عليه أس: نكرر اللي داخله. `(2³)⁴ = 2³ × 2³ × 2³ × 2³ = 2¹²`. نضرب الأسس.',
+    pow: 'نضرب الأسين ببعض، ما نرفع واحد للثاني.',
+    mixMul: 'انتبه: هذا ضرب عادي بدون قوس، فنجمع الأسس.',
+    mixAdd: 'انتبه: فيه قوس عليه أس، فنضرب الأسس.',
+    same: 'لازم تحوّل الأساس أول: مثلًا ٤ = `2²`، فيصير الأس أكبر.',
+    addB: 'بعد التحويل صار قوس عليه أس: نضرب الأسين، ما نجمع.',
+    base: 'ضربت في الأساس نفسه. حوّله أول: ٤ = `2²`، فـ `4³ = 2⁶` مو `2¹²`.',
+    mulL: '٣س يعني ٣ × س. نقسم، ما نضرب.',
+    subL: 'الرقم ملصوق بـ س يعني ضرب، فنقسم، ما نطرح.',
+    sameL: 'هذا الطرف الثاني نفسه، مو قيمة س.',
+    addc: 'ننقل الرقم للطرف الثاني بالعكس: الجمع يصير طرح.',
+    baseX: 'س هي الأس، مو الأساس.',
+    valueX: 'ما نحسب القيمة. الأساسين متساويين، فالأس = الأس مباشرة.',
+    divX: 'المطلوب: العدد أس كم يعطي هذا الرقم؟ اضرب وعدّ.',
+    sameX: 'هذا العدد نفسه. المطلوب الأس اللي يعطيه.',
+    forget: 'الأس كله (س مع الرقم اللي جنبها) يساوي الطرف الثاني. انقل الرقم بالطرح.',
+    signX: 'ننقل الرقم للطرف الثاني بالعكس: نطرح، ما نجمع.',
+    same4: 'وحّد الأساس أول: ٤ = `2²`، فيصير الأس ٢س، بعدين نقسم.',
+    mulk: 'بعد التوحيد عندك مثلًا ٢س = ٦: نقسم على ٢، ما نضرب.',
+    subk: 'بعد التوحيد عندك مثلًا ٢س = ٦: نقسم، ما نطرح.',
+    nooneF: 'لا تنسى الـ١: القوة الصغيرة نفسها = القوة × ١.',
+    two: 'ما نجمع الأساسات. `5⁸ = 5 × 5⁷`، فعندنا ٥ نسخ + نسخة = ٦ نسخ.',
+    sqF: '`5⁸ = 5 × 5⁷`، يعني نطلّع ٥ مو ٢٥.',
+    cancel: 'ما نشطب كل شي. نطلّع العامل المشترك أول، بعدين نقسم.',
+    signF: 'في الطرح: العدد ناقص ١، مو زائد ١.',
+    addExp: 'الجمع ما يجمع الأسس. نسختين من نفس القوة = ٢ × القوة، فالأس يزيد ١ بس.',
+    sameN: 'نسختين = ٢ × القوة، والـ٢ تزيد الأس ١.',
+    mulExp: 'ما نضرب الأسس هنا. نسختين = ٢ × القوة.',
+    three: 'ثلاث نسخ = ٣ × القوة، فالأس يزيد ١ بس.',
+    two2: 'الفرق في الأس ٢، فنطلّع العدد تربيع: `5⁹ = 25 × 5⁷`.',
+    dir: 'نفس الأساس: الأس الأكبر هو العدد الأكبر.',
+    dirU: 'وحّد الأساس أول (مثلًا ٤ = `2²`)، بعدين الأس الأكبر هو الأكبر.',
+    eq: 'الأسين مو متساويين، فالقيمتين مختلفتين.',
+    neq: 'وحّد الأساس: الأسين يطلعون متساويين، فالقيمتين متساويتين.',
+    dirS: 'الأساس بين ٠ و ١: كل ما زاد الأس <b>صغر</b> العدد. `0.5² = 0.25` أصغر من `0.5`.',
+    dirB: 'هنا الأساس أكبر من ١: الأس الأكبر = العدد الأكبر.',
+  };
+  const lv = (name, t, idea, ex, gen, extra) => Object.assign({ name, t, idea, ex, gen, hints: H }, extra || {});
 
   L.drill = {
     weight: 3, finalT: 40,
     levels: [
-      { name: 'معنى الأس', t: 7, tone: 'strict',
-        intro: 'الأس = كم مرة نضرب العدد في نفسه.<br>`2³ = 2 × 2 × 2 = 8`',
-        gen(s) { const e = R(...[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]][s]), a = 2 ** e;
-          return { q: '`' + P(2, e) + '` = ؟', ans: a, wr: [[2 * e, 'mul'], [2 + e, 'add'], [e ** 2, 'flip'], [2 ** (e - 1), 'less'], [2 ** (e + 1), 'more'], ...near(a)] }; },
-        hints: { mul: 'ضربت ٢ في الأس. الأس مو ضرب: `2⁴ = 2 × 2 × 2 × 2`، مو ٢ × ٤.', add: 'جمعت. الأس يقول كم مرة نضرب ٢ في نفسها.', flip: 'قلبتها. الـ٢ هي اللي تتكرر، والأس يقول كم مرة.', less: 'نقصت ضربة. عدّ الـ٢ المضروبة: لازم عددها = الأس.', more: 'زدت ضربة. عدّ الـ٢ المضروبة: لازم عددها = الأس.', count: COUNT },
-        bone: 'الأس = كم مرة نكتب العدد ونضربه.<br>`2⁴ = 2 × 2 × 2 × 2 = 16`<br>ولاحظ: كل ما زاد الأس ١، الجواب يتضاعف: ٢، ٤، ٨، ١٦، ٣٢، ٦٤.' },
+      /* ---------- 1) what a power means ---------- */
+      lv('معنى الأس', 8, 'الأس = كم مرة نضرب العدد في نفسه.', '`2³ = 2 × 2 × 2 = 8`',
+        k => { const e = R(...T(k, [[2, 3], [2, 3], [3, 4], [3, 5], [4, 6], [5, 7]])); return k === 0 ? pick([valQ, countQ])(2, e) : powForms(2, e); },
+        { bone: '`2⁴` يعني اكتب ٢ أربع مرات واضربها: `2 × 2 × 2 × 2 = 16`<br>ولاحظ: كل ما زاد الأس ١، الجواب يتضاعف: ٢، ٤، ٨، ١٦، ٣٢، ٦٤.' }),
+      lv('أعداد غير ٢', 8, 'نفس الفكرة مع أي عدد.', '`3² = 3 × 3 = 9`<br>`5³ = 5 × 5 × 5 = 125`',
+        k => { const [b, e] = pick(T(k, [[[3, 2], [4, 2], [5, 2]], [[6, 2], [7, 2], [3, 3]], [[8, 2], [9, 2], [4, 3]], [[5, 3], [3, 4], [2, 7]], [[11, 2], [12, 2], [6, 3], [2, 8]], [[3, 5], [4, 4], [5, 4], [2, 9], [2, 10], [7, 3]]])); return powForms(b, e); }),
+      lv('قوى العشرة', 7, 'في الـ١٠: الأس = عدد الأصفار.', '`10⁴ = 10000` (٤ أصفار)',
+        k => { const e = R(...T(k, [[2, 3], [3, 4], [4, 5], [5, 6], [6, 8]])), n = 10 ** e;
+          return Math.random() < 0.55 ? { q: m_(P(10, e)) + ' = ؟', ans: n, wr: [[10 * e, 'mul'], [10 + e, 'add'], [n / 10, 'zeros'], [n * 10, 'zeros']] }
+            : { q: m_(n) + ' = 10 أس كم؟', ans: e, wr: [[e + 1, 'digits'], [n / 10, 'div'], [e - 1, 'zeros'], ...near(e)] }; }),
 
-      { name: 'الأس صفر وواحد', t: 6, tone: 'strict',
-        intro: 'أي عدد أس ١ = نفسه: `7¹ = 7`<br>وأي عدد أس ٠ = ١ (مو صفر!): `7⁰ = 1`',
-        gen(s) { const B = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 100], b = pick(B), c = pick(B.filter(x => x !== b)), dd = pick(B);
-          if (s <= 1) return Math.random() < 0.5
-            ? { q: '`' + P(b, 0) + '` = ؟', ans: 1, wr: [[0, 'zero'], [b, 'self0'], [10, 'zero']] }
-            : { q: '`' + P(b, 1) + '` = ؟', ans: b, wr: [[1, 'one'], [0, 'zero1'], [b * b, 'sq'], [b + 1, 'add1']] };
-          if (s === 2) return { q: '`' + P(b, 0) + ' + ' + P(b, 1) + '` = ؟', ans: b + 1, wr: [[b, 'zero'], [2, 'one'], [2 * b, 'self0'], [1, 'both']] };
-          if (s === 3) return { q: '`' + P(b, 1) + ' − ' + P(b, 0) + '` = ؟', ans: b - 1, wr: [[b, 'zero'], [0, 'one'], [b + 1, 'sign']] };
-          return { q: '`' + P(b, 0) + ' + ' + P(c, 0) + ' + ' + P(dd, 1) + '` = ؟', ans: dd + 2, wr: [[dd, 'zero'], [3, 'one'], [b + c + dd, 'self0'], [dd + 1, 'both']] }; },
-        hints: { zero: 'أي عدد أس صفر = ١، مو صفر.', self0: 'أس صفر ما يعني العدد نفسه. `7⁰ = 1`.', one: 'أس ١ يعني العدد نفسه: `7¹ = 7`، مو ١.', zero1: 'أس ١ مو صفر: `7¹ = 7`.', sq: 'أس ١ مو تربيع: `7¹ = 7`.', add1: '`7¹` = ٧ بالضبط، ما نزيد شي.', both: 'كل عدد أس ٠ = ١، وكل عدد أس ١ = نفسه. اجمعهم بهدوء.', sign: 'العدد أس ١ = نفسه، وأس ٠ = ١. فالجواب = العدد ناقص ١.' },
-        bone: 'شوف الدرج، كل درجة ننزلها نقسم على ٢:<br>`2³ = 8` ← `2² = 4` ← `2¹ = 2` ← `2⁰ = 1`<br>يعني `2⁰ = 2 ÷ 2 = 1`. ونفس الشي لأي عدد: أس صفر = ١ دايمًا.' },
+      /* ---------- 2) power 1 and power 0 ---------- */
+      lv('الأس واحد', 6, 'أي عدد أس ١ = نفسه.', '`7¹ = 7`<br>`25¹ = 25`',
+        k => { const b = pick(T(k, [[2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 15, 20], [25, 30, 50, 99, 100, 17]])); return { q: m_(P(b, 1)) + ' = ؟', ans: b, wr: [[1, 'one'], [0, 'zero1'], [b * b, 'sq'], [b + 1, 'add1']] }; }),
+      lv('الأس صفر', 6, 'أي عدد أس ٠ = ١ (مو صفر!).', '`7⁰ = 1`<br>`100⁰ = 1`',
+        k => { const b = pick(T(k, [[2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 15, 20], [25, 30, 50, 99, 100, 17]])); return { q: m_(P(b, 0)) + ' = ؟', ans: 1, wr: [[0, 'zero'], [b, 'self0'], ['ما ينفع', 'undef']] }; },
+        { bone: 'شوف الدرج، كل درجة ننزلها نقسم على ٢:<br>`2³ = 8` ← `2² = 4` ← `2¹ = 2` ← `2⁰ = 1`<br>يعني `2⁰ = 2 ÷ 2 = 1`. ونفس الشي لأي عدد.' }),
+      lv('صفر وواحد مع بعض', 8, 'الحين نخلطهم: احسب كل قوة لحالها.', '`5⁰ + 5¹ = 1 + 5 = 6`',
+        k => { const B = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20], b = pick(B), c = pick(B.filter(x => x !== b)), d = pick(B);
+          if (k <= 1) return { q: m_(P(b, 0) + ' + ' + P(b, 1)) + ' = ؟', ans: b + 1, wr: [[b, 'zero'], [2, 'one'], [2 * b, 'self0'], [1, 'both']] };
+          if (k <= 3) return { q: m_(P(b, 1) + ' − ' + P(c, 0)) + ' = ؟', ans: b - 1, wr: [[b, 'zero'], [b - c, 'self0'], [0, 'one'], [b + 1, 'sign']] };
+          return { q: m_(P(b, 0) + ' + ' + P(c, 0) + ' + ' + P(d, 1)) + ' = ؟', ans: d + 2, wr: [[d, 'zero'], [3, 'one'], [b + c + d, 'self0'], [d + 1, 'both']] }; }),
 
-      { name: 'أساسات ثانية', t: 8, tone: 'strict',
-        intro: 'نفس الفكرة مع أي عدد:<br>`3² = 3 × 3 = 9` و `10³ = 1000`',
-        gen(s) { const [b, e] = pick([[[3, 2], [4, 2], [5, 2], [10, 2]], [[3, 3], [10, 3], [6, 2], [7, 2]], [[4, 3], [5, 3], [9, 2], [8, 2], [10, 4]], [[3, 4], [2, 7], [11, 2], [12, 2], [6, 3]], [[2, 8], [2, 10], [3, 5], [4, 4], [5, 4], [10, 6]]][s]), a = b ** e;
-          return { q: '`' + P(b, e) + '` = ؟', ans: a, wr: [[b * e, 'mul'], [b + e, 'add'], [e ** b <= 99999 ? e ** b : null, 'flip'], [b ** (e - 1), 'less'], [b ** (e + 1), 'more'], [a + b, 'count'], ...near(a)] }; },
-        hints: { mul: 'ضربت العدد في الأس. الأس تكرار: `3² = 3 × 3`، مو ٣ × ٢.', add: 'جمعت. الأس يقول كم مرة نضرب العدد في نفسه.', flip: 'قلبتها. العدد الكبير هو اللي يتكرر، والأس الصغير يقول كم مرة.', less: 'نقصت ضربة. عدد مرات الضرب = الأس.', more: 'زدت ضربة. عدد مرات الضرب = الأس.', count: COUNT },
-        bone: 'اكتب العدد بعدد الأس ثم اضرب:<br>`5³ = 5 × 5 × 5 = 125`<br>وحيلة الـ١٠: الأس = عدد الأصفار. `10⁴ = 10000`.' },
+      /* ---------- 3) the other way round ---------- */
+      lv('اكتب العدد كقوة', 8, 'بالعكس: العدد هذا = كم مرة ضربنا؟', '`8 = 2 × 2 × 2 = 2³`',
+        k => { const [n, b, e] = pick(T(k, [[[4, 2, 2], [9, 3, 2], [8, 2, 3], [25, 5, 2]], [[16, 2, 4], [27, 3, 3], [49, 7, 2], [36, 6, 2]], [[32, 2, 5], [81, 3, 4], [125, 5, 3], [64, 8, 2]], [[64, 2, 6], [64, 4, 3], [16, 4, 2], [243, 3, 5]], [[128, 2, 7], [256, 2, 8], [625, 5, 4], [216, 6, 3], [343, 7, 3]], [[512, 2, 9], [1024, 2, 10], [81, 9, 2], [256, 4, 4]]]));
+          return { q: m_(n) + ' = ' + b + ' أس كم؟', ans: e, wr: [[n / b, 'div'], [e + 1, 'more'], [e - 1, 'less'], [n % 2 ? null : n / 2, 'div'], ...near(e)] }; },
+        { bone: 'حيلة: اضرب وعدّ.<br>٢ ← ٤ ← ٨ ← ١٦ ← ٣٢: وصلنا ٣٢ بعد ٥ ضربات، إذن `32 = 2⁵`.<br>احفظ قوى ٢ لين ١٠٢٤، وقوى ٣ لين ٢٤٣، وقوى ٥ لين ٦٢٥.' }),
 
-      { name: 'اكتب العدد كقوة', t: 8, tone: 'strict',
-        intro: 'الحين بالعكس: `8 = 2 × 2 × 2 = 2³`<br>السؤال: كم مرة ضربنا؟',
-        gen(s) { const [n, b, e] = pick([[[4, 2, 2], [8, 2, 3], [9, 3, 2], [100, 10, 2]], [[16, 2, 4], [27, 3, 3], [25, 5, 2], [1000, 10, 3], [49, 7, 2]], [[32, 2, 5], [81, 3, 4], [125, 5, 3], [64, 2, 6], [36, 6, 2]], [[64, 4, 3], [64, 8, 2], [128, 2, 7], [243, 3, 5], [10000, 10, 4], [16, 4, 2]], [[256, 2, 8], [512, 2, 9], [1024, 2, 10], [625, 5, 4], [216, 6, 3], [343, 7, 3], [81, 9, 2]]][s]);
-          return { q: '`' + n + '` = ' + b + ' أس كم؟', ans: e, wr: [[n / b, 'div'], [b === 10 ? String(n).length : null, 'digits'], [e + 1, 'more'], [e - 1, 'less'], [n % 2 ? null : n / 2, 'div'], ...near(e)] }; },
-        hints: { div: 'ما نقسم. نعدّ كم مرة نضرب: `2 × 2 × 2 = 8` يعني ٣ مرات.', digits: 'عدّ الأصفار، مو كل الأرقام: `1000` فيها ٣ أصفار، فهي `10³`.', more: 'زدت واحد. اضرب وعدّ: ٢، ٤، ٨، ١٦… كل خطوة ضربة.', less: 'نقصت واحد. اضرب وعدّ: ٢، ٤، ٨، ١٦… كل خطوة ضربة.', count: COUNT },
-        bone: 'حيلة: اضرب وعدّ.<br>٢ ← ٤ ← ٨ ← ١٦ ← ٣٢: وصلنا ٣٢ بعد ٥ ضربات، إذن `32 = 2⁵`.<br>احفظ قوى ٢ لين ١٠٢٤، وقوى ٣ لين ٢٤٣، وقوى ٥ لين ٦٢٥. تتكرر كثير في القدرات.' },
+      /* ---------- 4) multiply ---------- */
+      lv('الضرب: نجمع الأسس', 8, 'نفس الأساس وبينهم ضرب؟ <b>نجمع الأسس</b>.', '`2³ × 2⁴ = 2⁷`',
+        k => { const b = pick([2, 3, 5, 7, 10]), [lo, hi] = T(k, [[2, 3], [2, 4], [2, 6], [3, 8], [5, 12]]), m = R(lo, hi), n = R(lo, hi);
+          return { q: m_(P(b, m) + ' × ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mulx'], [Math.abs(m - n), 'sub'], [m + n + 1, 'count'], [m + n - 1, 'count']] }; },
+        { bone: 'ليش نجمع؟<br>`2³ × 2² = (2 × 2 × 2) × (2 × 2)`<br>صار عندنا ٥ مرات ٢ مضروبة، يعني `2⁵`. ٣ + ٢ = ٥.' }),
+      lv('العدد بدون أس', 7, 'العدد اللي بدون أس، أسه ١.', '`2⁵ × 2 = 2⁵ × 2¹ = 2⁶`',
+        k => { const b = pick([2, 3, 5, 7, 10]), m = R(...T(k, [[2, 4], [3, 7], [5, 12]]));
+          return { q: m_(Math.random() < 0.5 ? P(b, m) + ' × ' + b : b + ' × ' + P(b, m)) + ' = ' + b + ' أس كم؟', ans: m + 1, wr: [[m, 'noone'], [2 * m, 'mul2'], [m + 2, 'count']] }; }),
+      lv('أكثر من قوتين', 9, 'أكثر من قوتين؟ نفس الشي: اجمع كل الأسس.', '`3² × 3⁴ × 3 = 3⁷`',
+        k => { const b = pick([2, 3, 5, 7]), [lo, hi] = T(k, [[1, 3], [2, 4], [2, 6]]), m = R(lo, hi), n = R(lo, hi), o = R(lo, hi);
+          return { q: m_(P(b, m) + ' × ' + P(b, n) + ' × ' + P(b, o)) + ' = ' + b + ' أس كم؟', ans: m + n + o, wr: [[m * n * o, 'mulx'], [m + n, 'third'], [n + o, 'third'], ...near(m + n + o)] }; }),
 
-      { name: 'ضرب نفس الأساس', t: 7, tone: 'strict',
-        intro: 'نفس الأساس وبينهم ضرب؟ <b>نجمع الأسس</b>.<br>`2³ × 2⁴ = 2⁷`',
-        gen(s) { const b = pick([2, 3, 5, 7, 10]);
-          if (s === 2) { const m = R(2, 9); return { q: '`' + P(b, m) + ' × ' + b + '` = ' + b + ' أس كم؟', ans: m + 1, wr: [[m, 'noone'], [2 * m, 'mul2'], [m + 2, 'count']] }; }
-          if (s === 3) { const m = R(2, 5), n = R(2, 5), k = R(2, 5); return { q: '`' + P(b, m) + ' × ' + P(b, n) + ' × ' + P(b, k) + '` = ' + b + ' أس كم؟', ans: m + n + k, wr: [[m * n * k, 'mul'], [m + n, 'third'], [m + n + k - 1, 'count'], [m + n + k + 1, 'count']] }; }
-          const [lo, hi] = [[1, 3], [2, 6], [2, 6], [2, 6], [5, 15]][s], m = R(lo, hi), n = R(lo, hi);
-          return { q: '`' + P(b, m) + ' × ' + P(b, n) + '` = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mul'], [Math.abs(m - n), 'sub'], [m + n + 1, 'count'], [m + n - 1, 'count']] }; },
-        hints: { mul: 'في الضرب <b>نجمع</b> الأسس، ما نضربها.', sub: 'في الضرب نجمع الأسس. الطرح للقسمة.', noone: 'العدد بدون أس، أسه ١: `2⁵ × 2 = 2⁵ × 2¹ = 2⁶`.', mul2: 'العدد بدون أس، أسه ١. نجمع ١، ما نضاعف.', third: 'نسيت القوة الثالثة. اجمع الأسس كلها.', count: COUNT },
-        bone: 'ليش نجمع؟<br>`2³ × 2² = (2 × 2 × 2) × (2 × 2)`<br>صار عندنا ٥ مرات ٢ مضروبة، يعني `2⁵`. الأسس انضافت: ٣ + ٢ = ٥.' },
+      /* ---------- 5) divide ---------- */
+      lv('القسمة: نطرح الأسس', 8, 'نفس الأساس وبينهم قسمة؟ <b>نطرح الأسس</b>.', '`5⁷ ÷ 5⁴ = 5³`',
+        k => { const b = pick([2, 3, 5, 7, 10]), [lo, hi] = T(k, [[3, 5], [4, 7], [6, 10], [8, 15], [15, 30]]), m = R(lo, hi), n = R(1, m - 1);
+          return { q: m_(P(b, m) + ' ÷ ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m - n, wr: [[m + n, 'addd'], [m % n === 0 ? m / n : null, 'divd'], [m - n + 1, 'count'], [m - n > 1 ? m - n - 1 : null, 'count'], ...near(m - n)] }; },
+        { bone: '`2⁵ ÷ 2³` = (٢×٢×٢×٢×٢) ÷ (٢×٢×٢)<br>نشطب ثلاث ٢ فوق مع ثلاث تحت، يبقى ٢ × ٢ = `2²`. ٥ − ٣ = ٢.' }),
+      lv('العدد ÷ نفسه', 6, 'إذا الأسين متساويين: الأس يصير ٠، والجواب ١.', '`7⁵ ÷ 7⁵ = 7⁰ = 1`',
+        k => { const b = pick([2, 3, 5, 7, 10, 12]), m = R(...T(k, [[2, 5], [4, 9], [8, 20]]));
+          return Math.random() < 0.6 ? { q: m_(P(b, m) + ' ÷ ' + P(b, m)) + ' = ؟', ans: 1, wr: [[0, 'zeroD'], [b, 'selfD'], [m, 'exp0']] }
+            : { q: m_(P(b, m) + ' ÷ ' + P(b, m)) + ' = ' + b + ' أس كم؟', ans: 0, wr: [[1, 'val1'], [m, 'divd'], [2 * m, 'addd']] }; }),
+      lv('قيمة القسمة', 9, 'اطرح الأسس أول، بعدين احسب القيمة.', '`2⁹ ÷ 2⁶ = 2³ = 8`',
+        k => { const [b, d] = pick(T(k, [[[2, 1], [2, 2], [3, 1], [10, 1]], [[2, 2], [2, 3], [3, 2], [10, 2], [5, 1]], [[2, 3], [2, 4], [3, 2], [5, 2], [10, 3]], [[2, 4], [2, 5], [3, 3], [5, 2], [10, 4]]])), n = R(2, 9), m = n + d;
+          return { q: m_(P(b, m) + ' ÷ ' + P(b, n)) + ' = ؟', ans: b ** d, wr: [[d, 'expOnly'], [b * d, 'mulB'], [b ** (d + 1), 'count'], [d > 1 ? b ** (d - 1) : null, 'count']] }; }),
 
-      { name: 'قسمة نفس الأساس', t: 7, tone: 'strict',
-        intro: 'نفس الأساس وبينهم قسمة؟ <b>نطرح الأسس</b>.<br>`5⁷ ÷ 5⁴ = 5³`',
-        gen(s) { const b = pick([2, 3, 5, 7, 10]);
-          if (s === 2) { const m = R(2, 9); return { q: '`' + P(b, m) + ' ÷ ' + P(b, m) + '` = ؟', ans: 1, wr: [[0, 'zero'], [b, 'self'], [m, 'exp']] }; }
-          if (s === 3) { const k = R(1, 4), n = R(2, 9), m = n + k; return { q: '`' + P(2, m) + ' ÷ ' + P(2, n) + '` = ؟', ans: 2 ** k, wr: [[k, 'expOnly'], [2 * k, 'mulB'], [2 ** (k + 1), 'count'], [2 ** (m + n) <= 9999 ? 2 ** (m + n) : null, 'add']] }; }
-          const [lo, hi] = [[3, 7], [6, 12], [6, 12], [6, 12], [15, 30]][s], m = R(lo, hi), n = R(1, m - 1);
-          return { q: '`' + P(b, m) + ' ÷ ' + P(b, n) + '` = ' + b + ' أس كم؟', ans: m - n, wr: [[m + n, 'add'], [m % n === 0 ? m / n : null, 'div'], [m - n + 1, 'count'], [m - n - 1, 'count']] }; },
-        hints: { add: 'في القسمة <b>نطرح</b> الأسس، ما نجمع.', div: 'ما نقسم الأسس، نطرحها.', zero: 'أي عدد ÷ نفسه = ١، مو صفر.', self: 'أي عدد ÷ نفسه = ١.', exp: 'نطرح الأسس: الناتج أس ٠، وأي عدد أس ٠ = ١.', expOnly: 'هذا الأس بس. المطلوب القيمة: ٢ أس هذا العدد.', mulB: 'الأس مو ضرب: `2³ = 8` مو ٦.', count: COUNT },
-        bone: '`2⁵ ÷ 2³` = (٢×٢×٢×٢×٢) ÷ (٢×٢×٢)<br>نشطب ثلاث ٢ فوق مع ثلاث تحت، يبقى ٢ × ٢ = `2²`.<br>يعني الأسس انطرحت: ٥ − ٣ = ٢.' },
+      /* ---------- 6) power of a power ---------- */
+      lv('قوس عليه أس', 8, 'قوس عليه أس؟ <b>نضرب الأسس</b>.', '`(2³)⁴ = 2¹²`',
+        k => { const b = pick([2, 3, 5, 7]), [lo, hi] = T(k, [[2, 3], [2, 4], [2, 5], [3, 7], [3, 9]]), m = R(lo, hi), n = R(lo, hi);
+          return { q: m_('(' + P(b, m) + ')' + sp(n)) + ' = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'addP'], [m ** n <= 999 ? m ** n : null, 'pow'], [m * n + 1, 'count'], [m * n - 1, 'count']] }; },
+        { bone: '`(5²)³ = 5² × 5² × 5²`<br>الأس ٢ تكرر ٣ مرات: ٢ + ٢ + ٢ = ٦، يعني ٢ × ٣.' }),
+      lv('قوس أو بدون قوس؟', 8, 'انتبه للفرق: <b>قوس</b> = نضرب الأسس، <b>بدون قوس</b> = نجمعها.', '`(2³)² = 2⁶`<br>لكن `2³ × 2² = 2⁵`',
+        k => { const b = pick([2, 3, 5, 7]), [lo, hi] = T(k, [[2, 4], [2, 6], [3, 8]]), m = R(lo, hi), n = R(lo, hi);
+          return Math.random() < 0.5 ? { q: m_('(' + P(b, m) + ')' + sp(n)) + ' = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'mixAdd'], [m * n + 1, 'count'], [m * n - 1, 'count']] }
+            : { q: m_(P(b, m) + ' × ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mixMul'], [m + n + 1, 'count'], [m + n - 1, 'count']] }; }),
+      lv('توحيد الأساس', 9, 'أساس مختلف؟ اكتبه كقوة أول، بعدين نضرب الأسس.', '`4³ = (2²)³ = 2⁶`',
+        k => { const [b, p, kk] = pick(T(k, [[[4, 2, 2], [9, 3, 2]], [[4, 2, 2], [9, 3, 2], [25, 5, 2]], [[8, 2, 3], [9, 3, 2], [25, 5, 2]], [[16, 2, 4], [27, 3, 3], [8, 2, 3]], [[32, 2, 5], [81, 3, 4], [100, 10, 2], [16, 2, 4]]])), e = R(...T(k, [[2, 3], [2, 4], [2, 5], [2, 6], [3, 9]]));
+          return { q: m_(P(b, e)) + ' = ' + p + ' أس كم؟', ans: kk * e, wr: [[e, 'same'], [kk + e, 'addB'], [b * e, 'base'], [kk * e + kk, 'count'], [kk * e - 1, 'count']] }; },
+        { bone: '`8⁵` بأساس ٢:<br>أول ٨ = `2³`<br>إذن `8⁵ = (2³)⁵ = 2¹⁵` (قوس عليه أس = نضرب: ٣ × ٥).' }),
 
-      { name: 'قوة القوة', t: 8, tone: 'strict',
-        intro: 'قوس عليه أس؟ <b>نضرب الأسس</b>.<br>`(2³)⁴ = 2¹²`',
-        gen(s) { const b = pick([2, 3, 5, 7]);
-          const pp = (m, n) => ({ q: '`(' + P(b, m) + ')' + sp(n) + '` = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'add'], [m ** n <= 999 ? m ** n : null, 'pow'], [m * n + 1, 'count'], [m * n - 1, 'count']] });
-          const tt = (m, n) => ({ q: '`' + P(b, m) + ' × ' + P(b, n) + '` = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mixMul'], [m + n + 1, 'count'], [m + n - 1, 'count']] });
-          const [lo, hi] = [[2, 3], [2, 5], [2, 6], [2, 7], [3, 9]][s], m = R(lo, hi), n = R(lo, hi);
-          return s >= 2 && Math.random() < 0.4 ? tt(m, n) : pp(m, n); },
-        hints: { add: 'القوس عليه أس: نكرر اللي داخله. `(2³)⁴ = 2³ × 2³ × 2³ × 2³ = 2¹²`. نضرب الأسس.', pow: 'نضرب الأسين ببعض، ما نرفع واحد للثاني.', mixMul: 'انتبه: هذا ضرب عادي بدون قوس، فنجمع الأسس.', count: COUNT },
-        bone: '`(5²)³ = 5² × 5² × 5²`<br>الأس ٢ تكرر ٣ مرات: ٢ + ٢ + ٢ = ٦، يعني ٢ × ٣.<br>القاعدة: <b>قوس عليه أس = نضرب</b>. <b>ضرب بدون قوس = نجمع</b>.' },
+      /* ---------- 7) find س ---------- */
+      lv('أوجد س (ضرب)', 7, '٣س يعني ٣ × س. عشان نلقى س <b>نقسم</b>.', '`3س = 12` ← س = ١٢ ÷ ٣ = ٤',
+        k => { const [klo, khi, xhi] = T(k, [[2, 3, 5], [2, 5, 6], [2, 6, 9], [3, 9, 9], [4, 12, 12]]), kk = R(klo, khi), x = R(2, xhi), n = kk * x;
+          return { q: m_(kk + 'س = ' + n) + ' ، س = ؟', ans: x, wr: [[n * kk, 'mulL'], [n - kk, 'subL'], [n, 'sameL'], [x + 1, 'count']] }; }),
+      lv('أوجد س (جمع)', 7, 'س + ٢ = ٧: ننقل الـ٢ للطرف الثاني <b>ونطرح</b>.', '`س + 2 = 7` ← س = ٧ − ٢ = ٥',
+        k => { const c = R(...T(k, [[1, 3], [2, 6], [3, 9]])), x = R(...T(k, [[1, 5], [2, 9], [4, 15]])), n = x + c;
+          return { q: m_('س + ' + c + ' = ' + n) + ' ، س = ؟', ans: x, wr: [[n + c, 'addc'], [n, 'sameL'], [x + 1, 'count']] }; }),
+      lv('الأسس تتساوى', 7, 'قوتين متساويتين بنفس الأساس؟ <b>الأسس تتساوى</b>.', '`2ˣ = 2⁵` ← س = ٥',
+        k => { const b = pick([2, 3, 5, 7, 10]), e = R(...T(k, [[2, 5], [3, 9], [6, 20]]));
+          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + P(b, e)) + ' ، فما قيمة س؟', ans: e, wr: [[b, 'baseX'], [b ** e <= 999 ? b ** e : null, 'valueX'], [e + 1, 'count'], [e * b, 'valueX']] }; }),
+      lv('حوّل العدد لقوة', 9, 'إذا الطرف الثاني عدد: اكتبه كقوة بنفس الأساس أول.', '`2ˣ = 32` ← `2ˣ = 2⁵` ← س = ٥',
+        k => { const [b, e] = pick(T(k, [[[2, 2], [2, 3], [3, 2], [10, 2]], [[2, 4], [3, 3], [5, 2], [10, 3]], [[2, 5], [3, 4], [5, 3], [2, 6]], [[2, 7], [3, 5], [5, 4], [2, 8], [10, 5]]])), n = b ** e;
+          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + n) + ' ، فما قيمة س؟', ans: e, wr: [[n / b, 'divX'], [n, 'sameX'], [e + 1, 'count'], [e > 2 ? e - 1 : null, 'count']] }; }),
+      lv('الأس فيه زيادة', 9, 'الأس كله يساوي الأس. بعدين ننقل الرقم.', '`2ˣ⁺¹ = 2⁵` ← س + ١ = ٥ ← س = ٤',
+        k => { const b = pick([2, 3, 5]), c = R(...T(k, [[1, 2], [1, 3], [2, 5]])), e = R(c + 1, T(k, [6, 8, 12]));
+          return { q: 'إذا كان ' + m_(b + 'ˣ' + sp('+' + c) + ' = ' + P(b, e)) + ' ، فما قيمة س؟', ans: e - c, wr: [[e, 'forget'], [e + c, 'signX'], [e - c + 1, 'count']] }; }),
+      lv('أساسين مختلفين', 10, 'وحّد الأساس أول، بعدين ساوِ الأسس.', '`4ˣ = 2⁶` ← `2²ˣ = 2⁶` ← ٢س = ٦ ← س = ٣',
+        k => { const [b, p, kk] = pick(T(k, [[[4, 2, 2], [9, 3, 2]], [[4, 2, 2], [9, 3, 2], [25, 5, 2]], [[8, 2, 3], [9, 3, 2], [25, 5, 2]], [[4, 2, 2], [8, 2, 3], [9, 3, 2], [25, 5, 2], [27, 3, 3]]])), x = R(...T(k, [[2, 3], [2, 4], [2, 5], [2, 6]])), e = kk * x;
+          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + P(p, e)) + ' ، فما قيمة س؟', ans: x, wr: [[e, 'same4'], [e * kk, 'mulk'], [e - kk, 'subk'], [x + 1, 'count']] }; },
+        { bone: '`4ˣ = 2⁶`<br>١) وحّد الأساس: ٤ = `2²`، فـ `4ˣ = 2²ˣ`<br>٢) الأسس تتساوى: ٢س = ٦<br>٣) نقسم: س = ٣' }),
 
-      { name: 'توحيد الأساس', t: 9, tone: 'warm',
-        intro: 'أساس مختلف؟ حوّله لقوة أول:<br>`4³ = (2²)³ = 2⁶`',
-        gen(s) { const [b, p, k] = pick([[[4, 2, 2]], [[8, 2, 3], [9, 3, 2], [4, 2, 2]], [[16, 2, 4], [27, 3, 3], [25, 5, 2], [8, 2, 3]], [[100, 10, 2], [32, 2, 5], [81, 3, 4], [9, 3, 2]], [[4, 2, 2], [8, 2, 3], [16, 2, 4], [9, 3, 2], [27, 3, 3], [25, 5, 2], [32, 2, 5]]][s]);
-          const e = R(2, s === 0 ? 3 : s === 1 ? 4 : s === 4 ? 9 : 6);
-          return { q: '`' + P(b, e) + '` = ' + p + ' أس كم؟', ans: k * e, wr: [[e, 'same'], [k + e, 'add'], [b * e, 'base'], [k * e + k, 'count'], [k * e - 1, 'count']] }; },
-        hints: { same: 'لازم تحوّل الأساس أول: مثلًا ٤ = `2²`، فيصير الأس أكبر.', add: 'بعد التحويل صار قوس عليه أس: نضرب الأسين، ما نجمع.', base: 'ضربت في الأساس نفسه. حوّله أول: ٤ = `2²`، فـ `4³ = 2⁶` مو `2¹²`.', count: 'اضرب الأسين بهدوء.' },
-        bone: '`8⁵` بأساس ٢:<br>أول خطوة ٨ = `2³`<br>إذن `8⁵ = (2³)⁵ = 2¹⁵` (قوس عليه أس = نضرب: ٣ × ٥).' },
+      /* ---------- 8) adding powers ---------- */
+      lv('جمع القوى', 10, 'جمع؟ ما نجمع الأسس. <b>نطلّع القوة الأصغر برا</b>.', '`5⁸ + 5⁷ = 5⁷ × (5 + 1)`',
+        k => { const b = pick(T(k, [[2, 3], [2, 3, 5], [2, 3, 5, 7, 10]])), n = R(...T(k, [[2, 4], [3, 7], [4, 12]]));
+          return { q: m_(P(b, n + 1) + ' + ' + P(b, n)) + ' = ' + m_(P(b, n)) + ' × ؟', ans: b + 1, wr: [[b, 'nooneF'], [2, 'two'], [b * b, 'sqF'], [b + 2, 'count']] }; },
+        { bone: '`3⁵ + 3⁴`<br>`3⁵` = ٣ × `3⁴`، يعني ٣ نسخ من `3⁴`.<br>٣ نسخ + نسخة = ٤ نسخ = `4 × 3⁴`.' }),
+      lv('بعدها نقسم', 10, 'بعد ما نطلّع العامل المشترك، القسمة تشطبه.', '`(5⁸ + 5⁷) ÷ 5⁷ = 5 + 1 = 6`',
+        k => { const b = pick(T(k, [[2, 3], [2, 3, 5], [2, 3, 5, 7, 10]])), n = R(...T(k, [[2, 4], [3, 7], [4, 12]]));
+          return { q: m_('(' + P(b, n + 1) + ' + ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b + 1, wr: [[b, 'nooneF'], [1, 'cancel'], [2, 'two'], [b * b, 'sqF']] }; }),
+      lv('ونفس الشي في الطرح', 10, 'في الطرح نفس الطريقة، بس يصير ناقص.', '`(5⁸ − 5⁷) ÷ 5⁷ = 5 − 1 = 4`',
+        k => { const b = pick(T(k, [[3, 4], [3, 5, 7], [3, 5, 7, 10, 11]])), n = R(...T(k, [[2, 4], [3, 7], [4, 12]]));
+          return { q: m_('(' + P(b, n + 1) + ' − ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b - 1, wr: [[b + 1, 'signF'], [b, 'nooneF'], [1, 'cancel'], [0, 'cancel']] }; }),
+      lv('نسخ متساوية', 9, 'نسختين من نفس القوة = ٢ × القوة. والـ٢ تزيد الأس ١.', '`2⁵ + 2⁵ = 2 × 2⁵ = 2⁶`',
+        k => { const n = R(...T(k, [[2, 5], [4, 9], [6, 20]]));
+          return k >= 3 && Math.random() < 0.5 ? { q: m_(P(3, n) + ' + ' + P(3, n) + ' + ' + P(3, n)) + ' = 3 أس كم؟', ans: n + 1, wr: [[3 * n, 'addExp'], [n, 'sameN'], [n + 3, 'three']] }
+            : { q: m_(P(2, n) + ' + ' + P(2, n)) + ' = 2 أس كم؟', ans: n + 1, wr: [[2 * n, 'addExp'], [n, 'sameN'], [n * n, 'mulExp']] }; }),
+      lv('فرق الأس ٢', 10, 'إذا الفرق بين الأسين ٢: نطلّع العدد <b>تربيع</b>.', '`(3⁶ + 3⁴) ÷ 3⁴ = 3² + 1 = 10`',
+        k => { const b = pick(T(k, [[2, 3], [2, 3, 5], [2, 3, 5, 7]])), n = R(2, 9);
+          return { q: m_('(' + P(b, n + 2) + ' + ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b * b + 1, wr: [[b + 1, 'two2'], [b * b, 'nooneF'], [1, 'cancel'], [2 * b + 1, 'two2']] }; }),
 
-      { name: 'أوجد س', t: 7, tone: 'warm',
-        intro: '`3س = 12` يعني ٣ × س = ١٢، فنقسم: س = ٤<br>و `س + 2 = 7` ← نطرح: س = ٥',
-        gen(s) {
-          if (s >= 3 && Math.random() < 0.5) { const c = R(1, 6), xx = R(1, 9), n = xx + c; return { q: '`س + ' + c + ' = ' + n + '` ، س = ؟', ans: xx, wr: [[n + c, 'addc'], [n, 'same'], [xx + 1, 'count']] }; }
-          const [klo, khi, xhi] = [[2, 3, 5], [2, 5, 9], [3, 9, 9], [2, 9, 12], [4, 12, 12]][s], k = R(klo, khi), xx = R(2, xhi), n = k * xx;
-          return { q: '`' + k + 'س = ' + n + '` ، س = ؟', ans: xx, wr: [[n * k, 'mul'], [n - k, 'sub'], [n, 'same'], [xx + 1, 'count']] }; },
-        hints: { mul: '٣س يعني ٣ × س. نقسم، ما نضرب.', sub: 'الرقم ملصوق بـ س يعني ضرب، فنقسم، ما نطرح.', same: 'هذا الطرف الثاني نفسه، مو قيمة س.', addc: 'ننقل الرقم للطرف الثاني بالعكس: الجمع يصير طرح.', count: COUNT },
-        bone: '`5س = 35`: وش العدد اللي لو ضربناه في ٥ يعطي ٣٥؟ ٣٥ ÷ ٥ = ٧. إذن س = ٧.<br>`س + 4 = 9`: وش العدد اللي لو زدنا عليه ٤ يصير ٩؟ ٩ − ٤ = ٥.' },
-
-      { name: 'قوتين متساويتين', t: 9, tone: 'warm',
-        intro: 'قوتين متساويتين بنفس الأساس؟ <b>الأسس تتساوى</b>.<br>`2ˣ = 2⁵` ← س = ٥',
-        gen(s) {
-          if (s === 0) { const b = pick([2, 3, 5, 7]), e = R(2, 9); return { q: 'إذا كان `' + b + 'ˣ = ' + P(b, e) + '` ، فما قيمة س؟', ans: e, wr: [[b, 'base'], [b ** e <= 999 ? b ** e : null, 'value'], [e + 1, 'count'], [e * b, 'mulb']] }; }
-          if (s <= 2) { const [b, e] = pick(s === 1 ? [[2, 3], [2, 4], [2, 5], [3, 2], [10, 3]] : [[2, 6], [3, 3], [3, 4], [5, 3], [2, 7], [10, 4]]), n = b ** e;
-            return { q: 'إذا كان `' + b + 'ˣ = ' + n + '` ، فما قيمة س؟', ans: e, wr: [[n / b, 'div'], [n, 'same'], [e + 1, 'count'], [e - 1, 'count']] }; }
-          if (s === 3) { const b = pick([2, 3, 5]), c = R(1, 4), e = R(c + 1, 9); return { q: 'إذا كان `' + b + 'ˣ' + sp('+' + c) + ' = ' + P(b, e) + '` ، فما قيمة س؟', ans: e - c, wr: [[e, 'forget'], [e + c, 'sign'], [e - c + 1, 'count']] }; }
-          const [b, p, k] = pick([[4, 2, 2], [9, 3, 2], [8, 2, 3], [25, 5, 2]]), xx = R(2, 6), e = k * xx;
-          return { q: 'إذا كان `' + b + 'ˣ = ' + P(p, e) + '` ، فما قيمة س؟', ans: xx, wr: [[e, 'same4'], [e * k, 'mulk'], [e - k, 'subk'], [xx + 1, 'count']] }; },
-        hints: { base: 'س هي الأس، مو الأساس.', value: 'ما نحسب القيمة. الأساسين متساويين، فالأس يساوي الأس مباشرة.', mulb: 'الأسس تتساوى مباشرة، ما نضرب شي.', div: 'المطلوب: العدد أس كم يعطي هذا الرقم؟ اضرب وعدّ.', same: 'هذا العدد نفسه. المطلوب الأس اللي يعطيه.', forget: 'الأس كله (مع الرقم اللي جنب س) يساوي الطرف الثاني. انقل الرقم بالطرح.', sign: 'ننقل الرقم للطرف الثاني بالعكس: نطرح، ما نجمع.', same4: 'وحّد الأساس أول: ٤ = `2²`، فيصير الأس ٢س، بعدين نقسم.', mulk: 'بعد التوحيد عندك مثلًا ٢س = ٦: نقسم على ٢، ما نضرب.', subk: 'بعد التوحيد عندك مثلًا ٢س = ٦: نقسم، ما نطرح.', count: COUNT },
-        bone: '`4ˣ = 2⁶`<br>١) وحّد الأساس: ٤ = `2²`، فـ `4ˣ = 2²ˣ`<br>٢) الأسس تتساوى: ٢س = ٦<br>٣) نقسم: س = ٣' },
-
-      { name: 'جمع القوى', t: 10, tone: 'warm',
-        intro: 'جمع قوى؟ ما نجمع الأسس. نطلّع الأصغر برا:<br>`5⁸ + 5⁷ = 5⁷ × (5 + 1)`',
-        gen(s) { const b = pick(s === 2 ? [3, 4, 5, 7, 10] : [2, 3, 5, 7]), n = R(3, 9);
-          if (s === 0) return { q: '`' + P(b, n + 1) + ' + ' + P(b, n) + '` = `' + P(b, n) + '` × ؟', ans: b + 1, wr: [[b, 'noone'], [2, 'two'], [b * b, 'sq'], [b + 2, 'count']] };
-          if (s === 1) return { q: '`(' + P(b, n + 1) + ' + ' + P(b, n) + ') ÷ ' + P(b, n) + '` = ؟', ans: b + 1, wr: [[b, 'noone'], [1, 'cancel'], [2, 'two'], [b * b, 'sq']] };
-          if (s === 2) return { q: '`(' + P(b, n + 1) + ' − ' + P(b, n) + ') ÷ ' + P(b, n) + '` = ؟', ans: b - 1, wr: [[b + 1, 'sign'], [b, 'noone'], [1, 'cancel'], [0, 'cancel']] };
-          if (s === 3) return Math.random() < 0.6
-            ? { q: '`' + P(2, n) + ' + ' + P(2, n) + '` = ٢ أس كم؟', ans: n + 1, wr: [[2 * n, 'addExp'], [n, 'same'], [n * n, 'mulExp']] }
-            : { q: '`' + P(3, n) + ' + ' + P(3, n) + ' + ' + P(3, n) + '` = ٣ أس كم؟', ans: n + 1, wr: [[3 * n, 'addExp'], [n, 'same3'], [n + 3, 'three']] };
-          return { q: '`(' + P(b, n + 2) + ' + ' + P(b, n) + ') ÷ ' + P(b, n) + '` = ؟', ans: b * b + 1, wr: [[b + 1, 'two2'], [b * b, 'noone'], [1, 'cancel'], [2 * b + 1, 'two2']] }; },
-        hints: { noone: 'لا تنسى الـ١: القوة الصغيرة نفسها = القوة × ١.', two: 'ما نجمع الأساسات. `5⁸ = 5 × 5⁷`، فعندنا ٥ نسخ + نسخة = ٦ نسخ.', sq: '`5⁸ = 5 × 5⁷`، يعني نطلّع ٥ مو ٢٥.', cancel: 'ما نشطب كل شي. نطلّع العامل المشترك أول، بعدين نقسم.', sign: 'في الطرح: العدد ناقص ١، مو زائد ١.', addExp: 'الجمع ما يجمع الأسس. نسختين من نفس القوة = ٢ × القوة، فالأس يزيد ١ بس.', same: 'نسختين من نفس القوة = ٢ × القوة، فالأس يزيد ١.', same3: 'ثلاث نسخ = ٣ × القوة، فالأس يزيد ١.', three: 'ثلاث نسخ = ٣ × القوة = ٣ أس (الأس + ١)، مو زائد ٣.', mulExp: 'ما نضرب الأسس هنا. نسختين = ٢ × القوة.', two2: 'الفرق في الأس ٢، فنطلّع العدد أس ٢: `5⁹ = 25 × 5⁷`.', count: COUNT },
-        bone: '`3⁵ + 3⁴`<br>`3⁵` = ٣ × `3⁴`، يعني ٣ نسخ من `3⁴`.<br>٣ نسخ + نسخة = ٤ نسخ = `4 × 3⁴`.<br>ولو قسمنا على `3⁴` يبقى ٤.' },
-
-      { name: 'المقارنة بين القوى', t: 10, tone: 'warm',
-        intro: 'للمقارنة: <b>وحّد الأساس</b>، والأس الأكبر هو الأكبر.<br>`4¹⁴ = 2²⁸` أصغر من `2³⁰`',
-        gen(s) {
-          if (s === 0) { const m = R(10, 40); let n = R(10, 40); if (n === m) n++; return cmpQ(P(2, m), P(2, n), m, n, 'dir'); }
-          const fam = s === 2 ? pick([[[8, 3], [4, 2]], [[9, 2], [27, 3]]]) : s === 4 ? pick([[[16, 4], [8, 3]], [[25, 2], [125, 3]]]) : [[2, 1], [4, 2]];
-          const [A, B] = Math.random() < 0.5 ? fam : [fam[1], fam[0]];
-          const m = R(4, 15); let n;
-          if (s === 3 && Math.random() < 0.5 || s >= 2 && Math.random() < 0.3) { if ((A[1] * m) % B[1]) n = R(4, 15); else n = A[1] * m / B[1]; } else n = R(4, 15);
-          return cmpQ(P(A[0], m), P(B[0], n), A[1] * m, B[1] * n, 'dir'); },
-        hints: { dir: 'وحّد الأساس أول (مثلًا ٤ = `2²`)، بعدين الأس الأكبر هو الأكبر.', eq: 'بعد توحيد الأساس الأسين مو متساويين.', neq: 'وحّد الأساس: الأسين يطلعون متساويين، فالقيمتين متساويتين.' },
-        bone: 'قارن `8⁴` و `4⁶`:<br>`8 = 2³` و `4 = 2²`<br>`8⁴ = 2¹²` و `4⁶ = 2¹²` ← متساويتان.<br>ولو طلع واحد `2¹³` يكون هو الأكبر.' },
-
-      { name: 'أساس بين ٠ و ١', t: 8, tone: 'warm',
-        intro: 'إذا الأساس بين ٠ و ١ <b>ينقلب الكلام</b>: الأس الأكبر يعطي عدد أصغر.<br>`0.5² = 0.25` أصغر من `0.5¹ = 0.5`',
-        gen(s) {
-          const small = s <= 1 || Math.random() < 0.65, b = small ? pick(s <= 1 ? ['0.5'] : ['0.5', '0.1', '0.2', '0.3']) : pick(['2', '3', '1.5', '10']);
-          const m = R(1, s <= 1 ? 4 : 9); let n = R(1, s <= 1 ? 4 : 9); if (n === m) n = m === 1 ? 2 : m - 1;
-          const v = e => Math.pow(parseFloat(b), e);
-          return cmpQ(P(b, m), P(b, n), v(m), v(n), small ? 'dirS' : 'dirB'); },
-        hints: { dirS: 'الأساس بين ٠ و ١: كل ما زاد الأس <b>صغر</b> العدد. `0.5² = 0.25` أصغر من `0.5`.', dirB: 'هنا الأساس أكبر من ١: الأس الأكبر = العدد الأكبر.', eq: 'الأسين مختلفين، فالقيمتين مختلفتين.' },
-        bone: 'جرّب بالأرقام: `0.5¹ = 0.5` ، `0.5² = 0.25` ، `0.5³ = 0.125`<br>كل ضربة في نص تصغّر العدد للنص. فالأس الأكبر = الأصغر.<br>بس لو الأساس أكبر من ١ (مثل ٢) يرجع الكلام طبيعي.' },
+      /* ---------- 9) comparing ---------- */
+      lv('المقارنة', 8, 'نفس الأساس (أكبر من ١): <b>الأس الأكبر = العدد الأكبر</b>.', '`2³⁰` أكبر من `2²⁹`',
+        k => { const b = pick([2, 3, 5, 7]), m = R(...T(k, [[3, 9], [8, 20], [15, 40]])); let n = R(...T(k, [[3, 9], [8, 20], [15, 40]])); if (n === m) n++; return cmpQ(P(b, m), P(b, n), m, n, 'dir'); }),
+      lv('المقارنة بعد التوحيد', 10, 'أساس مختلف؟ <b>وحّد الأساس أول</b>، بعدين قارن.', '`4¹⁴ = 2²⁸` أصغر من `2³⁰`',
+        k => { const fam = pick(T(k, [[[[2, 1], [4, 2]]], [[[2, 1], [4, 2]], [[3, 1], [9, 2]]], [[[8, 3], [4, 2]], [[9, 2], [27, 3]], [[2, 1], [8, 3]]], [[[16, 4], [8, 3]], [[25, 2], [125, 3]], [[8, 3], [4, 2]]]]));
+          const [A, B] = Math.random() < 0.5 ? fam : [fam[1], fam[0]]; const m = R(4, 15); let n = R(4, 15);
+          if (k >= 2 && Math.random() < 0.35 && (A[1] * m) % B[1] === 0) n = A[1] * m / B[1];
+          return cmpQ(P(A[0], m), P(B[0], n), A[1] * m, B[1] * n, 'dirU'); },
+        { bone: 'قارن `8⁴` و `4⁶`:<br>`8 = 2³` و `4 = 2²`<br>`8⁴ = 2¹²` و `4⁶ = 2¹²` ← متساويتان.' }),
+      lv('أساس بين ٠ و ١', 8, 'إذا الأساس بين ٠ و ١ <b>ينقلب الكلام</b>: الأس الأكبر يعطي عدد أصغر.', '`0.5² = 0.25` أصغر من `0.5¹ = 0.5`',
+        k => { const small = k <= 1 || Math.random() < 0.65, b = small ? pick(T(k, [['0.5'], ['0.5'], ['0.5', '0.1', '0.2', '0.3']])) : pick(['2', '3', '1.5', '10']);
+          const top = T(k, [4, 4, 9]), m = R(1, top); let n = R(1, top); if (n === m) n = m === 1 ? 2 : m - 1;
+          const v = e => Math.pow(parseFloat(b), e); return cmpQ(P(b, m), P(b, n), v(m), v(n), small ? 'dirS' : 'dirB'); },
+        { bone: 'جرّب بالأرقام: `0.5¹ = 0.5`<br>`0.5² = 0.25`<br>`0.5³ = 0.125`<br>كل ضربة في نص تصغّر العدد للنص. بس لو الأساس أكبر من ١ يرجع الكلام طبيعي.' }),
     ],
     final: [
       { q: 'إذا كان `9ˣ = 3¹⁰` ، فما قيمة س؟', choices: ['١٠', '٥', '٢٠', '٣'], answer: 1, why: '٩ = `3²` ← الأس يصير ٢س ← ٢س = ١٠ ← س = ٥' },
@@ -8031,10 +8125,20 @@ function runDrill(d, lesson) {
   cleanupFns.push(() => { gone = true; stopT(); dock.remove(); });
 
   /* top: the lesson's levels as one long bar (how far up the lesson am I) */
-  function paintRail(cur, label) {
+  /* one bar for the whole lesson: every level is a piece (done = green, ahead = grey);
+     the level he is on is wide and shows its point boxes, which light up and go dark as he answers */
+  function paintRail(cur, label, pts) {
     const m = mem(), done = S.done[id];
-    rail.innerHTML = `<div class="lad-name"><b>${fmt(lesson.title)}</b><span>${label}</span></div>` +
-      `<div class="lad-steps">${D.levels.map((_, i) => `<i class="${i === cur ? 'on' : done || i < m.lv ? 'done' : ''}"></i>`).join('')}</div>`;
+    const segs = D.levels.map((lv, i) => {
+      if (i === cur) { const goal = lv.goal || DR_GOAL; return `<div class="dr-seg cur">${Array.from({ length: goal }, (_, k) => `<i class="${k < (pts || 0) ? 'on' : ''}"></i>`).join('')}</div>`; }
+      return `<div class="dr-seg ${done || i < m.lv ? 'done' : ''}"></div>`;
+    }).join('');
+    rail.innerHTML = `<div class="lad-name"><b>${fmt(lesson.title)}</b><span>${label}</span></div><div class="dr-rail">${segs}</div>`;
+  }
+  function setPts(pts, delta) {
+    rail.querySelectorAll('.dr-seg.cur i').forEach((x, k) => x.className = k < pts ? 'on' : '');
+    if (delta) { const cur = rail.querySelector('.dr-seg.cur'); if (!cur) return; cur.classList.remove('hit', 'miss'); void cur.offsetWidth; cur.classList.add(delta > 0 ? 'hit' : 'miss');
+      const f = h('span', 'dr-delta ' + (delta > 0 ? 'up' : 'down'), delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`); cur.appendChild(f); setTimeout(() => f.remove(), 900); }
   }
   function page(cls = '') { stopT(); pane.innerHTML = ''; window.scrollTo(0, 0); const p = h('div', 'lpage lad-page ' + cls); pane.appendChild(p); return p; }
   function dockBtn(label, fn, extra) {
@@ -8046,9 +8150,9 @@ function runDrill(d, lesson) {
   function dockNone() { dock.className = 'dock empty'; dockIn.innerHTML = ''; }
 
   /* a fresh question from a level: never one he already saw in this session; choices shuffled */
-  function make(lv, stage) {
+  function make(lv, k) {
     let g = null;
-    for (let k = 0; k < 40; k++) { g = lv.gen(Math.max(0, Math.min(4, stage))); if (!seen.has(g.q + '|' + (g.a || '') + '|' + (g.b || ''))) break; }
+    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(g.q + '|' + (g.a || '') + '|' + (g.b || ''))) break; }
     seen.add(g.q + '|' + (g.a || '') + '|' + (g.b || ''));
     const used = new Set([String(g.ans)]), opts = [{ v: g.ans, key: null }];
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
@@ -8103,49 +8207,40 @@ function runDrill(d, lesson) {
     }, 100);
   }
 
-  /* the bar of the current level: 5 points; he sees himself climb and fall back */
-  function bar(host, pts) {
-    const b = h('div', 'dr-bar', `<div class="dr-track">${Array.from({ length: DR_GOAL }, (_, i) => `<i class="${i < pts ? 'on' : ''}"></i>`).join('')}</div><b>${ar(pts)}/${ar(DR_GOAL)}</b>`);
-    host.appendChild(b); return b;
-  }
-  function setBar(b, pts, delta) {
-    b.querySelectorAll('.dr-track i').forEach((x, i) => x.className = i < pts ? 'on' : '');
-    b.querySelector('b').textContent = `${ar(pts)}/${ar(DR_GOAL)}`;
-    if (delta) { const f = h('span', 'dr-delta ' + (delta > 0 ? 'up' : 'down'), delta > 0 ? `+${ar(delta)}` : `−${ar(-delta)}`); b.appendChild(f); setTimeout(() => f.remove(), 900); }
-  }
-
   /* a new skill: one line, then straight to the questions */
   function levelIntro(i, back) {
-    const lv = D.levels[i]; paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)}`);
+    const lv = D.levels[i]; paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)}`, mem().lv === i ? mem().pts : 0);
     const p = page('dr-intro');
-    p.innerHTML = `<div class="lad-card up dr-card"><small class="eyebrow">المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}</small>${back ? `<p class="dr-back">${back}</p>` : ''}<h2>${fmt(lv.intro)}</h2>
-      <p class="dr-rule">⏱️ عندك ${ar(lv.t)} ثواني لكل سؤال · صح = +١ · سريع جدًا = +٢ · غلط أو خلص الوقت = −١ · وصّل الشريط ${ar(DR_GOAL)} وتطلع</p></div>`;
+    p.innerHTML = `${back ? `<p class="dr-back">${back}</p>` : ''}<div class="lad-card up dr-card dr-idea"><small class="eyebrow">💡 فكرة جديدة · المستوى ${ar(i + 1)} من ${ar(N)}</small><h2>${fmt(lv.idea)}</h2>
+      ${lv.ex ? `<div class="dr-ex"><small>مثال</small><div>${fmt(lv.ex)}</div></div>` : ''}
+      <p class="dr-rule">⏱️ ${ar(lv.t)} ثواني لكل سؤال · صح = +١ (سريع جدًا = +٢) · غلط أو خلص الوقت = −١ · املأ ${ar(lv.goal || DR_GOAL)} مربعات فوق وتطلع</p></div>`;
     dockBtn(i === 0 && !mem().started ? 'يلا نبدأ' : 'يلا', () => { mem().started = true; persist(); level(i); });
   }
 
   /* the drill of one level */
   function level(i) {
-    const lv = D.levels[i], m = mem(); m.lv = i; persist();
-    paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}`);
-    let pts = m.pts || 0, streak = 0, missRow = 0, n = 0;
+    const lv = D.levels[i], m = mem(), goal = lv.goal || DR_GOAL;
+    if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
+    persist();
+    let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0;
+    paintRail(i, `المستوى ${ar(i + 1)} من ${ar(N)} · ${lv.name}`, pts);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const next = () => {
       if (gone) return;
       const p = page('dr-drill');
-      const b = bar(p, pts);
-      const g = make(lv, pts + Math.floor(n / 6));   // the bar is the difficulty: the higher he is, the harder the numbers
-      n++;
+      const g = make(lv, k);           // one notch harder for every right answer; a miss stays on the same notch (new question, never an easier one)
       dockNone();
       ask(p, g, lv.t, lv.hints || {}, (res, fb) => {
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
-        pts = Math.max(0, Math.min(DR_GOAL, pts + delta)); m.pts = pts; persist();
-        setBar(b, pts, delta);
+        pts = Math.max(0, Math.min(goal, pts + delta)); if (delta > 0) k++;
+        m.pts = pts; m.k = k; persist();
+        setPts(pts, delta);
         if (delta > 0) {
           streak++; missRow = 0;
           const line = DR_COACH.streak[streak] || (res === 'fast' ? '⚡ سريع! +٢' : '');
           fb.className = 'lad-fb dr-fb ok'; fb.textContent = line || drPick(['صح ✓', 'صح ✓', 'تمام ✓', 'كذا ✓']);
-          if (pts >= DR_GOAL) return setTimeout(() => !gone && levelDone(i), 700);
-          setTimeout(next, 650);
+          if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 800);
+          setTimeout(next, 700);
           return;
         }
         streak = 0; missRow++;
@@ -8167,7 +8262,7 @@ function runDrill(d, lesson) {
     stopT();
     const lv = D.levels[i];
     const p = page('dr-bone');
-    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">خلنا نوقف ثانية 🤝</small><h2>تعثرت كم مرة ورا بعض، عادي. هذي الفكرة بشكل أوضح:</h2><div class="dr-bonetxt">${fmt(lv.bone)}</div></div>`;
+    p.innerHTML = `<div class="lad-card dr-card"><small class="eyebrow">خلنا نوقف ثانية 🤝</small><h2>تعثرت كم مرة ورا بعض، عادي. خلنا نشوفها بشكل أوضح:</h2><div class="dr-bonetxt">${fmt(lv.bone || lv.idea + '<br>' + (lv.ex || ''))}</div></div>`;
     dockBtn('فهمت، كمّل', back);
   }
 
@@ -8175,7 +8270,7 @@ function runDrill(d, lesson) {
     const lv = D.levels[i], m = mem();
     FX.play('task');
     LT('drill_level', { lesson: id, n: i + 1 });
-    m.lv = i + 1; m.pts = 0; persist();
+    m.lv = i + 1; m.pts = 0; m.k = 0; persist();
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     if (i + 1 >= N) return finalIntro();
     levelIntro(i + 1, `✅ خلّصت «${lv.name}». ${drPick(DR_COACH.up[tone])}`);
@@ -8237,7 +8332,7 @@ function runDrill(d, lesson) {
     const p = page('dr-drill');
     p.appendChild(h('small', 'eyebrow lad-kick', lv.name));
     dockNone();
-    ask(p, make(lv, 2 + Math.floor(Math.random() * 3)), lv.t, lv.hints || {}, (res, fb) => {
+    ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
       if (ok) { fb.className = 'lad-fb dr-fb ok'; fb.textContent = res === 'fast' ? '⚡ سريع' : 'صح ✓'; setTimeout(() => !gone && open(k + 1, limit, got + 1), 650); }
       else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1500);
