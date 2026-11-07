@@ -82,10 +82,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 /* math */
 .m{direction:rtl;unicode-bidi:isolate;display:inline-block;white-space:nowrap;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:500;letter-spacing:.2px}
 .m .mo{color:var(--theme);font-weight:400;margin:0 .12em}
-.sq{display:inline-flex;align-items:flex-start;direction:rtl}
-.sq .rad{display:inline-block;transform:scaleX(-1);line-height:1.1}
-.sq .rc{border-top:2px solid currentColor;padding:0 2px;line-height:1.25;margin-top:.12em}
+.sq{position:relative;display:inline-flex;align-items:stretch;direction:rtl;unicode-bidi:isolate;vertical-align:-.15em}
+.sq .rad{display:block;width:.55em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;overflow:visible}
+.sq .rc{border-top:2px solid currentColor;padding:.08em 3px 0;line-height:1.2;margin-right:-1px}
 sup{font-size:.62em;line-height:0}
+.pw{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}
 .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.12;font-size:.95em;margin:0 3px;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:600}
 .fr>span{padding:0 4px}
 .fr>span:first-child{border-bottom:2.5px solid currentColor;border-radius:1px;padding-bottom:1px}
@@ -915,6 +916,8 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .eqb .row.long{font-size:21px;gap:6px}
 .pen{fill:#3F6FB0} .band{fill:var(--c-num)}
 .eqb .row{flex-wrap:wrap;justify-content:center;row-gap:6px}
+.eqb .t{white-space:nowrap}
+.eqb .grp{display:inline-flex;align-items:center;gap:inherit;white-space:nowrap}
 .road{fill:#5B6470} .lane{fill:#F2F2F2} .car{fill:#3F6FB0;stroke:#24426B;stroke-width:1.5} .car.on{fill:var(--c-num);stroke:var(--c-den)} .wheel{fill:#1E2328}
 .pan{fill:var(--bg-2);stroke:var(--ink-2);stroke-width:2} .box{fill:#F3D9A4;stroke:var(--c-den);stroke-width:2.5}
 .hole{fill:var(--card);stroke:var(--c-num);stroke-width:3} .apple{fill:#D94B3D;stroke:#8F2A21;stroke-width:1.5} .banana{fill:#F2C94C;stroke:#B08A1E;stroke-width:1.5}
@@ -987,6 +990,10 @@ b.cn{color:var(--c-num)!important} b.cd{color:var(--c-den)!important}
 .lad-x{stroke:var(--bad);stroke-width:4;stroke-linecap:round}
 .act-card.gone{opacity:.35}
 @media (prefers-reduced-motion:reduce){.lad-timer.low b{animation:none}}
+
+.lad-fo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;direction:rtl;color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:30px}
+.lad-fo.s-txt{font-size:18px}
+.sq .idx{position:absolute;right:-.05em;top:-.42em;font-size:.48em;line-height:1}
 
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
@@ -1280,7 +1287,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794024180"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794026914"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -1309,7 +1316,7 @@ const SUP_MAP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵'
 function mathText(t) {
   t = ar(t);
   t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]+/g, m => '<sup>' + ar(m.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−') + '</sup>');
-  t = t.replace(/√(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, r) => `<span class="sq"><span class="rad">√</span><span class="rc">${r}</span></span>`);
+  t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => `<span class="sq">${k === '∛' ? '<span class="idx">٣</span>' : ''}<svg class="rad" viewBox="0 0 12 24" preserveAspectRatio="none" aria-label="جذر"><path d="M12 14.5 L10.5 13.5 L8.3 23 L4.6 1 L0 1"/></svg><span class="rc">${r}</span></span>`);
   return t;
 }
 const frH = (a, b, w) => (w != null && w !== '' ? `<span class="mx">${ar(w)}` : '') + `<span class="fr"><span>${mathText(a)}</span><span>${mathText(b)}</span></span>` + (w != null && w !== '' ? '</span>' : '');
@@ -1323,7 +1330,7 @@ function fmt(s) {
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
-const RAW_MATH = /[0-9⁰¹²³⁴⁵⁶⁷⁸⁹⁻]|√(?=[(\d٠-٩\u0621-\u064A])/;
+const RAW_MATH = /[0-9⁰¹²³⁴⁵⁶⁷⁸⁹⁻]|[√∛](?=[(\d٠-٩\u0621-\u064A])/;
 function mathFix(root) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const hits = [];
@@ -1387,7 +1394,20 @@ function sv(tag, attrs, parent) {
 }
 function svText(parent, x, y, str, cls = 's-txt', anchor = 'middle') {
   const t = sv('text', { x, y, class: cls, 'text-anchor': anchor, 'dominant-baseline': 'middle' }, parent);
-  t.textContent = ar(str);
+  return svFill(t, str);
+}
+/* (re)write a picture label: used on first draw and when a lesson changes a label later */
+function svSet(t, str) { const s = ar(String(str).replace(/`/g, '')); return svFill(t, AR_LETTER.test(s) ? '\u202B' + s + '\u202C' : visualMath(s)); }
+function svFill(t, str) {
+  t.textContent = '';
+  const txt = ar(String(str).replace(/`/g, ''));   // backticks mark math in lesson text; in a picture they would show as-is
+  if (!/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]/.test(txt)) { t.textContent = txt; return t; }
+  // powers in a picture: the exponent becomes a small raised Arabic digit (same look as the lesson text)
+  txt.split(/([⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]+)/).forEach((part, i) => {
+    if (!part) return;
+    if (i % 2) { const sp = sv('tspan', { 'baseline-shift': 'super', 'font-size': '62%' }, t); sp.textContent = ar(part.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−'); }
+    else t.appendChild(document.createTextNode(part));
+  });
   return t;
 }
 function svgPoint(svg, e) {
@@ -3292,8 +3312,14 @@ function runLadder(d, lesson) {
       board(lines, gap = 260) {
         const b = h('div', 'eqb'); let k = 0; const total = lines.reduce((n, l) => n + l.filter(t => typeof t !== 'string').length, 0); gap = Math.min(gap, 2400 / Math.max(1, total));
         lines.forEach(line => { const r = h('div', 'row' + (line.filter(t => typeof t !== 'string').length > 7 ? ' long' : '')); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
-          const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms'; r.appendChild(sp); }); b.appendChild(r); });
-        c.insertBefore(b, msg); return b;
+          const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms';
+          // an = or ← never ends a line on its own: it travels with the piece after it
+          const prev = r.lastElementChild; if (prev && prev.dataset.op) { const g = h('span', 'grp'); r.replaceChild(g, prev); g.append(prev, sp); } else r.appendChild(sp);
+          if (/^\s*[=←→+−×÷]\s*$/.test(String(tk[0]))) sp.dataset.op = 1; }); b.appendChild(r); });
+        c.insertBefore(b, msg);
+        // a long chain shrinks a little before it wraps onto a second line
+        requestAnimationFrame(() => b.querySelectorAll('.row').forEach(r => { let fs = parseFloat(getComputedStyle(r).fontSize); const one = () => { const t = [...r.children].map(e => e.offsetTop); return Math.max(...t) - Math.min(...t) < fs * .8 && r.scrollWidth <= r.clientWidth + 1; }; while (!one() && fs > 17) { fs -= 2; r.style.fontSize = fs + 'px'; } }));
+        return b;
       },
     };
     window.__actSkip = () => ctx.done(); // automatic tests only
@@ -3344,7 +3370,7 @@ function runLadder(d, lesson) {
    Every question here is ours (new numbers), at the level of those collections. Lessons run in engine/ladder.js. */
 (() => {
   const SUP = e => `<sup>${e}</sup>`;
-  const P = (b, e) => `${b}${SUP(e)}`;                  // a power in text: P(2, 5) → 2⁵ (any exponent, also س)
+  const P = (b, e) => `<span class="pw">${b}${SUP(e)}</span>`;   // kept as one piece so a letter exponent (س) sits on the same side as a digit one                  // a power in text: P(2, 5) → 2⁵ (any exponent, also س)
   const Q = (q, choices, answer, why, ext) => Object.assign({ q, choices, answer, why }, ext || {});
   const CMPQ = (a, b, answer, why) => ({ q: 'قارن بين:', a, b, choices: CMP, answer, why });
   const CUP = { 0: 'القيمة الأولى أكبر', 1: 'القيمة الثانية أكبر', 2: 'القيمتان متساويتان' };
@@ -3357,7 +3383,11 @@ function runLadder(d, lesson) {
     return items.map((v, i) => {
       const x = start + i * (w + gap);
       const r = K.rect(x, y, w, hgt, hl.includes(i) ? cls + ' on' : cls, 12);
-      const t = v == null ? null : K.text(x + w / 2, y + hgt / 2 + 2, String(v), size);
+      let t = null;
+      if (v != null && String(v).includes('√')) {   // a root is drawn the same way as in the lesson text (mirrored sign with its bar), not the plain √ letter
+        const fo = sv('foreignObject', { x, y, width: w, height: hgt }, K.g), d = document.createElement('div');
+        d.className = 'lad-fo ' + size; d.innerHTML = fmt('`' + String(v) + '`'); fo.appendChild(d); t = fo;
+      } else if (v != null) t = K.text(x + w / 2, y + hgt / 2 + 2, String(v), size);
       return { r, t, x: x + w / 2, x0: x, w };
     });
   };
@@ -3396,12 +3426,12 @@ function runLadder(d, lesson) {
         teach: [
           { h: 190, beats: [
             { say: 'الأس يقول <b>كم مرة</b> نضرب العدد في نفسه. اضغط «×٢» وشوف وش يصير:', draw(K, st) { st.n = 1; st.c = cards(K, [1], { y: 26, w: 70, hgt: 70 }); st.lab = K.text(180, 150, ar('2⁰ = 1'), 's-txt'); } },
-            ...[2, 4, 8, 16, 32].map((v, i) => ({ button: '×٢', ok(K, st) { st.c[0].t.textContent = ar(String(v)); st.c[0].r.classList.add('on'); st.lab.innerHTML = ''; st.lab.textContent = ar(`2 أس ${i + 1} = ${v}`); }, pause: 250 })),
+            ...[2, 4, 8, 16, 32].map((v, i) => ({ button: '×٢', ok(K, st) { st.c[0].t.textContent = ar(String(v)); st.c[0].r.classList.add('on'); svSet(st.lab, `2${'¹²³⁴⁵'[i]} = ${v}`); }, pause: 250 })),
             { say: 'ضربنا ٢ في نفسها ٥ مرات، فكتبناها `2⁵` = ٣٢. الـ٢ اسمها <b>الأساس</b> والـ٥ اسمها <b>الأس</b>.',
               board: [[['`2⁵`'], ['='], ['`2 × 2 × 2 × 2 × 2`'], ['='], ['٣٢', 'res']]], msg: 'انتبه: `2⁵` <b>مو</b> ٢ × ٥ = ١٠. هذا أشهر فخ.' },
           ] },
           { h: 200, beats: [
-            { say: 'طيب وش معنى `2⁰`؟ ننزل الدرج: كل درجة نقسم على ٢.', draw(K, st) { st.s = [8, 4, 2, 1].map((v, i) => { K.rect(40 + i * 72, 130 - i * 28, 64, 40 + i * 28, 'act-card', 8); return K.text(72 + i * 72, 116 - i * 28, String(v), 'act-fnum'); }); [3, 2, 1, 0].forEach((e, i) => note(K, 72 + i * 72, 190, `2 أس ${e}`)); } },
+            { say: 'طيب وش معنى `2⁰`؟ ننزل الدرج: كل درجة نقسم على ٢.', draw(K, st) { st.s = [8, 4, 2, 1].map((v, i) => { K.rect(40 + i * 72, 130 - i * 28, 64, 40 + i * 28, 'act-card', 8); return K.text(72 + i * 72, 116 - i * 28, String(v), 'act-fnum'); }); [3, 2, 1, 0].forEach((e, i) => note(K, 72 + i * 72, 190, '2' + '⁰¹²³'[e])); } },
             { button: 'وش لاحظت؟', board: [[['`2³` = ٨'], ['`2²` = ٤'], ['`2¹` = ٢'], ['`2⁰` = ١', 'res']]], msg: 'أي عدد أس صفر = <b>١</b>. وأي عدد أس ١ = نفسه. و`1` أس أي شي = ١.' },
             { say: 'وقوى العشرة أسهل شي: `10⁴` = ١ وجنبه ٤ أصفار.', board: [[['`10⁴`'], ['='], ['١٠٠٠٠', 'res']]] },
             { say: 'جرّب: `3⁴` = ؟', ask: { choices: ['١٢', '٨١', '٦٤', '٧'], answer: '٨١', wrong: { '١٢': 'هذا ٣ × ٤. الأس يعني نضرب ٣ في نفسها ٤ مرات.', '٦٤': 'هذا ٤ أس ٣. انتبه للترتيب: الأساس ٣ والأس ٤.', '٧': 'هذا ٣ + ٤.' } },
@@ -3439,7 +3469,7 @@ function runLadder(d, lesson) {
         teach: [
           { h: 150, beats: [
             { say: 'أعداد كثيرة هي أصلًا قوى. اضغط على كل بطاقة وشوف حقيقتها:', draw(K, st) { const v = [4, 8, 16, 9, 27, 25], r = ['2²', '2³', '2⁴', '3²', '3³', '5²']; st.c = cards(K, v, { y: 26, w: 50, hgt: 62 }); st.c.forEach((c, i) => { c.flip = r[i]; }); } },
-            { tap: { targets: st => st.c.map(c => c.r), need: 6, once: true, mark(el, on, k, st) { const c = st.c[k]; el.classList.add('on'); c.t.textContent = ar(c.flip); }, progress: n => `${ar(n)} من ٦` },
+            { tap: { targets: st => st.c.map(c => c.r), need: 6, once: true, mark(el, on, k, st) { const c = st.c[k]; el.classList.add('on'); svSet(c.t, c.flip); }, progress: n => `${ar(n)} من ٦` },
               msg: 'احفظ هذي: ٤ = `2²` ، ٨ = `2³` ، ١٦ = `2⁴` ، ٣٢ = `2⁵` ، ٩ = `3²` ، ٢٧ = `3³` ، ٢٥ = `5²` ، ١٢٥ = `5³`.' },
           ] },
           { h: 170, beats: [
@@ -3448,15 +3478,19 @@ function runLadder(d, lesson) {
             { say: 'والقاعدة الذهبية: إذا تساوت قوتان <b>بنفس الأساس</b>، تتساوى الأسس.', board: [[[`${P('٤', 'س')} = ١٠٢٤`]], [[`${P('٢', '٢س')} = ${P('٢', '١٠')}`]], [['٢س = ١٠'], ['←'], ['س = ٥', 'res']]], msg: 'مثال: ١٠٢٤ = `2¹⁰` و ٤ = `2²`، فالسؤال صار سهل.' },
           ] },
           { h: 0, beats: [
-            { say: `جرّب: إذا كان ${P('٢٥', 'س')} = ${P('٥', '٨')} فما قيمة س؟`, ask: { choices: ['٨', '٢', '١٦', '٤'], answer: '٤', wrong: { '٨': 'أول حوّل ٢٥ إلى ٥². الأس يصير ٢س.', '٢': '٢س = ٨، إذن س = ؟', '١٦': 'نقسم على ٢، ما نضرب.' } },
+            { say: `جرّب: إذا كان ${P('٢٥', 'س')} = ${P('٥', '٨')} فما قيمة س؟`, ask: { choices: ['٨', '٢', '١٦', '٤'], answer: '٤', wrong: { '٨': 'أول حوّل ٢٥ إلى ٥². الأس يصير ٢س.', '٢': 'وصلت لـ ٢س = ٨ 👍 بس المطلوب س نفسها: نقسم ٨ على ٢.', '١٦': 'نقسم على ٢، ما نضرب.' } },
               board: [[[`${P('٥', '٢س')} = ${P('٥', '٨')}`], ['←'], ['٢س = ٨'], ['←'], ['س = ٤', 'res']]], msg: 'هذا مستوى القدرات فعلًا، وأنت حليته 💪' },
           ] },
         ], bridge: 'طيب لو جاك جمع قوى، مثل `3⁵ + 3⁴`؟ ما ينفع نجمع الأسس… فوش نسوي؟' },
       { name: 'جمع القوى (العامل المشترك)', climb: Q('`(6⁵ + 6⁴) ÷ 6⁴` = ؟', ['٦', '٧', '`6⁵`', '٢'], 1, '`6⁴ × (6 + 1)` ÷ `6⁴` = ٧', { t: 40 }),
         teach: [
-          { h: 170, beats: [
-            { say: '`3⁵` كم مرة فيها `3⁴`؟ ٣ مرات! نرسمها ٣ أشرطة، وجنبها `3⁴` شريط واحد. اضغط «اجمع»:', draw(K, st) { st.a = [0, 1, 2].map(i => K.rect(30, 20 + i * 34, 120, 26, 'act-card', 6)); note(K, 90, 132, '`3⁵` = ٣ أشرطة'); st.b = K.rect(210, 20, 120, 26, 'act-card on', 6); note(K, 270, 66, '`3⁴`'); } },
-            { button: 'اجمع', ok(K, st) { st.b.style.transition = 'transform .5s'; st.b.style.transform = 'translate(-180px, 102px)'; st.a.forEach(r => r.classList.add('on')); K.text(260, 140, ar('= 4 × 3⁴'), 's-txt'); },
+          { h: 200, beats: [
+            { say: '`3⁵` = ٣ × `3⁴`. يعني `3⁵` فيها ٣ أشرطة من `3⁴`، وجنبها `3⁴` شريط واحد. اضغط «اجمع»:', draw(K, st) {
+                st.a = [0, 1, 2].map(i => { const r = K.rect(200, 16 + i * 34, 130, 28, 'act-card', 6); K.text(265, 31 + i * 34, '3⁴', 's-txt'); return r; });
+                note(K, 120, 128, '3⁵ = ٣ أشرطة ←');
+                st.b = K.rect(30, 16, 130, 28, 'act-card on', 6); st.bt = K.text(95, 31, '3⁴', 's-txt'); st.bn = note(K, 95, 62, 'شريط واحد'); } },
+            { button: 'اجمع', ok(K, st) { [st.b, st.bt].forEach(e => { e.style.transition = 'transform .6s ease'; e.style.transform = 'translate(170px, 102px)'; }); st.a.forEach(r => r.classList.add('on')); st.bn.remove();
+                setTimeout(() => K.text(180, 182, 'المجموع ٤ أشرطة = 4 × 3⁴', 's-txt'), 650); },
               board: [[['`3⁵ + 3⁴`'], ['='], ['`3⁴ × (3 + 1)`'], ['='], ['`4 × 3⁴`', 'res']]], msg: 'في الجمع <b>ما نجمع الأسس</b>. نطلّع القوة الأصغر عامل مشترك.' },
           ] },
           { h: 0, beats: [
@@ -3467,13 +3501,13 @@ function runLadder(d, lesson) {
         ], bridge: 'آخر خطوة: لما يسألونك «قارن» بين قوتين كبيرتين… كيف تعرف الأكبر بدون حساب؟' },
       { name: 'المقارنة بين القوى', climb: Object.assign(CMPQ('`2³⁰`', '`4¹⁴`', 0, '`4¹⁴` = ٢ أس ٢٨، و ٣٠ أكبر'), { t: 40 }),
         teach: [
-          { h: 200, beats: [
-            { say: 'نوحّد الأساس، بعدين نقارن الأسس. `8¹⁰` = ٢ أس ٣٠. قارنها مع `2²⁹`:', draw(K, st) { st.t1 = K.rect(90, 190, 60, 0, 'act-card on', 4); st.t2 = K.rect(210, 190, 60, 0, 'act-card', 4); note(K, 120, 200, '`2³⁰`'); note(K, 240, 200, '`2²⁹`'); } },
+          { h: 224, beats: [
+            { say: 'نوحّد الأساس، بعدين نقارن الأسس. `8¹⁰` = ٢ أس ٣٠. قارنها مع `2²⁹`:', draw(K, st) { st.t1 = K.rect(90, 190, 60, 0, 'act-card on', 4); st.t2 = K.rect(210, 190, 60, 0, 'act-card', 4); note(K, 120, 208, '2³⁰'); note(K, 240, 208, '2²⁹'); } },
             { button: 'ابنِ البرجين', ok(K, st) { [[st.t1, 30], [st.t2, 29]].forEach(([r, n]) => { r.style.transition = 'all .8s'; r.setAttribute('y', 190 - n * 5.6); r.setAttribute('height', n * 5.6); }); },
               msg: 'برج ٣٠ دور أطول من برج ٢٩. إذا الأساس <b>أكبر من ١</b>: الأس الأكبر = العدد الأكبر.' },
           ] },
-          { h: 160, beats: [
-            { say: '<b>انتبه:</b> إذا الأساس بين ٠ و ١ ينقلب الكلام! شوف `0.5`:', draw(K, st) { st.b = [0.5, 0.25, 0.125].map((v, i) => { const r = K.rect(50 + i * 100, 150 - 120 / (i + 1) / (i + 1) * 1, 60, 120 / (i + 1) / (i + 1), 'act-card', 4); K.text(80 + i * 100, 160 - 120 / (i + 1) / (i + 1) - 14, String(v), 's-txt'); return r; }); ['أس ١', 'أس ٢', 'أس ٣'].forEach((s, i) => note(K, 80 + i * 100, 158, s)); } },
+          { h: 196, beats: [
+            { say: '<b>انتبه:</b> إذا الأساس بين ٠ و ١ ينقلب الكلام! شوف `0.5`: كل مرة نضرب في `0.5` العدد يصير النص.', draw(K, st) { st.b = [0.5, 0.25, 0.125].map((v, i) => { const hh = 240 * v, x = 250 - i * 100; const r = K.rect(x, 160 - hh, 60, hh, 'act-card' + (i ? '' : ' on'), 4); K.text(x + 30, 160 - hh - 14, String(v), 's-txt'); K.note(x + 30, 180, '0.5' + '¹²³'[i]); return r; }); } },
             { button: 'فهمت', msg: 'كل ما زاد الأس، صغر العدد: `0.5³` أصغر من `0.5²`.' },
             { say: 'مثال: قارن `9⁶` و `27⁴` ← `3¹²` و `3¹²` ← متساويتان. ومثال: `2²⁰` و `4¹¹` ← `2²⁰` و `2²²` ← الثانية أكبر.' },
             { say: 'جرّب: قارن بين `0.5⁴` و `0.5³`', ask: { choices: CMP.slice(0, 3), answer: CMP[1], wrong: { [CMP[0]]: 'الأساس بين ٠ و ١: الأس الأكبر يصغّر العدد.', [CMP[2]]: 'الأسين مختلفين، فالقيمتين مختلفتين.' } }, msg: 'خلصت السلّم كله! 🏆' },
@@ -3485,12 +3519,14 @@ function runLadder(d, lesson) {
   /* a picture that changes state with each button: states = rows of cards */
   const fitOpt = (items, opt) => {   // cards wide enough for their text, and never wider than the picture
     const gap = opt.gap != null ? opt.gap : 8, n = items.length, longest = Math.max(...items.map(v => String(v == null ? '' : v).length));
-    let w = Math.max(opt.w || 56, longest * (longest > 6 ? 15 : 22) + 22); w = Math.min(w, (340 - (n - 1) * gap) / n);
-    return Object.assign({}, opt, { w, size: longest > 6 || opt.size === 's-txt' ? 's-txt' : (opt.size || 'act-fnum') });
+    let w = Math.max(opt.w || 56, longest * (longest > 6 && n > 1 ? 15 : 22) + 22); w = Math.min(w, (340 - (n - 1) * gap) / n);
+    const size = n === 1 && longest <= 9 ? 'act-fnum' : longest > 6 || opt.size === 's-txt' ? 's-txt' : (opt.size || 'act-fnum');   // a lone result card always shows big
+    return Object.assign({}, opt, { w, size });
   };
+  const rtl = s => s.some(v => /^[×+−÷=]$/.test(v)) ? [...s].reverse() : s;   // a sum or product reads right to left, like the lesson text (digit rows stay as numbers are written)
   const morph = (say, states, buttons, opt = {}, msgs = []) => [
-    { say, draw(K, st) { st.g = K.g; cards(K, states[0], fitOpt(states[0], opt)); } },
-    ...buttons.map((b, i) => ({ button: b, ok(K, st) { st.g.style.transition = 'opacity .25s'; st.g.style.opacity = '0'; st.g = K.g; cards(K, states[i + 1], Object.assign(fitOpt(states[i + 1], opt), { hl: states[i + 1].map((_, k) => k) })); },
+    { say, draw(K, st) { st.g = K.g; cards(K, rtl(states[0]), fitOpt(states[0], opt)); } },
+    ...buttons.map((b, i) => ({ button: b, ok(K, st) { st.g.style.transition = 'opacity .25s'; st.g.style.opacity = '0'; st.g = K.g; cards(K, rtl(states[i + 1]), Object.assign(fitOpt(states[i + 1], opt), { hl: states[i + 1].map((_, k) => k) })); },
       board: i === buttons.length - 1 && opt.chain !== false ? [states.map((st, k) => [st.join(' '), k === states.length - 1 ? 'res' : '']).reduce((a, t, k) => k ? a.concat([['='], t]) : [t], [])] : null,
       msg: msgs[i] || '', pause: msgs[i] ? 900 : 300 })),
   ];
@@ -3560,10 +3596,10 @@ function runLadder(d, lesson) {
         teach: [
           { h: 190, beats: [
             { say: 'هذا مكعب من ٢٧ مكعبًا صغيرًا: ٣ طبقات، في كل طبقة ٣ × ٣.', draw(K, st) { st.l = [0, 1, 2].map(i => grid(K, 3, 3, 40 + i * 104, 40, 30)); [0, 1, 2].forEach(i => note(K, 85 + i * 104, 150, `طبقة ${ar(i + 1)}`)); } },
-            { button: 'كم الضلع؟', ok(K, st) { st.l.flat().forEach(r => r.classList.add('on')); }, board: [[['∛٢٧'], ['='], ['٣', 'res']]], msg: 'الجذر التكعيبي = <b>ضلع المكعب</b>. احفظ: ٢³=٨، ٣³=٢٧، ٤³=٦٤، ٥³=١٢٥، ٦³=٢١٦، ٧³=٣٤٣، ٨³=٥١٢، ٩³=٧٢٩، ١٠³=١٠٠٠.' },
+            { button: 'كم الضلع؟', ok(K, st) { st.l.flat().forEach(r => r.classList.add('on')); }, board: [[['∛٢٧'], ['='], ['٣', 'res']]], msg: 'الجذر التكعيبي = <b>ضلع المكعب</b>. احفظ:<br>`2³ = 8`&nbsp;&nbsp;&nbsp;`3³ = 27`&nbsp;&nbsp;&nbsp;`4³ = 64`<br>`5³ = 125`&nbsp;&nbsp;&nbsp;`6³ = 216`&nbsp;&nbsp;&nbsp;`7³ = 343`<br>`8³ = 512`&nbsp;&nbsp;&nbsp;`9³ = 729`&nbsp;&nbsp;&nbsp;`10³ = 1000`' },
           ] },
           { h: 120, beats: [
-            { say: 'والتقدير: `√50` بين أي عددين؟ ٤٩ < ٥٠ < ٦٤', draw(K) { const X = K.numline(28, 332, 60, 6, 9, 1); K.circle(X(7.07), 60, 10, 's-hi'); note(K, X(7.07), 96, '`√50`'); } },
+            { say: 'والتقدير: `√50` بين أي عددين؟ ٤٩ < ٥٠ < ٦٤', draw(K) { const X = K.numline(28, 332, 60, 6, 9, 1); K.circle(X(7.07), 60, 10, 's-hi'); K.text(X(7.07), 28, 'جذر ٥٠ ≈ ٧٫١', 's-txt'); } },
             { button: 'وين بالضبط؟', msg: '`√50` أكبر من ٧ بشوي (لأن ٥٠ قريبة من ٤٩). هذي الحيلة تكفيك في أغلب «قارن».' },
             check('جرّب: قارن بين `√64 + √36` و `√100`', CMP.slice(0, 3), CMP[0], { [CMP[1]]: '`√64 + √36` = ٨ + ٦ = ١٤، و `√100` = ١٠.', [CMP[2]]: 'الجذر ما يتوزع على الجمع: ١٤ مقابل ١٠.' }, null, 'خلصت السلّم كله! 🏆'),
           ] },
@@ -3718,7 +3754,7 @@ function runLadder(d, lesson) {
       { name: 'المقارنة', climb: Object.assign(CMPQ('`0.3²`', '`0.3`', 1, '`0.3²` = ٠٫٠٩ أصغر من ٠٫٣'), { t: 40 }),
         teach: [
           { h: 130, beats: [
-            { say: 'العدد اللي بين ٠ و ١: إذا <b>ربّعناه يصغر</b>، وإذا <b>أخذنا جذره يكبر</b>:', draw(K) { const X = K.numline(28, 332, 70, 0, 1, 0.1); [[0.09, '٠٫٣²'], [0.3, '٠٫٣'], [0.55, '√٠٫٣']].forEach(([v, s], i) => { K.circle(X(v), 70, 9, i === 1 ? 's-hi' : 'act-dot on'); note(K, X(v), 104, s); }); } },
+            { say: 'العدد اللي بين ٠ و ١: إذا <b>ربّعناه يصغر</b>، وإذا <b>أخذنا جذره يكبر</b>:', draw(K) { const X = K.numline(28, 332, 70, 0, 1, 0.1); [[0.09, '٠٫٠٩', 'مربّعه'], [0.3, '٠٫٣', 'العدد'], [0.55, '٠٫٥٥', 'جذره']].forEach(([v, s, w], i) => { K.circle(X(v), 70, 9, i === 1 ? 's-hi' : 'act-dot on'); K.text(X(v), 22, w, 's-txt-s'); K.text(X(v), 44, s, 's-txt'); }); } },
             { button: 'فهمت', msg: '٠٫٣² = ٠٫٠٩ (أصغر) ، و√٠٫٣ ≈ ٠٫٥٥ (أكبر). وفي الطرح من ١: `1 − 0.00001` = ٠٫٩٩٩٩٩ (عدد التسعات = عدد الخانات).' },
           ] },
           { h: 0, beats: [check('جرّب: `1 − 0.0001` = ؟', ['٠٫٩٩٩', '٠٫٩٩٩٩', '٠٫٩٩٩٩٩', '٠٫٠٠٠٩'], '٠٫٩٩٩٩', { '٠٫٩٩٩': '٠٫٠٠٠١ فيها ٤ خانات، فنكتب ٤ تسعات.', '٠٫٩٩٩٩٩': '٤ خانات = ٤ تسعات.', '٠٫٠٠٠٩': 'اطرح من ١ كاملة.' }, null, 'خلصت السلّم كله! 🏆')] },
@@ -5031,7 +5067,7 @@ const SUP_MAP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵'
 function mathText(t) {
   t = ar(t);
   t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]+/g, m => '<sup>' + ar(m.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−') + '</sup>');
-  t = t.replace(/√(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, r) => `<span class="sq"><span class="rad">√</span><span class="rc">${r}</span></span>`);
+  t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => `<span class="sq">${k === '∛' ? '<span class="idx">٣</span>' : ''}<svg class="rad" viewBox="0 0 12 24" preserveAspectRatio="none" aria-label="جذر"><path d="M12 14.5 L10.5 13.5 L8.3 23 L4.6 1 L0 1"/></svg><span class="rc">${r}</span></span>`);
   return t;
 }
 const frH = (a, b, w) => (w != null && w !== '' ? `<span class="mx">${ar(w)}` : '') + `<span class="fr"><span>${mathText(a)}</span><span>${mathText(b)}</span></span>` + (w != null && w !== '' ? '</span>' : '');
@@ -5045,7 +5081,7 @@ function fmt(s) {
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
-const RAW_MATH = /[0-9⁰¹²³⁴⁵⁶⁷⁸⁹⁻]|√(?=[(\d٠-٩\u0621-\u064A])/;
+const RAW_MATH = /[0-9⁰¹²³⁴⁵⁶⁷⁸⁹⁻]|[√∛](?=[(\d٠-٩\u0621-\u064A])/;
 function mathFix(root) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const hits = [];
@@ -5109,7 +5145,20 @@ function sv(tag, attrs, parent) {
 }
 function svText(parent, x, y, str, cls = 's-txt', anchor = 'middle') {
   const t = sv('text', { x, y, class: cls, 'text-anchor': anchor, 'dominant-baseline': 'middle' }, parent);
-  t.textContent = ar(str);
+  return svFill(t, str);
+}
+/* (re)write a picture label: used on first draw and when a lesson changes a label later */
+function svSet(t, str) { const s = ar(String(str).replace(/`/g, '')); return svFill(t, AR_LETTER.test(s) ? '\u202B' + s + '\u202C' : visualMath(s)); }
+function svFill(t, str) {
+  t.textContent = '';
+  const txt = ar(String(str).replace(/`/g, ''));   // backticks mark math in lesson text; in a picture they would show as-is
+  if (!/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]/.test(txt)) { t.textContent = txt; return t; }
+  // powers in a picture: the exponent becomes a small raised Arabic digit (same look as the lesson text)
+  txt.split(/([⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]+)/).forEach((part, i) => {
+    if (!part) return;
+    if (i % 2) { const sp = sv('tspan', { 'baseline-shift': 'super', 'font-size': '62%' }, t); sp.textContent = ar(part.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−'); }
+    else t.appendChild(document.createTextNode(part));
+  });
   return t;
 }
 function svgPoint(svg, e) {
@@ -7421,8 +7470,14 @@ function runLadder(d, lesson) {
       board(lines, gap = 260) {
         const b = h('div', 'eqb'); let k = 0; const total = lines.reduce((n, l) => n + l.filter(t => typeof t !== 'string').length, 0); gap = Math.min(gap, 2400 / Math.max(1, total));
         lines.forEach(line => { const r = h('div', 'row' + (line.filter(t => typeof t !== 'string').length > 7 ? ' long' : '')); line.forEach(tk => { if (typeof tk === 'string') { r.appendChild(h('small', '', fmt(tk))); return; }
-          const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms'; r.appendChild(sp); }); b.appendChild(r); });
-        c.insertBefore(b, msg); return b;
+          const sp = h('span', 't ' + (tk[1] || ''), fmt(String(tk[0]))); sp.style.animationDelay = (k++ * gap) + 'ms';
+          // an = or ← never ends a line on its own: it travels with the piece after it
+          const prev = r.lastElementChild; if (prev && prev.dataset.op) { const g = h('span', 'grp'); r.replaceChild(g, prev); g.append(prev, sp); } else r.appendChild(sp);
+          if (/^\s*[=←→+−×÷]\s*$/.test(String(tk[0]))) sp.dataset.op = 1; }); b.appendChild(r); });
+        c.insertBefore(b, msg);
+        // a long chain shrinks a little before it wraps onto a second line
+        requestAnimationFrame(() => b.querySelectorAll('.row').forEach(r => { let fs = parseFloat(getComputedStyle(r).fontSize); const one = () => { const t = [...r.children].map(e => e.offsetTop); return Math.max(...t) - Math.min(...t) < fs * .8 && r.scrollWidth <= r.clientWidth + 1; }; while (!one() && fs > 17) { fs -= 2; r.style.fontSize = fs + 'px'; } }));
+        return b;
       },
     };
     window.__actSkip = () => ctx.done(); // automatic tests only
