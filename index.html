@@ -1158,6 +1158,12 @@ body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;col
 .tun-st li{min-height:44px;font-size:18px}
 .tun-st li.here{font-size:22px}
 
+/* a station that is open to tap (a finished one, the mock exams, a second course) */
+.tun-st li.open{color:#DADDD9}
+.tun-st li.open .dot{border-color:rgba(255,255,255,.4)}
+.tun-st li.done,.tun-st li.open{cursor:pointer}
+.tun-list .tun-link{position:relative;z-index:3}
+
 /* ===== verbal course widgets ===== */
 .vstage{padding:12px 12px 14px}
 .vtitle{font-weight:600;margin-bottom:6px}
@@ -1450,7 +1456,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794255178"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794258587"}, "landing": true, "whatsapp": "966501320239", "plan": {"free": 1, "lockExams": true, "paywall": "هذه الوحدة للمشتركين. للاشتراك راسلنا على واتساب، وإذا عندك حساب سجّل الدخول.", "paywallCta": "راسلنا على واتساب للاشتراك", "paywallLink": "https://wa.me/966501320239?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA"}};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -1480,16 +1486,18 @@ function mathText(t) {
   t = ar(t);
   t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ˣⁿ]+/g, m => '<sup>' + ar(m.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−') + '</sup>');
   t = t.replace(/([٠-٩٫]+)(<sup>[^<]*[ء-ي][^<]*<\/sup>)/g, '<span class="pw">$1$2</span>');   // a letter exponent (س) stays on the same side as a digit one
-  t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => `<span class="sq">${k === '∛' ? '<span class="idx">٣</span>' : ''}<svg class="rad" viewBox="0 0 12 24" preserveAspectRatio="none" aria-label="جذر"><path d="M12 14.5 L10.5 13.5 L8.3 23 L4.6 1 L0 1"/></svg><span class="rc">${r}</span></span>`);
+  t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => radH(/^\(.*\)$/.test(r) ? r.slice(1, -1) : r, k === '∛'));   // the bar already groups what is under it: no brackets needed
   return t;
 }
+const radH = (inner, cube) => `<span class="sq">${cube ? '<span class="idx">٣</span>' : ''}<svg class="rad" viewBox="0 0 12 24" preserveAspectRatio="none" aria-label="جذر"><path d="M12 14.5 L10.5 13.5 L8.3 23 L4.6 1 L0 1"/></svg><span class="rc">${inner}</span></span>`;
 const frH = (a, b, w) => (w != null && w !== '' ? `<span class="mx">${ar(w)}` : '') + `<span class="fr"><span>${mathText(a)}</span><span>${mathText(b)}</span></span>` + (w != null && w !== '' ? '</span>' : '');
 /* fmt: content strings may contain simple HTML (<b>, <span class="hl">).
    `backticks` mark a math expression; [[a/b]] or [[w a/b]] is a stacked fraction / mixed number. */
 function fmt(s) {
   s = String(s).split('`').map((seg, i) => i % 2 ? seg : seg.replace(/<(?![a-zA-Z\/])/g, '&lt;')).join('`');
   s = s.replace(/\[\[(?:(\d+) )?([^\]\/]+)\/([^\]]+)\]\]/g, (_, w, a, b) => frH(a, b, w));
-  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
+  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/√\((\d+)\/(\d+)\)/g, (_, a, b) => radH(frH(a, b)))   // a root over a whole fraction
+    .replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
     .replace(/ ([×÷+=−≈]|-) /g, (all, o) => /√/.test(m) ? all : ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air (not under a root sign, it must stay one piece)
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
@@ -3760,8 +3768,8 @@ function runDrill(d, lesson) {
   const x = h('button', 'dz-btn', SVG_X); x.setAttribute('aria-label', 'خروج');
   /* inside the tunnel the lesson has no unit page behind it: leaving goes back to the tunnel's door, finishing to its gate */
   const TUN = D.tunnel && window.AcademyTunnel;
-  const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(); } else showDistrict(d); };
-  const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
+  const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(lesson); } else showDistrict(d); };
+  const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(lesson); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
   x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); toDoor(); };
   const snd = h('button', 'dz-btn'); snd.setAttribute('aria-label', 'الصوت');
   const paintSnd = () => { snd.innerHTML = !S.settings || S.settings.sound !== false ? SVG_ON : SVG_OFF; };
@@ -3795,8 +3803,9 @@ function runDrill(d, lesson) {
   /* a fresh question from a level: never one he already saw in this session; choices shuffled */
   function make(lv, k) {
     let g = null;
-    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(g.q + '|' + (g.a || '') + '|' + (g.b || ''))) break; }
-    seen.add(g.q + '|' + (g.a || '') + '|' + (g.b || ''));
+    const sig = x => x.q + '|' + (x.a || '') + '|' + (x.b || '') + '|' + x.ans;   // the answer is part of it: some questions share one wording («أي عدد…؟»)
+    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(sig(g))) break; }
+    seen.add(sig(g));
     const used = new Set([String(g.ans)]), opts = [{ v: g.ans, key: null }];
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
     return Object.assign({}, g, { opts: g.fixed ? opts.sort((x, y) => g.fixed.indexOf(String(x.v)) - g.fixed.indexOf(String(y.v))) : drShuffle(opts) });
@@ -5968,16 +5977,18 @@ function mathText(t) {
   t = ar(t);
   t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ˣⁿ]+/g, m => '<sup>' + ar(m.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−') + '</sup>');
   t = t.replace(/([٠-٩٫]+)(<sup>[^<]*[ء-ي][^<]*<\/sup>)/g, '<span class="pw">$1$2</span>');   // a letter exponent (س) stays on the same side as a digit one
-  t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => `<span class="sq">${k === '∛' ? '<span class="idx">٣</span>' : ''}<svg class="rad" viewBox="0 0 12 24" preserveAspectRatio="none" aria-label="جذر"><path d="M12 14.5 L10.5 13.5 L8.3 23 L4.6 1 L0 1"/></svg><span class="rc">${r}</span></span>`);
+  t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => radH(/^\(.*\)$/.test(r) ? r.slice(1, -1) : r, k === '∛'));   // the bar already groups what is under it: no brackets needed
   return t;
 }
+const radH = (inner, cube) => `<span class="sq">${cube ? '<span class="idx">٣</span>' : ''}<svg class="rad" viewBox="0 0 12 24" preserveAspectRatio="none" aria-label="جذر"><path d="M12 14.5 L10.5 13.5 L8.3 23 L4.6 1 L0 1"/></svg><span class="rc">${inner}</span></span>`;
 const frH = (a, b, w) => (w != null && w !== '' ? `<span class="mx">${ar(w)}` : '') + `<span class="fr"><span>${mathText(a)}</span><span>${mathText(b)}</span></span>` + (w != null && w !== '' ? '</span>' : '');
 /* fmt: content strings may contain simple HTML (<b>, <span class="hl">).
    `backticks` mark a math expression; [[a/b]] or [[w a/b]] is a stacked fraction / mixed number. */
 function fmt(s) {
   s = String(s).split('`').map((seg, i) => i % 2 ? seg : seg.replace(/<(?![a-zA-Z\/])/g, '&lt;')).join('`');
   s = s.replace(/\[\[(?:(\d+) )?([^\]\/]+)\/([^\]]+)\]\]/g, (_, w, a, b) => frH(a, b, w));
-  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
+  s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/√\((\d+)\/(\d+)\)/g, (_, a, b) => radH(frH(a, b)))   // a root over a whole fraction
+    .replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
     .replace(/ ([×÷+=−≈]|-) /g, (all, o) => /√/.test(m) ? all : ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air (not under a root sign, it must stay one piece)
   return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
 }
@@ -8655,8 +8666,8 @@ function runDrill(d, lesson) {
   const x = h('button', 'dz-btn', SVG_X); x.setAttribute('aria-label', 'خروج');
   /* inside the tunnel the lesson has no unit page behind it: leaving goes back to the tunnel's door, finishing to its gate */
   const TUN = D.tunnel && window.AcademyTunnel;
-  const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(); } else showDistrict(d); };
-  const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
+  const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(lesson); } else showDistrict(d); };
+  const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(lesson); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
   x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); toDoor(); };
   const snd = h('button', 'dz-btn'); snd.setAttribute('aria-label', 'الصوت');
   const paintSnd = () => { snd.innerHTML = !S.settings || S.settings.sound !== false ? SVG_ON : SVG_OFF; };
@@ -8690,8 +8701,9 @@ function runDrill(d, lesson) {
   /* a fresh question from a level: never one he already saw in this session; choices shuffled */
   function make(lv, k) {
     let g = null;
-    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(g.q + '|' + (g.a || '') + '|' + (g.b || ''))) break; }
-    seen.add(g.q + '|' + (g.a || '') + '|' + (g.b || ''));
+    const sig = x => x.q + '|' + (x.a || '') + '|' + (x.b || '') + '|' + x.ans;   // the answer is part of it: some questions share one wording («أي عدد…؟»)
+    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(sig(g))) break; }
+    seen.add(sig(g));
     const used = new Set([String(g.ans)]), opts = [{ v: g.ans, key: null }];
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
     return Object.assign({}, g, { opts: g.fixed ? opts.sort((x, y) => g.fixed.indexOf(String(x.v)) - g.fixed.indexOf(String(y.v))) : drShuffle(opts) });
@@ -10646,63 +10658,113 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
   const stations = list => `<ol class="tun-st">${list.map(([name, st]) => `<li class="${st}"><span class="dot">${st === 'done' ? TICK : st === 'lock' ? LOCK : ''}</span><span class="nm">${esc(name)}</span></li>`).join('')}</ol>`;
   const backBtn = (w, fn) => { const x = w.querySelector('.tun-x'); x.onclick = fn; };
 
+  /* ---------- the road for a subscriber: station by station (a station = a unit) ----------
+     A unit that has drill lessons is walked lesson by lesson inside the tunnel.
+     A unit that has none yet opens its own (older) page, and counts as done when all its lessons are done. */
+  const drillOf = l => l.drill && l.drill.tunnel ? l.drill : null;
+  const drillMem = l => { const S = C[TUN].api.S, m = S.drill && S.drill[l.id]; return m && m.v === (drillOf(l).v || 1) ? m : null; };
+  const lessonDone = l => drillOf(l) ? !!(drillMem(l) || {}).finished : !!C[TUN].api.S.done[l.id];
+  function route() {
+    const st = C[TUN].api.units().filter(u => !u.exam && u.lessons && u.lessons.length).map(d => {
+      const dr = d.lessons.filter(drillOf), list = dr.length ? dr : d.lessons, next = list.find(l => !lessonDone(l)) || null;
+      return { d, list, drill: !!dr.length, next, complete: !next };
+    });
+    return { st, cur: st.findIndex(x => !x.complete) };
+  }
+  const examUnit = () => C[TUN].api.DISTRICTS.find(d => d.exam && !d.soon);   // the mock exams (not a station on the road: always open to a subscriber)
+  const unitOf = l => C[TUN].api.units().find(u => u.lessons && u.lessons.includes(l));
+  const classic = d => { backTo = quantDoor; enter(TUN, a => a.showDistrict(d)); };   // an older-style unit: its own page, and back comes here
+  /* the next step on the road */
+  function walk() {
+    if (!subscriber()) { const { m } = tunState(); return m && m.finished ? gate() : lessonDoor(); }
+    const r = route();
+    if (r.cur < 0) { const ex = examUnit(); return ex ? classic(ex) : quantDoor(); }
+    const x = r.st[r.cur];
+    x.drill ? lessonDoor(x.d, x.next) : classic(x.d);
+  }
+
   /* 1 · the course door: its stations (quant, verbal). No duration. */
   function tunnel() {
     if (!C[TUN]) return home();
     LT('tunnel_view');
-    const { m } = tunState();
+    const sub = subscriber(), verbal = sub && window.LeenaAuth.has('qudurat-verbal') && C['qudurat-verbal'];
     const w = darkRoom('tun-door tun-list');
+    if (sub) w.querySelector('.tun-x').remove();   // a subscriber's home is this door: nothing behind it
     w.insertAdjacentHTML('beforeend', `<div class="tun-hole sm" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
-      <h1 class="tun-h big">القدرات</h1>${stations([['الكمّي', m && m.finished ? 'here' : 'here'], ['اللفظي', 'lock']])}`);
+      <h1 class="tun-h big">القدرات</h1>${stations([['الكمّي', 'here'], ['اللفظي', verbal ? 'open' : 'lock']])}`);
+    if (verbal) { const li = w.querySelector('.tun-st li.open'); li.onclick = () => { LT('tunnel_enter', { val: 'verbal' }); backTo = tunnel; enter('qudurat-verbal'); }; }
+    if (sub && window.LeenaAuth) { const me = el('button', 'tun-link', 'حسابي'); me.onclick = () => window.LeenaAuth.showAccount(); w.appendChild(me); }
     const go = el('button', 'tun-go', 'ادخل'); go.onclick = () => { LT('tunnel_enter', { val: 'course' }); quantDoor(); };
     w.appendChild(go);
   }
-  /* 2 · the quant door: its stations. No duration. */
+  /* 2 · the quant door: its stations. No duration. A subscriber sees where he is on the road. */
   function quantDoor() {
-    const { f, m } = tunState();
+    const { f, m } = tunState(), sub = subscriber();
     const units = C[TUN].api.units().filter(u => !u.exam);
     const w = darkRoom('tun-door tun-list');
     backBtn(w, tunnel);
-    w.insertAdjacentHTML('beforeend', `<h1 class="tun-h big">الكمّي</h1>${stations(units.map((u, i) => [u.name, i === 0 ? 'here' : 'lock']))}`);
-    const go = el('button', 'tun-go', 'ادخل'); go.onclick = () => { LT('tunnel_enter', { val: 'quant' }); m && m.finished ? gate() : lessonDoor(); };
+    let list = units.map((u, i) => [u.name, i === 0 ? 'here' : 'lock']), label = 'ادخل';
+    if (sub) {
+      const r = route(), ex = examUnit();
+      list = r.st.map((x, i) => [x.d.name, x.complete ? 'done' : i === r.cur ? 'here' : 'lock']);
+      if (ex) list.push([ex.name, 'open']);
+      if (r.cur !== 0 || (m && (m.started || m.finished))) label = 'كمّل';
+      w.insertAdjacentHTML('beforeend', `<h1 class="tun-h big">الكمّي</h1>${stations(list)}`);
+      /* a finished station opens again for review; the mock exams are always open */
+      w.querySelectorAll('.tun-st li').forEach((li, i) => { const x = r.st[i]; if (x ? x.complete : !!ex) li.onclick = () => { LT('tunnel_enter', { val: 'station' }); classic(x ? x.d : ex); }; });
+    } else w.insertAdjacentHTML('beforeend', `<h1 class="tun-h big">الكمّي</h1>${stations(list)}`);
+    const go = el('button', 'tun-go', label); go.onclick = () => { LT('tunnel_enter', { val: 'quant' }); walk(); };
     w.appendChild(go);
   }
-  /* 3 · the lesson door: the first impression of the lesson, and how long it takes */
-  function lessonDoor() {
-    const { f, m } = tunState();
-    if (m && m.finished) return gate();
-    const going = !!(m && m.started && (m.lv || m.pts));
+  /* 3 · a lesson's door: the first impression of the lesson, and how long it takes.
+     prev = the lesson he just finished (its name shows above with a tick). */
+  function lessonDoor(d, l, prev) {
+    const { f, m: m1 } = tunState();
+    if (!l) { d = f.d; l = f.l; }
+    if (!subscriber() && (l !== f.l || (m1 && m1.finished))) return gate();
+    const m = drillMem(l), going = !!(m && m.started && (m.lv || m.pts));
     const w = darkRoom('tun-door');
     backBtn(w, quantDoor);
     w.insertAdjacentHTML('beforeend', `<div class="tun-hole" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
-      <div class="tun-txt"><h1 class="tun-h big">${esc(plain(f.l.title))}</h1><p class="tun-time">${ar((f.l.drill || {}).minutes || 20)} دقيقة</p></div>`);
+      <div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(plain(prev.title))}</p>` : ''}<h1 class="tun-h big">${esc(plain(l.title))}</h1><p class="tun-time">${ar((l.drill || {}).minutes || 20)} دقيقة</p></div>`);
     const go = el('button', 'tun-go', going ? 'كمّل' : 'ادخل');
-    go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson' }); enter(TUN, a => a.playLesson(f.d, f.l)); };
+    go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson' }); enter(TUN, a => a.playLesson(d, l)); };
     w.appendChild(go);
+  }
+  /* a tunnel lesson was left (X) or finished: where next */
+  function leave(l) {
+    if (!C[TUN]) return home();
+    if (!l || !subscriber()) return lessonDoor();
+    lessonDone(l) ? quantDoor() : lessonDoor(unitOf(l), l);
+  }
+  function after(l) {
+    if (!C[TUN]) return home();
+    if (!subscriber()) return gate();
+    const r = route(), x = r.cur < 0 ? null : r.st[r.cur];
+    /* the next lesson of the same station: straight to its door. A new station: back to the road, where he sees the station ticked */
+    if (x && x.drill && l && x.list.includes(l)) { LT('tunnel_next', { lesson: x.next.id }); return lessonDoor(x.d, x.next, l); }
+    quantDoor();
   }
   /* 4 · after the first lesson and its test: the second lesson's door, closed, with the subscription message */
   function gate() {
     if (!C[TUN]) return home();
     const { f } = tunState();
+    if (subscriber()) return after(f.l);
     const l2 = f.d.lessons[1];
     LT('gate_view');
     const w = darkRoom('tun-door tun-gate');
     backBtn(w, quantDoor);
-    const sub = subscriber();
     w.insertAdjacentHTML('beforeend', `<div class="tun-hole shut" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b><span class="tun-lock">${LOCK}</span></div>
-      <div class="tun-txt"><p class="tun-done">${TICK} ${esc(plain(f.l.title))}</p><h1 class="tun-h big">${esc(plain(l2 ? l2.title : 'الدرس الثاني'))}</h1><p class="tun-msg">${sub ? 'مفتوح لك باشتراكك' : 'للمشتركين'}</p></div>`);
+      <div class="tun-txt"><p class="tun-done">${TICK} ${esc(plain(f.l.title))}</p><h1 class="tun-h big">${esc(plain(l2 ? l2.title : 'الدرس الثاني'))}</h1><p class="tun-msg">للمشتركين</p></div>`);
     const act = el('div', 'tun-act');
-    if (sub) { const b = el('button', 'tun-go', 'ادخل'); b.onclick = () => { LT('gate_continue'); courseHome(); }; act.appendChild(b); }
-    else {
-      const a = el('a', 'tun-go', 'اشترك وكمّل'); a.href = waLink('السلام عليكم، خلصت أول درس في دورة القدرات وأبغى أشترك وأكمّل'); a.target = '_blank'; a.rel = 'noopener';
-      a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
-      if (window.LeenaAuth) { const li = el('button', 'tun-ghost', window.LeenaAuth.user ? 'حسابي' : 'عندي حساب'); li.onclick = () => { LT('gate_login'); window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); }; act.appendChild(li); }
-    }
+    const a = el('a', 'tun-go', 'اشترك وكمّل'); a.href = waLink('السلام عليكم، خلصت أول درس في دورة القدرات وأبغى أشترك وأكمّل'); a.target = '_blank'; a.rel = 'noopener';
+    a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
+    if (window.LeenaAuth) { const li = el('button', 'tun-ghost', window.LeenaAuth.user ? 'حسابي' : 'عندي حساب'); li.onclick = () => { LT('gate_login'); window.LeenaAuth.user ? window.LeenaAuth.showAccount() : window.LeenaAuth.openLogin(); }; act.appendChild(li); }
     const tr = el('button', 'tun-ghost', 'تدرّب على الدرس الأول'); tr.onclick = () => { LT('gate_train'); f.l._drillMode = 'open'; enter(TUN, a => a.playLesson(f.d, f.l)); };
     act.appendChild(tr);
     w.appendChild(act);
   }
-  window.AcademyTunnel = { door: () => lessonDoor(), gate: () => gate() };
+  window.AcademyTunnel = { door: l => leave(l), gate: l => after(l) };
 
   /* the Qudurat course overview (subscribers): pick a section (Netflix-style posters), then its units */
   let backTo = null;
@@ -10860,7 +10922,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     }
     if (location.hash === '#lesson1') { history.replaceState(null, '', location.pathname + location.search); if (C[TUN]) { LT('direct_lesson'); return lessonDoor(); } }   // direct link from the bio
     screen();
-    if (CFG.landing && !subscriber()) { LT('home', { val: 'landing', once: true }); return landing(); }   // one tunnel for everyone; the old dashboard is for subscribers only
+    if (CFG.landing && !subscriber()) { LT('home', { val: 'landing', once: true }); return landing(); }
+    if (CFG.landing && C[TUN]) { LT('home', { val: 'tunnel', once: true }); return tunnel(); }   // a subscriber lands at the door of his road   // one tunnel for everyone; the old dashboard is for subscribers only
     LT('home', { val: 'dashboard', once: true });
     const top = hud(`<span class="wordmark">أكاديمية لينا</span>`);
     if (window.Academy && window.Academy.accountChip) top.appendChild(window.Academy.accountChip());
@@ -11119,6 +11182,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount, init, addBank, api: { S, per
     b.onclick = () => A.user ? showAccount() : openLogin(); return b;
   };
   if (document.querySelector('#app .home, #app .landing')) window.Academy.home(); // the home was drawn before this file ran: draw it again with the chip
+  else if (document.querySelector('#app .tun-gate') && window.AcademyTunnel) window.AcademyTunnel.gate();   // same for the gate (a direct link can land on it): draw it again with its login button
   start();
 })();
 
