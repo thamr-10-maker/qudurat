@@ -1170,6 +1170,8 @@ body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;col
 .tun-st li small{margin-inline-start:auto;font-family:var(--f-body);font-size:12px;color:#5C615C;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:2px 9px}
 .tun-st li.here{cursor:pointer}
 .tun-door .tun-act .tun-link{margin-top:2px}
+.dz-msg.dz-tag{color:#6E736E;font-size:14px;letter-spacing:.3px}
+.dz-fig{display:flex;justify-content:center;margin:-6px 0 -4px}.dz-fig svg{max-width:100%;height:auto}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1388,7 +1390,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794378126"}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794379152"}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3076,6 +3078,13 @@ const DR_TXT = {
   "شوي تدريب وتصير سريع"
  ]
 };
+/* lines for the quiet helpers (slow down · look again · warm-up · an older idea coming back) */
+Object.assign(DR_TXT, {
+  slow: ['على مهلك، اقرأها أول', 'لا تستعجل، ركّز فيها', 'خذ نَفَس واقرأ السؤال', 'هدّي شوي، اقرأها زين'],
+  again_title: ['نرجع لها مرة ثانية', 'خلنا نشوفها بهدوء', 'نعيدها سوا'],
+  focus_title: ['انتبه لهذي', 'هنا الغلطة', 'ركّز على هالنقطة'],
+  warm_title: ['تسخين'], back: ['تذكر هذي؟', 'هذي مرّت عليك', 'من قبل شوي'], warm: ['من اللي فات', 'تذكرها؟', 'مرّت عليك قبل'],
+});
 const drT = k => drPick(DR_TXT[k]);
 const drShuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -3087,6 +3096,21 @@ function runDrill(d, lesson) {
   const mem = () => S.drill[id] || (S.drill[id] = { lv: 0, pts: 0, v: D.v || 1 });
   LT_LESSON = id; LT('lesson_start', { lesson: id, val: 'drill' });
   let timer = null, gone = false;
+  /* ---------- what we learn about the student, quietly (never shown) ----------
+     One record per idea: S.brain.sk['lesson:level'] = { p: how sure we are he has it (0..1), n: answers, miss: {mistake: times},
+       d: level finished, w: was hard for him, at: last practised, due/iv: when it should come back (days) }
+     Fed by every answer: right or wrong, how fast, which wrong choice, whether he needed the longer explanation. */
+  const B = S.brain = S.brain || {}; B.sk = B.sk || {};
+  const DAY = 864e5;
+  const sk = (lid, i) => B.sk[lid + ':' + i] || (B.sk[lid + ':' + i] = { p: 0.3, n: 0 });
+  const rec = [];   // the last answers of this sitting (1 right, 0 not): keeps him near 85% right
+  const rate = () => rec.length < 4 ? 0.85 : rec.reduce((a, b) => a + b, 0) / rec.length;
+  const learn = (s, res) => {
+    s.n = (s.n || 0) + 1; s.at = Date.now();
+    if (res === 'fast') s.p += (1 - s.p) * 0.35; else if (res === 'ok') s.p += (1 - s.p) * 0.22; else s.p *= res === 'time' ? 0.8 : 0.7;
+    s.p = Math.round(s.p * 1000) / 1000;
+    rec.push(res === 'fast' || res === 'ok' ? 1 : 0); if (rec.length > 8) rec.shift();
+  };
   const stopT = () => { clearInterval(timer); timer = null; };
   const seen = new Set();
   const SVG_X = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
@@ -3134,10 +3158,10 @@ function runDrill(d, lesson) {
   function dockNone() { dock.className = 'dock empty'; dockIn.innerHTML = ''; }
 
   /* a fresh question from a level: never one he already saw in this session; choices shuffled */
-  function make(lv, k) {
+  function make(lv, k, aim) {
     let g = null;
-    const sig = x => x.q + '|' + (x.a || '') + '|' + (x.b || '') + '|' + x.ans;   // the answer is part of it: some questions share one wording («أي عدد…؟»)
-    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (!seen.has(sig(g))) break; }
+    const sig = x => x.q + '|' + (x.a || '') + '|' + (x.b || '') + '|' + x.ans + '|' + (x.fig || '');   // the answer is part of it: some questions share one wording («أي عدد…؟»)
+    for (let t = 0; t < 60; t++) { g = lv.gen(Math.max(0, k)); if (seen.has(sig(g))) continue; if (aim && t < 30 && !g.wr.some(w => w[1] === aim)) continue; break; }   // aim = a mistake he keeps making: pick a question that has that trap in it
     seen.add(sig(g));
     const used = new Set([String(g.ans)]), opts = [{ v: g.ans, key: null }];
     for (const [v, key] of g.wr) { if (opts.length >= 4) break; const s = String(v); if (used.has(s) || v == null || v === '' || (typeof v === 'number' && (v < 0 || !isFinite(v)))) continue; used.add(s); opts.push({ v, key }); }
@@ -3165,6 +3189,7 @@ function runDrill(d, lesson) {
     const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
     const fb = h('p', 'lad-fb dz-msg'); stage.appendChild(fb);
     stage.appendChild(h('h1', 'dz-q', fmt(g.q.replace(/ ، /g, '، '))));   // the comma sticks to what's before it, never starts a line
+    if (g.fig) { const f = h('div', 'dz-fig'); f.innerHTML = g.fig; stage.appendChild(f); }   // a small drawing (geometry, charts)
     if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
     const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
@@ -3177,12 +3202,12 @@ function runDrill(d, lesson) {
           over = true; stopT(); b.classList.add('ok'); stage.classList.add('answered'); FX.play('correct');
           opts.querySelectorAll('.opt').forEach(x => x.disabled = true);
           const used = (performance.now() - t0) / 1000;
-          done(missed ? 'miss' : used < 5 ? 'fast' : 'ok', fb, used);
+          done(missed ? 'miss' : used < Math.max(5, secs * 0.25) ? 'fast' : 'ok', fb, used);
           return;
         }
         // wrong: crossed out, the hint for exactly this mistake right under the ring, keep picking (the question no longer scores)
         b.disabled = true; b.classList.add('bad'); FX.play('wrong');
-        if (!missed) { missed = true; stopT(); orb.classList.add('off'); if (onMiss) onMiss(); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
+        if (!missed) { missed = true; stopT(); orb.classList.add('off'); if (onMiss) onMiss(o.key, (performance.now() - t0) / 1000); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
         fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = fmt(hints[o.key] || 'لا، جرّب غيرها.');
       };
       opts.appendChild(b);
@@ -3232,46 +3257,143 @@ function runDrill(d, lesson) {
     p.onclick = () => { clearTimeout(t1); show(); };   // a tap skips the title
   }
 
-  /* the drill of one level */
+  /* the drill of one level. It adapts while he answers:
+     - right and fast → the notch climbs faster and the level ends sooner; struggling → the notch holds
+     - two misses in a row → one small step easier (never more)
+     - a wrong pick in a blink, twice → the idea again, calmly
+     - the same mistake twice → that mistake explained, then questions that carry the same trap
+     - three misses in a row → the longer explanation */
+  let lvStat = null;
   function level(i) {
-    const lv = D.levels[i], m = mem(), goal = lv.goal || DR_GOAL;
+    const lv = D.levels[i], m = mem(), goal = lv.goal || DR_GOAL, s = sk(id, i);
     if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
     persist();
-    let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0;
+    s.miss = s.miss || {};
+    let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0, guessRow = 0, aim = null, aimLeft = 0, firstKey = null, firstAt = 0;
+    const st = lvStat = { q: 0, miss: 0, t: 0, bone: 0, down: 0, again: 0, focus: 0 }, aimed = {};
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const next = () => {
       if (gone) return;
       paintTrack((i + pts / goal) / N);
       const p = page('dz-drill');
-      const g = make(lv, k);           // one notch harder for every right answer; a miss stays on the same notch (new question, never an easier one)
+      firstKey = null; firstAt = 0;
+      const g = make(lv, k, aim);
+      if (aim && --aimLeft <= 0) aim = null;
       dockNone();
-      ask(p, g, lv.t, lv.hints || {}, (res, fb) => {
+      ask(p, g, lv.t, lv.hints || {}, (res, fb, used) => {
+        st.q++; st.t += used || 0; learn(s, res);
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
         if (res !== 'miss') {   // a wrong pick already took its point off the ring the moment he picked it
-          pts = Math.max(0, Math.min(goal, pts + delta)); if (delta > 0) k++;
+          pts = Math.max(0, Math.min(goal, pts + delta));
+          if (delta > 0) { const r = rate(); k += r >= 0.9 && res === 'fast' ? 2 : r < 0.7 && res !== 'fast' ? 0 : 1; }
           m.pts = pts; m.k = k; persist();
           ringPts(p, pts, delta); paintTrack((i + pts / goal) / N);
         }
         if (delta > 0) {
-          streak++; missRow = 0;
+          streak++; missRow = 0; guessRow = 0;
           const line = [3, 5, 8].includes(streak) ? drT('streak_' + streak) : res === 'fast' ? drT('fast') : '';
           fb.className = 'lad-fb dz-msg ok'; fb.textContent = line || drT('right');
           if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 900);
           setTimeout(next, 900);
           return;
         }
-        streak = 0; missRow++;
-        if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
+        st.miss++; streak = 0; missRow++;
+        const key = res === 'miss' ? firstKey : null;
+        const guess = res === 'miss' && firstAt < Math.min(3, lv.t * 0.12);
+        guessRow = guess ? guessRow + 1 : 0;
+        if (key) s.miss[key] = (s.miss[key] || 0) + 1;
+        if (missRow === 2 && k > 0) { k--; m.k = k; st.down++; }
+        persist();
+        if (guess) fb.innerHTML += `<br><span class="dz-coach">${drT('slow')}</span>`;
+        else if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
-          missRow = 0; LT('drill_bone', { lesson: id, n: i + 1 });
+          missRow = 0; guessRow = 0; st.bone++; s.w = 1; s.p = Math.min(s.p, 0.35); LT('drill_bone', { lesson: id, n: i + 1 });
           if (res === 'time') setTimeout(() => !gone && bone(i, next), 1600); else dockBtn(drT('stuck_button'), () => bone(i, next));
           return;
         }
+        if (guessRow >= 2) { guessRow = 0; st.again++; return dockBtn('التالي', () => again(i, next)); }
+        if (key && s.miss[key] >= 2 && !aimed[key] && (lv.hints || {})[key]) { aimed[key] = 1; aim = key; aimLeft = 2; st.focus++; return dockBtn('التالي', () => focus(i, key, next)); }
         if (res === 'time') setTimeout(next, 1600);
         else dockBtn('التالي', next);
-      }, () => { pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal });
+      }, (key, at) => { firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal });
     };
     next();
+  }
+
+  /* he answered wrong in a blink, twice: the idea once more, calmly */
+  function again(i, back) {
+    const lv = D.levels[i];
+    const p = page('dz-bone-page dz-again', true);
+    p.innerHTML = `<h1 class="dz-h">${drT('again_title')}</h1><div class="dz-bone">${fmt(lv.idea + (lv.ex ? '<br>' + lv.ex : ''))}</div>`;
+    dockBtn('فهمت', back);
+  }
+  /* the same mistake twice: that one mistake, spelled out, with the worked example */
+  function focus(i, key, back) {
+    const lv = D.levels[i];
+    const p = page('dz-bone-page dz-focus', true);
+    p.innerHTML = `<h1 class="dz-h">${drT('focus_title')}</h1><div class="dz-bone">${fmt(lv.hints[key] + (lv.ex ? '<br>' + lv.ex : ''))}</div>`;
+    dockBtn('فهمت', back);
+  }
+
+  /* a few questions from ideas he met before (no points): a warm-up at the door, or an older idea coming back between levels */
+  function quiz(items, label, done) {
+    let n = 0, got = 0;
+    const step = () => {
+      if (gone) return;
+      if (n >= items.length) return done(got);
+      const [L2, j] = items[n++], lv = L2.drill.levels[j], s = sk(L2.id, j);
+      const p = page('dz-drill dz-rev'); dockNone();
+      ask(p, make(lv, 2 + Math.floor(Math.random() * 3)), lv.t, lv.hints || {}, (res, fb) => {
+        const ok = res === 'fast' || res === 'ok';
+        learn(s, res); s.d = 1;
+        if (ok) { got++; s.w = 0; s.iv = Math.min(60, (s.iv || 1) * 2.5); } else { s.w = 1; s.iv = 1; }
+        s.due = Date.now() + s.iv * DAY; persist();
+        if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(step, 800); }
+        else if (res === 'time') setTimeout(step, 1600);
+        else dockBtn('التالي', step);
+      });
+      const fb = p.querySelector('.dz-msg'); if (fb && label) { fb.className = 'lad-fb dz-msg dz-tag'; fb.textContent = drT(label); }
+    };
+    step();
+  }
+  /* between two levels: an idea that was hard for him comes back (up to two), or every third level an old one, so nothing fades */
+  const cameBack = {};
+  function between(i) {
+    const go = () => i >= N ? finalIntro() : idea(i);
+    const can = j => (cameBack[j] || 0) < 3;
+    let list = [];
+    for (let j = 0; j < i; j++) { const s = sk(id, j); if ((s.w || s.p < 0.55) && can(j)) list.push(j); }
+    list = list.sort((a, b) => sk(id, a).p - sk(id, b).p).slice(0, 2);
+    if (!list.length && i % 3 === 0 && i < N) { let best = -1; for (let j = 0; j < i; j++) if (can(j) && (best < 0 || (sk(id, j).at || 0) < (sk(id, best).at || 0))) best = j; if (best >= 0) list = [best]; }
+    if (!list.length) return go();
+    list.forEach(j => { cameBack[j] = (cameBack[j] || 0) + 1; });
+    LT('drill_back', { lesson: id, n: i, val: list.map(j => j + 1).join(',') });
+    quiz(list.map(j => [lesson, j]), 'back', go);
+  }
+  /* at the door: a short warm-up from what he learned before (earlier lessons, and this one if he comes back another day).
+     What is due comes first (1 day, then about 3, 7, 18…), then what he is weakest at. */
+  function warm(then) {
+    const now = Date.now(), fresh = !m0.lv && !m0.pts;
+    if (B.warm && now - B.warm < 6 * 3600e3) return then();
+    const pool = [];
+    for (const L2 of d.lessons || []) {
+      if (!L2.drill) continue;
+      const mm = S.drill[L2.id]; if (!mm || mm.v !== (L2.drill.v || 1)) continue;
+      const upto = L2 === lesson ? Math.min(mm.lv || 0, N) : mm.finished ? L2.drill.levels.length : 0;
+      for (let j = 0; j < upto; j++) { const had = B.sk[L2.id + ':' + j], s = sk(L2.id, j); if (!had) { s.p = 0.6; s.d = 1; } pool.push({ L2, j, p: s.p, due: (s.due || 0) <= now, own: L2 === lesson }); }
+    }
+    const order = drShuffle(pool).sort((a, b) => a.p - b.p);
+    let list = order.filter(x => x.due && (!x.own || (sk(id, x.j).due || 0) > 0));   // this lesson's own ideas only once a day has passed
+    if (fresh && list.length < 3) list = list.concat(order.filter(x => !x.own && !list.includes(x))).slice(0, 3);
+    if (list.length < 2) return then();
+    list = list.slice(0, list.filter(x => x.p < 0.6).length > 3 ? 5 : 3);
+    B.warm = now; persist();
+    paintTrack();
+    const p = page('dz-idea-page dz-warm', true);
+    p.innerHTML = `<h1 class="dz-big">${drT('warm_title')}</h1><div class="dz-line"></div>`;
+    dockNone();
+    const start = () => { if (gone || start.done) return; start.done = true; quiz(list.map(x => [x.L2, x.j]), 'warm', got => { LT('drill_warm', { lesson: id, n: got, val: String(list.length) }); then(); }); };
+    const t1 = setTimeout(start, 1300); p.onclick = () => { clearTimeout(t1); start(); };
   }
 
   /* stuck: a slightly longer explanation with one worked example, then the questions go on */
@@ -3287,12 +3409,17 @@ function runDrill(d, lesson) {
     const lv = D.levels[i], m = mem();
     FX.play('task');
     LT('drill_level', { lesson: id, n: i + 1 });
+    const s = sk(id, i), st = lvStat || { q: 0, miss: 0, t: 0, bone: 0, down: 0, again: 0, focus: 0 };
+    s.d = 1; s.iv = 1; s.due = Date.now() + DAY; if (st.miss >= 3 || st.bone) s.w = 1;
+    /* anonymous numbers for this level (no names): questions | misses | average seconds | long explanations | steps down | look-agains | mistake notes */
+    LT('drill_stat', { lesson: id, n: i + 1, val: [st.q, st.miss, st.q ? Math.round(st.t / st.q) : 0, st.bone, st.down, st.again, st.focus].join('|') });
+    lvStat = null;
     m.lv = i + 1; m.pts = 0; m.k = 0; persist();
     paintTrack((i + 1) / N);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const p = page('dz-done', true);
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${drT('up_' + tone)}</h1><p class="dz-p">ضبطت «${lv.name}»</p>`;
-    dockBtn('كمّل', () => i + 1 >= N ? finalIntro() : idea(i + 1));
+    dockBtn('كمّل', () => between(i + 1));
   }
 
   /* the final test: real exam level, mixed skills, more time per question */
@@ -3306,7 +3433,7 @@ function runDrill(d, lesson) {
     if (i >= D.final.length) return finished(got);
     const p = page('dz-drill dz-final');
     const s = D.final[i];
-    const g = { q: s.q, a: s.a, b: s.b, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
+    const g = { q: s.q, a: s.a, b: s.b, fig: s.fig, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
     dockNone();
     ask(p, g, D.finalT || 40, { final: '' }, (res, fb) => {
       const ok = res === 'fast' || res === 'ok';
@@ -3341,12 +3468,13 @@ function runDrill(d, lesson) {
   /* open training / quick review: mixed questions from every level, no end (or `limit` questions) */
   function open(k, limit, got = 0) {
     if (limit && k >= limit) return reviewed(got, limit);
-    const i = Math.floor(Math.random() * N), lv = D.levels[i];
+    const c = [0, 1, 2].map(() => Math.floor(Math.random() * N)), i = c.reduce((a, b) => sk(id, b).p < sk(id, a).p ? b : a), lv = D.levels[i];   // of three ideas picked at random, the one he is weakest at
     paintTrack(1);
     const p = page('dz-drill');
     dockNone();
     ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
+      learn(sk(id, i), res); persist();
       if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 800); }
       else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1600);
       else dockBtn('التالي', () => open(k + 1, limit, got));
@@ -3359,7 +3487,7 @@ function runDrill(d, lesson) {
   }
 
   /* where to start */
-  const m = mem();
+  const m = mem(), m0 = m;
   if (lesson._drillMode === 'open') { lesson._drillMode = null; open(0); }   // the gate's "open training"
   else if (m.finished) {   // finished THIS lesson before (an old version's "done" doesn't count): he chooses
     paintTrack();
@@ -3368,7 +3496,7 @@ function runDrill(d, lesson) {
     dockBtn('مراجعة سريعة', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); idea(0); }]);
   }
   else if (m.lv >= N) finalIntro();
-  else if (TUN) { m.started = true; persist(); idea(m.lv); }   // the tunnel's door already said everything: straight to the first idea
+  else if (TUN) { m.started = true; persist(); warm(() => idea(m.lv)); }   // the tunnel's door already said everything: straight to the first idea
   else startScreen(!!(m.started && (m.lv || m.pts)));
 }
 
