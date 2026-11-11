@@ -1172,6 +1172,54 @@ body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;col
 .tun-door .tun-act .tun-link{margin-top:2px}
 .dz-msg.dz-tag{color:#6E736E;font-size:14px;letter-spacing:.3px}
 .dz-fig{display:flex;justify-content:center;margin:-6px 0 -4px}.dz-fig svg{max-width:100%;height:auto}
+/* ---------- joining: phone, code, plan, payment, booking ---------- */
+.jn{gap:26px}
+.jn .tun-h{font-size:44px}
+.jn-form{width:100%;max-width:416px;display:flex;flex-direction:column;align-items:center;gap:14px;animation:dzRise .9s .35s both}
+.jn-phone{display:flex;align-items:center;width:100%;height:64px;border-radius:20px;background:#121413;border:1px solid rgba(255,255,255,.14);overflow:hidden;direction:ltr}
+.jn-phone span{padding:0 14px 0 20px;font:500 20px/1 var(--f-body);color:#8E938E;border-right:1px solid rgba(255,255,255,.1);height:100%;display:flex;align-items:center}
+.jn-phone input,.jn-in,.jn-code{flex:1;min-width:0;height:100%;background:transparent;border:0;outline:0;color:#F6F7F5;font:500 22px/1 var(--f-body);padding:0 16px;letter-spacing:1px}
+.jn-in,.jn-code{width:100%;height:64px;border-radius:20px;background:#121413;border:1px solid rgba(255,255,255,.14);text-align:center}
+.jn-code{font-size:34px;letter-spacing:14px;padding-left:28px}
+.jn-phone:focus-within,.jn-in:focus,.jn-code:focus{border-color:#7FE0B4;box-shadow:0 0 0 4px rgba(95,211,160,.14)}
+.jn-err{margin:0;color:#FF8A80;font-size:15px;text-align:center}
+.jn-small{margin:0;color:#8E938E;font-size:13px;line-height:1.9;text-align:center}
+.jn-small a{color:#B4B8B3}
+.tun-link:disabled{opacity:.6;text-decoration:none;cursor:default}
+.jn-get{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;animation:dzRise .9s .35s both}
+.jn-get li{display:flex;align-items:center;gap:12px;font-family:var(--f-display);font-weight:300;font-size:22px;color:#DADDD9}
+.jn-get svg{width:22px;height:22px;color:#7FE0B4;flex:none}
+.jn-price{margin:0;display:flex;align-items:baseline;gap:10px;color:#F6F7F5;animation:dzRise .9s .5s both}
+.jn-price b{font-family:var(--f-display);font-weight:300;font-size:72px;line-height:1}
+.jn-price span{font-size:20px;color:#B4B8B3}
+.jn-ok{width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0B0C0C;background:#7FE0B4;box-shadow:0 0 0 10px rgba(95,211,160,.14),0 0 60px rgba(95,211,160,.45);animation:dzRise .7s both}
+.jn-ok svg{width:44px;height:44px}
+.jn-spin{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.12);border-top-color:#7FE0B4;animation:jnSpin .9s linear infinite}
+@keyframes jnSpin{to{transform:rotate(360deg)}}
+.jn-a{display:flex;align-items:center;justify-content:center;text-decoration:none}
+.jn-days{width:100%;display:flex;gap:10px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;animation:dzRise .9s .35s both}
+.jn-days::-webkit-scrollbar{display:none}
+.jn-day{flex:none;width:76px;padding:12px 0;border-radius:18px;background:#121413;border:1px solid rgba(255,255,255,.1);color:#B4B8B3;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-family:var(--f-body)}
+.jn-day b{font-family:var(--f-display);font-weight:400;font-size:26px;color:#F6F7F5;line-height:1.1}
+.jn-day small{font-size:12px}
+.jn-day.on{border-color:#7FE0B4;background:rgba(95,211,160,.1);box-shadow:0 0 0 3px rgba(95,211,160,.12)}
+.jn-times{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;animation:dzRise .9s .45s both}
+.jn-time{height:52px;border-radius:16px;background:#121413;border:1px solid rgba(255,255,255,.1);color:#F6F7F5;font:500 17px/1 var(--f-body);cursor:pointer}
+.jn-time.on{background:#F2F3F1;color:#0B0C0C;border-color:#F2F3F1}
+.jn-pill{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px;border-radius:22px;background:rgba(95,211,160,.1);border:1px solid rgba(95,211,160,.4);color:#DADDD9;font:500 15px/1 var(--f-body);cursor:pointer;animation:dzRise .9s .2s both}
+.jn-pill i{width:8px;height:8px;border-radius:4px;background:#7FE0B4;box-shadow:0 0 10px #7FE0B4}
+.acct-acts{display:flex;flex-direction:column;gap:10px}.acct-acts .play-btn,.acct-acts .ghost-btn{justify-content:center}
+.jn .tun-p bdi{white-space:nowrap}
+/* the account window, dark like the rest of the site */
+body.dz .modal.acct{background:rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+body.dz .acct-box{background:#141615;color:#F2F3F1;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+body.dz .acct-sub,body.dz .acct-list li small{color:#9EA39E}
+body.dz .acct-list li{border-color:rgba(255,255,255,.1);background:#0F1110}
+body.dz .acct-list li.on b::before{color:#7FE0B4}
+body.dz .acct-box .xbtn{color:#B4B8B3;background:rgba(255,255,255,.06)}
+body.dz .acct-box .play-btn{background:#F2F3F1;color:#0B0C0C;height:52px}
+body.dz .acct-box .ghost-btn{background:transparent;color:#DADDD9;border:1px solid rgba(255,255,255,.16);height:52px}
+body.dz .acct-form input{background:#0F1110;color:#F2F3F1;border-color:rgba(255,255,255,.14)}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1390,7 +1438,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794383474"}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794403202", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3896,10 +3944,15 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     LT('gate_view');
     const w = room('tun-door tun-gate');
     w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><h1 class="tun-h big">${esc(l2 ? l2.title : 'الدرس الثاني')}</h1><p class="tun-msg">للمشتركين</p></div>`);
-    const act = el('div', 'tun-act');
-    const a = el('a', 'tun-go', 'اشترك وكمّل'); a.href = waLink('السلام عليكم، خلصت أول درس في دورة القدرات وأبغى أشترك وأكمّل'); a.target = '_blank'; a.rel = 'noopener';
-    a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
-    account(act, 'tun-ghost');
+    const act = el('div', 'tun-act'), Au = window.LeenaAuth, ended = !!(Au && Au.user && Au.access && Au.access.length);
+    if (Au && Au.payOn) {   // online payment: phone + code → plan → pay
+      const b = el('button', 'tun-go', ended ? 'جدّد اشتراكك' : 'اشترك وكمّل'); b.onclick = () => { LT('gate_join'); Au.join(ended ? 'renew' : 'join'); }; act.appendChild(b);
+    } else {
+      const a = el('a', 'tun-go', 'اشترك وكمّل'); a.href = waLink('السلام عليكم، خلصت أول درس في دورة القدرات وأبغى أشترك وأكمّل'); a.target = '_blank'; a.rel = 'noopener';
+      a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
+    }
+    if (ended) w.querySelector('.tun-msg').textContent = 'انتهى اشتراكك';
+    if (!(Au && Au.user)) account(act, 'tun-ghost');
     const tr = el('button', 'tun-ghost', 'تدرّب على الدرس الأول'); tr.onclick = () => { LT('gate_train'); f._drillMode = 'open'; play(f); };
     act.appendChild(tr);
     w.appendChild(act);
@@ -3916,6 +3969,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       return `<li class="${s}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : ''}</li>`; }).join('')}</ol>`);
     w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l);
       if (s === 'done' || s === 'here' || s === 'open') li.onclick = () => { LT('tunnel_enter', { val: 'pick', lesson: l.id }); door(l); }; });
+    const Au = window.LeenaAuth, P = Au && Au.payOn && Au.plan;
+    if (P && P.credits > 0 && !(P.booking && P.booking.status === 'booked')) {   // a tutor session waiting to be booked
+      const s = el('button', 'jn-pill', '<i></i>احجز جلستك مع المدرّس'); s.onclick = () => { LT('road_book'); Au.book(); }; w.insertBefore(s, w.querySelector('.tun-st'));
+    }
     account(w, 'tun-link');
     if (nx) {
       const started = L.some(l => { const m = mem(l); return m && (m.started || m.finished); });
@@ -3938,7 +3995,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (nx && l) { LT('tunnel_next', { lesson: nx.id }); return door(nx, l); }
     road();
   }
-  window.AcademyTunnel = { door: leave, gate: after };
+  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road };
 
   /* ---------- home: where each person lands ---------- */
   let waited = false;
@@ -3981,7 +4038,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const toast = msg => { document.querySelectorAll('.toast').forEach(t => t.remove()); const t = el('div', 'toast', esc(msg)); document.body.appendChild(t); setTimeout(() => t.remove(), 3000); };
   const fmtDate = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
   const today = () => new Date().toISOString().slice(0, 10);
-  const A = window.LeenaAuth = { user: null, access: [], ready: false, openLogin, showAccount, logout, has: id => A.access.some(a => a.course === id && a.expires >= today()) };
+  const A = window.LeenaAuth = { user: null, access: [], plan: null, ready: false, openLogin, showAccount, logout, _sb: sb, reload: () => load(),
+    has: id => A.access.some(a => a.course === id && a.expires >= today()),
+    whenReady: fn => { if (A.ready) fn(); else waiting.push(fn); } };
+  const waiting = [];
 
   /* ---------- open a course with its key ---------- */
   const b64 = s => Uint8Array.from(atob(s.trim()), c => c.charCodeAt(0));
@@ -3996,14 +4056,16 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
   async function load() {
     const { data: { user } } = await sb.auth.getUser();
-    if (!user) { A.user = null; A.access = []; return false; }
+    if (!user) { A.user = null; A.access = []; A.plan = null; return false; }
     const [st, acc, keys] = await Promise.all([
-      sb.from('students').select('username,name').eq('user_id', user.id).maybeSingle(),
+      sb.from('students').select('username,name,phone').eq('user_id', user.id).maybeSingle(),
       sb.from('access').select('course,expires').eq('user_id', user.id),
       sb.from('course_keys').select('course,key'),
     ]);
-    A.user = { id: user.id, username: (st.data && st.data.username) || user.email.split('@')[0], name: (st.data && st.data.name) || '' };
+    A.user = { id: user.id, username: (st.data && st.data.username) || String(user.email || user.phone || '').split('@')[0], name: (st.data && st.data.name) || '',
+               phone: (st.data && st.data.phone) || (user.phone || '') };
     A.access = acc.data || [];
+    if (CFG.pay) { try { const r = await sb.rpc('my_plan'); A.plan = r.data || null; } catch (e) { A.plan = null; } }
     let opened = 0;
     for (const k of keys.data || []) { if (!C[k.course]) continue; try { await unlock(k.course, k.key); opened++; } catch (e) { console.warn('unlock failed', k.course, e); } }
     return opened;
@@ -4011,6 +4073,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   async function start() {
     try { await load(); } catch (e) { console.warn('auth', e); }
     A.ready = true; window.Academy.authDone();
+    waiting.splice(0).forEach(fn => { try { fn(); } catch (e) { console.warn(e); } });
   }
 
   /* ---------- screens ---------- */
@@ -4022,8 +4085,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     document.body.appendChild(m); return { m, box };
   }
   const LT = (e, o) => { try { if (window.LeenaTrack) window.LeenaTrack(e, o); } catch (x) {} };
-  function openLogin() {
+  function openLogin(mode) {
     LT('login_open');
+    if (A.payOn && mode !== 'user') return A.join('login');   // phone + WhatsApp code; the old username form stays for older accounts
     const { m, box } = modal(`<h2>تسجيل الدخول</h2><p class="acct-sub">اكتب اسم المستخدم وكلمة المرور اللذين وصلاك.</p>
       <form class="acct-form"><label>اسم المستخدم<input id="lg-user" autocomplete="username" autocapitalize="none" spellcheck="false" dir="ltr" required></label>
       <label>كلمة المرور<input id="lg-pass" type="password" autocomplete="current-password" dir="ltr" required></label>
@@ -4046,8 +4110,17 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (!A.user) return openLogin();
     const names = { 'qudurat-quant': 'القدرات: الكمّي' };
     const rows = A.access.length ? A.access.map(a => { const on = a.expires >= today(); return `<li class="${on ? 'on' : 'off'}"><b>${esc(names[a.course] || a.course)}</b><small>${on ? 'مفتوحة حتى ' : 'انتهت في '}${fmtDate(a.expires)}</small></li>`; }).join('') : '<li class="off"><b>لا توجد دورات في حسابك</b></li>';
-    const { m, box } = modal(`<h2>حسابي</h2><p class="acct-sub">${esc(A.user.name || '')} · <bdi dir="ltr">${esc(A.user.username)}</bdi></p><ul class="acct-list">${rows}</ul><button class="ghost-btn acct-out"><span>تسجيل الخروج</span></button>`);
+    const P = A.plan, bk = P && P.booking && P.booking.status === 'booked' && new Date(P.booking.starts_at) > new Date() ? P.booking : null;
+    const when = iso => new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { timeZone: 'Asia/Riyadh', weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
+    const session = !A.payOn || !P ? '' : bk ? `<li class="on"><b>جلستك مع المدرّس</b><small>${when(bk.starts_at)}</small></li>` : P.credits > 0 ? '<li class="on jn-li"><b>جلستك مع المدرّس</b><small>لم تُحجز بعد</small></li>' : '';
+    const ending = A.access.find(a => a.course === 'qudurat-quant'), soon = !ending || ending.expires < new Date(Date.now() + 14 * 864e5).toISOString().slice(0, 10);
+    const who = A.user.phone ? `<bdi dir="ltr">+${esc(A.user.phone)}</bdi>` : `<bdi dir="ltr">${esc(A.user.username)}</bdi>`;
+    const { m, box } = modal(`<h2>حسابي</h2><p class="acct-sub">${esc(A.user.name || '')} · ${who}</p><ul class="acct-list">${rows}${session}</ul>
+      <div class="acct-acts">${A.payOn && P && (P.credits > 0 || bk) ? `<button class="play-btn acct-book"><span>${bk ? 'موعد الجلسة' : 'احجز جلستك'}</span></button>` : ''}${A.payOn && soon ? `<button class="play-btn acct-renew"><span>${ending ? 'جدّد الاشتراك' : 'اشترك'}</span></button>` : ''}
+      <button class="ghost-btn acct-out"><span>تسجيل الخروج</span></button></div>`);
     box.querySelector('.acct-out').onclick = () => { m.remove(); logout(); };
+    const bb = box.querySelector('.acct-book'); if (bb) bb.onclick = () => { m.remove(); A.book(); };
+    const rb = box.querySelector('.acct-renew'); if (rb) rb.onclick = () => { m.remove(); A.join('renew'); };
   }
   async function logout() { await sb.auth.signOut(); location.reload(); }
 

@@ -42,7 +42,7 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 .pill{font-size:12px;font-weight:600;border-radius:99px;padding:2px 8px;white-space:nowrap}
 .pill.on{background:var(--accent-soft);color:var(--accent)}.pill.end{background:transparent;color:var(--ink2);border:1px solid var(--line)}.pill.soon{color:var(--warn);border:1px solid currentColor}
 .muted{color:var(--ink2);font-size:14px;margin:0}
-.tabs{display:flex;gap:6px}.tabs button{flex:1}.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}.tabs button{flex:1 0 auto;white-space:nowrap}.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .bars{display:flex;flex-direction:column;gap:8px}
 .bar{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:14px}
 .bar i{grid-column:1/-1;height:10px;border-radius:6px;background:var(--line);overflow:hidden;display:block}
@@ -56,6 +56,14 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 .tip{font-size:13px;color:var(--ink2);margin:6px 0 0}
 [hidden]{display:none!important}
 .mebtn{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:12px;background:var(--ink,#eee);color:var(--bg,#111);text-decoration:none;font-weight:600}
+.day{font-weight:700;margin:14px 0 6px;font-size:15px}
+.slot{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin-bottom:6px}
+.slot.bk{border-color:var(--accent);background:var(--accent-soft)}.slot .t{font-weight:700;font-variant-numeric:tabular-nums;min-width:64px}
+.slot .who{flex:1;font-size:14px}.slot .who small{display:block;color:var(--ink2)}.slot .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.times button{padding:9px 0;font-size:14px}.times button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.small.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pill.paid{background:var(--accent-soft);color:var(--accent)}.pill.pending{color:var(--warn);border:1px solid currentColor}.pill.failed,.pill.refunded{color:var(--bad);border:1px solid currentColor}
+a.wa{color:var(--accent);font-weight:600;font-size:13px}
 .path{font-size:15px;margin:14px 0 6px}.rg{flex-wrap:wrap}.rg button{flex:1 0 30%}
 </style>
 </head>
@@ -63,7 +71,7 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 <main id="app"><p class="muted">جارٍ التحميل…</p></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-const CFG = {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y"};
+const CFG = {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "pay": false};
 const COURSES = [{ id: 'qudurat-quant', name: 'القدرات: الكمّي' }, { id: 'qudurat-verbal', name: 'القدرات: اللفظي' }];
 const SITE = 'https://leena-academy.pages.dev/';
 const TITLES = {"خالد": "فهد", "نورة": "سارة", "fs1": "قوانين الأسس", "fs2": "الجذور", "fs3": "حيل الحساب الذهني", "fs4": "الفرق بين مربعين", "fs5": "الأعداد العشرية", "fs6": "آخر رقم", "pc1": "النسبة المئوية", "pc2": "الخصم والربح", "pc3": "التناسب والتقسيم", "cm1": "قواعد المقارنة", "al1": "المعادلات السريعة", "al2": "ترجمة الكلام والأعمار", "al3": "المتطابقات", "nm1": "ترتيب العمليات والسالب", "nm2": "القسمة والعوامل", "nm3": "ألغاز الأرقام", "fr1": "تبسيط الكسور ومقارنتها", "fr2": "عمليات الكسور", "mo1": "السرعة والمسافة", "mo2": "العمل والزمن", "pt1": "المتتابعات", "dt1": "المتوسطات", "dt2": "الاحتمالات", "ge1": "الزوايا والمثلثات", "ge2": "المحيط والمساحة", "ge3": "المجسمات والإحداثيات", "cm2": "مقارنات مختلطة", "2": "3", "١٠": "٥", "٥": "`5⁸`", "٨": "٢", "٣": "٤", "١٤": "١٠", "٢٤٥٠": "٢٥٠٠", "٥٢٢٥": "٥٦٢٥", "١١١": "١٠٠١", "٣٦٠٠": "٣٧٠٠", "٤٧٤٧": "٤٦٥٣", "١": "١٧٧٥", "٩٩٩٩": "١٠٠٠١", "٤": "٢٠٠٠٠", "٩": "٤٠", "١١٦٣": "١١٦١", "٠": "٥", "٢": "٤", "٢٤": "٣٦", "cmp": "35 × 80 ÷ 100", "٦٠٠": "٥٠٠", "جوال": "ساعة", "٤٢٠": "٧٨٠", "٣٨٤": "٤٠٠", "٣٥٠": "٣٦٠", "أقلام": "قلم", "كتب": "كتاب", "علب": "علبة", "دفاتر": "دفتر", "تذاكر": "تذكرة", "٢٠٠": "١٥٠", "٤٥": "٣١", "٤٠": "٨٠", "vary": "س²", "٧": "٤٫٢", "٦": "٧", "١٣": "٧", "big": "small", "mid": "big", "٣١": "٢٥", "٤٤": "٦٢", "٢٥": "٢٤", "٣٤": "٦٤", "٩٦٠٤": "٩٦١٦", "٧٠": "١٠", "is": "div", "زوجي": "فردي", "٢٤٣": "٣٤٤", "١٤٢": "٦", "الآحاد": "العشرات", "٥٠": "٤٩", "٠٢٥٨": "٢٠٥٨", "frac": "84 ÷ 126", "٧٢": "٩٠", "الأحد": "الاثنين", "١٥٥": "٢٧٥", "٢٤٠": "١٢٠", "الجمعة": "السبت", "day": "الخميس", "١٠٤": "٩٩", "٣٥": "٣٧", "٨٠٠": "٨٢٠", "السبت": "الأحد", "٢٢": "٣٤", "٨٠": "٧٨", "١٠٥": "١٠٦", "حمرا": "زرقا", "بيضا": "سودا", "خضرا": "صفرا", "المطر": "ما تمطر", "الفوز": "ما يفوز", "النجاح": "ما ينجح", "صورة": "كتابة", "٥٦": "٢٨", "١٢٠": "٦٠", "١٣٠": "٥٠", "٢١": "١٥", "٧٥": "١٠٥", "مربع": "طول ضلعه", "مستطيل": "طوله وعرضه", "دائرة": "نصف قطرها", "مثلث": "كل أضلاعه", "١٢": "١٤٤", "pi": "(14 ÷ 2)² × ط", "١٠٨": "٥٤", "حجمه": "حجمه", "مكعب": "صندوق"};
@@ -84,7 +92,7 @@ const errText = e => { const m = (e && (e.message || e.error_description)) || St
 
 if (!window.supabase) { app.innerHTML = '<div class="card"><p class="err">تعذّر تحميل الأداة. تأكد من الإنترنت ثم حدّث الصفحة.</p></div>'; throw new Error('no supabase'); }
 const sb = supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: true, storageKey: 'leena-admin' } });
-let students = [], tab = 'new';
+let students = [], tab = CFG.pay ? 'orders' : 'list';
 
 async function boot() {
   const { data: { user } } = await sb.auth.getUser();
@@ -120,14 +128,14 @@ function loginScreen(msg, setup) {
 /* ---------- the tool ---------- */
 function shell() {
   app.innerHTML = `<header><h1>لوحة لينا</h1><button class="small" id="out">خروج</button></header>
-    <div class="tabs"><button data-t="new">طالب جديد</button><button data-t="list">الطلاب</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
+    <div class="tabs">${CFG.pay ? '<button data-t="orders">الطلبات</button><button data-t="cal">المواعيد</button>' : ''}<button data-t="list">الطلاب</button><button data-t="new">طالب جديد</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
   document.getElementById('out').onclick = async () => { await sb.auth.signOut(); loginScreen(); };
   app.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.t; draw(); });
   draw();
 }
 function draw() {
   app.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
-  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else listStudents();
+  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else if (tab === 'orders') orders(); else if (tab === 'cal') calendar(); else listStudents();
 }
 
 /* ---------- statistics: how many came and what they did ---------- */
@@ -182,6 +190,101 @@ async function stats() {
   bindMe();
 }
 /* don't count my own phone: the flag lives on the site's address, so the site sets it via #me */
+
+/* ---------- online orders (Moyasar) ---------- */
+const RY = (d, o) => new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { timeZone: 'Asia/Riyadh', ...o }).format(new Date(d));
+const atTime = d => RY(d, { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+const waLink = (phone, text) => `https://wa.me/${String(phone || '').replace(/\D/g, '')}${text ? '?text=' + encodeURIComponent(text) : ''}`;
+const ST = { paid: 'مدفوع', pending: 'لم يكمل الدفع', failed: 'فشل', refunded: 'مسترجع', expired: 'انتهى' };
+async function orders() {
+  const view = document.getElementById('view'); view.innerHTML = '<div class="card"><p class="muted">جارٍ التحميل…</p></div>';
+  const { data, error } = await sb.rpc('admin_orders', { p_days: 90 });
+  if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p><p class="muted">إذا ما شغّلت ملف 004 في Supabase بعد، شغّله أول.</p></div>`; return; }
+  const rows = data || [], paid = rows.filter(o => o.status === 'paid'), sum = l => l.reduce((n, o) => n + +o.amount, 0);
+  const d0 = new Date(); d0.setHours(0, 0, 0, 0); const m0 = new Date(d0.getFullYear(), d0.getMonth(), 1);
+  const today = paid.filter(o => new Date(o.paid_at) >= d0), month = paid.filter(o => new Date(o.paid_at) >= m0);
+  const left = rows.filter(o => o.status === 'pending' || o.status === 'failed');
+  view.innerHTML = `<div class="card"><h2>المبيعات</h2><div class="big3">
+      <div><b>${ar(today.length)}</b><span class="muted">اشتراك اليوم · ${ar(money(sum(today)))} ريال</span></div>
+      <div><b>${ar(month.length)}</b><span class="muted">هذا الشهر · ${ar(money(sum(month)))} ريال</span></div>
+      <div><b>${ar(paid.length)}</b><span class="muted">آخر ٩٠ يوم · ${ar(money(sum(paid)))} ريال</span></div>
+      <div><b>${ar(left.length)}</b><span class="muted">وصلوا الدفع وما كمّلوا</span></div></div>
+      <p class="tip">المبالغ هنا قبل رسوم ميسّر. الاسترجاع يتم من لوحة ميسّر، ويتسجّل هنا تلقائيًا.</p></div>
+    <div class="card stack"><div class="row"><button class="small on" data-f="all">الكل</button><button class="small" data-f="paid">المدفوعة</button><button class="small" data-f="left">ما كمّلوا</button></div><div class="list" id="l"></div></div>`;
+  let f = 'all';
+  const paint = () => {
+    view.querySelectorAll('[data-f]').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+    const list = rows.filter(o => f === 'all' || (f === 'paid' ? o.status === 'paid' : o.status === 'pending' || o.status === 'failed'));
+    view.querySelector('#l').innerHTML = list.map(o => `<button class="stu" data-id="${o.id}"><span><b>${esc(o.name || 'بدون اسم')}</b><small dir="ltr" style="text-align:right">+${esc(o.phone || '')}</small><small>${atTime(o.paid_at || o.created_at)}</small></span>
+      <span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><span class="pill ${o.status}">${ST[o.status] || o.status}</span><small>${ar(money(o.amount))} ريال</small></span></button>`).join('') || '<p class="muted">لا يوجد.</p>';
+    view.querySelectorAll('.stu').forEach(b => b.onclick = () => orderCard(rows.find(o => o.id === b.dataset.id)));
+  };
+  view.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { f = b.dataset.f; paint(); });
+  paint();
+}
+function orderCard(o) {
+  const view = document.getElementById('view'); view.innerHTML = '';
+  const c = document.createElement('div'); c.className = 'card stack';
+  const nudge = o.status === 'paid' ? '' : `أهلًا ${o.name || ''} 👋\nشفناك وصلت لصفحة الدفع في أكاديمية لينا وما كمّلت. إذا واجهتك مشكلة نساعدك هنا.`;
+  c.innerHTML = `<h2>${esc(o.name || 'بدون اسم')}</h2><p class="muted" dir="ltr" style="text-align:right">+${esc(o.phone || '')}</p>
+    <p class="muted" style="margin:0"><span class="pill ${o.status}">${ST[o.status] || o.status}</span> · ${ar(money(o.amount))} ريال · ${atTime(o.paid_at || o.created_at)}</p>
+    ${o.access_until ? `<p class="muted" style="margin:0">فتح الدورة حتى ${fmt(o.access_until)}</p>` : ''}
+    ${o.note ? `<p class="err">${esc(o.note)}</p>` : ''}
+    <p class="tip" dir="ltr" style="text-align:right">Moyasar invoice: ${esc(o.invoice_id || '-')}<br>payment: ${esc(o.payment_id || '-')}</p>
+    <a class="mebtn" href="${waLink(o.phone, nudge)}" target="_blank" rel="noopener">واتساب${nudge ? ' (رسالة متابعة)' : ''}</a>
+    ${o.status === 'paid' ? '<button type="button" id="rf" style="color:var(--bad)">سجّل أنه مسترجع (بعد ما ترجّع المبلغ من ميسّر)</button>' : ''}
+    <p class="err" id="e" hidden></p><button type="button" class="link" id="back">رجوع</button>`;
+  view.appendChild(c);
+  c.querySelector('#back').onclick = () => orders();
+  const rf = c.querySelector('#rf'); let sure = false;
+  if (rf) rf.onclick = async () => {
+    if (!sure) { sure = true; rf.textContent = 'متأكد؟ تنقفل الأيام اللي فتحها هذا الطلب. اضغط مرة ثانية'; return; }
+    const { error } = await sb.rpc('admin_refund_order', { p_order: o.id });
+    if (error) { const e = c.querySelector('#e'); e.textContent = errText(error); e.hidden = false; return; }
+    orders();
+  };
+}
+
+/* ---------- tutor sessions: open times, see who booked ---------- */
+async function calendar() {
+  const view = document.getElementById('view'); view.innerHTML = '<div class="card"><p class="muted">جارٍ التحميل…</p></div>';
+  const { data, error } = await sb.rpc('admin_slots');
+  if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p></div>`; return; }
+  const slots = data || [], now = Date.now();
+  const tomorrow = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Riyadh' }).format(new Date(now + 864e5));
+  const HOURS = []; for (let h = 9; h <= 23; h++) for (const m of [0, 30]) HOURS.push(String(h).padStart(2, '0') + ':' + (m ? '30' : '00'));
+  const label = t => { const [h, m] = t.split(':').map(Number); return ar(`${h % 12 || 12}:${String(m).padStart(2, '0')}`) + (h < 12 ? ' ص' : ' م'); };
+  view.innerHTML = `<div class="card stack"><h2>أضف أوقات متاحة</h2>
+      <label>اليوم<input type="date" id="d" value="${tomorrow}" min="${tomorrow}"></label>
+      <label style="margin-bottom:-4px">الأوقات (بتوقيت السعودية، كل جلسة ٣٠ دقيقة)</label><div class="times" id="tm">${HOURS.map(t => `<button type="button" data-t="${t}">${label(t)}</button>`).join('')}</div>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input type="checkbox" id="rep" style="width:20px;height:20px">كرّرها كل يوم لمدة أسبوع</label>
+      <p class="err" id="e" hidden></p><button class="main" id="add">أضف الأوقات</button>
+      <p class="tip">الطالب يشوف الأوقات اللي بعد ٣ ساعات أو أكثر، لمدة ٣٠ يوم قدّام.</p></div>
+    <div class="card"><h2>الجدول</h2><div id="cal"></div></div>`;
+  const pick = new Set();
+  view.querySelectorAll('#tm button').forEach(b => b.onclick = () => { pick.has(b.dataset.t) ? pick.delete(b.dataset.t) : pick.add(b.dataset.t); b.classList.toggle('on'); });
+  view.querySelector('#add').onclick = async () => {
+    const e = view.querySelector('#e'); e.hidden = true;
+    const d = view.querySelector('#d').value; if (!d || !pick.size) { e.textContent = 'اختر اليوم والأوقات.'; e.hidden = false; return; }
+    const days = view.querySelector('#rep').checked ? 7 : 1, times = [];
+    for (let i = 0; i < days; i++) { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + i); const day = x.toISOString().slice(0, 10); pick.forEach(t => times.push(`${day}T${t}:00+03:00`)); }
+    const { data: n, error } = await sb.rpc('admin_add_slots', { p_times: times });
+    if (error) { e.textContent = errText(error); e.hidden = false; return; }
+    calendar();
+  };
+  const byDay = {}; slots.forEach(s => { const k = RY(s.starts_at, { weekday: 'long', day: 'numeric', month: 'long' }); (byDay[k] = byDay[k] || []).push(s); });
+  const ST2 = { booked: 'محجوز', done: 'تمت', no_show: 'ما حضر' };
+  view.querySelector('#cal').innerHTML = Object.entries(byDay).map(([day, list]) => `<div class="day">${day}</div>` + list.map(s => {
+    const b = s.booking, past = new Date(s.starts_at).getTime() < now;
+    return `<div class="slot${b ? ' bk' : ''}" data-id="${s.id}"><span class="t">${RY(s.starts_at, { hour: 'numeric', minute: '2-digit' })}</span>
+      <span class="who">${b ? `<b>${esc(b.name || 'بدون اسم')}</b><small dir="ltr" style="text-align:right">+${esc(b.phone || '')} · <a class="wa" href="${waLink(b.phone, `أهلًا ${b.name || ''} 👋 معك مدرّس أكاديمية لينا، جاهز لجلستك؟`)}" target="_blank" rel="noopener">واتساب</a></small><small>${ST2[b.status] || b.status}${b.moves ? ' · غيّر موعده مرة' : ''}</small>` : `<small>${past ? 'مرّ ولم يُحجز' : 'متاح'}</small>`}</span>
+      <span class="acts">${b ? (b.status === 'booked' ? `<button class="small" data-b="${b.id}" data-s="done">تمت</button><button class="small" data-b="${b.id}" data-s="no_show">ما حضر</button><button class="small" data-b="${b.id}" data-s="cancelled">ألغِ</button>` : '')
+        : past ? '' : `<button class="small" data-del="${s.id}">احذف</button>`}</span></div>`; }).join('')).join('') || '<p class="muted">ما فيه أوقات بعد. أضف أوقات من فوق.</p>';
+  view.querySelectorAll('[data-b]').forEach(x => x.onclick = async () => {
+    if (x.dataset.s === 'cancelled' && !confirm('إلغاء الحجز يرجّع الجلسة للطالب ويفتح الوقت لغيره. متأكد؟')) return;
+    const { error } = await sb.rpc('admin_set_booking', { p_booking: +x.dataset.b, p_status: x.dataset.s }); if (error) return alert(errText(error)); calendar(); });
+  view.querySelectorAll('[data-del]').forEach(x => x.onclick = async () => { const { error } = await sb.rpc('admin_delete_slot', { p_slot: +x.dataset.del }); if (error) return alert(errText(error)); calendar(); });
+}
 function meCard() {
   const site = (window.ACADEMY_SITE || 'https://leena.syyad.net/') + '#me';
   return `<div class="card" id="me"><h2>لا تحسب جوالي</h2><p class="muted">افتح الرابط من كل جوال تستخدمه، وزياراته الجاية ما تنحسب في الإحصاءات.</p>
@@ -248,12 +351,12 @@ async function listStudents() {
       <div><b style="font-size:24px">${ar(money(since(d7)))}</b><p class="muted">ريال · آخر ٧ أيام</p></div>
       <div><b style="font-size:24px">${ar(students.length)}</b><p class="muted">طالب</p></div></div>
       ${Object.keys(byPrice).length ? `<p class="muted" style="margin-top:8px">أول دفعة لكل طالب: ${Object.entries(byPrice).sort((a, b) => b[1] - a[1]).map(([pr, n]) => `${ar(money(pr))} ريال × ${ar(n)}`).join(' · ')}</p>` : ''}</div>
-    <div class="card stack"><label>ابحث بالاسم أو اسم المستخدم<input id="q" placeholder="اكتب للبحث"></label><p class="muted" id="n"></p><div class="list" id="l"></div></div>`;
+    <div class="card stack"><label>ابحث بالاسم أو الجوال أو اسم المستخدم<input id="q" placeholder="اكتب للبحث"></label><p class="muted" id="n"></p><div class="list" id="l"></div></div>`;
   const paint = () => {
     const q = view.querySelector('#q').value.trim().toLowerCase();
-    const rows = students.filter(s => !q || (s.name || '').toLowerCase().includes(q) || s.username.includes(q));
+    const rows = students.filter(s => !q || (s.name || '').toLowerCase().includes(q) || s.username.includes(q) || (s.phone || '').includes(q.replace(/^0/, '')));
     view.querySelector('#n').textContent = `${ar(rows.length)} من ${ar(students.length)} طالب`;
-    view.querySelector('#l').innerHTML = rows.map(s => `<button class="stu" data-id="${s.user_id}"><span><b>${esc(s.name || s.username)}</b><small dir="ltr" style="text-align:right">${esc(s.username)}</small>${(s.payments || []).length ? `<small>دفع ${ar(money((s.payments || []).reduce((n, x) => n + +x.amount, 0)))} ريال</small>` : ''}</span><span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${(s.access || []).map(a => { const left = (new Date(a.expires) - new Date(today())) / 864e5; return `<span class="pill ${left < 0 ? 'end' : left <= 7 ? 'soon' : 'on'}">${esc(nameOf(a.course).replace('القدرات: ', ''))} · ${fmt(a.expires)}</span>`; }).join('') || '<span class="pill end">بدون دورات</span>'}</span></button>`).join('') || '<p class="muted">لا يوجد طلاب بعد.</p>';
+    view.querySelector('#l').innerHTML = rows.map(s => `<button class="stu" data-id="${s.user_id}"><span><b>${esc(s.name || s.username)}</b><small dir="ltr" style="text-align:right">${s.phone ? '+' + esc(s.phone) : esc(s.username)}</small>${(s.payments || []).length ? `<small>دفع ${ar(money((s.payments || []).reduce((n, x) => n + +x.amount, 0)))} ريال</small>` : ''}</span><span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${(s.access || []).map(a => { const left = (new Date(a.expires) - new Date(today())) / 864e5; return `<span class="pill ${left < 0 ? 'end' : left <= 7 ? 'soon' : 'on'}">${esc(nameOf(a.course).replace('القدرات: ', ''))} · ${fmt(a.expires)}</span>`; }).join('') || '<span class="pill end">بدون دورات</span>'}</span></button>`).join('') || '<p class="muted">لا يوجد طلاب بعد.</p>';
     view.querySelectorAll('.stu').forEach(b => b.onclick = () => editStudent(students.find(s => s.user_id === b.dataset.id)));
   };
   view.querySelector('#q').oninput = paint; paint();
