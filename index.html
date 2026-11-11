@@ -1390,7 +1390,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794380059"}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794382987"}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3191,6 +3191,8 @@ function runDrill(d, lesson) {
     stage.appendChild(h('h1', 'dz-q', fmt(g.q.replace(/` ، /g, ' ،` ').replace(/ ، /g, '، '))));   // the comma sticks to what's before it, never starts a line
     if (g.fig) { const f = h('div', 'dz-fig'); f.innerHTML = g.fig; stage.appendChild(f); }   // a small drawing (geometry, charts)
     if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
+    { const qEl = stage.querySelector('.dz-q'); let fs = parseFloat(getComputedStyle(qEl).fontSize) || 28;   // a very long formula: shrink it until it fits the screen
+      for (let t = 0; t < 12 && qEl.scrollWidth > stage.clientWidth + 1 && fs > 15; t++) { fs -= 1.5; qEl.style.fontSize = fs + 'px'; } }
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
     const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
     let missed = false, over = false, t0 = performance.now(), last = secs;
@@ -3462,7 +3464,7 @@ function runDrill(d, lesson) {
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('final_all_right') : `حليت ${ar(got)} من ${ar(n)}`}</h1><p class="dz-p">${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p>`;
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
     dockBtn(TUN ? 'كمّل' : 'الدرس التالي', toGate, ['تدريب مفتوح', () => open(0)]);
-    levelUp(rank);
+    void rank;   // no rank pop-up here: the next door is the reward
   }
 
   /* open training / quick review: mixed questions from every level, no end (or `limit` questions) */
