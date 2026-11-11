@@ -14,7 +14,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -1220,6 +1220,77 @@ body.dz .acct-box .xbtn{color:#B4B8B3;background:rgba(255,255,255,.06)}
 body.dz .acct-box .play-btn{background:#F2F3F1;color:#0B0C0C;height:52px}
 body.dz .acct-box .ghost-btn{background:transparent;color:#DADDD9;border:1px solid rgba(255,255,255,.16);height:52px}
 body.dz .acct-form input{background:#0F1110;color:#F2F3F1;border-color:rgba(255,255,255,.14)}
+/* ===== front pages in the ad's look: ivory, dark ink, one green (body.lt; lessons stay dark) ===== */
+html:has(body.lt){background:#F6F4EE}
+body.dz.lt{background:#F6F4EE;color:#16201B}
+.lt .tun{color:#16201B;align-items:stretch;text-align:right;justify-content:center;gap:34px;padding:96px 30px 44px}
+.lt .tun-mark{position:absolute;top:26px;left:26px;font:900 15px/1 Alexandria,var(--f-display);color:#16201B;letter-spacing:.2px}
+.lt .tun-hole{display:none}
+.lt .tun-txt{align-items:flex-start;gap:0}
+.lt .tun-eyebrow,.lt .tun-time,.lt .tun-msg{margin:0;font:200 18px/1.6 Alexandria,var(--f-display);color:#1F7A5A;letter-spacing:0}
+.lt .tun-eyebrow .sep{font-style:normal;color:#C9C4B6;margin:0 10px}
+.lt .tun-rule{display:block;width:48px;height:2px;background:#1F7A5A;margin:14px 0 26px;transform-origin:right;animation:ltRule .8s .35s both}
+@keyframes ltRule{from{transform:scaleX(0)}}
+.lt .tun-h,.lt .tun-h.big{font:900 52px/1.25 Alexandria,var(--f-display);color:#16201B;letter-spacing:0;text-wrap:balance}
+.lt .tun-h.stop::after{content:"."}
+.lt .tun-gate .tun-h,.lt .jn .tun-h{font-size:44px}
+.lt .tun-p{margin:18px 0 0;font:200 20px/1.8 Alexandria,var(--f-display);color:#3D4A44;max-width:none}
+.lt .tun-done{margin:0 0 30px;font:200 16px/1.6 Alexandria,var(--f-display);color:#3D4A44}
+.lt .tun-done svg{color:#1F7A5A}
+.lt .tun-act{align-items:stretch;gap:12px}
+.lt .tun-go{max-width:none;height:60px;border-radius:16px;background:#16201B;color:#F6F4EE!important;font:900 19px/1 Alexandria,var(--f-display);box-shadow:none}
+.lt .tun-ghost{max-width:none;height:54px;border-radius:16px;color:#16201B;border:1px solid #D9D5CA;font:200 17px/1 Alexandria,var(--f-display)}
+.lt .tun-link{color:#3D4A44;font:200 15px/1 Alexandria,var(--f-display);text-decoration-color:#C9C4B6}
+.lt .tun-link.tun-top{position:absolute;top:18px;right:22px;padding:8px 16px;border:1px solid #D9D5CA;border-radius:99px;text-decoration:none;animation:none}
+.lt .tun-x{background:transparent;color:#16201B;border:1px solid #D9D5CA}
+/* the road */
+.lt .tun-list{justify-content:flex-start;padding-top:110px}
+.lt .tun-road .tun-st{max-width:none}
+.lt .tun-st::before{right:13px;background:linear-gradient(#1F7A5A,#E4E0D6)}
+.lt .tun-st li{color:#9AA19C;font:200 18px/1.4 Alexandria,var(--f-display)}
+.lt .tun-st .dot{background:#F6F4EE;border-color:#D9D5CA;color:#9AA19C}
+.lt .tun-st li.done{color:#3D4A44}
+.lt .tun-st li.done .dot{background:#1F7A5A;border-color:#1F7A5A;color:#F6F4EE}
+.lt .tun-st li.open{color:#16201B}.lt .tun-st li.open .dot{border-color:#9AA19C}
+.lt .tun-st li.here{color:#16201B;font:900 22px/1.4 Alexandria,var(--f-display)}
+.lt .tun-st li.here .dot{background:#16201B;border-color:#16201B;box-shadow:0 0 0 5px rgba(31,122,90,.14)}
+.lt .tun-st li.here .dot::after{background:#F6F4EE}
+.lt .tun-st li.soon{color:#BDB8AC}
+.lt .tun-st li small{color:#7A847F;border-color:#D9D5CA}
+.lt .tun-list::after{background:linear-gradient(to top,#F6F4EE 55%,rgba(246,244,238,0))}
+.lt .tun-list .tun-go{width:calc(100% - 60px)}
+.lt .tun-road>.tun-link{align-self:center}
+/* joining screens */
+.lt .jn-form{max-width:none}
+.lt .jn-phone,.lt .jn-in,.lt .jn-code{background:#FFFFFF;border-color:#D9D5CA}
+.lt .jn-phone span{color:#7A847F;border-color:#E4E0D6}
+.lt .jn-phone input,.lt .jn-in,.lt .jn-code{color:#16201B}
+.lt .jn-phone:focus-within,.lt .jn-in:focus,.lt .jn-code:focus{border-color:#1F7A5A;box-shadow:0 0 0 4px rgba(31,122,90,.12)}
+.lt .jn-err{color:#B3261E;text-align:right}
+.lt .jn-small{color:#7A847F;text-align:right}.lt .jn-small a{color:#3D4A44}
+.lt .jn-get li{color:#16201B;font:200 20px/1.5 Alexandria,var(--f-display)}.lt .jn-get svg{color:#1F7A5A}
+.lt .jn-price{color:#16201B}.lt .jn-price b{font:900 72px/1 Alexandria,var(--f-display)}.lt .jn-price span{color:#3D4A44}
+.lt .jn-ok{color:#F6F4EE;background:#1F7A5A;box-shadow:0 0 0 10px rgba(31,122,90,.12)}
+.lt .jn-spin{border-color:#E4E0D6;border-top-color:#1F7A5A;align-self:center}
+.lt .jn-day{background:#FFFFFF;border-color:#D9D5CA;color:#7A847F}.lt .jn-day b{color:#16201B}
+.lt .jn-day.on{border-color:#1F7A5A;background:rgba(31,122,90,.06);box-shadow:0 0 0 3px rgba(31,122,90,.12)}
+.lt .jn-time{background:#FFFFFF;border-color:#D9D5CA;color:#16201B}
+.lt .jn-time.on{background:#16201B;color:#F6F4EE;border-color:#16201B}
+.lt .jn-pill{align-self:flex-start;background:rgba(31,122,90,.08);border-color:rgba(31,122,90,.35);color:#16201B}.lt .jn-pill i{background:#1F7A5A;box-shadow:none}
+.lt .jn-welcome .jn-ok{align-self:flex-start}
+/* the account window on the light pages */
+body.lt .modal.acct{background:rgba(22,32,27,.35)}
+body.lt .acct-box{background:#F6F4EE;color:#16201B;border:1px solid #E4E0D6;box-shadow:0 30px 80px rgba(22,32,27,.25)}
+body.lt .acct-sub,body.lt .acct-list li small{color:#7A847F}
+body.lt .acct-list li{border-color:#E4E0D6;background:#FFFFFF}
+body.lt .acct-list li.on b::before{color:#1F7A5A}
+body.lt .acct-box .xbtn{color:#3D4A44;background:rgba(22,32,27,.06)}
+body.lt .acct-box .play-btn{background:#16201B;color:#F6F4EE}
+body.lt .acct-box .ghost-btn{color:#16201B;border-color:#D9D5CA}
+body.lt .acct-form input{background:#FFFFFF;color:#16201B;border-color:#D9D5CA}
+.lt .tun-door:not(.tun-list) .tun-txt{margin-top:auto}
+.lt .tun-door:not(.tun-list) .tun-act{margin-top:auto}
+.lt .tun-door:not(.tun-list):not(:has(.tun-txt)) .tun-act{margin-top:0}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1438,7 +1509,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794403202", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794420362", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3908,9 +3979,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
 
   function room(cls, back) {
     document.querySelectorAll('.modal:not(.acct),.dock').forEach(m => m.remove());
-    app.innerHTML = ''; app.className = 'academy'; app.style.removeProperty('--theme'); document.body.classList.add('dz');
+    app.innerHTML = ''; app.className = 'academy'; app.style.removeProperty('--theme'); document.body.classList.add('dz', 'lt'); bar('#F6F4EE');
     document.documentElement.style.removeProperty('--brand-base'); window.scrollTo(0, 0);
-    const w = el('div', 'tun ' + cls);
+    const w = el('div', 'tun ' + cls); w.insertAdjacentHTML('beforeend', '<span class="tun-mark">أكاديمية لينا</span>');
     if (back) { const x = el('button', 'dz-btn tun-x', X); x.setAttribute('aria-label', 'رجوع'); x.onclick = back; w.appendChild(x); }
     app.appendChild(w); return w;
   }
@@ -3919,7 +3990,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const A = window.LeenaAuth, b = el('button', cls, A.user ? 'حسابي' : 'عندي حساب');
     b.onclick = () => { LT('login_link'); A.user ? A.showAccount() : A.openLogin(); }; w.appendChild(b);
   };
-  const play = l => { app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l); };
+  const bar = c => { const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = c; };
+  const dot = t => /[.؟?!:]$/.test(t) ? '' : ' stop';   // a full stop after a heading, like the ad
+  const play = l => { document.body.classList.remove('lt'); bar('#0B0C0C'); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l); };
 
   /* ---------- a lesson's door: its name and how long it takes ---------- */
   function door(l, prev) {
@@ -3928,22 +4001,23 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (!ready(l)) return road();
     const m = mem(l), going = !!(m && m.started && !m.finished && (m.lv || m.pts));
     const w = room('tun-door', subscriber() ? road : null);
-    w.insertAdjacentHTML('beforeend', `${HOLE()}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<h1 class="tun-h big">${esc(l.title)}</h1><p class="tun-time">${ar(l.drill.minutes || 20)} دقيقة</p></div>`);
+    const n = lessons().indexOf(l) + 1;
+    w.insertAdjacentHTML('beforeend', `${HOLE()}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<p class="tun-eyebrow tun-time">الدرس ${ar(n)}<i class="sep">|</i>${ar(l.drill.minutes || 20)} دقيقة</p><i class="tun-rule"></i><h1 class="tun-h big${dot(l.title)}">${esc(l.title)}</h1>${subscriber() ? '' : '<p class="tun-p">ابدأ الآن مجانًا.</p>'}</div>`);
     const act = el('div', 'tun-act');
     const go = el('button', 'tun-go', going ? 'كمّل' : 'ادخل');
     go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson', lesson: l.id }); play(l); };
     act.appendChild(go);
-    if (!subscriber()) account(act, 'tun-link');
     w.appendChild(act);
+    if (!subscriber()) account(w, 'tun-link tun-top');
   }
 
   /* ---------- the gate: lesson 1 is done, lesson 2 is for subscribers ---------- */
   function gate() {
     if (subscriber()) return after(first());
-    const f = first(), l2 = lessons()[1];
+    const f = first();
     LT('gate_view');
     const w = room('tun-door tun-gate');
-    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><h1 class="tun-h big">${esc(l2 ? l2.title : 'الدرس الثاني')}</h1><p class="tun-msg">للمشتركين</p></div>`);
+    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">كمّل الكمّي<br>كاملًا</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر<br>وجلسة خاصة مع مدرّس.</p></div>`);
     const act = el('div', 'tun-act'), Au = window.LeenaAuth, ended = !!(Au && Au.user && Au.access && Au.access.length);
     if (Au && Au.payOn) {   // online payment: phone + code → plan → pay
       const b = el('button', 'tun-go', ended ? 'جدّد اشتراكك' : 'اشترك وكمّل'); b.onclick = () => { LT('gate_join'); Au.join(ended ? 'renew' : 'join'); }; act.appendChild(b);
@@ -3965,7 +4039,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const L = lessons(), nx = nextUp(), all = openAll();
     const st = l => !ready(l) ? 'soon' : done(l) ? 'done' : l === nx ? 'here' : all ? 'open' : 'lock';
     const w = room('tun-door tun-list tun-road');
-    w.insertAdjacentHTML('beforeend', `<h1 class="tun-h big">الكمّي</h1><ol class="tun-st">${L.map(l => { const s = st(l);
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">القدرات العامة</p><i class="tun-rule"></i><h1 class="tun-h big stop">الكمّي</h1></div><ol class="tun-st">${L.map(l => { const s = st(l);
       return `<li class="${s}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : ''}</li>`; }).join('')}</ol>`);
     w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l);
       if (s === 'done' || s === 'here' || s === 'open') li.onclick = () => { LT('tunnel_enter', { val: 'pick', lesson: l.id }); door(l); }; });
