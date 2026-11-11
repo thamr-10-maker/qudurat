@@ -1424,6 +1424,16 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .lt .ld-go.show{opacity:1;pointer-events:auto;transform:none}
 .lt .tun-land::after{opacity:0;transition:opacity .3s}
 .lt .tun-land:has(.ld-go.show)::after{opacity:1}
+/* the teacher's pen (engine/pen.js) */
+.dz-stage{position:relative}
+.pen-svg{position:absolute;left:0;top:0;pointer-events:none;z-index:3;overflow:visible}
+.pen-svg path{fill:none;stroke:#1F7A5A;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.pen-work{align-self:stretch;display:flex;flex-direction:column;align-items:center;gap:6px;margin:4px 0 -4px}
+.pen-w{clip-path:inset(-30% 0 -30% 100%);transform:rotate(-1.5deg)}
+.pen-w span{display:inline-block;font:200 30px/1.5 Alexandria,var(--f-display);color:#1F7A5A}
+.pen-w .m,.pen-w .mo{color:#1F7A5A!important;font-weight:200}
+.pen-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;margin-top:-10px;border-radius:21px;border:1px solid rgba(31,122,90,.35);background:rgba(31,122,90,.07);color:#1F7A5A;font:900 16px/1 Alexandria,var(--f-display);cursor:pointer;animation:dzRise .5s both}
+@media (prefers-reduced-motion: reduce){.pen-w{clip-path:none}.pen-svg path{stroke-dashoffset:0}}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1642,7 +1652,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794429787", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794432644", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3435,7 +3445,7 @@ function runDrill(d, lesson) {
   }
 
   /* one question in the middle of the screen. done(result) with result = 'fast' | 'ok' | 'miss' | 'time' */
-  function ask(stage, g, secs, hints, done, onMiss, ring) {
+  function ask(stage, g, secs, hints, done, onMiss, ring, pen) {
     window.__drQ = g; // automatic tests only
     stage.insertAdjacentHTML('beforeend', orbHTML(ring));
     const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
@@ -3448,6 +3458,20 @@ function runDrill(d, lesson) {
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
     const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
     let missed = false, over = false, t0 = performance.now(), last = secs;
+    /* the teacher's pen (engine/pen.js): «ورّني» after a wrong pick; it plays by itself when pen.auto (his second miss in this level) */
+    const canPen = !!(pen && g.show && g.show.length && window.LeenaPen);
+    let penBtn = null;
+    const playPen = how => {
+      if (over) return; over = true; stopT(); g._pen = true;
+      if (penBtn && penBtn.remove) penBtn.remove();
+      opts.querySelectorAll('.opt').forEach(x => x.disabled = true);
+      LT('pen_show', { lesson: id, val: how, n: mem().lv + 1 });
+      window.LeenaPen.play(stage, g, { onTick: () => FX.play('tap'), onSkip: () => LT('pen_skip', { lesson: id, n: mem().lv + 1 }) }).then(() => {
+        if (gone) return;
+        opts.querySelectorAll('.opt').forEach((x, ci) => { if (g.opts[ci].key == null) x.classList.add('ok'); });
+        done('miss', fb, (performance.now() - t0) / 1000);   // a question he saw solved never counts as right
+      });
+    };
     g.opts.forEach((o, ci) => {
       const b = h('button', 'opt dz-o', fmt(String(o.v)));
       b.onclick = () => {
@@ -3463,6 +3487,10 @@ function runDrill(d, lesson) {
         b.disabled = true; b.classList.add('bad'); FX.play('wrong');
         if (!missed) { missed = true; stopT(); orb.classList.add('off'); if (onMiss) onMiss(o.key, (performance.now() - t0) / 1000); LT('drill_miss', { lesson: id, val: o.key, n: mem().lv + 1 }); }
         fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = fmt(hints[o.key] || 'لا، جرّب غيرها.');
+        if (canPen && !penBtn) {
+          if (pen.auto) { setTimeout(() => !gone && playPen('auto'), 700); penBtn = true; }
+          else { penBtn = h('button', 'pen-btn', '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg>ورّني'); penBtn.onclick = () => playPen('tap'); fb.after(penBtn); }
+        }
       };
       opts.appendChild(b);
     });
@@ -3558,7 +3586,8 @@ function runDrill(d, lesson) {
         if (key) s.miss[key] = (s.miss[key] || 0) + 1;
         if (missRow === 2 && k > 0) { k--; m.k = k; st.down++; }
         persist();
-        if (guess) fb.innerHTML += `<br><span class="dz-coach">${drT('slow')}</span>`;
+        if (g._pen) { /* the pen already showed the way: no extra words */ }
+        else if (guess) fb.innerHTML += `<br><span class="dz-coach">${drT('slow')}</span>`;
         else if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
           missRow = 0; guessRow = 0; st.bone++; s.w = 1; s.p = Math.min(s.p, 0.35); LT('drill_bone', { lesson: id, n: i + 1 });
@@ -3568,8 +3597,8 @@ function runDrill(d, lesson) {
         if (guessRow >= 2) { guessRow = 0; st.again++; return dockBtn('التالي', () => again(i, next)); }
         if (key && s.miss[key] >= 2 && !aimed[key] && (lv.hints || {})[key]) { aimed[key] = 1; aim = key; aimLeft = 2; st.focus++; return dockBtn('التالي', () => focus(i, key, next)); }
         if (res === 'time') setTimeout(next, 1600);
-        else dockBtn('التالي', next);
-      }, (key, at) => { firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal });
+        else dockBtn(g._pen ? 'فهمت' : 'التالي', next);
+      }, (key, at) => { firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal }, { auto: missRow >= 1 });
     };
     next();
   }
@@ -3754,6 +3783,155 @@ function runDrill(d, lesson) {
   else startScreen(!!(m.started && (m.lv || m.pts)));
 }
 
+/* The teacher's pen: after a wrong pick, a green pen circles, underlines and writes the working on the student's own question.
+   A question may carry g.show = [['circle', text, nth?], ['under', text, nth?], ['strike', text, nth?], ['arrow', fromText, toText], ['write', text]].
+   Texts are written as in the question source (2, ³, ×…); they are matched against what is on screen (Arabic digits, superscripts).
+   LeenaPen.play(stage, g, { onTick, onSkip }) → Promise, resolves when the drawing is done (or skipped). Plan: docs/PEN_PLAN.md */
+(() => {
+  const NS = 'http://www.w3.org/2000/svg', AR = '٠١٢٣٤٥٦٧٨٩', SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+  const MOVE = 0.5, WRITE = 0.75, GAP = 0.15, ARROW = 0.4;
+  const quiet = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
+
+  /* ---- finding a text in the question ---- */
+  // what the student sees, one character per entry, with where it lives in the page; digits inside <sup> become ⁰¹²…
+  function chars(root) {
+    const out = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    while (w.nextNode()) {
+      const n = w.currentNode, sup = !!(n.parentNode && n.parentNode.closest('sup')), v = n.nodeValue;
+      for (let i = 0; i < v.length; i++) {
+        let c = v[i];
+        if (/[\s⁦-⁩‎‏]/.test(c)) continue;
+        const d = AR.indexOf(c); if (d >= 0 && sup) c = SUP[d];
+        out.push({ c, n, i });
+      }
+    }
+    return out;
+  }
+  // the script's text in the same form: Arabic digits, superscripts kept, no spaces, − for minus
+  const norm = t => String(t).replace(/[\s`]/g, '').replace(/-/g, '−').replace(/\*/g, '×').replace(/[0-9]/g, d => AR[d]);
+  const isDig = c => c != null && (AR.includes(c) || SUP.includes(c));
+  const sameKind = (a, b) => isDig(a) && isDig(b) && SUP.includes(a) === SUP.includes(b);
+  function find(roots, text, nth = 1) {
+    const t = norm(text); if (!t) return null;
+    let seen = 0;
+    for (const root of roots) {
+      if (!root) continue;
+      const cs = chars(root), s = cs.map(x => x.c).join('');
+      for (let at = s.indexOf(t); at >= 0; at = s.indexOf(t, at + 1)) {
+        // a number is matched whole: «2» is not the 2 inside «12»
+        if (isDig(t[0]) && sameKind(s[at - 1], t[0])) continue;
+        if (isDig(t[t.length - 1]) && sameKind(s[at + t.length], t[t.length - 1])) continue;
+        if (++seen < nth) continue;
+        const a = cs[at], b = cs[at + t.length - 1], r = document.createRange();
+        r.setStart(a.n, a.i); r.setEnd(b.n, b.i + 1);
+        const rs = [...r.getClientRects()].filter(x => x.width > 0 && x.height > 0);
+        if (!rs.length) return null;
+        const top = rs[0].top, line = rs.filter(x => Math.abs(x.top - top) < rs[0].height * 0.6);   // split over two lines: the first line only
+        const L = Math.min(...line.map(x => x.left)), R = Math.max(...line.map(x => x.right)), T = Math.min(...line.map(x => x.top)), B = Math.max(...line.map(x => x.bottom));
+        return { x: L, y: T, w: R - L, h: B - T, r: R, b: B, cx: (L + R) / 2, cy: (T + B) / 2 };
+      }
+    }
+    return null;
+  }
+
+  /* ---- hand-drawn shapes (a little wobble, seeded so a redraw looks the same) ---- */
+  let seed = 1; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647 - 0.5;
+  const P = pts => 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L');
+  function ring(b) {
+    const pad = Math.max(7, b.h * 0.18), rx = b.w / 2 + pad, ry = b.h / 2 + pad * 0.7, pts = [];
+    for (let i = 0; i <= 40; i++) { const a = (-110 + 400 * i / 40) * Math.PI / 180, k = 1 + rnd() * 0.06 + i / 40 * 0.07; pts.push([b.cx + rx * k * Math.cos(a), b.cy + ry * k * Math.sin(a)]); }
+    return P(pts);
+  }
+  function curve(x1, y1, x2, y2, bend) {
+    const mx = (x1 + x2) / 2 - (y2 - y1) * bend, my = (y1 + y2) / 2 + (x2 - x1) * bend, pts = [];
+    for (let i = 0; i <= 16; i++) { const t = i / 16, a = (1 - t) * (1 - t), b = 2 * t * (1 - t), c = t * t; pts.push([a * x1 + b * mx + c * x2 + rnd() * 2, a * y1 + b * my + c * y2 + rnd() * 2]); }
+    return pts;
+  }
+  function arrow(x1, y1, x2, y2, bend) {
+    const pts = curve(x1, y1, x2, y2, bend), n = pts.length, an = Math.atan2(pts[n - 1][1] - pts[n - 4][1], pts[n - 1][0] - pts[n - 4][0]), hd = 11;
+    return P(pts) + ` M${(x2 - hd * Math.cos(an - 0.5)).toFixed(1)} ${(y2 - hd * Math.sin(an - 0.5)).toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)} L${(x2 - hd * Math.cos(an + 0.5)).toFixed(1)} ${(y2 - hd * Math.sin(an + 0.5)).toFixed(1)}`;
+  }
+  const lineUnder = b => P(curve(b.x - 4, b.b + 5, b.r + 4, b.b + 3, 0.02));
+  const lineThrough = b => P(curve(b.x - 5, b.cy + 2, b.r + 5, b.cy - 3, 0.01));
+
+  /* ---- play ---- */
+  function play(stage, g, o = {}) {
+    const steps = (g.show || []).filter(s => Array.isArray(s) && s.length);
+    if (!steps.length) return Promise.resolve(false);
+    seed = 7 + String(g.q).length;
+    // the working lines go in first (hidden), so nothing moves once the pen starts
+    const writes = steps.filter(s => s[0] === 'write');
+    let work = null;
+    if (writes.length) {
+      work = document.createElement('div'); work.className = 'pen-work';
+      work.innerHTML = writes.map(s => `<div class="pen-w"><span>${typeof fmt === 'function' ? fmt('`' + s[1] + '`') : s[1]}</span></div>`).join('');
+      const before = stage.querySelector('.dz-opts'); stage.insertBefore(work, before);
+    }
+    const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'pen-svg'); svg.setAttribute('aria-hidden', 'true'); stage.appendChild(svg);
+    const roots = [stage.querySelector('.dz-q'), stage.querySelector('.dz-cmp')];
+
+    // build every stroke from where things are now; called again if the screen size changes
+    let items = [];
+    function build() {
+      svg.innerHTML = ''; items = [];
+      const S = stage.getBoundingClientRect();
+      svg.setAttribute('width', stage.scrollWidth); svg.setAttribute('height', stage.scrollHeight);
+      const rel = b => b && Object.assign({}, b, { x: b.x - S.left, y: b.y - S.top, r: b.r - S.left, b: b.b - S.top, cx: b.cx - S.left, cy: b.cy - S.top });
+      let t = 0, marks = [], wi = 0;
+      const stroke = (d, dur) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('pathLength', '1'); svg.appendChild(p); items.push({ el: p, a: t, b: t + dur, k: 'p' }); t += dur + GAP; };
+      for (const s of steps) {
+        const [kind, x, y] = s;
+        if (kind === 'circle' || kind === 'under' || kind === 'strike') {
+          const b = rel(find(roots, x, y || 1)); if (!b) continue;
+          stroke(kind === 'circle' ? ring(b) : kind === 'under' ? lineUnder(b) : lineThrough(b), MOVE);
+          if (kind !== 'strike') marks.push(Object.assign(b, { text: x }));
+        } else if (kind === 'arrow') {
+          const a = rel(find(roots, x)), b = rel(find(roots, y)); if (!a || !b) continue;
+          const up = b.cy < a.cy;
+          stroke(arrow(a.cx, up ? a.y - 6 : a.b + 6, b.cx, up ? b.b + 6 : b.y - 6, a.cx > b.cx ? 0.25 : -0.25), ARROW);
+        } else if (kind === 'write') {
+          const line = work && work.children[wi++]; if (!line) continue;
+          const span = line.firstElementChild, lb = span.getBoundingClientRect(), L = rel({ x: lb.left, y: lb.top, w: lb.width, h: lb.height, r: lb.right, b: lb.bottom, cx: (lb.left + lb.right) / 2, cy: (lb.top + lb.bottom) / 2 });
+          // arrows from what was just circled to this line (at most two)
+          // each arrow lands on the same number in the working line when it is there (an exponent ³ lands on the 3), else on the middle
+          const plain = x => String(x || '').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, c => SUP.indexOf(c));
+          let used = 0;
+          marks.slice(-2).forEach((m, j, arr) => {
+            const hit = m.text != null && rel(find([span], plain(m.text), m.text === arr[0].text && j ? 2 : 1));
+            const tx = hit ? hit.cx : arr.length === 2 ? L.cx + (m.cx > arr[1 - j].cx ? 1 : -1) * Math.min(40, L.w / 4) : L.cx;
+            stroke(arrow(m.cx, m.b + 6, tx, L.y - 2, m.cx > tx + 8 ? -0.15 : m.cx < tx - 8 ? 0.15 : 0.03), ARROW); if (arr.length === 2 && !j) t -= ARROW; used++; });
+          marks = [L];
+          items.push({ el: line, a: t, b: t + WRITE, k: 'w' }); t += WRITE + GAP;
+        }
+      }
+      return t;
+    }
+    const total = build();
+    if (!items.length) { svg.remove(); work && work.remove(); return Promise.resolve(false); }
+    const paint = u => items.forEach(it => { const p = Math.max(0, Math.min(1, (u - it.a) / (it.b - it.a)));
+      if (it.k === 'p') it.el.style.strokeDashoffset = String(1 - p); else it.el.style.clipPath = p >= 1 ? 'none' : `inset(-30% 0 -30% ${(100 - 100 * p).toFixed(1)}%)`; });
+    const ticks = items.map(it => it.a);
+    return new Promise(res => {
+      let t0 = null, done = false, raf = 0, ti = 0, u = 0;
+      const onResize = () => { build(); paint(done ? 1e9 : u); };
+      addEventListener('resize', onResize);
+      const end = () => { if (done) return; done = true; cancelAnimationFrame(raf); paint(1e9); document.removeEventListener('click', skip, true); setTimeout(() => res(true), 250); };
+      const skip = e => { if (done) return; e.stopPropagation(); e.preventDefault(); o.onSkip && o.onSkip(); end(); };
+      const frame = now => { if (done) return; if (t0 == null) t0 = now; u = (now - t0) / 1000; paint(u);
+        while (ti < ticks.length && ticks[ti] <= u) { ti++; o.onTick && o.onTick(); }
+        if (u >= total) return end(); raf = requestAnimationFrame(frame); };
+      // stop listening once this question leaves the screen
+      const watch = setInterval(() => { if (!document.body.contains(svg)) { clearInterval(watch); removeEventListener('resize', onResize); if (!done) { done = true; cancelAnimationFrame(raf); document.removeEventListener('click', skip, true); res(false); } } }, 500);
+      paint(0);
+      if (quiet()) return end();
+      setTimeout(() => document.addEventListener('click', skip, true), 0);   // the tap that opened it does not skip it
+      raf = requestAnimationFrame(frame);
+    });
+  }
+
+  window.LeenaPen = { play, find };
+})();
+
 /* ================= the road: every lesson, in order =================
    A lesson here is only a name on the road. Its content is attached by a drill file (L.drill = …):
      d_fast_drill.js            lesson 1 (free)
@@ -3798,9 +3976,10 @@ function runDrill(d, lesson) {
   };
 
   /* the three ways to ask about one power: its value, how many times we multiply, what it means */
-  const valQ = (b, e) => { const a = b ** e; return { q: m_(P(b, e)) + ' = ؟', ans: a, wr: [[b * e, 'mul'], [b + e, 'add'], [e ** b <= 99999 ? e ** b : null, 'flip'], [b ** (e - 1), 'less'], [b ** (e + 1), 'more'], ...near(a)] }; };
-  const countQ = (b, e) => ({ q: m_(rep(b, e)) + ' = ' + b + ' أس كم؟', ans: e, wr: [[b ** e, 'val'], [b * e, 'mulc'], [e + 1, 'more'], [e > 2 ? e - 1 : null, 'less'], ...near(e)] });
-  const meanQ = (b, e) => ({ q: m_(P(b, e)) + ' معناها:', ans: m_(rep(b, e)), wr: [[m_(b + ' × ' + e), 'mul'], [b <= 6 && e ** b !== b ** e ? m_(rep(e, b)) : null, 'flip'], [m_(rep(b, e, ' + ')), 'add'], [e > 3 ? m_(rep(b, e - 1)) : null, 'less'], [m_(rep(b, e + 1)), 'more']] });
+  const times = e => e === 2 ? 'مرتين' : e + ' مرات';
+  const valQ = (b, e) => { const a = b ** e; return { q: m_(P(b, e)) + ' = ؟', ans: a, show: [['circle', sp(e)], ['write', (e <= 5 ? rep(b, e) : `${b} × ${b} × …`) + ' = ' + a]], wr: [[b * e, 'mul'], [b + e, 'add'], [e ** b <= 99999 ? e ** b : null, 'flip'], [b ** (e - 1), 'less'], [b ** (e + 1), 'more'], ...near(a)] }; };
+  const countQ = (b, e) => ({ q: m_(rep(b, e)) + ' = ' + b + ' أس كم؟', ans: e, show: [['under', rep(b, e)], ['write', times(e)]], wr: [[b ** e, 'val'], [b * e, 'mulc'], [e + 1, 'more'], [e > 2 ? e - 1 : null, 'less'], ...near(e)] });
+  const meanQ = (b, e) => ({ q: m_(P(b, e)) + ' معناها:', ans: m_(rep(b, e)), show: [['circle', sp(e)], ['write', rep(b, e)]], wr: [[m_(b + ' × ' + e), 'mul'], [b <= 6 && e ** b !== b ** e ? m_(rep(e, b)) : null, 'flip'], [m_(rep(b, e, ' + ')), 'add'], [e > 3 ? m_(rep(b, e - 1)) : null, 'less'], [m_(rep(b, e + 1)), 'more']] });
   const powForms = (b, e) => { const f = [valQ, valQ]; if (e <= 6) f.push(countQ); if (e >= 3 && e <= 5) f.push(meanQ); return pick(f)(b, e); };
 
   const H = {   // what each wrong choice means
@@ -3912,7 +4091,7 @@ function runDrill(d, lesson) {
       /* ---------- 4) multiply ---------- */
       lv('الضرب: نجمع الأسس', 25, 'نفس الأساس وبينهم ضرب؟ <b>نجمع الأسس</b>.', '`2³ × 2⁴ = 2⁷`',
         k => { const b = pick([2, 3, 5, 7, 10]), [lo, hi] = T(k, [[2, 3], [2, 4], [2, 6], [3, 8], [5, 12]]), m = R(lo, hi), n = R(lo, hi);
-          return { q: m_(P(b, m) + ' × ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mulx'], [Math.abs(m - n), 'sub'], [m + n + 1, 'count'], [m + n - 1, 'count']] }; },
+          return { q: m_(P(b, m) + ' × ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m + n, show: [['circle', sp(m)], ['circle', sp(n), m === n ? 2 : 1], ['write', `${m} + ${n} = ${m + n}`]], wr: [[m * n, 'mulx'], [Math.abs(m - n), 'sub'], [m + n + 1, 'count'], [m + n - 1, 'count']] }; },
         { bone: 'ليش نجمع؟<br>`2³ × 2² = (2 × 2 × 2) × (2 × 2)`<br>صار عندنا ٥ مرات ٢ مضروبة، يعني `2⁵`. ٣ + ٢ = ٥.' }),
       lv('العدد بدون أس', 25, 'العدد اللي بدون أس، أسه ١.', '`2⁵ × 2 = 2⁵ × 2¹ = 2⁶`',
         k => { const b = pick([2, 3, 5, 7, 10]), m = R(...T(k, [[2, 4], [3, 7], [5, 12]]));
