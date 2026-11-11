@@ -1390,7 +1390,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794382987"}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794383474"}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3548,7 +3548,7 @@ function runDrill(d, lesson) {
   /* the three ways to ask about one power: its value, how many times we multiply, what it means */
   const valQ = (b, e) => { const a = b ** e; return { q: m_(P(b, e)) + ' = ؟', ans: a, wr: [[b * e, 'mul'], [b + e, 'add'], [e ** b <= 99999 ? e ** b : null, 'flip'], [b ** (e - 1), 'less'], [b ** (e + 1), 'more'], ...near(a)] }; };
   const countQ = (b, e) => ({ q: m_(rep(b, e)) + ' = ' + b + ' أس كم؟', ans: e, wr: [[b ** e, 'val'], [b * e, 'mulc'], [e + 1, 'more'], [e > 2 ? e - 1 : null, 'less'], ...near(e)] });
-  const meanQ = (b, e) => ({ q: m_(P(b, e)) + ' معناها:', ans: m_(rep(b, e)), wr: [[m_(b + ' × ' + e), 'mul'], [b <= 6 && e ** b !== b ** e ? m_(rep(e, b)) : null, 'flip'], [m_(rep(b, e, ' + ')), 'add'], [e > 3 ? m_(rep(b, e - 1)) : null, 'less']] });
+  const meanQ = (b, e) => ({ q: m_(P(b, e)) + ' معناها:', ans: m_(rep(b, e)), wr: [[m_(b + ' × ' + e), 'mul'], [b <= 6 && e ** b !== b ** e ? m_(rep(e, b)) : null, 'flip'], [m_(rep(b, e, ' + ')), 'add'], [e > 3 ? m_(rep(b, e - 1)) : null, 'less'], [m_(rep(b, e + 1)), 'more']] });
   const powForms = (b, e) => { const f = [valQ, valQ]; if (e <= 6) f.push(countQ); if (e >= 3 && e <= 5) f.push(meanQ); return pick(f)(b, e); };
 
   const H = {   // what each wrong choice means
@@ -3663,7 +3663,7 @@ function runDrill(d, lesson) {
         { bone: 'ليش نجمع؟<br>`2³ × 2² = (2 × 2 × 2) × (2 × 2)`<br>صار عندنا ٥ مرات ٢ مضروبة، يعني `2⁵`. ٣ + ٢ = ٥.' }),
       lv('العدد بدون أس', 25, 'العدد اللي بدون أس، أسه ١.', '`2⁵ × 2 = 2⁵ × 2¹ = 2⁶`',
         k => { const b = pick([2, 3, 5, 7, 10]), m = R(...T(k, [[2, 4], [3, 7], [5, 12]]));
-          return { q: m_(Math.random() < 0.5 ? P(b, m) + ' × ' + b : b + ' × ' + P(b, m)) + ' = ' + b + ' أس كم؟', ans: m + 1, wr: [[m, 'noone'], [2 * m, 'mul2'], [m + 2, 'count']] }; }),
+          return { q: m_(Math.random() < 0.5 ? P(b, m) + ' × ' + b : b + ' × ' + P(b, m)) + ' = ' + b + ' أس كم؟', ans: m + 1, wr: [[m, 'noone'], [2 * m, 'mul2'], [m + 2, 'count'], [m + 3, 'count']] }; }),
       lv('أكثر من قوتين', 30, 'أكثر من قوتين؟ نفس الشي: اجمع كل الأسس.', '`3² × 3⁴ × 3 = 3⁷`',
         k => { const b = pick([2, 3, 5, 7]), [lo, hi] = T(k, [[1, 3], [2, 4], [2, 6]]), m = R(lo, hi), n = R(lo, hi), o = R(lo, hi);
           return { q: m_(P(b, m) + ' × ' + P(b, n) + ' × ' + P(b, o)) + ' = ' + b + ' أس كم؟', ans: m + n + o, wr: [[m * n * o, 'mulx'], [m + n, 'third'], [n + o, 'third'], ...near(m + n + o)] }; }),
@@ -3675,21 +3675,23 @@ function runDrill(d, lesson) {
         { bone: '`2⁵ ÷ 2³` = (٢×٢×٢×٢×٢) ÷ (٢×٢×٢)<br>نشطب ثلاث ٢ فوق مع ثلاث تحت، يبقى ٢ × ٢ = `2²`. ٥ − ٣ = ٢.' }),
       lv('العدد ÷ نفسه', 25, 'إذا الأسين متساويين: الأس يصير ٠، والجواب ١.', '`7⁵ ÷ 7⁵ = 7⁰ = 1`',
         k => { const b = pick([2, 3, 5, 7, 10, 12]), m = R(...T(k, [[2, 5], [4, 9], [8, 20]]));
-          return Math.random() < 0.6 ? { q: m_(P(b, m) + ' ÷ ' + P(b, m)) + ' = ؟', ans: 1, wr: [[0, 'zeroD'], [b, 'selfD'], [m, 'exp0']] }
+          return Math.random() < 0.6 ? { q: m_(P(b, m) + ' ÷ ' + P(b, m)) + ' = ؟', ans: 1, wr: [[0, 'zeroD'], [b, 'selfD'], [m, 'exp0'], [2 * m, 'addd']] }
             : { q: m_(P(b, m) + ' ÷ ' + P(b, m)) + ' = ' + b + ' أس كم؟', ans: 0, wr: [[1, 'val1'], [m, 'divd'], [2 * m, 'addd']] }; }),
       lv('قيمة القسمة', 30, 'اطرح الأسس أول، بعدين احسب القيمة.', '`2⁹ ÷ 2⁶ = 2³ = 8`',
         k => { const [b, d] = pick(T(k, [[[2, 1], [2, 2], [3, 1], [10, 1]], [[2, 2], [2, 3], [3, 2], [10, 2], [5, 1]], [[2, 3], [2, 4], [3, 2], [5, 2], [10, 3]], [[2, 4], [2, 5], [3, 3], [5, 2], [10, 4]]])), n = R(2, 9), m = n + d;
-          return { q: m_(P(b, m) + ' ÷ ' + P(b, n)) + ' = ؟', ans: b ** d, wr: [[d, 'expOnly'], [b * d, 'mulB'], [b ** (d + 1), 'count'], [d > 1 ? b ** (d - 1) : null, 'count']] }; }),
+          return { q: m_(P(b, m) + ' ÷ ' + P(b, n)) + ' = ؟', ans: b ** d, wr: [[d, 'expOnly'], [b * d, 'mulB'], [b ** (d + 1), 'count'], [d > 1 ? b ** (d - 1) : null, 'count'], [m + n, 'addd'], [b ** (d + 2), 'count']] }; },
+        { bone: '`3⁷ ÷ 3⁵`<br>١) اطرح الأسس: ٧ − ٥ = ٢، يعني `3²`<br>٢) احسب القيمة: `3² = 9`<br>الجواب ٩، مو ٢.' }),
 
       /* ---------- 6) power of a power ---------- */
       lv('قوس عليه أس', 25, 'قوس عليه أس؟ <b>نضرب الأسس</b>.', '`(2³)⁴ = 2¹²`',
         k => { const b = pick([2, 3, 5, 7]), [lo, hi] = T(k, [[2, 3], [2, 4], [2, 5], [3, 7], [3, 9]]), m = R(lo, hi), n = R(lo, hi);
-          return { q: m_('(' + P(b, m) + ')' + sp(n)) + ' = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'addP'], [m ** n <= 999 ? m ** n : null, 'pow'], [m * n + 1, 'count'], [m * n - 1, 'count']] }; },
+          return { q: m_('(' + P(b, m) + ')' + sp(n)) + ' = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'addP'], [m ** n <= 999 ? m ** n : null, 'pow'], [m * n + 1, 'count'], [m * n - 1, 'count'], [m * n + 2, 'count']] }; },
         { bone: '`(5²)³ = 5² × 5² × 5²`<br>الأس ٢ تكرر ٣ مرات: ٢ + ٢ + ٢ = ٦، يعني ٢ × ٣.' }),
       lv('قوس أو بدون قوس؟', 25, 'انتبه للفرق: <b>قوس</b> = نضرب الأسس، <b>بدون قوس</b> = نجمعها.', '`(2³)² = 2⁶`<br>لكن `2³ × 2² = 2⁵`',
         k => { const b = pick([2, 3, 5, 7]), [lo, hi] = T(k, [[2, 4], [2, 6], [3, 8]]), m = R(lo, hi), n = R(lo, hi);
-          return Math.random() < 0.5 ? { q: m_('(' + P(b, m) + ')' + sp(n)) + ' = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'mixAdd'], [m * n + 1, 'count'], [m * n - 1, 'count']] }
-            : { q: m_(P(b, m) + ' × ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mixMul'], [m + n + 1, 'count'], [m + n - 1, 'count']] }; }),
+          return Math.random() < 0.5 ? { q: m_('(' + P(b, m) + ')' + sp(n)) + ' = ' + b + ' أس كم؟', ans: m * n, wr: [[m + n, 'mixAdd'], [m * n + 1, 'count'], [m * n - 1, 'count'], [m * n + 2, 'count']] }
+            : { q: m_(P(b, m) + ' × ' + P(b, n)) + ' = ' + b + ' أس كم؟', ans: m + n, wr: [[m * n, 'mixMul'], [m + n + 1, 'count'], [m + n - 1, 'count'], [m + n + 2, 'count']] }; },
+        { bone: 'اسأل نفسك: فيه قوس عليه أس؟<br>`(5²)³`: فيه قوس ← نضرب: ٢ × ٣ = ٦<br>`5² × 5³`: ضرب عادي ← نجمع: ٢ + ٣ = ٥' }),
       lv('توحيد الأساس', 30, 'أساس مختلف؟ اكتبه كقوة أول، بعدين نضرب الأسس.', '`4³ = (2²)³ = 2⁶`',
         k => { const [b, p, kk] = pick(T(k, [[[4, 2, 2], [9, 3, 2]], [[4, 2, 2], [9, 3, 2], [25, 5, 2]], [[8, 2, 3], [9, 3, 2], [25, 5, 2]], [[16, 2, 4], [27, 3, 3], [8, 2, 3]], [[32, 2, 5], [81, 3, 4], [100, 10, 2], [16, 2, 4]]])), e = R(...T(k, [[2, 3], [2, 4], [2, 5], [2, 6], [3, 9]]));
           return { q: m_(P(b, e)) + ' = ' + p + ' أس كم؟', ans: kk * e, wr: [[e, 'same'], [kk + e, 'addB'], [b * e, 'base'], [kk * e + kk, 'count'], [kk * e - 1, 'count']] }; },
@@ -3698,19 +3700,22 @@ function runDrill(d, lesson) {
       /* ---------- 7) find س ---------- */
       lv('أوجد س (ضرب)', 25, '٣س يعني ٣ × س. عشان نلقى س <b>نقسم</b>.', '`3س = 12` ← س = ١٢ ÷ ٣ = ٤',
         k => { const [klo, khi, xhi] = T(k, [[2, 3, 5], [2, 5, 6], [2, 6, 9], [3, 9, 9], [4, 12, 12]]), kk = R(klo, khi), x = R(2, xhi), n = kk * x;
-          return { q: m_(kk + 'س = ' + n) + ' ، س = ؟', ans: x, wr: [[n * kk, 'mulL'], [n - kk, 'subL'], [n, 'sameL'], [x + 1, 'count']] }; }),
+          return { q: m_(kk + 'س = ' + n) + ' ، س = ؟', ans: x, wr: [[n * kk, 'mulL'], [n - kk, 'subL'], [n, 'sameL'], [x + 1, 'count']] }; },
+        { bone: '`4س = 20`<br>٤س يعني ٤ × س. أي عدد نضربه في ٤ يعطي ٢٠؟<br>نقسم: ٢٠ ÷ ٤ = ٥. إذن س = ٥.' }),
       lv('أوجد س (جمع)', 25, 'س + ٢ = ٧: ننقل الـ٢ للطرف الثاني <b>ونطرح</b>.', '`س + 2 = 7` ← س = ٧ − ٢ = ٥',
         k => { const c = R(...T(k, [[1, 3], [2, 6], [3, 9]])), x = R(...T(k, [[1, 5], [2, 9], [4, 15]])), n = x + c;
-          return { q: m_('س + ' + c + ' = ' + n) + ' ، س = ؟', ans: x, wr: [[n + c, 'addc'], [n, 'sameL'], [x + 1, 'count']] }; }),
+          return { q: m_('س + ' + c + ' = ' + n) + ' ، س = ؟', ans: x, wr: [[n + c, 'addc'], [n, 'sameL'], [x + 1, 'count'], [x + 2, 'count'], [x > 1 ? x - 1 : null, 'count'], [x + 3, 'count']] }; }),
       lv('الأسس تتساوى', 25, 'قوتين متساويتين بنفس الأساس؟ <b>الأسس تتساوى</b>.', '`2ˣ = 2⁵` ← س = ٥',
         k => { const b = pick([2, 3, 5, 7, 10]), e = R(...T(k, [[2, 5], [3, 9], [6, 20]]));
-          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + P(b, e)) + ' ، فما قيمة س؟', ans: e, wr: [[b, 'baseX'], [b ** e <= 999 ? b ** e : null, 'valueX'], [e + 1, 'count'], [e * b, 'valueX']] }; }),
+          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + P(b, e)) + ' ، فما قيمة س؟', ans: e, wr: [[b, 'baseX'], [b ** e <= 999 ? b ** e : null, 'valueX'], [e + 1, 'count'], [e * b, 'valueX'], [e > 1 ? e - 1 : null, 'count'], [e + 2, 'count']] }; }),
       lv('حوّل العدد لقوة', 30, 'إذا الطرف الثاني عدد: اكتبه كقوة بنفس الأساس أول.', '`2ˣ = 32` ← `2ˣ = 2⁵` ← س = ٥',
         k => { const [b, e] = pick(T(k, [[[2, 2], [2, 3], [3, 2], [10, 2]], [[2, 4], [3, 3], [5, 2], [10, 3]], [[2, 5], [3, 4], [5, 3], [2, 6]], [[2, 7], [3, 5], [5, 4], [2, 8], [10, 5]]])), n = b ** e;
-          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + n) + ' ، فما قيمة س؟', ans: e, wr: [[n / b, 'divX'], [n, 'sameX'], [e + 1, 'count'], [e > 2 ? e - 1 : null, 'count']] }; }),
+          return { q: 'إذا كان ' + m_(b + 'ˣ = ' + n) + ' ، فما قيمة س؟', ans: e, wr: [[n / b, 'divX'], [n, 'sameX'], [e + 1, 'count'], [e > 2 ? e - 1 : null, 'count'], [e + 2, 'count'], [e + 3, 'count']] }; },
+        { bone: '`3ˣ = 81`<br>اضرب وعدّ: ٣ ← ٩ ← ٢٧ ← ٨١ (أربع مرات)<br>إذن `81 = 3⁴`، فـ `3ˣ = 3⁴` ← س = ٤' }),
       lv('الأس فيه زيادة', 30, 'الأس كله يساوي الأس. بعدين ننقل الرقم.', '`2ˣ⁺¹ = 2⁵` ← س + ١ = ٥ ← س = ٤',
         k => { const b = pick([2, 3, 5]), c = R(...T(k, [[1, 2], [1, 3], [2, 5]])), e = R(c + 1, T(k, [6, 8, 12]));
-          return { q: 'إذا كان ' + m_(b + 'ˣ' + sp('+' + c) + ' = ' + P(b, e)) + ' ، فما قيمة س؟', ans: e - c, wr: [[e, 'forget'], [e + c, 'signX'], [e - c + 1, 'count']] }; }),
+          return { q: 'إذا كان ' + m_(b + 'ˣ' + sp('+' + c) + ' = ' + P(b, e)) + ' ، فما قيمة س؟', ans: e - c, wr: [[e, 'forget'], [e + c, 'signX'], [e - c + 1, 'count'], [e - c > 1 ? e - c - 1 : null, 'count'], [e - c + 2, 'count'], [e + c + 1, 'count']] }; },
+        { bone: '`3ˣ⁺² = 3⁷`<br>١) نفس الأساس: الأس = الأس ← س + ٢ = ٧<br>٢) انقل الـ٢ بالطرح: س = ٧ − ٢ = ٥' }),
       lv('أساسين مختلفين', 30, 'وحّد الأساس أول، بعدين ساوِ الأسس.', '`4ˣ = 2⁶` ← `2²ˣ = 2⁶` ← ٢س = ٦ ← س = ٣',
         k => { const [b, p, kk] = pick(T(k, [[[4, 2, 2], [9, 3, 2]], [[4, 2, 2], [9, 3, 2], [25, 5, 2]], [[8, 2, 3], [9, 3, 2], [25, 5, 2]], [[4, 2, 2], [8, 2, 3], [9, 3, 2], [25, 5, 2], [27, 3, 3]]])), x = R(...T(k, [[2, 3], [2, 4], [2, 5], [2, 6]])), e = kk * x;
           return { q: 'إذا كان ' + m_(b + 'ˣ = ' + P(p, e)) + ' ، فما قيمة س؟', ans: x, wr: [[e, 'same4'], [e * kk, 'mulk'], [e - kk, 'subk'], [x + 1, 'count']] }; },
@@ -3719,21 +3724,24 @@ function runDrill(d, lesson) {
       /* ---------- 8) adding powers ---------- */
       lv('جمع القوى', 30, 'جمع؟ ما نجمع الأسس. <b>نطلّع القوة الأصغر برا</b>.', '`5⁸ + 5⁷ = 5⁷ × (5 + 1)`',
         k => { const b = pick(T(k, [[2, 3], [2, 3, 5], [2, 3, 5, 7, 10]])), n = R(...T(k, [[2, 4], [3, 7], [4, 12]]));
-          return { q: m_(P(b, n + 1) + ' + ' + P(b, n)) + ' = ' + m_(P(b, n)) + ' × ؟', ans: b + 1, wr: [[b, 'nooneF'], [2, 'two'], [b * b, 'sqF'], [b + 2, 'count']] }; },
+          return { q: m_(P(b, n + 1) + ' + ' + P(b, n)) + ' = ' + m_(P(b, n)) + ' × ؟', ans: b + 1, wr: [[b, 'nooneF'], [2, 'two'], [b * b, 'sqF'], [b + 2, 'count'], [2 * b + 1, 'count']] }; },
         { bone: '`3⁵ + 3⁴`<br>`3⁵` = ٣ × `3⁴`، يعني ٣ نسخ من `3⁴`.<br>٣ نسخ + نسخة = ٤ نسخ = `4 × 3⁴`.' }),
       lv('بعدها نقسم', 30, 'بعد ما نطلّع العامل المشترك، القسمة تشطبه.', '`(5⁸ + 5⁷) ÷ 5⁷ = 5 + 1 = 6`',
         k => { const b = pick(T(k, [[2, 3], [2, 3, 5], [2, 3, 5, 7, 10]])), n = R(...T(k, [[2, 4], [3, 7], [4, 12]]));
-          return { q: m_('(' + P(b, n + 1) + ' + ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b + 1, wr: [[b, 'nooneF'], [1, 'cancel'], [2, 'two'], [b * b, 'sqF']] }; }),
+          return { q: m_('(' + P(b, n + 1) + ' + ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b + 1, wr: [[b, 'nooneF'], [1, 'cancel'], [2, 'two'], [b * b, 'sqF'], [2 * b + 1, 'count']] }; },
+        { bone: '`(3⁵ + 3⁴) ÷ 3⁴`<br>١) طلّع `3⁴` برا: `3⁴ × (3 + 1)`<br>٢) القسمة على `3⁴` تشطبها<br>٣) يبقى ٣ + ١ = ٤' }),
       lv('ونفس الشي في الطرح', 30, 'في الطرح نفس الطريقة، بس يصير ناقص.', '`(5⁸ − 5⁷) ÷ 5⁷ = 5 − 1 = 4`',
         k => { const b = pick(T(k, [[3, 4], [3, 5, 7], [3, 5, 7, 10, 11]])), n = R(...T(k, [[2, 4], [3, 7], [4, 12]]));
           return { q: m_('(' + P(b, n + 1) + ' − ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b - 1, wr: [[b + 1, 'signF'], [b, 'nooneF'], [1, 'cancel'], [0, 'cancel']] }; }),
       lv('نسخ متساوية', 30, 'نسختين من نفس القوة = ٢ × القوة. والـ٢ تزيد الأس ١.', '`2⁵ + 2⁵ = 2 × 2⁵ = 2⁶`',
         k => { const n = R(...T(k, [[2, 5], [4, 9], [6, 20]]));
-          return k >= 3 && Math.random() < 0.5 ? { q: m_(P(3, n) + ' + ' + P(3, n) + ' + ' + P(3, n)) + ' = 3 أس كم؟', ans: n + 1, wr: [[3 * n, 'addExp'], [n, 'sameN'], [n + 3, 'three']] }
-            : { q: m_(P(2, n) + ' + ' + P(2, n)) + ' = 2 أس كم؟', ans: n + 1, wr: [[2 * n, 'addExp'], [n, 'sameN'], [n * n, 'mulExp']] }; }),
+          return k >= 3 && Math.random() < 0.5 ? { q: m_(P(3, n) + ' + ' + P(3, n) + ' + ' + P(3, n)) + ' = 3 أس كم؟', ans: n + 1, wr: [[3 * n, 'addExp'], [n, 'sameN'], [n + 3, 'three'], [n + 2, 'count']] }
+            : { q: m_(P(2, n) + ' + ' + P(2, n)) + ' = 2 أس كم؟', ans: n + 1, wr: [[2 * n, 'addExp'], [n, 'sameN'], [n * n, 'mulExp'], [n + 2, 'count'], [2 * n + 1, 'count']] }; },
+        { bone: '`2⁴ + 2⁴`<br>نسختين من نفس الشي = ٢ × `2⁴`<br>والـ٢ هي `2¹`، فنجمع الأسس: `2¹ × 2⁴ = 2⁵`<br>الأس زاد ١ بس.' }),
       lv('فرق الأس ٢', 30, 'إذا الفرق بين الأسين ٢: نطلّع العدد <b>تربيع</b>.', '`(3⁶ + 3⁴) ÷ 3⁴ = 3² + 1 = 10`',
         k => { const b = pick(T(k, [[2, 3], [2, 3, 5], [2, 3, 5, 7]])), n = R(2, 9);
-          return { q: m_('(' + P(b, n + 2) + ' + ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b * b + 1, wr: [[b + 1, 'two2'], [b * b, 'nooneF'], [1, 'cancel'], [2 * b + 1, 'two2']] }; }),
+          return { q: m_('(' + P(b, n + 2) + ' + ' + P(b, n) + ') ÷ ' + P(b, n)) + ' = ؟', ans: b * b + 1, wr: [[b + 1, 'two2'], [b * b, 'nooneF'], [1, 'cancel'], [2 * b + 1, 'two2']] }; },
+        { bone: '`(2⁷ + 2⁵) ÷ 2⁵`<br>`2⁷ = 2² × 2⁵ = 4 × 2⁵` (٤ نسخ)<br>٤ نسخ + نسخة = ٥ نسخ من `2⁵`<br>نقسم على `2⁵` ← الجواب ٥' }),
 
       /* ---------- 9) comparing ---------- */
       lv('المقارنة', 25, 'نفس الأساس (أكبر من ١): <b>الأس الأكبر = العدد الأكبر</b>.', '`2³⁰` أكبر من `2²⁹`',
