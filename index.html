@@ -14,7 +14,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -1650,9 +1650,8 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <body>
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794433457", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794438018", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4447,7 +4446,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (h === '#lesson1') { clearHash(); LT('direct_lesson'); if (!subscriber()) return door(); }
     /* a returning subscriber: wait a moment for his account instead of flashing the visitor's door */
     const A = window.LeenaAuth;
-    if (!waited && (!A || !A.ready) && CFG.auth && window.supabase) { let saved = null; try { saved = localStorage.getItem('leena-auth'); } catch (e) {}
+    if (!waited && (!A || !A.ready) && CFG.auth) { let saved = null; try { saved = localStorage.getItem('leena-auth'); } catch (e) {}
       if (saved) { room('tun-door tun-wait').insertAdjacentHTML('beforeend', HOLE()); setTimeout(() => { if (!waited) { waited = true; if (document.querySelector('#app .tun-wait')) home(); } }, 6000); return; } }
     waited = true;
     if (subscriber()) { LT('home', { val: 'road', once: true }); return road(); }
@@ -4462,6 +4461,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   home();
 })();
 
+/* accounts load after the page is on screen: the sign-in library comes in the background, then this runs */
+window.__leenaAuth = function () {
 /* ================= subscriber accounts (public site only) =================
    The admin creates a username + password and picks each course's end date (admin.html).
    A logged-in student whose access is active can read that course's key; the full course is
@@ -4476,7 +4477,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const toast = msg => { document.querySelectorAll('.toast').forEach(t => t.remove()); const t = el('div', 'toast', esc(msg)); document.body.appendChild(t); setTimeout(() => t.remove(), 3000); };
   const fmtDate = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
-  const today = () => new Date().toISOString().slice(0, 10);
+  const today = () => new Date(Date.now() + 3 * 36e5).toISOString().slice(0, 10);   // the day in Saudi time, same as the database
   const A = window.LeenaAuth = { user: null, access: [], plan: null, ready: false, openLogin, showAccount, logout, _sb: sb, reload: () => load(),
     has: id => A.access.some(a => a.course === id && a.expires >= today()),
     whenReady: fn => { if (A.ready) fn(); else waiting.push(fn); } };
@@ -4567,6 +4568,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   start();
 })();
 
+};
+(function () { var s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js'; s.async = true; s.onload = function () { window.__leenaAuth(); }; document.head.appendChild(s); })();
 </script>
 </body>
 </html>
