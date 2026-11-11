@@ -1404,6 +1404,26 @@ body.lt .dock .lad-alt{border-radius:16px;color:#16201B;border:1px solid #D9D5CA
 body.lt .opt.dz-o.bad{text-decoration:none}
 .lt .dz-player .mo{color:#1F7A5A}
 body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
+/* the landing page's first question */
+.ld-hero{min-height:auto;justify-content:flex-start;padding:84px 0 56px}
+.lt .ld-hero .tun-p{margin-top:14px}
+.ld-try{width:100%;margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.ld-q{margin:0;align-self:center;font:900 44px/1.3 Alexandria,var(--f-display);color:#16201B}
+.ld-q sup{font-size:.55em}
+.ld-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ld-o{height:68px;border-radius:18px;border:1px solid #E4E0D6;background:#FFFFFF;box-shadow:0 1px 0 #E4E0D6;color:#16201B;font:300 26px/1 Alexandria,var(--f-display);cursor:pointer;transition:background .2s,opacity .3s}
+.ld-o:active{transform:scale(.98)}
+.ld-o.ok{background:#1F7A5A;border-color:#1F7A5A;color:#F6F4EE;font-weight:900;box-shadow:0 10px 24px rgba(31,122,90,.22)}
+.ld-o.bad{background:#FBF1EF;border:1px dashed #D98A7E;color:#9A3B30;box-shadow:none}
+.ld-o.off{opacity:.35}
+.ld-fb{margin:0;min-height:24px;font:200 17px/1.7 Alexandria,var(--f-display);color:#3D4A44;text-align:center}
+.ld-fb b{font-weight:900;color:#1F7A5A}
+.ld-fb sup{font-size:.6em}
+.lt .ld-next{position:static;width:100%;animation:dzRise .5s both}
+.lt .ld-go{opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity .3s,transform .3s;animation:none}
+.lt .ld-go.show{opacity:1;pointer-events:auto;transform:none}
+.lt .tun-land::after{opacity:0;transition:opacity .3s}
+.lt .tun-land:has(.ld-go.show)::after{opacity:1}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1622,7 +1642,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794427308", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794429787", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4139,7 +4159,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const sec = (eb, h, p, extra) => `<section class="ld-sec"><p class="tun-eyebrow">${eb}</p><i class="tun-rule"></i><h2 class="tun-h stop">${h}</h2>${p ? `<p class="tun-p">${p}</p>` : ''}${extra || ''}</section>`;
     const phone = src => `<div class="ld-phone"><img src="${src}" alt=""></div>`;
     w.insertAdjacentHTML('beforeend',
-      `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop">تحضير منظّم<br>لاختبار القدرات</h1><p class="tun-p">برنامج تدريب تفاعلي، يمشي معك خطوة بخطوة.</p></section>` +
+      `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop">تحضير منظّم<br>لاختبار القدرات</h1><p class="tun-p">جرّب الحين، هذا أول سؤال:</p>
+        <div class="ld-try"><p class="ld-q" dir="ltr">٢<sup>٣</sup> = ؟</p><div class="ld-opts">${['٦', '٨', '٥', '٩'].map(x => `<button class="ld-o" data-v="${x}">${x}</button>`).join('')}</div><p class="ld-fb" aria-live="polite"></p></div></section>` +
       sec('الخدمة', 'منهج الكمّي كاملًا', `${ar(lessons().length)} درسًا. تتدرّب بالحل،<br>وتعرف سبب كل خطأ فورًا.`, phone('land/q.webp')) +
       sec('مع الاشتراك', 'جلسة خاصة مع مدرّس', `${ar(30)} دقيقة ترتّب فيها خطتك،<br>وتسأل عمّا تحتاج.`, phone('land/book.webp')) +
       sec('الاشتراك', 'اختر طريقتك', '', `<div class="ld-tiers">
@@ -4149,8 +4170,27 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       `<section class="ld-sec ld-end"><h2 class="tun-h stop">ابدأ بالدرس الأول</h2><p class="tun-p">مجانًا، وبدون تسجيل.</p></section>`);
     const go = el('button', 'tun-go ld-go', 'جرّب الدرس الأول مجانًا');
     w.querySelector('.ld-wa').addEventListener('click', () => { LT('wa_click', { val: 'land_tutor' }); });
-    go.onclick = () => { LT('land_go'); try { sessionStorage.setItem('leena-land', '1'); } catch (e) {} door(); };
+    const start = how => { LT('land_go', { val: how }); LT('tunnel_enter', { val: 'land', lesson: first().id }); try { sessionStorage.setItem('leena-land', '1'); } catch (e) {} play(first()); };
+    go.onclick = () => start('button');
     w.appendChild(go);
+    /* the first question, right on the page: his first tap is an answer */
+    const WHY = { '٦': 'مو ٢ × ٣.', '٥': 'مو ٢ + ٣.', '٩': 'مو ٣ × ٣.' };
+    w.querySelectorAll('.ld-o').forEach(b => b.onclick = () => {
+      if (w.querySelector('.ld-try.done')) return;
+      const ok = b.dataset.v === '٨'; w.querySelector('.ld-try').classList.add('done');
+      w.querySelectorAll('.ld-o').forEach(o => o.classList.add(o.dataset.v === '٨' ? 'ok' : o === b ? 'bad' : 'off'));
+      LT('land_answer', { val: ok ? 'ok' : 'miss' });
+      w.querySelector('.ld-fb').innerHTML = `<b>${ok ? 'صح.' : 'قريب.'}</b> ${ok ? '' : WHY[b.dataset.v] + ' '}<span dir="ltr">٢<sup>٣</sup></span> يعني ٢ × ٢ × ٢ = ٨`;
+      const nx = el('button', 'tun-go ld-next', ok ? 'كمّل الدرس' : 'ابدأ الدرس'); nx.onclick = () => start('answer');
+      w.querySelector('.ld-try').appendChild(nx); go.classList.remove('show');
+    });
+    /* the bottom button shows only once he scrolls past the question */
+    const hero = w.querySelector('.ld-hero'); let saw = false;
+    const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll);
+      const past = hero.getBoundingClientRect().bottom < innerHeight * 0.4;
+      if (past && !saw) { saw = true; LT('land_scroll'); }
+      go.classList.toggle('show', past); };
+    addEventListener('scroll', onScroll, { passive: true });
     account(w, 'tun-link tun-top');
   }
 
