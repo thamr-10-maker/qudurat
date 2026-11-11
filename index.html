@@ -1228,7 +1228,7 @@ body.dz.lt{background:#F6F4EE;color:#16201B}
 .lt .tun-hole{display:none}
 .lt .tun-txt{align-items:flex-start;gap:0}
 .lt .tun-eyebrow,.lt .tun-time,.lt .tun-msg{margin:0;font:200 18px/1.6 Alexandria,var(--f-display);color:#1F7A5A;letter-spacing:0}
-.lt .tun-eyebrow .sep{font-style:normal;color:#C9C4B6;margin:0 10px}
+.lt .sep{font-style:normal;color:#C9C4B6;margin:0 10px}
 .lt .tun-rule{display:block;width:48px;height:2px;background:#1F7A5A;margin:14px 0 26px;transform-origin:right;animation:ltRule .8s .35s both}
 @keyframes ltRule{from{transform:scaleX(0)}}
 .lt .tun-h,.lt .tun-h.big{font:900 52px/1.25 Alexandria,var(--f-display);color:#16201B;letter-spacing:0;text-wrap:balance}
@@ -1291,6 +1291,21 @@ body.lt .acct-form input{background:#FFFFFF;color:#16201B;border-color:#D9D5CA}
 .lt .tun-door:not(.tun-list) .tun-txt{margin-top:auto}
 .lt .tun-door:not(.tun-list) .tun-act{margin-top:auto}
 .lt .tun-door:not(.tun-list):not(:has(.tun-txt)) .tun-act{margin-top:0}
+/* the landing page (ad visitors) */
+.lt .tun-land{justify-content:flex-start;gap:0;padding:0 30px 140px;overflow:visible}
+.ld-hero{min-height:calc(100svh - 150px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-top:60px;animation:dzRise .9s .15s both}
+.ld-sec{display:flex;flex-direction:column;align-items:flex-start;padding:64px 0;border-top:1px solid #E4E0D6}
+.lt .ld-sec .tun-h{font-size:40px}
+.ld-phone{align-self:center;width:230px;height:440px;margin-top:40px;border-radius:36px;overflow:hidden;background:#0B0C0C;box-shadow:0 0 0 6px #16201B,0 30px 60px rgba(22,32,27,.22)}
+.ld-phone img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.ld-price{margin:8px 0 0;display:flex;align-items:baseline;gap:14px;color:#16201B}
+.ld-price b{font:900 120px/1.1 Alexandria,var(--f-display)}
+.ld-price span{font:200 34px/1 Alexandria,var(--f-display);color:#3D4A44}
+.lt .ld-go{position:fixed;bottom:24px;left:0;right:0;margin:0 auto;width:calc(100% - 60px);max-width:400px;z-index:3;animation:dzRise .9s .6s both}
+.lt .tun-land::after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to top,#F6F4EE 55%,rgba(246,244,238,0));pointer-events:none;z-index:2}
+.ld-end{padding-bottom:20px}
+.lt .ld-hero .tun-h.big{font-size:46px}
+.lt .ld-hero .tun-p{max-width:300px}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1509,7 +1524,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794420362", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794421294", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4011,6 +4026,27 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (!subscriber()) account(w, 'tun-link tun-top');
   }
 
+  /* ---------- the landing page: only for visitors who come from an ad (?src=…-ad) or #land ---------- */
+  const PRICE = 129;
+  const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
+  const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
+  function landing() {
+    LT('land_view', { once: true });
+    const w = room('tun-land');
+    const sec = (eb, h, p, extra) => `<section class="ld-sec"><p class="tun-eyebrow">${eb}</p><i class="tun-rule"></i><h2 class="tun-h stop">${h}</h2>${p ? `<p class="tun-p">${p}</p>` : ''}${extra || ''}</section>`;
+    const phone = src => `<div class="ld-phone"><img src="${src}" alt=""></div>`;
+    w.insertAdjacentHTML('beforeend',
+      `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop">تحضير منظّم<br>لاختبار القدرات</h1><p class="tun-p">برنامج تدريب تفاعلي، يمشي معك خطوة بخطوة.</p></section>` +
+      sec('الخدمة', 'منهج الكمّي كاملًا', `${ar(lessons().length)} درسًا. تتدرّب بالحل،<br>وتعرف سبب كل خطأ فورًا.`, phone('land/q.webp')) +
+      sec('مع الاشتراك', 'جلسة خاصة مع مدرّس', `${ar(30)} دقيقة ترتّب فيها خطتك،<br>وتسأل عمّا تحتاج.`, phone('land/book.webp')) +
+      sec('الاشتراك', 'ثلاثة أشهر كاملة', '', `<p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span></p><p class="tun-p">دفعة واحدة<i class="sep">|</i>بلا تجديد تلقائي</p>`) +
+      `<section class="ld-sec ld-end"><h2 class="tun-h stop">ابدأ بالدرس الأول</h2><p class="tun-p">مجانًا، وبدون تسجيل.</p></section>`);
+    const go = el('button', 'tun-go ld-go', 'جرّب الدرس الأول مجانًا');
+    go.onclick = () => { LT('land_go'); try { sessionStorage.setItem('leena-land', '1'); } catch (e) {} door(); };
+    w.appendChild(go);
+    account(w, 'tun-link tun-top');
+  }
+
   /* ---------- the gate: lesson 1 is done, lesson 2 is for subscribers ---------- */
   function gate() {
     if (subscriber()) return after(first());
@@ -4080,6 +4116,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       LT('restart_lesson'); return subscriber() ? door(first()) : door();
     }
     if (h === '#open-all') { clearHash(); try { localStorage.setItem('leena-open-all', '1'); } catch (e) {} LT('open_all'); }
+    if (h === '#land') { clearHash(); if (!subscriber()) return landing(); }
     if (h === '#lesson1') { clearHash(); LT('direct_lesson'); if (!subscriber()) return door(); }
     /* a returning subscriber: wait a moment for his account instead of flashing the visitor's door */
     const A = window.LeenaAuth;
@@ -4088,10 +4125,11 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     waited = true;
     if (subscriber()) { LT('home', { val: 'road', once: true }); return road(); }
     if (done(first())) { LT('home', { val: 'gate', once: true }); return gate(); }
+    if (fromAd() && !landSeen()) { LT('home', { val: 'land', once: true }); return landing(); }
     LT('home', { val: 'door', once: true }); door();
   }
   /* auth.js calls this when it knows who is here. Never pulls a student out of a lesson. */
-  function authDone() { waited = true; if (document.querySelector('#app .tun')) home(); }
+  function authDone() { waited = true; if (document.querySelector('#app .tun') && !(document.querySelector('#app .tun-land') && !subscriber())) home(); }
 
   window.Academy = { home, openAll, authDone, plan: null };
   home();
