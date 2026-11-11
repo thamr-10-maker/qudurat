@@ -1390,7 +1390,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794379152"}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794380059"}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -1433,7 +1433,7 @@ function fmt(s) {
   s = s.replace(/`([^`]+)`/g, (_, m) => '<span class="m">' + escHtml(m).replace(/,\s*/g, '، ').replace(/√\((\d+)\/(\d+)\)/g, (_, a, b) => radH(frH(a, b)))   // a root over a whole fraction
     .replace(/(\d+)\/(\d+)/g, (_, a, b) => frH(a, b))
     .replace(/ ([×÷+=−≈]|-) /g, (all, o) => /√/.test(m) ? all : ` <span class="mo">${o === '-' ? '−' : o}</span> `) + '</span>'); // operators get their own quiet colour and air (not under a root sign, it must stay one piece)
-  return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('');
+  return s.split(/(<[^>]+>)/).map(part => part.startsWith('<') ? part : mathText(part)).join('').replace(/−([\d٠-٩]+(?:[.٫][\d٠-٩]+)?)/g, '\u2066−$1\u2069');   // a negative number: its sign stays on the left of the digits
 }
 /* Widgets write readouts directly; this watcher upgrades any raw ² / ⁻³ / √ in them to proper math markup. */
 const RAW_MATH = /[0-9⁰¹²³⁴⁵⁶⁷⁸⁹⁻]|[√∛](?=[(\d٠-٩\u0621-\u064A])/;
@@ -3188,7 +3188,7 @@ function runDrill(d, lesson) {
     stage.insertAdjacentHTML('beforeend', orbHTML(ring));
     const orb = stage.querySelector('.dz-orb'), cen = orb.querySelector('.dz-c'), fg = orb.querySelector('.dz-tfg');
     const fb = h('p', 'lad-fb dz-msg'); stage.appendChild(fb);
-    stage.appendChild(h('h1', 'dz-q', fmt(g.q.replace(/ ، /g, '، '))));   // the comma sticks to what's before it, never starts a line
+    stage.appendChild(h('h1', 'dz-q', fmt(g.q.replace(/` ، /g, ' ،` ').replace(/ ، /g, '، '))));   // the comma sticks to what's before it, never starts a line
     if (g.fig) { const f = h('div', 'dz-fig'); f.innerHTML = g.fig; stage.appendChild(f); }   // a small drawing (geometry, charts)
     if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
