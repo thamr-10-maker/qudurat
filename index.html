@@ -1651,7 +1651,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794438018", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794439737", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4570,6 +4570,29 @@ window.__leenaAuth = function () {
 
 };
 (function () { var s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js'; s.async = true; s.onload = function () { window.__leenaAuth(); }; document.head.appendChild(s); })();
+</script>
+<script>
+/* TikTok Pixel: tells TikTok which ad visitors really start learning, so ads reach students and not accidental taps.
+   General steps only (page opened, question answered, lesson started…). Never a name or a phone number. The owner's own phones (#me) are skipped. */
+(function () {
+  var ID = 'DBQFH53C77U4J2JRA680'; if (!ID || ID.length < 10) return;
+  try { if (localStorage.getItem('leena-me') === '1') return; } catch (e) {}
+  !function (w, d, t) {
+    w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+    ttq.load(ID);
+    ttq.page();
+  }(window, document, 'ttq');
+  /* our own steps → TikTok's standard event names (each once per visit) */
+  var MAP = { land_answer: 'ClickButton', lesson_start: 'ViewContent', lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment' };
+  var orig = window.LeenaTrack || function () {}, sent = {};
+  window.LeenaTrack = function (ev, o) {
+    orig(ev, o);
+    var name = MAP[ev]; if (!name || sent[ev]) return; sent[ev] = 1;
+    try { window.ttq.track(name, { content_id: (o && o.lesson) || 'qudurat-quant', content_type: 'product', content_name: ev }); } catch (e) {}
+  };
+})();
 </script>
 </body>
 </html>
