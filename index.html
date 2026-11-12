@@ -1691,7 +1691,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794507824", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794508818", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4529,7 +4529,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const ua = navigator.userAgent || '';
   const P = new URLSearchParams(location.search);
   const ref = (() => { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })();
-  const source = P.get('utm_source') || P.get('src') ||
+  const source = P.get('src') || P.get('utm_source') ||   // our own src first: TikTok adds utm_source=tiktok to ad links
     (/musical_ly|tiktok|bytedance/i.test(ua) || /tiktok/.test(ref) ? 'tiktok' : /Instagram/.test(ua) || /instagram/.test(ref) ? 'instagram' : /Snapchat/i.test(ua) ? 'snapchat' :
      /WhatsApp/i.test(ua) || /whatsapp/.test(ref) ? 'whatsapp' : /twitter|x\.com|t\.co/.test(ref) ? 'x' : /google/.test(ref) ? 'google' : ref && ref !== location.hostname ? ref.slice(0, 30) : 'direct');
   window.LeenaSrc = source;   // the interest form sends it with the lead
