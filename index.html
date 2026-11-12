@@ -1691,7 +1691,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794508818", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794515514", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4639,7 +4639,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- the landing page: only for visitors who come from an ad (?src=…-ad) or #land ---------- */
-  const PRICE = 59, WAS = 129, PRICE2 = 799;   // 59 = the opening price
+  const PRICE = 59, WAS = 129;   // 59 = the opening price
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
   function landing() {
@@ -4648,37 +4648,21 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const sec = (eb, h, p, extra) => `<section class="ld-sec"><p class="tun-eyebrow">${eb}</p><i class="tun-rule"></i><h2 class="tun-h stop">${h}</h2>${p ? `<p class="tun-p">${p}</p>` : ''}${extra || ''}</section>`;
     const phone = src => `<div class="ld-phone"><img src="${src}" alt=""></div>`;
     w.insertAdjacentHTML('beforeend',
-      `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop">تحضير منظّم<br>لاختبار القدرات</h1><p class="tun-p">جرّب الحين، هذا أول سؤال:</p>
-        <div class="ld-try"><p class="ld-q" dir="ltr">٢<sup>٣</sup> = ؟</p><div class="ld-opts">${['٦', '٨', '٥', '٩'].map(x => `<button class="ld-o" data-v="${x}">${x}</button>`).join('')}</div><p class="ld-fb" aria-live="polite"></p></div></section>` +
+      `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop">تحضير منظّم<br>لاختبار القدرات</h1><p class="tun-p">ابدأ بالدرس الأول مجانًا،<br>وبدون تسجيل.</p></section>` +
       sec('الخدمة', 'منهج الكمّي كاملًا', `${ar(lessons().length)} درسًا. تتدرّب بالحل،<br>وتعرف سبب كل خطأ فورًا.`, phone('land/q.webp')) +
       sec('مع الاشتراك', 'جلسة خاصة مع مدرّس', `${ar(30)} دقيقة ترتّب فيها خطتك،<br>وتسأل عمّا تحتاج.`, phone('land/book.webp')) +
-      sec('الاشتراك', 'اختر طريقتك', '', `<div class="ld-tiers">
-        <div class="ld-tier"><p class="ld-tn">تدرّب بنفسك</p><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span><s>${ar(WAS)}</s></p><p class="ld-open">سعر الافتتاح</p><ul><li>الكمّي كاملًا لمدة ${ar(3)} أشهر</li><li>جلسة ${ar(30)} دقيقة مع مدرّس</li></ul></div>
-        <div class="ld-tier dark"><p class="ld-tn">مع مدرّس للمنهج كامل</p><p class="ld-price"><b>${ar(PRICE2)}</b><span>ريال</span></p><ul><li>${ar(7)} ساعات ثابتة مع مدرّس</li><li>يمشي معك المنهج كامل</li><li>الكمّي كاملًا في الموقع</li></ul><a class="ld-wa" target="_blank" rel="noopener" href="${waLink('السلام عليكم، أبغى الاشتراك مع مدرّس للمنهج كامل (٧ ساعات)')}">اسأل على واتساب</a></div>
+      sec('الاشتراك', 'الكمّي كاملًا', '', `<div class="ld-tiers">
+        <div class="ld-tier"><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span><s>${ar(WAS)}</s></p><p class="ld-open">سعر الافتتاح</p><ul><li>${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر</li><li>جلسة ${ar(30)} دقيقة مع مدرّس</li></ul></div>
       </div><p class="tun-p">دفعة واحدة<i class="sep">|</i>بلا تجديد تلقائي</p>`) +
       `<section class="ld-sec ld-end"><h2 class="tun-h stop">ابدأ بالدرس الأول</h2><p class="tun-p">مجانًا، وبدون تسجيل.</p></section>`);
     const go = el('button', 'tun-go ld-go', 'جرّب الدرس الأول مجانًا');
-    w.querySelector('.ld-wa').addEventListener('click', () => { LT('wa_click', { val: 'land_tutor' }); });
     const start = how => { LT('land_go', { val: how }); LT('tunnel_enter', { val: 'land', lesson: first().id }); try { sessionStorage.setItem('leena-land', '1'); } catch (e) {} play(first()); };
     go.onclick = () => start('button');
     w.appendChild(go);
-    /* the first question, right on the page: his first tap is an answer */
-    const WHY = { '٦': 'مو ٢ × ٣.', '٥': 'مو ٢ + ٣.', '٩': 'مو ٣ × ٣.' };
-    w.querySelectorAll('.ld-o').forEach(b => b.onclick = () => {
-      if (w.querySelector('.ld-try.done')) return;
-      const ok = b.dataset.v === '٨'; w.querySelector('.ld-try').classList.add('done');
-      w.querySelectorAll('.ld-o').forEach(o => o.classList.add(o.dataset.v === '٨' ? 'ok' : o === b ? 'bad' : 'off'));
-      LT('land_answer', { val: ok ? 'ok' : 'miss' });
-      w.querySelector('.ld-fb').innerHTML = `<b>${ok ? 'صح.' : 'قريب.'}</b> ${ok ? '' : WHY[b.dataset.v] + ' '}<span dir="ltr">٢<sup>٣</sup></span> يعني ٢ × ٢ × ٢ = ٨`;
-      const nx = el('button', 'tun-go ld-next', ok ? 'كمّل الدرس' : 'ابدأ الدرس'); nx.onclick = () => start('answer');
-      w.querySelector('.ld-try').appendChild(nx); go.classList.remove('show');
-    });
-    /* the bottom button shows only once he scrolls past the question */
+    go.classList.add('show');   // the button is there from the first second
     const hero = w.querySelector('.ld-hero'); let saw = false;
     const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll);
-      const past = hero.getBoundingClientRect().bottom < innerHeight * 0.4;
-      if (past && !saw) { saw = true; LT('land_scroll'); }
-      go.classList.toggle('show', past); };
+      if (!saw && hero.getBoundingClientRect().bottom < innerHeight * 0.4) { saw = true; LT('land_scroll'); } };
     addEventListener('scroll', onScroll, { passive: true });
     account(w, 'tun-link tun-top');
   }
