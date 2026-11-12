@@ -1651,7 +1651,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794439737", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794459467", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3134,6 +3134,65 @@ function showProfile() {
   app.appendChild(w);
 }
 
+/* Every question must be doable in the head: the real exam allows no calculator (owner, 12 Nov 2026).
+   LeenaMental.load(g, loose) → 0 when the numbers are light, else a weight (higher = heavier); LeenaMental.why(g) lists the reasons.
+   LeenaMental.wrap(D, lessonId) makes every level re-roll a heavy question (up to 80 tries) and keep the lightest it found.
+   Used by the engine (drill.js), by the checker (test/drills.js) and by the report (test/mental.js). No page needed: plain maths on text. */
+(function (root) {
+  const AR = '٠١٢٣٤٥٦٧٨٩';
+  const norm = s => String(s == null ? '' : s).replace(/<[^>]+>/g, ' ').replace(/[٠-٩]/g, c => AR.indexOf(c)).replace(/٫/g, '.').replace(/[`⁦-⁩]/g, '');
+  const nums = s => norm(s).match(/\d+(\.\d+)?/g) || [];
+  // digits that carry weight: 2500 → 2 · 1024 → 4 · 0.125 → 3 · 10.5 → 3
+  const sig = n => { let t = String(n).replace('.', '').replace(/^0+/, ''); if (!String(n).includes('.')) t = t.replace(/0+$/, ''); return t.length || 1; };
+  const dp = n => (String(n).split('.')[1] || '').length;
+  const KNOWN = new Set(['1024', '3.14', '1000']);
+  const easyFactor = n => { const v = +n; return v <= 12 || v % 10 === 0 || [15, 25, 50, 75, 125].includes(v) || (dp(n) > 0 && sig(n) <= 1); };
+  const roundish = v => v % 25 === 0 || v % 10 === 0;
+  const TRICK = new Set(['fs3', 'fs4', 'al3']);   // lessons whose whole point is a shortcut on big-looking numbers (×25, 99², 103² − 9, (40 − 1)²): numbers up to 1100 allowed
+  const CONCEPT = new Set(['fs6', 'cm1']);        // nothing is computed: last-digit reasoning, comparison rules
+  const PATTERN = new Set(['الضرب في ١٠٠١', 'عدد مكرر']);   // levels where the answer is read off a pattern (345 × 1001 = 345345)
+
+  function why(g, loose) {
+    const out = [], text = norm([g.q, g.a, g.b].filter(Boolean).join(' '));
+    const pick = /قرّب|رتّب|أي عدد|أيّ عدد|أكبر عدد|أصغر عدد|قيمة الرقم|مجموع أرقام|أرقام العدد|خانة/.test(text);   // choosing, rounding, reading digits: nothing to compute with the long number
+    const qn = nums(text), an = nums(g.ans);
+    for (const n of qn) {
+      if (KNOWN.has(n)) continue;
+      if (loose ? +n >= 2000 && sig(n) >= 2 : sig(n) >= 4 && !pick) out.push([2, 'big number in the question', n]);
+      if (dp(n) >= 3 && sig(n) >= 4 && !pick && !/^قارن/.test(text)) out.push([1, 'long decimal', n]);
+    }
+    for (const n of pick ? [] : an) {
+      if (KNOWN.has(n) || qn.includes(n)) continue;
+      const v = +n;
+      if (loose ? v >= 10000 && sig(n) >= 4 : sig(n) >= 4) out.push([2, 'big answer', n]);
+      else if (sig(n) >= 3 && v > 300 && !roundish(v) && !loose) out.push([1, 'three-digit answer over 300', n]);
+      if (dp(n) >= 3 && sig(n) >= 4) out.push([1, 'long decimal answer', n]);
+    }
+    for (const m of text.matchAll(/(\d+(?:\.\d+)?)\s*×\s*(\d+(?:\.\d+)?)/g)) {
+      if (!easyFactor(m[1]) && !easyFactor(m[2]) && !loose) out.push([2, 'hard multiply', m[1] + ' × ' + m[2]]);
+      else if ((+m[1]) * (+m[2]) > 1000 && sig(m[1]) + sig(m[2]) >= 4 && !loose) out.push([1, 'big multiply', m[1] + ' × ' + m[2]]);
+    }
+    for (const m of text.matchAll(/(\d+(?:\.\d+)?)\s*÷\s*(\d+(?:\.\d+)?)/g)) { const a = +m[1], b = +m[2];
+      if (b > 12 && b % 10 && ![15, 25, 50].includes(b) && a / b > 12) out.push([1, 'hard divide', m[1] + ' ÷ ' + m[2]]); }
+    for (const m of text.matchAll(/√\s*\(?(\d+)\)?/g)) { const r = Math.sqrt(+m[1]); if (r === Math.floor(r) && r > 20 && r % 5) out.push([1, 'big square root', '√' + m[1]]); }
+    const bare = /^\(?[−-]?(\d+)\)?([⁰¹²³⁴⁵⁶⁷⁸⁹]+)\s*=\s*[؟?]$/.exec(text.trim());
+    if (bare) { const b = +bare[1], e = +[...bare[2]].map(c => '⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''); if (b > 1 && b !== 10 && Math.pow(b, e) > 300 && !(b === 2 && e <= 10) && !(loose && e === 2 && b < 100)) out.push([2, 'big power to work out', b + '^' + e]); }
+    return out;
+  }
+  const load = (g, loose) => loose === 'concept' ? 0 : why(g, loose).reduce((s, x) => s + x[0], 0);
+  const mode = id => CONCEPT.has(id) ? 'concept' : TRICK.has(id);
+  function wrap(D, id) {
+    if (!D || D._mental) return D; D._mental = true;
+    const loose = mode(id);
+    for (const lv of D.levels || []) { const gen = lv.gen; if (typeof gen !== 'function') continue;
+      if (PATTERN.has(lv.name)) { lv.gen0 = gen; lv.light = true; continue; }
+      lv.gen0 = gen;
+      lv.gen = k => { let best = null, bw = 1e9; for (let t = 0; t < 80; t++) { const g = gen(k), w = load(g, loose); if (!w) return g; if (w < bw) { bw = w; best = g; } } return best; }; }
+    return D;
+  }
+  root.LeenaMental = { load, why: (g, loose) => loose === 'concept' ? [] : why(g, loose), wrap, mode };
+})(typeof window !== 'undefined' ? window : globalThis);
+
 /* ================= drill lessons (learning by doing) =================
    One short line of explanation when a new skill shows up, then a shower of fast new questions.
    - every level = one small skill; a bar out of 5: right +1 (very fast +2), miss or time up −1 (never below 0)
@@ -3355,6 +3414,7 @@ function runDrill(d, lesson) {
   S.drill = S.drill || {};
   if (S.drill[id] && S.drill[id].v !== (D.v || 1)) delete S.drill[id];   // progress saved by an older version of this lesson (different levels) starts fresh
   const mem = () => S.drill[id] || (S.drill[id] = { lv: 0, pts: 0, v: D.v || 1 });
+  if (window.LeenaMental) { window.LeenaMental.wrap(D, id); for (const L2 of d.lessons || []) if (L2.drill) window.LeenaMental.wrap(L2.drill, L2.id); }   // no calculator in the exam: heavy numbers are re-rolled
   LT_LESSON = id; LT('lesson_start', { lesson: id, val: 'drill' });
   let timer = null, gone = false;
   /* ---------- what we learn about the student, quietly (never shown) ----------
@@ -3646,6 +3706,19 @@ function runDrill(d, lesson) {
     let list = [];
     for (let j = 0; j < i; j++) { const s = sk(id, j); if ((s.w || s.p < 0.55) && can(j)) list.push(j); }
     list = list.sort((a, b) => sk(id, a).p - sk(id, b).p).slice(0, 2);
+    /* every third level: one idea from an EARLIER lesson that is due (spaced: 1 day, then about 3, 7, 18…), weakest first.
+       This replaced the warm-up at the door (owner, 12 Nov 2026: a review before the lesson kills the momentum). */
+    let other = null;
+    if (!list.length && i % 3 === 0 && i < N && i > 0 && (cameBack.other || 0) < 3) {
+      const now = Date.now(), pool = [];
+      for (const L2 of d.lessons || []) {
+        if (!L2.drill || L2 === lesson) continue;
+        const mm = S.drill[L2.id]; if (!mm || !mm.finished || mm.v !== (L2.drill.v || 1)) continue;
+        for (let j = 0; j < L2.drill.levels.length; j++) { const had = B.sk[L2.id + ':' + j], s2 = sk(L2.id, j); if (!had) { s2.p = 0.6; s2.d = 1; } if ((s2.due || 0) <= now) pool.push({ L2, j, p: s2.p }); }
+      }
+      if (pool.length) { other = drShuffle(pool).sort((a, b) => a.p - b.p)[0]; cameBack.other = (cameBack.other || 0) + 1; }
+    }
+    if (other) { LT('drill_back', { lesson: id, n: i, val: other.L2.id + ':' + (other.j + 1) }); return quiz([[other.L2, other.j]], 'back', go); }
     if (!list.length && i % 3 === 0 && i < N) { let best = -1; for (let j = 0; j < i; j++) if (can(j) && (best < 0 || (sk(id, j).at || 0) < (sk(id, best).at || 0))) best = j; if (best >= 0) list = [best]; }
     if (!list.length) return go();
     list.forEach(j => { cameBack[j] = (cameBack[j] || 0) + 1; });
@@ -3778,7 +3851,7 @@ function runDrill(d, lesson) {
     dockBtn('مراجعة سريعة', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); idea(0); }]);
   }
   else if (m.lv >= N) finalIntro();
-  else if (TUN) { m.started = true; persist(); warm(() => idea(m.lv)); }   // the tunnel's door already said everything: straight to the first idea
+  else if (TUN) { m.started = true; persist(); idea(m.lv); }   // the tunnel's door already said everything: straight to the first idea (no warm-up: reviews come between levels)
   else startScreen(!!(m.started && (m.lv || m.pts)));
 }
 
