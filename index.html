@@ -1082,6 +1082,8 @@ body.dz .dz-player{position:relative;min-height:100svh;background:#0B0C0C;color:
 .dz-opts.one{grid-template-columns:1fr}
 body.dz .opt.dz-o{min-height:76px;height:auto;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#F2F3F1;font-family:var(--f-display);font-size:26px;font-weight:300;display:flex;align-items:center;justify-content:center;padding:8px 12px;box-shadow:none;transition:background .25s,border-color .25s,opacity .3s,transform .15s;cursor:pointer}
 body.dz .dz-opts.one .opt.dz-o{min-height:62px;font-size:20px}
+body.dz .opt.dz-o{min-width:0;overflow-wrap:anywhere}
+body.dz .opt.dz-o .m{white-space:normal;max-width:100%}   /* a long answer («س² + ١٨س + ٨١») wraps inside its button instead of spilling out */
 body.dz .opt.dz-o:active{transform:scale(.98)}
 body.dz .opt.dz-o.ok{border-color:rgba(95,211,160,.7);background:rgba(95,211,160,.14);box-shadow:0 0 28px rgba(95,211,160,.18);color:#F6F7F5;opacity:1}
 body.dz .dz-stage.answered .opt.dz-o:not(.ok){opacity:.3}
@@ -1676,7 +1678,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794474901", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794475235", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
