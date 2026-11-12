@@ -62,6 +62,8 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 .slot .who{flex:1;font-size:14px}.slot .who small{display:block;color:var(--ink2)}.slot .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.times button{padding:9px 0;font-size:14px}.times button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 button.small.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.badge{display:inline-block;min-width:18px;padding:0 6px;margin-inline-start:4px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;line-height:18px}
+.pill.ld-new{color:var(--warn);border:1px solid currentColor}.pill.ld-contacted{background:var(--accent-soft);color:var(--ink2)}.pill.ld-paid{background:var(--accent-soft);color:var(--accent)}.pill.ld-no{color:var(--ink2);border:1px solid var(--line)}
 .pill.paid{background:var(--accent-soft);color:var(--accent)}.pill.pending{color:var(--warn);border:1px solid currentColor}.pill.failed,.pill.refunded{color:var(--bad);border:1px solid currentColor}
 a.wa{color:var(--accent);font-weight:600;font-size:13px}
 .path{font-size:15px;margin:14px 0 6px}.rg{flex-wrap:wrap}.rg button{flex:1 0 30%}
@@ -92,7 +94,7 @@ const errText = e => { const m = (e && (e.message || e.error_description)) || St
 
 if (!window.supabase) { app.innerHTML = '<div class="card"><p class="err">تعذّر تحميل الأداة. تأكد من الإنترنت ثم حدّث الصفحة.</p></div>'; throw new Error('no supabase'); }
 const sb = supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: true, storageKey: 'leena-admin' } });
-let students = [], tab = CFG.pay ? 'orders' : 'list';
+let students = [], tab = CFG.pay ? 'orders' : 'leads';
 
 async function boot() {
   const { data: { user } } = await sb.auth.getUser();
@@ -128,14 +130,14 @@ function loginScreen(msg, setup) {
 /* ---------- the tool ---------- */
 function shell() {
   app.innerHTML = `<header><h1>لوحة لينا</h1><button class="small" id="out">خروج</button></header>
-    <div class="tabs">${CFG.pay ? '<button data-t="orders">الطلبات</button><button data-t="cal">المواعيد</button>' : ''}<button data-t="list">الطلاب</button><button data-t="new">طالب جديد</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
+    <div class="tabs">${CFG.pay ? '<button data-t="orders">الطلبات</button><button data-t="cal">المواعيد</button>' : ''}<button data-t="leads">المهتمون <span class="badge" id="lb" hidden></span></button><button data-t="list">الطلاب</button><button data-t="new">طالب جديد</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
   document.getElementById('out').onclick = async () => { await sb.auth.signOut(); loginScreen(); };
   app.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.t; draw(); });
-  draw();
+  draw(); leadBadge();
 }
 function draw() {
   app.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
-  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else if (tab === 'orders') orders(); else if (tab === 'cal') calendar(); else listStudents();
+  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else if (tab === 'orders') orders(); else if (tab === 'cal') calendar(); else if (tab === 'leads') leads(); else listStudents();
 }
 
 /* ---------- statistics: how many came and what they did ---------- */
@@ -243,6 +245,40 @@ function orderCard(o) {
     if (error) { const e = c.querySelector('#e'); e.textContent = errText(error); e.hidden = false; return; }
     orders();
   };
+}
+
+/* ---------- interested students: left their name and mobile after lesson 1 ---------- */
+const LSRC = { 'tiktok-ad': 'إعلان تيك توك', 'bio-ad': 'رابط الحساب' };
+const LS = { new: 'جديد', contacted: 'تم التواصل', paid: 'اشترك', no: 'لا' };
+const leadMsg = n => `وعليكم السلام ${n || ''}، حيّاك الله في أكاديمية لينا 🌿 وصلنا طلب اشتراكك في الكمّي كاملًا بسعر الافتتاح (٥٩ ريال).`;
+let leadRows = [];
+async function leadBadge(rows) {
+  if (!rows) { try { const { data } = await sb.rpc('admin_leads', { p_days: 30 }); rows = data || []; } catch (e) { rows = []; } }
+  const b = document.getElementById('lb'); if (!b) return;
+  const n = rows.filter(l => l.status === 'new').length; b.textContent = ar(n); b.hidden = !n;
+}
+async function leads() {
+  const view = document.getElementById('view'); view.innerHTML = '<div class="card"><p class="muted">جارٍ التحميل…</p></div>';
+  const { data, error } = await sb.rpc('admin_leads', { p_days: 60 });
+  if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p><p class="muted">إذا ما شغّلت ملف 005 في Supabase بعد، شغّله أول.</p></div>`; return; }
+  leadRows = data || []; leadBadge(leadRows);
+  const nw = leadRows.filter(l => l.status === 'new').length, pd = leadRows.filter(l => l.status === 'paid').length;
+  view.innerHTML = `<div class="card"><h2>المهتمون</h2><div class="big3">
+      <div><b>${ar(nw)}</b><span class="muted">ينتظرون تواصلك</span></div>
+      <div><b>${ar(leadRows.length)}</b><span class="muted">آخر ٦٠ يوم</span></div>
+      <div><b>${ar(pd)}</b><span class="muted">اشتركوا</span></div></div>
+      <p class="tip">اضغط «واتساب» والرسالة مكتوبة. بعدها أرسل ردّك الجاهز بتفاصيل التحويل، وغيّر الحالة.</p></div>
+    <div class="list" id="l">${leadRows.map(l => `<div class="card stack lead" data-id="${l.id}">
+      <div class="row" style="justify-content:space-between"><b>${esc(l.name)}</b><span class="pill ld-${l.status}" style="flex:none">${LS[l.status] || l.status}</span></div>
+      <small class="muted" dir="ltr" style="text-align:right">+${esc(l.phone)}</small>
+      <small class="muted">${atTime(l.at)}${l.src ? ' · ' + esc(LSRC[l.src] || SRC[l.src] || l.src) : ''}</small>
+      <a class="mebtn" href="${waLink(l.phone, leadMsg(l.name))}" target="_blank" rel="noopener">واتساب</a>
+      <div class="row">${['contacted', 'paid', 'no'].map(s => `<button class="small${l.status === s ? ' on' : ''}" data-s="${s}">${LS[s]}</button>`).join('')}</div></div>`).join('') || '<div class="card"><p class="muted">ما فيه أحد للحين.</p></div>'}</div>`;
+  view.querySelectorAll('.lead [data-s]').forEach(b => b.onclick = async () => {
+    const id = +b.closest('.lead').dataset.id, cur = leadRows.find(l => l.id === id), s = cur.status === b.dataset.s ? 'new' : b.dataset.s;
+    const { error } = await sb.rpc('admin_set_lead', { p_lead: id, p_status: s }); if (error) return alert(errText(error));
+    leads();
+  });
 }
 
 /* ---------- tutor sessions: open times, see who booked ---------- */

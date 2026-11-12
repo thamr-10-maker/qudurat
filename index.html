@@ -1462,6 +1462,19 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 @media (prefers-reduced-motion: reduce){.dz-help,.dz-help-in,.dz-ex-after{transition:none}}
 .mo-pw{display:inline-block;white-space:nowrap}
 
+/* opening price */
+.ld-price s{font:200 26px/1 Alexandria,var(--f-display);color:#9AA39D;text-decoration-thickness:1.5px;margin-inline-start:4px}
+.ld-open{display:inline-block;margin:0 0 12px;padding:4px 14px;border-radius:14px;background:#E6F1EC;color:#1F7A5A;font:400 14px/1.6 Alexandria,var(--f-display)}
+.tun-price{margin:6px 0 0;align-self:stretch;display:flex;align-items:baseline;justify-content:flex-start;gap:10px;font:200 22px/1.2 Alexandria,var(--f-display);color:#3D4A44}
+.tun-price b{font:900 56px/1.1 Alexandria,var(--f-display);color:#16201B}
+.tun-price s{color:#9AA39D;font-size:22px}
+.tun-price i{font-style:normal;font:400 14px/1.6 Alexandria,var(--f-display);color:#1F7A5A;background:#E6F1EC;border-radius:14px;padding:4px 14px;margin-inline-start:6px;align-self:center}
+.tun-note{margin:-2px 0 2px;font:200 14px/1.6 Alexandria,var(--f-display);color:#6B756F;animation:dzRise .9s .55s both}
+.tun-lead .jn-in,.tun-lead .jn-phone{flex:none;height:64px}
+.tun-lead .jn-in{text-align:right;padding:0 22px;font:300 20px/1 Alexandria,var(--f-display);letter-spacing:0}
+.tun-lead .jn-small{font:200 13px/1.9 Alexandria,var(--f-display)}
+.tun-lead .ld-wa2{align-self:flex-start}
+
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
 .cover-btn.soon{opacity:.55;filter:saturate(.4)}
@@ -1678,7 +1691,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794480988", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794507824", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4519,6 +4532,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const source = P.get('utm_source') || P.get('src') ||
     (/musical_ly|tiktok|bytedance/i.test(ua) || /tiktok/.test(ref) ? 'tiktok' : /Instagram/.test(ua) || /instagram/.test(ref) ? 'instagram' : /Snapchat/i.test(ua) ? 'snapchat' :
      /WhatsApp/i.test(ua) || /whatsapp/.test(ref) ? 'whatsapp' : /twitter|x\.com|t\.co/.test(ref) ? 'x' : /google/.test(ref) ? 'google' : ref && ref !== location.hostname ? ref.slice(0, 30) : 'direct');
+  window.LeenaSrc = source;   // the interest form sends it with the lead
   const device = (/iPhone|iPad|iPod/.test(ua) ? 'ios' : /Android/.test(ua) ? 'android' : 'desktop');
   function token() { try { const s = JSON.parse(localStorage.getItem('leena-auth') || 'null'); if (s && s.access_token && (!s.expires_at || s.expires_at * 1000 > Date.now() + 30000)) return s.access_token; } catch (e) {} return CFG.key; }
   function flush(leaving) {
@@ -4625,7 +4639,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- the landing page: only for visitors who come from an ad (?src=…-ad) or #land ---------- */
-  const PRICE = 129, PRICE2 = 799;
+  const PRICE = 59, WAS = 129, PRICE2 = 799;   // 59 = the opening price
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
   function landing() {
@@ -4639,7 +4653,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       sec('الخدمة', 'منهج الكمّي كاملًا', `${ar(lessons().length)} درسًا. تتدرّب بالحل،<br>وتعرف سبب كل خطأ فورًا.`, phone('land/q.webp')) +
       sec('مع الاشتراك', 'جلسة خاصة مع مدرّس', `${ar(30)} دقيقة ترتّب فيها خطتك،<br>وتسأل عمّا تحتاج.`, phone('land/book.webp')) +
       sec('الاشتراك', 'اختر طريقتك', '', `<div class="ld-tiers">
-        <div class="ld-tier"><p class="ld-tn">تدرّب بنفسك</p><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span></p><ul><li>الكمّي كاملًا لمدة ${ar(3)} أشهر</li><li>جلسة ${ar(30)} دقيقة مع مدرّس</li></ul></div>
+        <div class="ld-tier"><p class="ld-tn">تدرّب بنفسك</p><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span><s>${ar(WAS)}</s></p><p class="ld-open">سعر الافتتاح</p><ul><li>الكمّي كاملًا لمدة ${ar(3)} أشهر</li><li>جلسة ${ar(30)} دقيقة مع مدرّس</li></ul></div>
         <div class="ld-tier dark"><p class="ld-tn">مع مدرّس للمنهج كامل</p><p class="ld-price"><b>${ar(PRICE2)}</b><span>ريال</span></p><ul><li>${ar(7)} ساعات ثابتة مع مدرّس</li><li>يمشي معك المنهج كامل</li><li>الكمّي كاملًا في الموقع</li></ul><a class="ld-wa" target="_blank" rel="noopener" href="${waLink('السلام عليكم، أبغى الاشتراك مع مدرّس للمنهج كامل (٧ ساعات)')}">اسأل على واتساب</a></div>
       </div><p class="tun-p">دفعة واحدة<i class="sep">|</i>بلا تجديد تلقائي</p>`) +
       `<section class="ld-sec ld-end"><h2 class="tun-h stop">ابدأ بالدرس الأول</h2><p class="tun-p">مجانًا، وبدون تسجيل.</p></section>`);
@@ -4675,19 +4689,60 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const f = first();
     LT('gate_view');
     const w = room('tun-door tun-gate');
-    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">كمّل الكمّي<br>كاملًا</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر<br>وجلسة خاصة مع مدرّس.</p></div>`);
+    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">كمّل الكمّي<br>كاملًا</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر<br>وجلسة خاصة مع مدرّس.</p>${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال <s>${ar(WAS)}</s><i>سعر الافتتاح</i></p>`}</div>`);
     const act = el('div', 'tun-act'), Au = window.LeenaAuth, ended = !!(Au && Au.user && Au.access && Au.access.length);
     if (Au && Au.payOn) {   // online payment: phone + code → plan → pay
       const b = el('button', 'tun-go', ended ? 'جدّد اشتراكك' : 'اشترك وكمّل'); b.onclick = () => { LT('gate_join'); Au.join(ended ? 'renew' : 'join'); }; act.appendChild(b);
     } else {
-      const a = el('a', 'tun-go', 'اشترك وكمّل'); a.href = waLink('السلام عليكم، خلصت أول درس في دورة القدرات وأبغى أشترك وأكمّل'); a.target = '_blank'; a.rel = 'noopener';
-      a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
+      let sent = false; try { sent = localStorage.getItem('leena-lead') === '1'; } catch (x) {}
+      if (sent) {   // he already left his number on this phone
+        const a = el('a', 'tun-go', 'وصلنا طلبك · راسلنا على واتساب'); a.href = waLink(WA_MSG); a.target = '_blank'; a.rel = 'noopener';
+        a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
+      } else { const b = el('button', 'tun-go', 'اشترك الآن'); b.onclick = () => { LT('gate_join'); lead(); }; act.appendChild(b); }
     }
     if (ended) w.querySelector('.tun-msg').textContent = 'انتهى اشتراكك';
     if (!(Au && Au.user)) account(act, 'tun-ghost');
     const tr = el('button', 'tun-ghost', 'تدرّب على الدرس الأول'); tr.onclick = () => { LT('gate_train'); f._drillMode = 'open'; play(f); };
     act.appendChild(tr);
     w.appendChild(act);
+  }
+
+  /* ---------- plan B while online payment is off: he leaves his name and number, we contact him ---------- */
+  const WA_MSG = `السلام عليكم، خلصت الدرس الأول وأبغى أشترك في الكمّي كاملًا بسعر الافتتاح (${ar(PRICE)} ريال)`;
+  function lead() {
+    LT('lead_view');
+    const w = room('tun-door jn tun-lead', gate);
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">سجّل اهتمامك</h1><p class="tun-p">نتواصل معك اليوم على واتساب.</p></div>
+      <form class="jn-form" novalidate><input id="ld-name" class="jn-in" type="text" autocomplete="given-name" maxlength="40" placeholder="اسمك" aria-label="الاسم">
+      <label class="jn-phone"><span>+966</span><input id="ld-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
+      <p class="jn-err" hidden></p><button class="tun-go" type="submit">أرسل</button></form>
+      <a class="tun-link ld-wa2" target="_blank" rel="noopener" href="${waLink(WA_MSG)}">أو راسلنا الآن على واتساب</a>
+      <p class="jn-small">نستخدم رقمك للتواصل معك فقط.</p>`);
+    w.querySelector('.ld-wa2').addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); });
+    const f = w.querySelector('form'), nm = w.querySelector('#ld-name'), ph = w.querySelector('#ld-phone'), err = w.querySelector('.jn-err');
+    const go = f.querySelector('.tun-go');
+    f.onsubmit = async e => {
+      e.preventDefault(); err.hidden = true;
+      const n = nm.value.trim(), d = ph.value.replace(/\D/g, '').replace(/^(966|0)/, '');
+      if (n.length < 2) { err.textContent = 'اكتب اسمك'; err.hidden = false; return; }
+      if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال سعودي صحيح'; err.hidden = false; return; }
+      go.disabled = true; go.textContent = 'نرسل…';
+      let ok = false;
+      try {
+        const C = (window.ACADEMY_CONFIG || {}).auth;
+        const r = await fetch(C.url + '/rest/v1/rpc/lead_add', { method: 'POST', headers: { apikey: C.key, Authorization: 'Bearer ' + C.key, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p_name: n, p_phone: '966' + d, p_src: window.LeenaSrc || null }) });
+        ok = r.ok;
+      } catch (x) {}
+      if (!ok) { go.disabled = false; go.textContent = 'أرسل'; err.textContent = 'تعذّر الإرسال. جرّب مرة ثانية أو راسلنا على واتساب.'; err.hidden = false; return; }
+      try { localStorage.setItem('leena-lead', '1'); } catch (x) {}
+      LT('lead_sent'); thanks(n);
+    };
+  }
+  function thanks(n) {
+    const w = room('tun-door jn tun-lead');
+    w.insertAdjacentHTML('beforeend', `<div class="jn-ok">${TICK}</div><div class="tun-txt"><h1 class="tun-h stop">وصلنا طلبك</h1><p class="tun-p">${esc(n)}، نتواصل معك اليوم<br>على واتساب.</p></div>`);
+    const tr = el('button', 'tun-go', 'تدرّب على الدرس الأول'); tr.onclick = () => { const f = first(); f._drillMode = 'open'; play(f); }; w.appendChild(tr);
   }
 
   /* ---------- the road (subscribers): every lesson in order ---------- */
@@ -4882,7 +4937,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     ttq.page();
   }(window, document, 'ttq');
   /* our own steps → TikTok's standard event names (each once per visit) */
-  var MAP = { land_answer: 'ClickButton', lesson_start: 'ViewContent', lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment' };
+  var MAP = { land_answer: 'ClickButton', lesson_start: 'ViewContent', lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment', lead_sent: 'SubmitForm' };
   var orig = window.LeenaTrack || function () {}, sent = {};
   window.LeenaTrack = function (ev, o) {
     orig(ev, o);
