@@ -1474,6 +1474,20 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .tun-lead .jn-in{text-align:right;padding:0 22px;font:300 20px/1 Alexandria,var(--f-display);letter-spacing:0}
 .tun-lead .jn-small{font:200 13px/1.9 Alexandria,var(--f-display)}
 .tun-lead .ld-wa2{align-self:flex-start}
+/* «الجزء الأول» (docs/PART_ONE_PLAN.md): the label under the track, the guide, the win screen */
+.dz-part{position:relative;z-index:2;margin:4px auto 0;text-align:center;font:200 13px/1.4 Alexandria,var(--f-display);color:#7A847F}
+.dz-guide{position:fixed;left:16px;right:16px;bottom:max(18px,env(safe-area-inset-bottom));z-index:6;max-width:480px;margin:0 auto;display:flex;align-items:center;gap:10px;direction:rtl;
+  opacity:0;transform:translateY(14px);transition:opacity .35s,transform .35s;pointer-events:none}
+.dz-guide.in{opacity:1;transform:none}.dz-guide.out{opacity:0;transform:translateY(8px)}
+.dz-guide i{flex:none;width:38px;height:38px;display:block}.dz-guide i svg{width:100%;height:100%;display:block}
+.dz-guide p{margin:0;padding:10px 15px;border-radius:18px 18px 18px 4px;background:#FFFFFF;border:1px solid #E4E0D6;box-shadow:0 6px 20px rgba(22,32,27,.06);font:200 15px/1.7 Alexandria,var(--f-display);color:#16201B;text-align:right}
+.dz-guide p b{font-weight:900}
+.dz-guide.nologo i{display:none}
+.tun-wn{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 2px}
+.tun-wn div{background:#FFFFFF;border:1px solid #E4E0D6;border-radius:18px;padding:14px 6px;text-align:center;font:200 13px/1.6 Alexandria,var(--f-display);color:#3D4A44}
+.tun-wn b{display:block;font:900 24px/1.3 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
+.tun-win .tun-txt{align-items:flex-start;width:100%}
+.tun-lead .sv-skip{align-self:flex-start}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1691,7 +1705,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794516358", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794517870", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3455,7 +3469,7 @@ function runDrill(d, lesson) {
   if (S.drill[id] && S.drill[id].v !== (D.v || 1)) delete S.drill[id];   // progress saved by an older version of this lesson (different levels) starts fresh
   const mem = () => S.drill[id] || (S.drill[id] = { lv: 0, pts: 0, v: D.v || 1 });
   if (window.LeenaMental) { window.LeenaMental.wrap(D, id); for (const L2 of d.lessons || []) if (L2.drill) window.LeenaMental.wrap(L2.drill, L2.id); }   // no calculator in the exam: heavy numbers are re-rolled
-  LT_LESSON = id; LT('lesson_start', { lesson: id, val: 'drill' });
+  LT_LESSON = id; if (lesson._resumed) lesson._resumed = false; else LT('lesson_start', { lesson: id, val: 'drill' });
   let timer = null, gone = false;
   /* ---------- what we learn about the student, quietly (never shown) ----------
      One record per idea: S.brain.sk['lesson:level'] = { p: how sure we are he has it (0..1), n: answers, miss: {mistake: times},
@@ -3486,6 +3500,9 @@ function runDrill(d, lesson) {
   const x = h('button', 'dz-btn', SVG_X); x.setAttribute('aria-label', 'خروج');
   /* inside the tunnel the lesson has no unit page behind it: leaving goes back to the tunnel's door, finishing to its gate */
   const TUN = D.tunnel && window.AcademyTunnel;
+  /* «الجزء الأول» (docs/PART_ONE_PLAN.md): a visitor plays only the first D.free levels, then the win screen; a subscriber plays the whole lesson */
+  const VIS = !!(TUN && D.free && TUN.subscriber && !TUN.subscriber());
+  const NV = VIS ? Math.min(D.free, N) : N;
   const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(lesson); } else showDistrict(d); };
   const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(lesson); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
   x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); toDoor(); };
@@ -3494,23 +3511,25 @@ function runDrill(d, lesson) {
   snd.onclick = () => { S.settings = S.settings || {}; S.settings.sound = S.settings.sound === false; persist(); paintSnd(); };
   paintSnd();
   /* the lesson track: a hairline, one piece per level, and a glowing dot where he is. No numbers. */
-  const track = h('div', 'dz-track', D.levels.map(() => '<i></i>').join('') + '<span class="dz-dot"></span>');
+  const track = h('div', 'dz-track', D.levels.slice(0, NV).map(() => '<i></i>').join('') + '<span class="dz-dot"></span>');
   track.setAttribute('aria-hidden', 'true');
   /* «؟» help: the idea of this level again (with its motion), the timer waits. Only on a level's own questions (docs/MOTION_PLAN.md) */
   const helpB = h('button', 'dz-btn dz-help-b', '<span aria-hidden="true">؟</span>'); helpB.setAttribute('aria-label', 'مساعدة'); helpB.hidden = true;
   let helpLv = null, curAsk = null;
   helpB.onclick = () => { FX.play('tap'); if (helpLv != null) openHelp(helpLv); };
   top.append(x, track, helpB, snd);
+  const partL = VIS ? h('p', 'dz-part') : null;   // «الجزء الأول · ٣ من ٦»
   const glow = h('div', 'dz-glow');
   const pane = h('div', 'pbody dz-body');
   const dock = h('div', 'dock'), dockIn = h('div', 'dock-in gut'); dock.appendChild(dockIn);
-  wrap.append(glow, top, pane); app.append(wrap, dock);
+  wrap.append(glow, top); if (partL) wrap.appendChild(partL); wrap.appendChild(pane); app.append(wrap, dock);
   cleanupFns.push(() => { gone = true; stopT(); dock.remove(); document.body.classList.remove('dz'); });
 
   function paintTrack(frac) {
-    const m = mem(), doneN = m.finished && frac == null ? N : Math.min(N, m.lv);
+    const m = mem(), doneN = m.finished && frac == null ? NV : Math.min(NV, m.lv);
     track.querySelectorAll('i').forEach((t, i) => t.classList.toggle('on', i < doneN));
-    const f = frac == null ? doneN / N : Math.max(0, Math.min(1, frac));
+    const f = frac == null ? doneN / NV : Math.max(0, Math.min(1, frac));
+    if (partL) partL.textContent = `الجزء الأول · ${ar(Math.min(NV, (m.lv || 0) + 1))} من ${ar(NV)}`;
     track.querySelector('.dz-dot').style.right = (f * 100) + '%';
   }
   function page(cls = '', glowOn) { stopT(); helpLv = null; curAsk = null; helpB.hidden = true; pane.innerHTML = ''; window.scrollTo(0, 0); glow.classList.toggle('on', !!glowOn); const p = h('div', 'lpage lad-page dz-stage ' + cls); pane.appendChild(p); return p; }
@@ -3634,7 +3653,7 @@ function runDrill(d, lesson) {
   /* a new idea: «فكرة جديدة» big in the middle, it fades, the explanation takes its place */
   function idea(i) {
     const lv = D.levels[i];
-    paintTrack((i + (mem().lv === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0)) / N);
+    paintTrack((i + (mem().lv === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0)) / NV);
     const p = page('dz-idea-page', true);
     p.innerHTML = '<h1 class="dz-big">فكرة<br>جديدة</h1><div class="dz-line"></div>';
     dockNone();
@@ -3677,6 +3696,39 @@ function runDrill(d, lesson) {
      - a wrong pick in a blink, twice → the idea again, calmly
      - the same mistake twice → that mistake explained, then questions that carry the same trap
      - three misses in a row → the longer explanation */
+  /* ---------- the guide (docs/PART_ONE_PLAN.md §2): the academy logo and one short line, only from what he really did ----------
+     at most one line per question, never on two questions in a row, never while the pen draws. Never a promise of a score. */
+  const GLOGO = '<svg viewBox="-110 -110 220 220" aria-hidden="true"><rect x="-110" y="-110" width="220" height="220" rx="110" fill="#16201B"/><path d="M-62 10 C-62 72 62 72 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/></svg>';
+  const GD = { q: 0, last: -9, pending: null, here: false };   // q: questions shown in this sitting; last: the one the guide spoke on
+  const COMMON = new Set(D.common || []);
+  function guideOff() { document.querySelectorAll('.dz-guide').forEach(g => { g.classList.remove('in'); g.classList.add('out'); setTimeout(() => g.remove(), 300); }); }
+  function guide(stage, html, free) {   // free: not tied to a question (the level-done page)
+    if (!stage || gone) return false;
+    if (!free && (GD.here || GD.last === GD.q - 1)) return false;
+    document.querySelectorAll('.dz-guide').forEach(g => g.remove());
+    const g = h('div', 'dz-guide', `<i>${GLOGO}</i><p>${html}</p>`);
+    g.setAttribute('role', 'status');
+    stage.appendChild(g);
+    /* it must never cover the answers: without the logo if needed, or not at all */
+    const clash = () => { const o = stage.querySelector('.dz-opts'), f = stage.querySelector('.dz-msg'); const top = g.getBoundingClientRect().top;
+      return [o, f].some(x => x && x.getBoundingClientRect().height && x.getBoundingClientRect().bottom > top - 8); };
+    if (clash()) { g.classList.add('nologo'); if (clash()) { g.remove(); return false; } }
+    requestAnimationFrame(() => g.classList.add('in'));
+    if (!free) { GD.here = true; GD.last = GD.q; }
+    LT('guide', { lesson: id, val: g.textContent.slice(0, 40) });
+    return true;
+  }
+  function guideAsk(stage, i, first) {   // called when a question appears
+    GD.q++; GD.here = false;
+    let line = null;
+    if (first && i === 0 && !mem().pts) line = 'خذ وقتك. الغلط هنا يعلّم.';
+    else if (first && VIS && i === 3 && NV === 6) line = 'نص الطريق. باقي لك ٣ أفكار.';
+    else if (first && VIS && i === NV - 1) line = 'آخر فكرة في الجزء الأول.';
+    if (!line && GD.pending) line = GD.pending;
+    GD.pending = null;
+    if (line) guide(stage, line);
+  }
+
   let lvStat = null;
   function level(i) {
     const lv = D.levels[i], m = mem(), goal = lv.goal || DR_GOAL, s = sk(id, i);
@@ -3686,9 +3738,10 @@ function runDrill(d, lesson) {
     let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0, guessRow = 0, aim = null, aimLeft = 0, firstKey = null, firstAt = 0;
     const st = lvStat = { q: 0, miss: 0, t: 0, bone: 0, down: 0, again: 0, focus: 0 }, aimed = {};
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
+    let firstQ = true;
     const next = () => {
       if (gone) return;
-      paintTrack((i + pts / goal) / N);
+      paintTrack((i + pts / goal) / NV);
       const p = page('dz-drill');
       firstKey = null; firstAt = 0;
       const g = make(lv, k, aim);
@@ -3697,16 +3750,19 @@ function runDrill(d, lesson) {
       helpLv = i; helpB.hidden = false;
       ask(p, g, lv.t, lv.hints || {}, (res, fb, used) => {
         st.q++; st.t += used || 0; learn(s, res);
+        guideOff();
+        if (VIS) { m.n = (m.n || 0) + 1; m.s = (m.s || 0) + (used || 0); if (res === 'fast' || res === 'ok') m.r = (m.r || 0) + 1; }
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
         if (res !== 'miss') {   // a wrong pick already took its point off the ring the moment he picked it
           pts = Math.max(0, Math.min(goal, pts + delta));
           if (delta > 0) { const r = rate(); k += r >= 0.9 && res === 'fast' ? 2 : r < 0.7 && res !== 'fast' ? 0 : 1; }
           m.pts = pts; m.k = k; persist();
-          ringPts(p, pts, delta); paintTrack((i + pts / goal) / N);
+          ringPts(p, pts, delta); paintTrack((i + pts / goal) / NV);
         }
         if (delta > 0) {
           streak++; missRow = 0; guessRow = 0;
-          const line = [3, 5, 8].includes(streak) ? drT('streak_' + streak) : res === 'fast' ? drT('fast') : '';
+          if (streak === 3 || streak === 5) GD.pending = `<b>${ar(streak)} ${streak === 3 ? 'صح' : ''} ورا بعض.</b> ${streak === 3 ? 'كمّل كذا.' : 'هذا مستوى ممتاز.'}`.replace('  ', ' ');   // the streak speaks through the guide now
+          const line = streak === 8 ? drT('streak_8') : res === 'fast' && streak !== 3 && streak !== 5 ? drT('fast') : '';
           fb.className = 'lad-fb dz-msg ok'; fb.textContent = line || drT('right');
           if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 900);
           setTimeout(next, 900);
@@ -3719,7 +3775,7 @@ function runDrill(d, lesson) {
         if (key) s.miss[key] = (s.miss[key] || 0) + 1;
         if (missRow === 2 && k > 0) { k--; m.k = k; st.down++; }
         persist();
-        if (g._pen) { /* the pen already showed the way: no extra words */ }
+        if (g._pen) { if (res === 'miss') guide(p, COMMON.has(key) ? 'عادي. هذا من أكثر الأخطاء.' : 'عادي. جرّب اللي بعدها.'); }   // the pen showed the way: the guide says one calm line
         else if (guess) fb.innerHTML += `<br><span class="dz-coach">${drT('slow')}</span>`;
         else if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
@@ -3731,7 +3787,8 @@ function runDrill(d, lesson) {
         if (key && s.miss[key] >= 2 && !aimed[key] && (lv.hints || {})[key]) { aimed[key] = 1; aim = key; aimLeft = 2; st.focus++; return dockBtn('التالي', () => focus(i, key, next)); }
         if (res === 'time') setTimeout(next, 1600);
         else dockBtn(g._pen ? 'فهمت' : 'التالي', next);
-      }, (key, at) => { firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / N); }, { pts, goal }, { auto: true });   // the pen plays by itself on every wrong pick (owner, 12 Nov 2026)
+      }, (key, at) => { guideOff(); firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / NV); }, { pts, goal }, { auto: true });   // the pen plays by itself on every wrong pick (owner, 12 Nov 2026)
+      guideAsk(p, i, firstQ); firstQ = false;
     };
     next();
   }
@@ -3775,7 +3832,12 @@ function runDrill(d, lesson) {
   /* between two levels: an idea that was hard for him comes back (up to two), or every third level an old one, so nothing fades */
   const cameBack = {};
   function between(i) {
-    const go = () => i >= N ? finalIntro() : idea(i);
+    const go = () => {
+      if (VIS && i >= NV) return partDone();
+      if (VIS && i === 3 && TUN.wantSave && TUN.wantSave()) { cleanup(); lesson._resumed = true; return TUN.save(lesson); }   // «احفظ مكانك», then back to level 4
+      return i >= N ? finalIntro() : idea(i);
+    };
+    if (VIS && i >= NV) return go();
     const can = j => (cameBack[j] || 0) < 3;
     let list = [];
     for (let j = 0; j < i; j++) { const s = sk(id, j); if ((s.w || s.p < 0.55) && can(j)) list.push(j); }
@@ -3844,11 +3906,21 @@ function runDrill(d, lesson) {
     LT('drill_stat', { lesson: id, n: i + 1, val: [st.q, st.miss, st.q ? Math.round(st.t / st.q) : 0, st.bone, st.down, st.again, st.focus].join('|') });
     lvStat = null;
     m.lv = i + 1; m.pts = 0; m.k = 0; persist();
-    paintTrack((i + 1) / N);
+    paintTrack((i + 1) / NV);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const p = page('dz-done', true);
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${drT('up_' + tone)}</h1><p class="dz-p">ضبطت «${lv.name}»</p>`;
     dockBtn('كمّل', () => between(i + 1));
+    const secs = Math.round(st.t);
+    if (st.q && secs > 0 && secs < 40) guide(p, `خلّصتها في ${ar(secs)} ثانية.`, true);
+  }
+
+  /* a visitor finished «الجزء الأول»: no final test, the tunnel's win screen (with the price) */
+  function partDone() {
+    const m = mem(); m.part = true; m.lv = NV; persist();
+    LT('part_done', { lesson: id, n: Math.round(m.s || 0), val: (m.r || 0) + '/' + (m.n || 0) });
+    FX.play('finish');
+    cleanup(); TUN.win(lesson);
   }
 
   /* the final test: real exam level, mixed skills, more time per question */
@@ -3897,7 +3969,7 @@ function runDrill(d, lesson) {
   /* open training / quick review: mixed questions from every level, no end (or `limit` questions) */
   function open(k, limit, got = 0) {
     if (limit && k >= limit) return reviewed(got, limit);
-    const c = [0, 1, 2].map(() => Math.floor(Math.random() * N)), i = c.reduce((a, b) => sk(id, b).p < sk(id, a).p ? b : a), lv = D.levels[i];   // of three ideas picked at random, the one he is weakest at
+    const c = [0, 1, 2].map(() => Math.floor(Math.random() * NV)), i = c.reduce((a, b) => sk(id, b).p < sk(id, a).p ? b : a), lv = D.levels[i];   // of three ideas picked at random, the one he is weakest at
     paintTrack(1);
     const p = page('dz-drill');
     dockNone();
@@ -3924,6 +3996,7 @@ function runDrill(d, lesson) {
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">خلّصت هذا الدرس قبل</h1><p class="dz-p">راجع بخمسة أسئلة سريعة، أو ابدأه من أوله.</p>`;
     dockBtn('مراجعة سريعة', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); idea(0); }]);
   }
+  else if (VIS && m.lv >= NV) partDone();
   else if (m.lv >= N) finalIntro();
   else if (TUN) { m.started = true; persist(); idea(m.lv); }   // the tunnel's door already said everything: straight to the first idea (no warm-up: reviews come between levels)
   else startScreen(!!(m.started && (m.lv || m.pts)));
@@ -4331,6 +4404,8 @@ function runDrill(d, lesson) {
 
   L.drill = {
     v: 2, weight: 3, finalT: 40, minutes: 20, tunnel: true,
+    free: 6, freeMin: 5,   // «الجزء الأول»: a visitor plays the first 6 levels (docs/PART_ONE_PLAN.md)
+    common: ['mul', 'add', 'zero', 'one', 'zeros'],   // the mistakes most students make: the guide says so after the pen
     learn: ['معنى الأس', 'الأس صفر والأس واحد', 'الضرب والقسمة بالأسس', 'قوة القوة، وإيجاد س', 'المقارنة بين القوى'],
     levels: [
       /* ---------- 1) what a power means ---------- */
@@ -4589,6 +4664,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const ready = l => !!(l && l.drill);
   const mem = l => { const S = api().S, m = S.drill && S.drill[l.id]; return m && ready(l) && m.v === (l.drill.v || 1) ? m : null; };
   const done = l => !!(mem(l) || {}).finished;
+  const partDone = l => !!(mem(l) || {}).part;   // a visitor finished «الجزء الأول»
+  const visEnd = () => partDone(first()) && !done(first()) ? win(first()) : gate();   // where a visitor goes when lesson 1 is behind him
   const first = () => lessons()[0];
   const subscriber = () => !!(window.LeenaAuth && window.LeenaAuth.has && window.LeenaAuth.has(TUN));
   const openAll = () => { if (!subscriber()) return false; try { return localStorage.getItem('leena-open-all') === '1'; } catch (e) { return false; } };
@@ -4621,7 +4698,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* ---------- a lesson's door: its name and how long it takes ---------- */
   function door(l, prev) {
     l = l || first();
-    if (!subscriber() && (l.id !== first().id || done(l))) return gate();
+    if (!subscriber() && (l.id !== first().id || done(l) || partDone(l))) return visEnd();
     if (!ready(l)) return road();
     const m = mem(l), going = !!(m && m.started && !m.finished && (m.lv || m.pts));
     const w = room('tun-door', subscriber() ? road : null);
@@ -4629,7 +4706,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const trip = `<div class="tun-trip" aria-hidden="true"><div class="tr-bar">${L.map((x, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}"></i>`).join('')}</div><div class="tr-ends"><span>${n === 1 ? 'أنت هنا' : `${ar(n)} من ${ar(L.length)}`}</span><span>اختبار القدرات</span></div></div>`;
     const know = learn && learn.length ? `<p class="tun-k">بعد هذا الدرس بتعرف:</p><ol class="tun-learn">${learn.map(x => `<li><b></b>${esc(x)}</li>`).join('')}</ol>` : '';
     const how = isFirst ? `<div class="tun-how"><div><b>${ar(1)}</b>اختر الإجابة اللي تشوفها أصح</div><div><b>${ar(2)}</b>انتبه للوقت، الدائرة تعدّ</div><div><b>${ar(3)}</b>أخطأت؟ اقرأ السبب وكمّل</div></div>` : '';
-    w.insertAdjacentHTML('beforeend', `${HOLE()}${trip}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<p class="tun-eyebrow tun-time">الدرس ${ar(n)}<i class="sep">|</i>${ar(l.drill.minutes || 20)} دقيقة</p><i class="tun-rule"></i><h1 class="tun-h big${dot(l.title)}">${esc(l.title)}</h1>${subscriber() || know ? '' : '<p class="tun-p">ابدأ الآن مجانًا.</p>'}${know}${how}</div>`);
+    w.insertAdjacentHTML('beforeend', `${HOLE()}${trip}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<p class="tun-eyebrow tun-time">الدرس ${ar(n)}<i class="sep">|</i>${ar(!subscriber() && l.drill.free ? l.drill.freeMin || 5 : l.drill.minutes || 20)} دقيقة</p><i class="tun-rule"></i><h1 class="tun-h big${dot(l.title)}">${esc(l.title)}</h1>${subscriber() || know ? '' : '<p class="tun-p">ابدأ الآن مجانًا.</p>'}${know}${how}</div>`);
     const act = el('div', 'tun-act');
     const go = el('button', 'tun-go', going ? 'كمّل' : isFirst && !done(l) ? 'ابدأ الرحلة' : 'ادخل');
     go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson', lesson: l.id }); play(l); };
@@ -4677,11 +4754,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (Au && Au.payOn) {   // online payment: phone + code → plan → pay
       const b = el('button', 'tun-go', ended ? 'جدّد اشتراكك' : 'اشترك وكمّل'); b.onclick = () => { LT('gate_join'); Au.join(ended ? 'renew' : 'join'); }; act.appendChild(b);
     } else {
-      let sent = false; try { sent = localStorage.getItem('leena-lead') === '1'; } catch (x) {}
-      if (sent) {   // he already left his number on this phone
-        const a = el('a', 'tun-go', 'وصلنا طلبك · راسلنا على واتساب'); a.href = waLink(WA_MSG); a.target = '_blank'; a.rel = 'noopener';
-        a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: 'gate' }); }); act.appendChild(a);
-      } else { const b = el('button', 'tun-go', 'اشترك الآن'); b.onclick = () => { LT('gate_join'); lead(); }; act.appendChild(b); }
+      subscribeBtn(act, 'gate');
     }
     if (ended) w.querySelector('.tun-msg').textContent = 'انتهى اشتراكك';
     if (!(Au && Au.user)) account(act, 'tun-ghost');
@@ -4691,10 +4764,77 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- plan B while online payment is off: he leaves his name and number, we contact him ---------- */
-  const WA_MSG = `السلام عليكم، خلصت الدرس الأول وأبغى أشترك في الكمّي كاملًا بسعر الافتتاح (${ar(PRICE)} ريال)`;
+  const WA_MSG = `السلام عليكم، جرّبت الدرس الأول وأبغى أشترك في الكمّي كاملًا بسعر الافتتاح (${ar(PRICE)} ريال)`;
+  /* name + Saudi mobile (5XXXXXXXX) → the leads table (site/supabase/005_leads.sql). tag: '' or '|save'. Resolves true/false, never throws */
+  async function sendLead(n, d, tag) {
+    try {
+      const C = (window.ACADEMY_CONFIG || {}).auth;
+      const src = ((window.LeenaSrc || 'direct') + (tag || '')).slice(0, 40);
+      const r = await fetch(C.url + '/rest/v1/rpc/lead_add', { method: 'POST', headers: { apikey: C.key, Authorization: 'Bearer ' + C.key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_name: n, p_phone: '966' + d, p_src: tag ? src : (window.LeenaSrc || null) }) });
+      return r.ok;
+    } catch (x) { return false; }
+  }
+  const leadSent = () => { try { return localStorage.getItem('leena-lead') === '1'; } catch (x) { return false; } };
+  const subscribeBtn = (act, where) => {   // «اشترك…» → the form; once he sent it on this phone → WhatsApp
+    if (leadSent()) {
+      const a = el('a', 'tun-go', 'وصلنا طلبك · راسلنا على واتساب'); a.href = waLink(WA_MSG); a.target = '_blank'; a.rel = 'noopener';
+      a.addEventListener('click', () => { LT('gate_wa'); LT('wa_click', { val: where }); }); act.appendChild(a);
+    } else { const b = el('button', 'tun-go', where === 'win' ? 'اشترك وكمّل' : 'اشترك الآن'); b.onclick = () => { LT('gate_join', { val: where }); lead(); }; act.appendChild(b); }
+  };
+
+  /* ---------- «احفظ مكانك»: after level 3 of part one, once, for a visitor who has not left his number ---------- */
+  const wantSave = () => { if (subscriber() || leadSent()) return false; try { return localStorage.getItem('leena-save-asked') !== '1'; } catch (x) { return false; } };
+  function save(l) {
+    try { localStorage.setItem('leena-save-asked', '1'); } catch (x) {}
+    LT('save_view');
+    const w = room('tun-door jn tun-lead');
+    const back = how => { LT(how); play(byId(l.id) || first()); };
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">نص الطريق</p><i class="tun-rule"></i><h1 class="tun-h stop">احفظ مكانك</h1><p class="tun-p">نرجّعك لنفس السؤال إذا طلعت.</p></div>
+      <form class="jn-form" novalidate><input id="sv-name" class="jn-in" type="text" autocomplete="given-name" maxlength="40" placeholder="اسمك" aria-label="الاسم">
+      <label class="jn-phone"><span>+966</span><input id="sv-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
+      <p class="jn-err" hidden></p><button class="tun-go" type="submit">احفظ وكمّل</button></form>
+      <button class="tun-link sv-skip" type="button">كمّل بدون حفظ</button>
+      <p class="jn-small">نستخدم رقمك للتواصل معك فقط.</p>`);
+    w.querySelector('.sv-skip').onclick = () => back('save_skip');
+    const f = w.querySelector('form'), nm = w.querySelector('#sv-name'), ph = w.querySelector('#sv-phone'), err = w.querySelector('.jn-err'), go = f.querySelector('.tun-go');
+    f.onsubmit = async e => {
+      e.preventDefault(); err.hidden = true;
+      const n = nm.value.trim(), d = ph.value.replace(/\D/g, '').replace(/^(966|0)/, '');
+      if (n.length < 2) { err.textContent = 'اكتب اسمك'; err.hidden = false; return; }
+      if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال سعودي صحيح'; err.hidden = false; return; }
+      go.disabled = true; go.textContent = 'نحفظ…';
+      const ok = await sendLead(n, d, '|save');   // the place is already kept on this phone: if the call fails he simply goes on
+      if (ok) { try { localStorage.setItem('leena-lead', '1'); } catch (x) {} }
+      back(ok ? 'save_sent' : 'save_fail');
+    };
+  }
+
+  /* ---------- «خلّصت الجزء الأول»: his real numbers, what is left, the price ---------- */
+  function win(l) {
+    l = byId((l || first()).id) || first();
+    if (subscriber()) return after(l);
+    LT('win_view', { once: true });
+    const m = mem(l) || {}, D = l.drill, free = Math.min(D.free || 6, D.levels.length);
+    const mins = Math.max(1, Math.ceil((m.s || 0) / 60)), left = D.levels.length - free, more = lessons().length - 1;
+    const w = room('tun-door tun-win');
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">${esc(l.title)}</p><i class="tun-rule"></i><h1 class="tun-h big stop">خلّصت<br>الجزء الأول</h1>
+      <div class="tun-wn"><div><b>${ar(free)}</b>أفكار</div><div><b>${ar(mins)}</b>${mins <= 2 || mins > 10 ? 'دقيقة' : 'دقايق'}</div><div><b dir="rtl">${ar(m.r || 0)} / ${ar(m.n || 0)}</b>صح</div></div>
+      <p class="tun-p">باقي ${ar(left)} فكرة في هذا الدرس،<br>و${ar(more)} درسًا بعده.</p>
+      ${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال <s>${ar(WAS)}</s><i>سعر الافتتاح</i></p>`}</div>`);
+    const act = el('div', 'tun-act'), Au = window.LeenaAuth;
+    if (Au && Au.payOn) { const b = el('button', 'tun-go', 'اشترك وكمّل'); b.onclick = () => { LT('gate_join', { val: 'win' }); Au.join('join'); }; act.appendChild(b); }
+    else subscribeBtn(act, 'win');
+    const re = el('button', 'tun-ghost', 'أعد الجزء الأول');
+    re.onclick = () => { LT('win_again'); const S = api().S, mm = S.drill[l.id]; S.drill[l.id] = { lv: 0, pts: 0, k: 0, started: true, part: true, v: mm ? mm.v : (D.v || 1) }; api().persist(); play(l); };
+    act.appendChild(re);
+    if (!(Au && Au.user)) account(act, 'tun-link');
+    w.appendChild(act);
+  }
+
   function lead() {
     LT('lead_view');
-    const w = room('tun-door jn tun-lead', gate);
+    const w = room('tun-door jn tun-lead', () => visEnd());
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">سجّل اهتمامك</h1><p class="tun-p">نتواصل معك اليوم على واتساب.</p></div>
       <form class="jn-form" novalidate><input id="ld-name" class="jn-in" type="text" autocomplete="given-name" maxlength="40" placeholder="اسمك" aria-label="الاسم">
       <label class="jn-phone"><span>+966</span><input id="ld-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
@@ -4710,13 +4850,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       if (n.length < 2) { err.textContent = 'اكتب اسمك'; err.hidden = false; return; }
       if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال سعودي صحيح'; err.hidden = false; return; }
       go.disabled = true; go.textContent = 'نرسل…';
-      let ok = false;
-      try {
-        const C = (window.ACADEMY_CONFIG || {}).auth;
-        const r = await fetch(C.url + '/rest/v1/rpc/lead_add', { method: 'POST', headers: { apikey: C.key, Authorization: 'Bearer ' + C.key, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ p_name: n, p_phone: '966' + d, p_src: window.LeenaSrc || null }) });
-        ok = r.ok;
-      } catch (x) {}
+      const ok = await sendLead(n, d);
       if (!ok) { go.disabled = false; go.textContent = 'أرسل'; err.textContent = 'تعذّر الإرسال. جرّب مرة ثانية أو راسلنا على واتساب.'; err.hidden = false; return; }
       try { localStorage.setItem('leena-lead', '1'); } catch (x) {}
       LT('lead_sent'); thanks(n);
@@ -4755,17 +4889,17 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* ---------- leaving a lesson (X) and finishing one ---------- */
   function leave(l) {
     l = l && byId(l.id);
-    if (!subscriber()) return door();
+    if (!subscriber()) return partDone(first()) && !done(first()) ? win(first()) : door();
     l && !done(l) ? door(l) : road();
   }
   function after(l) {
-    if (!subscriber()) return gate();
+    if (!subscriber()) return visEnd();
     l = l && byId(l.id);
     const nx = nextUp();
     if (nx && l) { LT('tunnel_next', { lesson: nx.id }); return door(nx, l); }
     road();
   }
-  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road };
+  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave };
 
   /* ---------- home: where each person lands ---------- */
   let waited = false, landPreview = false;
@@ -4785,6 +4919,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       if (saved) { room('tun-door tun-wait').insertAdjacentHTML('beforeend', HOLE()); setTimeout(() => { if (!waited) { waited = true; if (document.querySelector('#app .tun-wait')) home(); } }, 6000); return; } }
     waited = true;
     if (subscriber()) { LT('home', { val: 'road', once: true }); return road(); }
+    if (partDone(first()) && !done(first())) { LT('home', { val: 'win', once: true }); return win(first()); }
     if (done(first())) { LT('home', { val: 'gate', once: true }); return gate(); }
     if (fromAd() && !landSeen()) { LT('home', { val: 'land', once: true }); return landing(); }
     LT('home', { val: 'door', once: true }); door();
@@ -4920,7 +5055,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     ttq.page();
   }(window, document, 'ttq');
   /* our own steps → TikTok's standard event names (each once per visit) */
-  var MAP = { land_answer: 'ClickButton', lesson_start: 'ViewContent', lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment', lead_sent: 'SubmitForm' };
+  var MAP = { land_answer: 'ClickButton', lesson_start: 'ViewContent', lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment', lead_sent: 'SubmitForm', part_done: 'Lead' };
   var orig = window.LeenaTrack || function () {}, sent = {};
   window.LeenaTrack = function (ev, o) {
     orig(ev, o);
