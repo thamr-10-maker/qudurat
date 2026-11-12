@@ -1430,7 +1430,8 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .pen-svg path{fill:none;stroke:#1F7A5A;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
 .pen-work{align-self:stretch;display:flex;flex-direction:column;align-items:center;gap:6px;margin:4px 0 -4px}
 .pen-w{clip-path:inset(-30% 0 -30% 100%);transform:rotate(-1.5deg)}
-.pen-w span{display:inline-block;font:200 30px/1.5 Alexandria,var(--f-display);color:#1F7A5A}
+.pen-w>span{display:inline-block;font:200 30px/1.5 Alexandria,var(--f-display);color:#1F7A5A}
+.pen-w .fr{font-weight:300}
 .pen-w .m,.pen-w .mo{color:#1F7A5A!important;font-weight:200}
 .pen-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;margin-top:-10px;border-radius:21px;border:1px solid rgba(31,122,90,.35);background:rgba(31,122,90,.07);color:#1F7A5A;font:900 16px/1 Alexandria,var(--f-display);cursor:pointer;animation:dzRise .5s both}
 @media (prefers-reduced-motion: reduce){.pen-w{clip-path:none}.pen-svg path{stroke-dashoffset:0}}
@@ -1673,7 +1674,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794462278", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794465961", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3924,8 +3925,13 @@ function runDrill(d, lesson) {
   // what the student sees, one character per entry, with where it lives in the page; digits inside <sup> become ⁰¹²…
   function chars(root) {
     const out = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let part = null;
     while (w.nextNode()) {
       const n = w.currentNode, sup = !!(n.parentNode && n.parentNode.closest('sup')), v = n.nodeValue;
+      // the top and the bottom of a stacked fraction are two numbers, not one: keep a gap between them
+      const fp = n.parentNode && n.parentNode.closest('.fr > span');
+      if (fp !== part && (fp || part) && out.length) out.push({ c: '|', n, i: 0 });
+      part = fp;
       for (let i = 0; i < v.length; i++) {
         let c = v[i];
         if (/[\s⁦-⁩‎‏]/.test(c)) continue;
@@ -3936,7 +3942,7 @@ function runDrill(d, lesson) {
     return out;
   }
   // the script's text in the same form: Arabic digits, superscripts kept, no spaces, − for minus
-  const norm = t => String(t).replace(/[\s`]/g, '').replace(/-/g, '−').replace(/\*/g, '×').replace(/[0-9]/g, d => AR[d]);
+  const norm = t => String(t).replace(/(\d)\.(?=\d)/g, '$1٫').replace(/[\s`]/g, '').replace(/-/g, '−').replace(/\*/g, '×').replace(/[0-9]/g, d => AR[d]);
   const isDig = c => c != null && (AR.includes(c) || SUP.includes(c));
   const sameKind = (a, b) => isDig(a) && isDig(b) && SUP.includes(a) === SUP.includes(b);
   function find(roots, text, nth = 1) {
