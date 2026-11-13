@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0D5A4A">
 <meta property="og:type" content="website">
 <meta property="og:title" content="أكاديمية لينا | قدرات">
-<meta property="og:description" content="تدرّب على كمّي القدرات بالحل، واعرف سبب كل خطأ فورًا. اختر مدّتك وابدأ اليوم.">
+<meta property="og:description" content="تدرّب على كمّي القدرات بالحل، واعرف سبب كل خطأ فورًا. اختر المناسب لك وابدأ اليوم.">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
@@ -85,9 +85,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .sq{position:relative;display:inline-flex;align-items:stretch;direction:rtl;unicode-bidi:isolate;vertical-align:-.15em}
 .sq .rad{display:block;width:.55em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;overflow:visible}
 .sq .rc{border-top:2px solid currentColor;padding:.08em 3px 0;line-height:1.2;margin-right:-1px}
-sup{font-size:.62em;line-height:0}
-.pw{direction:ltr;unicode-bidi:bidi-override;display:inline-block;white-space:nowrap}
-.pw sup{direction:rtl;unicode-bidi:isolate}
+sup{font-size:.62em;line-height:0;direction:rtl;unicode-bidi:isolate;margin-inline-start:.06em}   /* Arabic maths: the power sits up on the LEFT of its base (owner, 14 Nov 2026). Isolated, so a digit power does not join a digit base into one number read the other way */
+.pw{direction:rtl;unicode-bidi:isolate;display:inline-block;white-space:nowrap}
 .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.12;font-size:.95em;margin:0 3px;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:600}
 .fr>span{padding:0 4px}
 .fr>span:first-child{border-bottom:2.5px solid currentColor;border-radius:1px;padding-bottom:1px}
@@ -1446,22 +1445,58 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 /* ---------- the ad landing page (third build, 13 Nov 2026, docs/LANDING_PLAN.md) ----------
    One column, set like a page. Green belongs to the pen and to nothing else. Every title is two short lines. One thing moves: the pen. */
 .lt .tun-land{display:block;padding:0 26px 30px;overflow:visible;text-align:right}
-.la-hero{padding:88px 0 0;min-height:100svh;box-sizing:border-box}   /* the first screen belongs to the promise and the pen: the next title never shows through under the button */
-.la-h1{margin:0;font:900 clamp(40px,13.2vw,58px)/1.3 Alexandria,var(--f-display);color:#16201B;letter-spacing:0}
+.la-hero{padding:64px 0 150px;min-height:100svh;box-sizing:border-box}   /* the first screen belongs to the name and what the academy gives: the next title never shows through under the button */
+.lt .tun-land .tun-mark{display:none}   /* the name is the first screen now */
+.la-logo{display:block;width:54px;height:54px}
+.la-h1{margin:18px 0 0;font:900 clamp(40px,13.2vw,56px)/1.25 Alexandria,var(--f-display);color:#16201B;letter-spacing:0;white-space:nowrap}
 .la-h1 span,.la-h2 span{display:block;white-space:nowrap}
-.la-lede{margin:14px 0 0;font:300 18px/1.8 Alexandria,var(--f-display);color:#3D4A44}
-.la-demo{margin:28px 0 0;padding:24px 14px 14px;border-radius:26px;background:#FFFFFF;border:1px solid #E4E0D6;box-shadow:0 1px 0 #E4E0D6;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.la-demo .dz-stage{min-height:0;max-width:none;margin:0;padding:0;gap:14px}
-.la-demo .pen-work{margin:22px 0 2px;gap:2px}
-.la-demo .dz-q{font-size:clamp(27px,8.6vw,34px);line-height:1.5}
-.la-demo .dz-opts{gap:8px;margin-top:4px}
-body.lt .la-demo .opt.dz-o{min-height:58px;border-radius:16px;font-size:23px;background:#F6F4EE;border:1px solid #E4E0D6;box-shadow:none;cursor:pointer;transition:background .25s,border-color .25s,color .25s,transform .16s}
-body.lt .la-demo .opt.dz-o.press{transform:scale(.93)}
-body.lt .la-demo .opt.dz-o.bad{background:#FBF1EF;border:1px dashed #D98A7E;color:#9A3B30}
-body.lt .la-demo .opt.dz-o.ok{background:#1F7A5A;border-color:#1F7A5A;color:#F6F4EE;font-weight:900}
-.la-demo .pen-svg,.la-demo .pen-work{transition:opacity .4s}
-.la-demo.out .pen-svg,.la-demo.out .pen-work{opacity:0}
-.la-cap{margin:14px 0 0;font:300 15px/1.7 Alexandria,var(--f-display);color:#6B756F;text-align:center}
+.la-lede{margin:4px 0 0;font:300 19px/1.7 Alexandria,var(--f-display);color:#3D4A44}
+.la-pts{list-style:none;margin:26px 0 0;padding:0;border-top:1px solid #E4E0D6}
+.la-pts li{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:11.5px 0;border-bottom:1px solid #E4E0D6}
+.la-pts b{font:900 17px/1.6 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
+.la-pts span{font:300 15px/1.6 Alexandria,var(--f-display);color:#6B756F;white-space:nowrap}
+/* «تجربة»: the long expression, the piece being asked, three answers */
+.la-try{margin:30px 0 0}
+.la-mon-w{text-align:center;display:flex;flex-direction:column;align-items:center}
+.la-mon-b{display:flex;align-items:center;justify-content:center;width:100%}
+.la-mon{display:inline-flex;align-items:center;direction:rtl;white-space:nowrap;font:500 20px/1.3 Alexandria,var(--f-display);color:#16201B;transition:opacity .5s}
+.la-mon .m{font-family:inherit;font-weight:inherit;letter-spacing:0}
+.la-mon .mo,.la-mon .op{color:inherit;font-style:normal;font-weight:300}
+.la-mon .op{margin:0 .34em}
+.la-fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.3}
+.la-fr>span{display:block;padding:.16em .2em}
+.la-fr>span:first-child{border-bottom:2px solid currentColor}
+.la-fr.big{border-radius:.5em;transition:background .3s}
+.la-fr.big>span{padding:.3em .1em}
+.la-mon .row{display:inline-flex;align-items:center;border-radius:.4em;transition:background .3s}
+.la-mon .pc{display:inline-block;padding:.12em .26em;border-radius:.4em;transition:background .3s,color .3s}
+.la-mon .now{background:#E7E1D2}
+.la-mon .pc.done{color:#1F7A5A;font-weight:900}
+.la-mon .la-pop,.la-eq b.la-pop{animation:laPop .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes laPop{0%{transform:scale(.4);opacity:0}100%{transform:none;opacity:1}}
+.la-eq{margin:6px 0 0;height:62px;display:flex;align-items:center;justify-content:center;gap:14px;direction:rtl;font:300 34px/1.3 Alexandria,var(--f-display);color:#6B756F}
+.la-eq b{display:inline-block;font-weight:900;color:#16201B;min-width:1em}
+.la-eq b.done{color:#1F7A5A;font-size:54px;line-height:1}
+.la-mon-w.solved .la-mon{opacity:.45}
+.la-ask{margin:22px 0 0;padding:22px 14px 14px;border-radius:26px;background:#FFFFFF;border:1px solid #E4E0D6;box-shadow:0 1px 0 #E4E0D6;box-sizing:border-box;text-align:center}
+.la-q{margin:0;font:900 clamp(28px,8.8vw,36px)/1.5 Alexandria,var(--f-display);color:#16201B}
+.la-q .m{font-family:inherit;font-weight:inherit}.la-q .mo{color:inherit;font-weight:300}
+.la-os{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0 0;direction:rtl}
+.la-o{min-height:60px;border-radius:16px;background:#F6F4EE;border:1px solid #E4E0D6;color:#16201B;font:300 24px/1 Alexandria,var(--f-display);cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;transition:background .2s,border-color .2s,color .2s,transform .14s}
+.la-o .m{font-family:inherit;font-weight:inherit}
+.la-o:active{transform:scale(.95)}
+.la-o:focus-visible{outline:2px solid #16201B;outline-offset:2px}
+.la-o.bad{background:#FBF1EF;border:1px dashed #D98A7E;color:#9A3B30;cursor:default}
+.la-o.ok{background:#1F7A5A;border-color:#1F7A5A;color:#F6F4EE;font-weight:900}
+.la-why{margin:12px 0 0;min-height:36px;font:400 19px/1.9 Alexandria,var(--f-display);color:#1F7A5A;opacity:0;transform:translateY(4px) rotate(-1deg);transition:opacity .25s,transform .25s}
+.la-why.in{opacity:1;transform:rotate(-1deg)}
+.la-why .m{font-family:inherit;font-weight:inherit}.la-why .mo{color:inherit}
+.la-ask.won{display:flex;flex-direction:column;justify-content:center;padding:22px 20px;text-align:right;animation:laIn .5s both}
+@keyframes laIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
+.la-won{margin:0;font:900 clamp(25px,7.8vw,32px)/1.45 Alexandria,var(--f-display);color:#16201B}
+.la-won span{display:block;white-space:nowrap}
+.la-won-s{margin:10px 0 0;font:300 17px/1.8 Alexandria,var(--f-display);color:#3D4A44}
+@media (prefers-reduced-motion:reduce){.la-mon .la-pop,.la-eq b.la-pop,.la-ask.won{animation:none}.la-why{transition:none}}
 .la-sec{padding:88px 0 0}
 .la-h2{margin:0;font:900 clamp(27px,8.4vw,36px)/1.4 Alexandria,var(--f-display);color:#16201B}
 .la-p{margin:18px 0 0;font:300 17.5px/1.9 Alexandria,var(--f-display);color:#3D4A44;text-wrap:pretty}
@@ -1481,8 +1516,8 @@ body.lt .la-demo .opt.dz-o.ok{background:#1F7A5A;border-color:#1F7A5A;color:#F6F
 .lt .la-dock .ld-go{position:static;width:100%;max-width:408px;animation:none}
 .la-micro{margin:9px auto 0;font:300 14px/1.5 Alexandria,var(--f-display);color:#6B756F;text-align:center}
 body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
-@media (max-height:780px){.la-hero{padding-top:72px}.la-h1{font-size:clamp(36px,11.8vw,48px)}.la-lede{margin-top:10px;font-size:17px}.la-demo{margin-top:18px;padding-top:18px}}
-@media (max-height:600px){.la-hero{padding-top:60px}.la-h1{font-size:clamp(32px,10.6vw,42px)}.la-demo .pen-work{margin-top:16px}}
+@media (max-height:780px){.la-try{margin-top:18px}.la-ask{margin-top:12px}.la-eq{height:52px}.la-hero{padding-top:30px}.la-logo{width:42px;height:42px}.la-h1{margin-top:14px;font-size:clamp(34px,11vw,44px)}.la-lede{margin-top:0;font-size:17px}.la-pts{margin-top:14px}.la-pts li{padding:6px 0}.la-pts b{font-size:16px}.la-pts span{font-size:14.5px}}
+@media (max-height:600px){.la-hero{padding-top:20px}.la-logo{width:36px;height:36px}.la-h1{font-size:clamp(30px,10vw,38px)}.la-pts li{padding:4px 0}}
 /* the plans, the private hours and the bill (owner, 14 Nov 2026) */
 .la-plans{margin:24px 0 0;display:grid;gap:10px}
 .la-plan{display:flex;align-items:center;gap:14px;width:100%;min-height:72px;padding:0 20px;border-radius:20px;border:1px solid #E4E0D6;background:#fff;box-shadow:0 1px 0 #E4E0D6;cursor:pointer;font-family:Alexandria,var(--f-display);color:#16201B;text-align:right;-webkit-tap-highlight-color:transparent;transition:border-color .15s,box-shadow .15s}
@@ -1724,7 +1759,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794607181", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794610121", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -1747,13 +1782,13 @@ const arNum = n => ar(Math.round(n * 100) / 100);
 const escHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 /* Math is written the Qudurat way: right-to-left (like the official test), with Arabic digits.
-   Powers (², ⁻³ …) become real superscripts, √ becomes a proper (mirrored) radical with a bar,
+   Powers (², ⁻³ …) become real superscripts on the LEFT of their base (the Arabic way), √ becomes a proper (mirrored) radical with a bar,
    a/b inside `math` becomes a stacked fraction, and commas become Arabic commas. */
 const SUP_MAP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-', '⁺': '+', 'ˣ': 'س', 'ⁿ': 'ن' };
 function mathText(t) {
   t = ar(t);
   t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ˣⁿ]+/g, m => '<sup>' + ar(m.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−') + '</sup>');
-  t = t.replace(/([٠-٩٫]+)(<sup>[^<]*[ء-ي][^<]*<\/sup>)/g, '<span class="pw">$1$2</span>');   // a letter exponent (س) stays on the same side as a digit one
+  t = t.replace(/([٠-٩٫]+)(<sup>[^<]*<\/sup>)/g, '<span class="pw">$1$2</span>');   // a number and its power never part at a line's end; the power sits on the LEFT (style.css)
   t = t.replace(/([√∛])(\([^)]*\)|[٠-٩٫]+|[ء-ي])/g, (_, k, r) => radH(/^\(.*\)$/.test(r) ? r.slice(1, -1) : r, k === '∛'));   // the bar already groups what is under it: no brackets needed
   return t;
 }
@@ -1845,7 +1880,7 @@ function svFill(t, str) {
   // powers in a picture: the exponent becomes a small raised Arabic digit (same look as the lesson text)
   txt.split(/([⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ˣⁿ]+)/).forEach((part, i) => {
     if (!part) return;
-    if (i % 2) { const sp = sv('tspan', { 'baseline-shift': 'super', 'font-size': '62%' }, t); sp.textContent = ar(part.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−'); }
+    if (i % 2) { const sp = sv('tspan', { 'baseline-shift': 'super', 'font-size': '62%' }, t); sp.textContent = '\u2066' + ar(part.split('').map(ch => SUP_MAP[ch]).join('')).replace(/^-/, '−') + '\u2069'; }   // isolated: a digit power beside a digit base stays a power on its left, not a second digit on its right
     else t.appendChild(document.createTextNode(part));
   });
   return t;
@@ -1942,7 +1977,8 @@ function figBox(host, w, hgt) { const st = makeStage(host, w, hgt); st.wrap.styl
 const AR_LETTER = /[\u0621-\u064A\u0671-\u06D3\uFB50-\uFDFF\uFE70-\uFEFC]/;
 const MIRROR = { '(': ')', ')': '(', '<': '>', '>': '<', '≤': '≥', '≥': '≤', '[': ']', ']': '[', '«': '»', '»': '«' };
 /* reversed by hand and locked with a left-to-right override, so no browser reorders it again */
-function visualMath(s) { const u = s.match(/[0-9٠-٩]+(?:[.,٫/:][0-9٠-٩]+)*[⁰¹²³⁴⁵⁶⁷⁸⁹]*|[\s\S]/g) || []; return '\u202D' + u.reverse().map(c => MIRROR[c] || c).join('') + '\u202C'; }
+function visualMath(s) { const u = s.match(/[0-9٠-٩]+(?:[.,٫/:][0-9٠-٩]+)*[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]*|[\s\S]/g) || [];   // a number keeps its digits in order; its power goes to its LEFT, the Arabic way
+  return '\u202D' + u.reverse().map(c => MIRROR[c] || c.replace(/^([^⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+)$/, '$2$1')).join('') + '\u202C'; }
 function svLabel(parent, x, y, str, cls, anchor) { const s = ar(str); if (window.__labels) window.__labels.set(cls + '|' + str, [str, cls]); return svText(parent, x, y, AR_LETTER.test(s) ? '\u202B' + s + '\u202C' : visualMath(s), cls, anchor); }
 function buildKit(svg, layer) {
   /* labels are Arabic: digits and operators read right to left, like the lesson text */
@@ -4813,54 +4849,81 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const fromAsk = () => /^ad\d$/.test(new URLSearchParams(location.search).get('src') || '');   // an ad whose video already showed a question: no page to read, straight into the first question (docs/AD_CAMPAIGN_PLAN.md)
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
-  /* the real pen (engine/pen.js) on a real question from lesson 1, playing by itself: a wrong pick, the pen, the right answer, again.
-     Drawn by the page, not a video: a phone that refuses to play videos by itself (low power mode, the browser inside TikTok) still shows it moving. */
-  function penDemo(box, tap) {
-    const Q = { q: '`2⁷ ÷ 2⁴` = ؟', opts: [6, 8, 3, 16], miss: 0, right: 1, show: [['circle', '⁷'], ['circle', '⁴'], ['write', '7 − 4 = 3'], ['write', '2³ = 8']] };   // the lesson's own kind of question (courses/quant/d_fast_drill.js); ٦ is the mistake most people make (٢ × ٣)
-    const fmt = api().fmt;   // the lesson's own way of setting numbers and powers
-    box.innerHTML = `<div class="dz-stage" aria-hidden="true"><p class="dz-q">${fmt(Q.q)}</p><div class="dz-opts">${Q.opts.map(o => `<span class="opt dz-o">${fmt(String(o))}</span>`).join('')}</div></div>`;
-    box.onclick = tap;
-    const P = window.LeenaPen, stage = box.firstChild, O = [...stage.querySelectorAll('.opt')]; if (!P) return;
-    const calm = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-    const live = () => document.body.contains(box), sleep = ms => new Promise(r => setTimeout(r, ms));
-    let onScreen = true;
-    if ('IntersectionObserver' in window) new IntersectionObserver(es => { onScreen = es[es.length - 1].isIntersecting; }, { threshold: .15 }).observe(box);
-    const fontsIn = Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), sleep(2500)]);
-    (async () => {
-      for (let round = 0; live(); round++) {
-        stage.querySelectorAll('.pen-svg,.pen-work').forEach(x => x.remove()); box.classList.remove('out'); O.forEach(o => o.classList.remove('bad', 'ok', 'press'));
-        let go; const gate = new Promise(r => { go = r; });
-        const pen = P.play(stage, Q, { free: true, after: gate });   // its lines take their place now, hidden: nothing on the page shifts when it starts
-        if (calm) { O[Q.miss].classList.add('bad'); go(); await pen; O[Q.right].classList.add('ok'); return; }   // a phone that asks for less motion gets the finished drawing
-        if (!round) await fontsIn;
-        while (live() && !(onScreen && !document.hidden)) await sleep(300);   // it rests while nobody is looking
-        await sleep(round ? 500 : 800); O[Q.miss].classList.add('press');
-        await sleep(170); O[Q.miss].classList.remove('press'); O[Q.miss].classList.add('bad');
-        await sleep(700); go(); await pen;
-        if (!live()) return;
-        O[Q.right].classList.add('ok');
-        await sleep(3800); box.classList.add('out'); O.forEach(o => o.classList.remove('bad', 'ok'));
-        await sleep(480);
-      }
-    })();
+  /* «تجربة»: one frightening expression (the one from film v51), solved by the visitor himself, one small tap at a time, here on the page.
+     Each right tap turns a piece of it into its small number; a wrong tap gets the working written under the question at once. Nothing is saved, nothing leaves the page. */
+  function tryIt(box) {
+    const fmt = api().fmt, M = s => fmt('`' + s + '`');
+    const S = { one: 0, zero: 0, root: 0, pct: 0, bot: 0, top: 0, all: 0 };   // how far each piece has been worked
+    const ROOT = ['√(2⁴ × 2²)', '√(2⁶)', '8'];
+    const STEPS = [   // [the piece, what is asked, the three answers, which is right, the working shown after a wrong tap]
+      ['one', '1 + 2', ['2', '3', '4'], 1, '`1 + 2 = 3`'],
+      ['one', '3 ÷ 3', ['0', '3', '1'], 2, 'أي عدد على نفسه: `1`'],
+      ['zero', '5⁰', ['5', '0', '1'], 2, 'أي عدد أسّه صفر: `1`'],
+      ['root', '2⁴ × 2²', ['2⁸', '2⁶', '4⁶'], 1, 'الأساس نفسه، نجمع الأسس: `4 + 2 = 6`'],
+      ['root', '√(2⁶)', ['8', '16', '32'], 0, 'الجذر ينصّف الأس: `2³ = 8`'],
+      ['pct', '25٪ من 80', ['25', '20', '40'], 1, '٢٥٪ هي الربع، وربع ٨٠: `20`'],
+      ['bot', '3² − 2 × 1', ['4', '1', '7'], 2, '`3² = 9`، ثم `9 − 2 = 7`'],
+      ['top', '8 × 1 + 20', ['168', '28', '29'], 1, 'الضرب أولًا: `8 × 1 = 8`، ثم `8 + 20 = 28`'],
+      ['all', '28 ÷ 7', ['3', '4', '5'], 1, '`7 × 4 = 28`']];
+    const pc = (g, s, done) => `<span class="pc${done ? ' done' : ''}" data-g="${g}">${M(s)}</span>`, op = o => `<i class="op">${o}</i>`;
+    const html = () => {
+      const top = S.top ? pc('top', '28', 1) : `<span class="row" data-g="top">${pc('root', ROOT[S.root], S.root === 2)}${op('×')}${pc('zero', S.zero ? '1' : '5⁰', S.zero)}${op('+')}${pc('pct', S.pct ? '20' : '25٪ من 80', S.pct)}</span>`;
+      const one = S.one === 2 ? pc('one', '1', 1) : `<span class="pc" data-g="one"><span class="la-fr"><span>${M(S.one ? '3' : '1 + 2')}</span><span>${M(S.one ? '3' : '2 + 1')}</span></span></span>`;
+      return `<span class="la-fr big" data-g="all"><span>${top}</span><span>${pc('bot', S.bot ? '7' : '3² − 2 × 1', S.bot)}</span></span>${op('×')}${one}`;
+    };
+    box.innerHTML = `<div class="la-mon-w" role="img" aria-label="مسألة طويلة: كسر كبير فيه جذر وأسس ونسبة مئوية، مضروب في كسر صغير"><div class="la-mon-b"><div class="la-mon"></div></div><p class="la-eq"><span>=</span><b>؟</b></p></div>
+      <div class="la-ask"><p class="la-q" aria-live="polite"></p><div class="la-os"></div><p class="la-why" aria-live="polite"></p></div>`;
+    const wrap = box.firstChild, mon = wrap.querySelector('.la-mon'), eq = wrap.querySelector('.la-eq b'), askB = box.querySelector('.la-ask'), qEl = askB.querySelector('.la-q'), os = askB.querySelector('.la-os'), whyEl = askB.querySelector('.la-why');
+    const html0 = html();
+    const fit = () => {   // the whole expression on one line, as large as the screen allows: measured on the untouched one, so the size never jumps mid-way
+      const probe = mon.cloneNode(false); probe.innerHTML = html0; probe.style.cssText = 'position:absolute;visibility:hidden;font-size:24px'; wrap.appendChild(probe);
+      const w = probe.getBoundingClientRect().width, h = probe.getBoundingClientRect().height; probe.remove(); if (!w || !wrap.clientWidth) return;
+      const f = Math.max(11, Math.min(24, Math.floor(240 * (wrap.clientWidth - 2) / w) / 10)); mon.style.fontSize = f + 'px';
+      mon.parentNode.style.minHeight = Math.ceil(h * f / 24) + 'px';   // its place keeps the height of the untouched one: nothing under it moves as it shrinks
+    };
+    fit(); addEventListener('resize', () => { if (document.body.contains(box)) fit(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    let busy = false, began = false;
+    const ask = i => {
+      const [g, q, o, r, why] = STEPS[i];
+      mon.innerHTML = html(); const now = mon.querySelector(`[data-g="${g}"]`); if (now) now.classList.add('now');
+      qEl.innerHTML = M(q + ' = ؟'); whyEl.innerHTML = ''; whyEl.classList.remove('in'); os.innerHTML = '';
+      o.forEach((v, n) => { const b = el('button', 'la-o'); b.type = 'button'; b.innerHTML = M(v);
+        b.onclick = () => { if (busy) return;
+          if (!began) { began = true; LT('try_start', { once: true }); }
+          if (n !== r) { b.classList.add('bad'); b.disabled = true; whyEl.innerHTML = fmt(why); whyEl.classList.add('in'); LT('try_miss', { val: String(i + 1) }); return; }
+          busy = true; b.classList.add('ok'); S[g]++; mon.innerHTML = html();
+          if (g === 'all') { eq.textContent = ar(4); eq.classList.add('done', 'la-pop'); wrap.classList.add('solved'); }
+          else { const hit = mon.querySelector(`[data-g="${g}"]`); if (hit) hit.classList.add('la-pop'); }
+          setTimeout(() => { busy = false; if (i + 1 < STEPS.length) ask(i + 1); else win(); }, 640);
+        };
+        os.appendChild(b); });
+    };
+    const win = () => { LT('try_done', { once: true }); askB.style.minHeight = askB.offsetHeight + 'px'; askB.classList.add('won');
+      askB.innerHTML = `<p class="la-won"><span>بنفس الطريقة،</span><span>تتعلّم الكمّي كله.</span></p><p class="la-won-s">خطوة صغيرة، ثم التي بعدها.</p>`; };
+    ask(0);
   }
-  function landing() {   // fourth build, 14 Nov 2026: no free lesson. The promise, the pen seen working, the plans, the bill, WhatsApp
+  function landing() {   // fifth build, 14 Nov 2026: the name and what the academy gives, a problem solved by the visitor on the page, then the plans, the bill, WhatsApp
     LT('land_view', { once: true });
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
     const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
-      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اختر مدّتك واضغط «أكمل على واتساب». نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
+      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اختر المناسب لك واضغط «أكمل على واتساب». نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
       ['كيف تكون ساعات المعلّم الخاص؟', 'حصص فردية. نرتّب الموعد معك على واتساب.']];
+    /* the points of the mountain film (video/v30.html), in its own words. One differs: the film says «مبني على أسئلة الاختبار الحقيقية», the terms page says the questions are ours */
+    const PTS = [['تأسيس', 'كل فكرة تنشرح قدامك'], ['تدريب', 'وكل خطأ يتصحّح لك'], ['قياس مستوى', 'اختبار بعد كل درس'], ['مسار متكامل', 'درس ورا درس'],
+      ['مناسب لجميع المستويات', 'تبدأ من الأساس'], ['دعم معلّمين سعوديين', ''], ['على نمط أسئلة الاختبار', ''], ['من الجوال واللابتوب', '']];
     w.insertAdjacentHTML('beforeend',
-      `<header class="la-hero"><h1 class="la-h1">${two('الكمّي يُفهم،', 'لا يُحفظ.')}</h1>
-        <p class="la-lede">${N} درسًا قصيرًا في كمّي القدرات.</p>
-        <div class="la-demo" role="img" aria-label="مثال من الدروس: إجابة خاطئة، ثم يُكتب الحل على السؤال نفسه"></div>
-        <p class="la-cap">إذا أخطأت، نكتب لك الحل على سؤالك نفسه.</p></header>
+      `<header class="la-hero"><svg class="la-logo" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="110" fill="#16201B"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/><path d="M-62 10 C-62 92 62 92 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/></svg>
+        <h1 class="la-h1">أكاديمية لينا</h1><p class="la-lede">كمّي القدرات.</p>
+        <ul class="la-pts">${PTS.map(([a2, b2]) => `<li><b>${a2}</b>${b2 ? `<span>${b2}</span>` : ''}</li>`).join('')}</ul></header>
+      <section class="la-sec" data-sec="try"><h2 class="la-h2">${two('تجربة.', 'حلّ هذا بنفسك.')}</h2>
+        <p class="la-p">ابدأ بأسهل جزء فيه.</p><div class="la-try"></div></section>
       <section class="la-sec" data-sec="how"><h2 class="la-h2">${two('حفظت الإجابة،', 'فتغيّر الرقم.')}</h2>
         <p class="la-p">لهذا لا نعطيك إجابات تحفظها. تتدرّب على الفكرة بأرقام جديدة في كل مرة، حتى تصير لك.</p></section>
       <section class="la-sec" data-sec="map"><h2 class="la-h2">${two('الكمّي كاملًا،', `في ${N} درسًا.`)}</h2>
         <p class="la-p">من قوانين الأسس والكسور والنِّسب، إلى الهندسة والاحتمالات.<br>كل درس من ${ar(10)} إلى ${ar(20)} دقيقة.</p></section>
-      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('اختر مدّتك،', 'وابدأ اليوم.')}</h2>
+      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('اختر المناسب لك،', 'وابدأ اليوم.')}</h2>
         <div class="la-plans" role="radiogroup" aria-label="مدة الاشتراك">${PLANS.map(([id, nm, pr]) => `<button type="button" class="la-plan" role="radio" aria-checked="false" data-id="${id}"><i></i><span class="nm">${nm}</span><span class="pr"><b>${ar(pr)}</b> ريال</span></button>`).join('')}</div>
         <p class="la-note">كل مدة تفتح الدروس الـ${N} كلها والتدريب المفتوح. دفعة واحدة، بلا تجديد تلقائي.</p>
         <div class="la-tutor"><div class="tx"><h3>معلّم خاص</h3><p>اختياري. ${ar(HOUR)} ريالًا للساعة.</p></div>
@@ -4873,7 +4936,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     /* the order: one length of access, and as many private hours as he likes. The bill is always the truth of what the button will send */
     let pick = null, hours = 0;
     const plans = w.querySelector('[data-sec=plan]'), bill = w.querySelector('.la-bill'), out = w.querySelector('.la-step output'), dn = w.querySelector('.la-step .dn'), up = w.querySelector('.la-step .up');
-    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'اختر مدّتك'), micro = el('p', 'la-micro', 'من ٢٩ ريال'.replace('٢٩', ar(PLANS[0][2])));
+    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'اختر المناسب لك'), micro = el('p', 'la-micro', 'من ٢٩ ريال'.replace('٢٩', ar(PLANS[0][2])));
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
     const total = () => (pick ? pick[2] : 0) + hours * HOUR;
     const message = () => ['السلام عليكم، أبغى أشترك في أكاديمية لينا.', `الاشتراك: ${pick[1]} (${ar(pick[2])} ريال)`].concat(hours ? [`معلّم خاص: ${hrs(hours)} (${ar(hours * HOUR)} ريال)`] : [], [`الإجمالي: ${ar(total())} ريال`]).join('\n');
@@ -4883,7 +4946,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       bill.hidden = !pick;
       if (pick) bill.innerHTML = `<div><span>اشتراك ${pick[1]}</span><b>${ar(pick[2])} ريال</b></div>${hours ? `<div><span>معلّم خاص · ${hrs(hours)}</span><b>${ar(hours * HOUR)} ريال</b></div>` : ''}<div class="sum"><span>الإجمالي</span><b>${ar(total())} ريال</b></div>
         <p>الخطوة التالية على واتساب: ترسل لنا هذا الطلب، ونرسل لك طريقة الدفع.</p>`;
-      go.textContent = pick ? 'أكمل على واتساب' : 'اختر مدّتك'; micro.textContent = pick ? `الإجمالي ${ar(total())} ريال` : `من ${ar(PLANS[0][2])} ريال`;
+      go.textContent = pick ? 'أكمل على واتساب' : 'اختر المناسب لك'; micro.textContent = pick ? `الإجمالي ${ar(total())} ريال` : `من ${ar(PLANS[0][2])} ريال`;
       if (pick) { go.href = waLink(message()); go.target = '_blank'; go.rel = 'noopener'; } else { go.href = '#'; go.removeAttribute('target'); }
     };
     const toPlans = () => plans.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -4892,7 +4955,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     dn.onclick = () => { if (hours > 0) { hours--; LT('tutor_hours', { val: String(hours) }); draw(); } };
     go.addEventListener('click', e => { if (!pick) { e.preventDefault(); LT('land_go', { val: 'button' }); return toPlans(); }
       LT('wa_click', { val: 'bill' }); LT('order_wa', { val: `${pick[0]}+${hours}h=${total()}` }); });
-    penDemo(w.querySelector('.la-demo'), () => { LT('land_go', { val: 'demo' }); toPlans(); });   // a tap on the example means «I want this»: it goes to the plans
+    tryIt(w.querySelector('.la-try'));
     draw();
     account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
     /* how far down do they get? one event per section, the first time a third of it is on screen */
