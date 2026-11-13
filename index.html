@@ -13,7 +13,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="image" href="land/demo.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
@@ -1200,17 +1199,6 @@ body.dz .dock .lad-alt{height:52px;border-radius:26px;background:transparent;col
 .jn-spin{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.12);border-top-color:#7FE0B4;animation:jnSpin .9s linear infinite}
 @keyframes jnSpin{to{transform:rotate(360deg)}}
 .jn-a{display:flex;align-items:center;justify-content:center;text-decoration:none}
-.jn-days{width:100%;display:flex;gap:10px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;animation:dzRise .9s .35s both}
-.jn-days::-webkit-scrollbar{display:none}
-.jn-day{flex:none;width:76px;padding:12px 0;border-radius:18px;background:#121413;border:1px solid rgba(255,255,255,.1);color:#B4B8B3;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-family:var(--f-body)}
-.jn-day b{font-family:var(--f-display);font-weight:400;font-size:26px;color:#F6F7F5;line-height:1.1}
-.jn-day small{font-size:12px}
-.jn-day.on{border-color:#7FE0B4;background:rgba(95,211,160,.1);box-shadow:0 0 0 3px rgba(95,211,160,.12)}
-.jn-times{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;animation:dzRise .9s .45s both}
-.jn-time{height:52px;border-radius:16px;background:#121413;border:1px solid rgba(255,255,255,.1);color:#F6F7F5;font:500 17px/1 var(--f-body);cursor:pointer}
-.jn-time.on{background:#F2F3F1;color:#0B0C0C;border-color:#F2F3F1}
-.jn-pill{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px;border-radius:22px;background:rgba(95,211,160,.1);border:1px solid rgba(95,211,160,.4);color:#DADDD9;font:500 15px/1 var(--f-body);cursor:pointer;animation:dzRise .9s .2s both}
-.jn-pill i{width:8px;height:8px;border-radius:4px;background:#7FE0B4;box-shadow:0 0 10px #7FE0B4}
 .acct-acts{display:flex;flex-direction:column;gap:10px}.acct-acts .play-btn,.acct-acts .ghost-btn{justify-content:center}
 .jn .tun-p bdi{white-space:nowrap}
 /* the account window, dark like the rest of the site */
@@ -1275,11 +1263,6 @@ body.dz.lt{background:#F6F4EE;color:#16201B}
 .lt .jn-price{color:#16201B}.lt .jn-price b{font:900 72px/1 Alexandria,var(--f-display)}.lt .jn-price span{color:#3D4A44}
 .lt .jn-ok{color:#F6F4EE;background:#1F7A5A;box-shadow:0 0 0 10px rgba(31,122,90,.12)}
 .lt .jn-spin{border-color:#E4E0D6;border-top-color:#1F7A5A;align-self:center}
-.lt .jn-day{background:#FFFFFF;border-color:#D9D5CA;color:#7A847F}.lt .jn-day b{color:#16201B}
-.lt .jn-day.on{border-color:#1F7A5A;background:rgba(31,122,90,.06);box-shadow:0 0 0 3px rgba(31,122,90,.12)}
-.lt .jn-time{background:#FFFFFF;border-color:#D9D5CA;color:#16201B}
-.lt .jn-time.on{background:#16201B;color:#F6F4EE;border-color:#16201B}
-.lt .jn-pill{align-self:flex-start;background:rgba(31,122,90,.08);border-color:rgba(31,122,90,.35);color:#16201B}.lt .jn-pill i{background:#1F7A5A;box-shadow:none}
 .lt .jn-welcome .jn-ok{align-self:flex-start}
 /* the account window on the light pages */
 body.lt .modal.acct{background:rgba(22,32,27,.35)}
@@ -1294,21 +1277,6 @@ body.lt .acct-form input{background:#FFFFFF;color:#16201B;border-color:#D9D5CA}
 .lt .tun-door:not(.tun-list) .tun-txt{margin-top:auto}
 .lt .tun-door:not(.tun-list) .tun-act{margin-top:auto}
 .lt .tun-door:not(.tun-list):not(:has(.tun-txt)) .tun-act{margin-top:0}
-/* the landing page (ad visitors) */
-.lt .tun-land{justify-content:flex-start;gap:0;padding:0 30px 140px;overflow:visible}
-.ld-hero{min-height:calc(100svh - 150px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-top:60px;animation:dzRise .9s .15s both}
-.ld-sec{display:flex;flex-direction:column;align-items:flex-start;padding:64px 0;border-top:1px solid #E4E0D6}
-.lt .ld-sec .tun-h{font-size:40px}
-.ld-phone{align-self:center;width:230px;height:440px;margin-top:40px;border-radius:36px;overflow:hidden;background:#0B0C0C;box-shadow:0 0 0 6px #16201B,0 30px 60px rgba(22,32,27,.22)}
-.ld-phone img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
-.ld-price{margin:8px 0 0;display:flex;align-items:baseline;gap:14px;color:#16201B}
-.ld-price b{font:900 120px/1.1 Alexandria,var(--f-display)}
-.ld-price span{font:200 34px/1 Alexandria,var(--f-display);color:#3D4A44}
-.lt .ld-go{position:fixed;bottom:24px;left:0;right:0;margin:0 auto;width:calc(100% - 60px);max-width:400px;z-index:3;animation:dzRise .9s .6s both}
-.lt .tun-land::after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to top,#F6F4EE 55%,rgba(246,244,238,0));pointer-events:none;z-index:2}
-.ld-end{padding-bottom:20px}
-.lt .ld-hero .tun-h.big{font-size:46px}
-.lt .ld-hero .tun-p{max-width:300px}
 /* the door: where he is on the way, what he will know, how it works */
 .lt .tun-door:not(.tun-list) .tun-trip{margin-top:0}
 .tun-trip{display:none}
@@ -1390,52 +1358,18 @@ body.lt .dock .lad-alt{border-radius:16px;color:#16201B;border:1px solid #D9D5CA
 .lt svg [fill="#F2F3F1"]{fill:#16201B}
 .lt svg [fill="rgba(127,224,180,.28)"]{fill:rgba(31,122,90,.14)}
 .lt svg [stroke="rgba(255,255,255,.1)"]{stroke:#E4E0D6}
-.ld-tiers{width:100%;display:flex;flex-direction:column;gap:14px;margin-top:6px}
-.ld-tier{border-radius:22px;background:#FFFFFF;border:1px solid #E4E0D6;padding:24px 22px}
-.ld-tier.dark{background:#16201B;border-color:#16201B;color:#F6F4EE}
-.ld-tn{margin:0;font:200 17px/1.5 Alexandria,var(--f-display);color:#1F7A5A}
-.ld-tier.dark .ld-tn{color:#8FD1B4}
-.ld-tier .ld-price{margin:6px 0 10px}
-.ld-tier .ld-price b{font-size:72px}
-.ld-tier .ld-price span{font-size:24px}
-.ld-tier.dark .ld-price,.ld-tier.dark .ld-price span{color:#F6F4EE}
-.ld-tier ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.ld-tier li{position:relative;padding-right:18px;font:200 16px/1.6 Alexandria,var(--f-display);color:#3D4A44}
-.ld-tier li::before{content:"";position:absolute;right:0;top:11px;width:6px;height:6px;border-radius:50%;background:#1F7A5A}
-.ld-tier.dark li{color:#D5D9D3}.ld-tier.dark li::before{background:#8FD1B4}
-.ld-wa{display:flex;align-items:center;justify-content:center;height:50px;margin-top:18px;border-radius:14px;border:1px solid rgba(246,244,238,.3);color:#F6F4EE!important;text-decoration:none;font:200 16px/1 Alexandria,var(--f-display)}
 body.lt .opt.dz-o.bad{text-decoration:none}
 .lt .dz-player .mo{color:#1F7A5A}
 body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
-/* the landing page's first question */
-.ld-hero{min-height:auto;justify-content:flex-start;padding:84px 0 56px}
-.lt .ld-hero .tun-p{margin-top:14px}
-.ld-try{width:100%;margin-top:18px;display:flex;flex-direction:column;gap:14px}
-.ld-q{margin:0;align-self:center;font:900 44px/1.3 Alexandria,var(--f-display);color:#16201B}
-.ld-q sup{font-size:.55em}
-.ld-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ld-o{height:68px;border-radius:18px;border:1px solid #E4E0D6;background:#FFFFFF;box-shadow:0 1px 0 #E4E0D6;color:#16201B;font:300 26px/1 Alexandria,var(--f-display);cursor:pointer;transition:background .2s,opacity .3s}
-.ld-o:active{transform:scale(.98)}
-.ld-o.ok{background:#1F7A5A;border-color:#1F7A5A;color:#F6F4EE;font-weight:900;box-shadow:0 10px 24px rgba(31,122,90,.22)}
-.ld-o.bad{background:#FBF1EF;border:1px dashed #D98A7E;color:#9A3B30;box-shadow:none}
-.ld-o.off{opacity:.35}
-.ld-fb{margin:0;min-height:24px;font:200 17px/1.7 Alexandria,var(--f-display);color:#3D4A44;text-align:center}
-.ld-fb b{font-weight:900;color:#1F7A5A}
-.ld-fb sup{font-size:.6em}
-.lt .ld-next{position:static;width:100%;animation:dzRise .5s both}
-.lt .ld-go{opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity .3s,transform .3s;animation:none}
-.lt .ld-go.show{opacity:1;pointer-events:auto;transform:none}
-.lt .tun-land::after{opacity:0;transition:opacity .3s}
-.lt .tun-land:has(.ld-go.show)::after{opacity:1}
 /* the teacher's pen (engine/pen.js) */
 .dz-stage{position:relative}
 .pen-svg{position:absolute;left:0;top:0;pointer-events:none;z-index:3;overflow:visible}
-.pen-svg path{fill:none;stroke:#1F7A5A;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.pen-svg path{fill:none;stroke:#1F7A5A;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
 .pen-work{align-self:stretch;display:flex;flex-direction:column;align-items:center;gap:6px;margin:4px 0 -4px}
 .pen-w{clip-path:inset(-30% 0 -30% 100%);transform:rotate(-1.5deg)}
-.pen-w>span{display:inline-block;font:200 30px/1.5 Alexandria,var(--f-display);color:#1F7A5A}
-.pen-w .fr{font-weight:300}
-.pen-w .m,.pen-w .mo{color:#1F7A5A!important;font-weight:200}
+.pen-w>span{display:inline-block;font:400 27px/1.6 Alexandria,var(--f-display);color:#1F7A5A}   /* as thick as the rings: one pen wrote both (13 Nov; it was a hairline 200 at 30px, the same width on the line) */
+.pen-w .fr{font-weight:400}
+.pen-w .m,.pen-w .mo{color:#1F7A5A!important;font-weight:400}
 .pen-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;margin-top:-10px;border-radius:21px;border:1px solid rgba(31,122,90,.35);background:rgba(31,122,90,.07);color:#1F7A5A;font:900 16px/1 Alexandria,var(--f-display);cursor:pointer;animation:dzRise .5s both}
 @media (prefers-reduced-motion: reduce){.pen-w{clip-path:none}.pen-svg path{stroke-dashoffset:0}}
 /* idea slides in motion (engine/motion.js) and the «؟» help sheet */
@@ -1463,9 +1397,7 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 @media (prefers-reduced-motion: reduce){.dz-help,.dz-help-in,.dz-ex-after{transition:none}}
 .mo-pw{display:inline-block;white-space:nowrap}
 
-/* opening price */
-.ld-price s{font:200 26px/1 Alexandria,var(--f-display);color:#9AA39D;text-decoration-thickness:1.5px;margin-inline-start:4px}
-.ld-open{display:inline-block;margin:0 0 12px;padding:4px 14px;border-radius:14px;background:#E6F1EC;color:#1F7A5A;font:400 14px/1.6 Alexandria,var(--f-display)}
+/* the price on the gate and the win screen */
 .tun-price{margin:6px 0 0;align-self:stretch;display:flex;align-items:baseline;justify-content:flex-start;gap:10px;font:200 22px/1.2 Alexandria,var(--f-display);color:#3D4A44}
 .tun-price b{font:900 56px/1.1 Alexandria,var(--f-display);color:#16201B}
 .tun-price s{color:#9AA39D;font-size:22px}
@@ -1511,44 +1443,54 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 @keyframes tunHero{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.dz-hero,.dz-hero.out{transition:none;transform:none}.tun-hero{animation:none}}
 
-/* ---------- the ad landing page, rebuilt 13 Nov 2026 (docs/LANDING_PLAN.md): every rule below wins over the older .ld-* rules above ---------- */
-.lt .tun-land{padding:0 26px 150px}
-.lt .tun-land .ld-hero{min-height:auto;justify-content:flex-start;padding:78px 0 46px;animation:none}
-.lt .tun-land .ld-hero .tun-h.big{font-size:clamp(29px,calc((100vw - 56px)/8.6),44px);line-height:1.32;text-wrap:initial}
-.lt .tun-land .ld-hero .tun-h.big span{white-space:nowrap}
-.lt .tun-land .ld-hero .tun-p{margin-top:14px;font-size:18px;line-height:1.75;max-width:none}
-.ld-ticks{margin:16px 0 0;font:400 15.5px/1.6 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
-.ld-ticks i{display:inline-block;width:5px;height:5px;margin:0 11px 2px;border-radius:50%;background:#1F7A5A;vertical-align:middle}
-.ld-demo{align-self:center;position:relative;width:min(76%,290px);aspect-ratio:520/766;margin-top:34px;border-radius:30px;overflow:hidden;background:#F6F4EE url(land/demo.webp) center/cover no-repeat;box-shadow:0 0 0 6px #16201B,0 26px 50px rgba(22,32,27,.2)}
-.ld-demo video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:transparent;opacity:0;transition:opacity .35s;pointer-events:none}
-.ld-demo video.on{opacity:1}
-.lt .tun-land .ld-sec{padding:52px 0}
-.lt .tun-land .ld-sec .tun-h{font-size:clamp(27px,8.4vw,36px);line-height:1.36}
-.lt .tun-land .ld-sec .tun-p{font-size:18px;line-height:1.75}
-.ld-steps{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:22px;counter-reset:ld}
-.ld-steps li{position:relative;padding-right:52px;counter-increment:ld}
-.ld-steps li::before{content:counter(ld,arabic-indic);position:absolute;right:0;top:1px;width:36px;height:36px;border-radius:50%;background:#E6F1EC;color:#1F7A5A;font:900 17px/36px Alexandria,var(--f-display);text-align:center}
-.ld-steps b{display:block;font:900 20px/1.5 Alexandria,var(--f-display);color:#16201B}
-.ld-steps span{display:block;margin-top:2px;font:200 17px/1.7 Alexandria,var(--f-display);color:#3D4A44}
-.ld-chips{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.ld-chips li{padding:7px 14px;border-radius:999px;background:#FFFFFF;border:1px solid #E4E0D6;font:300 14.5px/1.5 Alexandria,var(--f-display);color:#16201B}
-.ld-note{margin:18px 0 0;font:200 16.5px/1.8 Alexandria,var(--f-display);color:#3D4A44}
-.lt .tun-land .ld-tier li{font-size:16.5px}
-.ld-safe{display:flex;gap:12px;align-items:flex-start;margin:16px 0 0;padding:16px 18px;border-radius:16px;background:#E6F1EC;font:300 15.5px/1.75 Alexandria,var(--f-display);color:#16201B}
-.ld-safe svg{flex:none;width:22px;height:22px;margin-top:3px;color:#1F7A5A}
-.ld-safe a{display:inline-block;padding:12px 0;margin:-8px 0;color:#1F7A5A;text-underline-offset:3px;white-space:nowrap}
-.ld-fqs{margin-top:22px;border-top:1px solid #E4E0D6}
-.ld-fq{border-bottom:1px solid #E4E0D6}
-.ld-fq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:60px;padding:8px 0;cursor:pointer;font:400 17px/1.6 Alexandria,var(--f-display);color:#16201B;-webkit-tap-highlight-color:transparent}
-.ld-fq summary::-webkit-details-marker{display:none}
-.ld-fq summary::after{content:"";flex:none;width:9px;height:9px;margin:0 6px 4px;border:solid #1F7A5A;border-width:0 2.5px 2.5px 0;transform:rotate(45deg);transition:transform .2s}
-.ld-fq[open] summary::after{transform:rotate(-135deg);margin-bottom:-4px}
-.ld-fq p{margin:0 0 18px;font:200 16.5px/1.85 Alexandria,var(--f-display);color:#3D4A44}
-.lt .tun-land .ld-end{padding-bottom:8px}
-.lt .tun-land .ld-acc{align-self:center;margin-top:26px;min-height:44px;animation:none}
-.lt .tun-land .ld-go{bottom:calc(20px + env(safe-area-inset-bottom,0px))}
-body.ld-on .legal{padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))}
-@media (max-height:700px){.lt .tun-land .ld-hero{padding-top:66px}.lt .tun-land .ld-hero .tun-p{margin-top:10px;font-size:17px;line-height:1.7}.ld-demo{margin-top:26px}}
+/* ---------- the ad landing page (third build, 13 Nov 2026, docs/LANDING_PLAN.md) ----------
+   One column, set like a page. Green belongs to the pen and to nothing else. Every title is two short lines. One thing moves: the pen. */
+.lt .tun-land{display:block;padding:0 26px 30px;overflow:visible;text-align:right}
+.la-hero{padding:88px 0 0;min-height:100svh;box-sizing:border-box}   /* the first screen belongs to the promise and the pen: the next title never shows through under the button */
+.la-h1{margin:0;font:900 clamp(40px,13.2vw,58px)/1.3 Alexandria,var(--f-display);color:#16201B;letter-spacing:0}
+.la-h1 span,.la-h2 span{display:block;white-space:nowrap}
+.la-lede{margin:14px 0 0;font:300 18px/1.8 Alexandria,var(--f-display);color:#3D4A44}
+.la-demo{margin:28px 0 0;padding:24px 14px 14px;border-radius:26px;background:#FFFFFF;border:1px solid #E4E0D6;box-shadow:0 1px 0 #E4E0D6;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.la-demo .dz-stage{min-height:0;max-width:none;margin:0;padding:0;gap:14px}
+.la-demo .pen-work{margin:22px 0 2px;gap:2px}
+.la-demo .dz-q{font-size:clamp(27px,8.6vw,34px);line-height:1.5}
+.la-demo .dz-opts{gap:8px;margin-top:4px}
+body.lt .la-demo .opt.dz-o{min-height:58px;border-radius:16px;font-size:23px;background:#F6F4EE;border:1px solid #E4E0D6;box-shadow:none;cursor:pointer;transition:background .25s,border-color .25s,color .25s,transform .16s}
+body.lt .la-demo .opt.dz-o.press{transform:scale(.93)}
+body.lt .la-demo .opt.dz-o.bad{background:#FBF1EF;border:1px dashed #D98A7E;color:#9A3B30}
+body.lt .la-demo .opt.dz-o.ok{background:#1F7A5A;border-color:#1F7A5A;color:#F6F4EE;font-weight:900}
+.la-demo .pen-svg,.la-demo .pen-work{transition:opacity .4s}
+.la-demo.out .pen-svg,.la-demo.out .pen-work{opacity:0}
+.la-cap{margin:14px 0 0;font:300 15px/1.7 Alexandria,var(--f-display);color:#6B756F;text-align:center}
+.la-sec{padding:88px 0 0}
+.la-h2{margin:0;font:900 clamp(27px,8.4vw,36px)/1.4 Alexandria,var(--f-display);color:#16201B}
+.la-p{margin:18px 0 0;font:300 17.5px/1.9 Alexandria,var(--f-display);color:#3D4A44;text-wrap:pretty}
+.la-all{margin:14px 0 0}
+.la-all summary{list-style:none;display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;font:400 16px/1.6 Alexandria,var(--f-display);color:#16201B;text-decoration:underline;text-decoration-color:#C9C4B6;text-underline-offset:6px;-webkit-tap-highlight-color:transparent}
+.la-all summary::-webkit-details-marker{display:none}
+.la-all summary::after{content:"";width:7px;height:7px;margin-bottom:4px;border:solid #7A847F;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);transition:transform .2s}
+.la-all[open] summary::after{transform:rotate(-135deg);margin-bottom:-4px}
+.la-all ol{list-style:none;margin:10px 0 0;padding:0;columns:2;column-gap:22px;counter-reset:la}
+.la-all li{break-inside:avoid;display:flex;gap:10px;padding:7px 0;font:300 15px/1.6 Alexandria,var(--f-display);color:#16201B;counter-increment:la}
+.la-all li::before{content:counter(la,arabic-indic);flex:none;min-width:20px;color:#9AA39D;font-variant-numeric:tabular-nums}
+.la-note{margin:16px 0 0;font:300 15px/1.85 Alexandria,var(--f-display);color:#6B756F;text-wrap:pretty}
+.la-note a{color:#1F7A5A;text-underline-offset:4px;white-space:nowrap;display:inline-block;padding:10px 0;margin:-10px 0}
+.la-faq{margin:22px 0 0;border-top:1px solid #E4E0D6}
+.la-fq{border-bottom:1px solid #E4E0D6}
+.la-fq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:62px;padding:8px 0;cursor:pointer;font:400 17px/1.6 Alexandria,var(--f-display);color:#16201B;-webkit-tap-highlight-color:transparent}
+.la-fq summary::-webkit-details-marker{display:none}
+.la-fq summary::after{content:"";flex:none;width:8px;height:8px;margin:0 6px 4px;border:solid #7A847F;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);transition:transform .2s}
+.la-fq[open] summary::after{transform:rotate(-135deg);margin-bottom:-4px}
+.la-fq p{margin:0 0 20px;font:300 16.5px/1.85 Alexandria,var(--f-display);color:#3D4A44}
+.la-foot{padding:44px 0 0;display:flex;justify-content:center}
+.lt .tun-land .ld-acc{min-height:44px;animation:none}
+.la-dock{position:fixed;left:0;right:0;bottom:0;z-index:3;padding:36px 26px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,#F6F4EE 70%,rgba(246,244,238,0));pointer-events:none}
+.la-dock>*{pointer-events:auto;max-width:408px;margin-inline:auto}
+.lt .la-dock .ld-go{position:static;width:100%;max-width:408px;animation:none}
+.la-micro{margin:9px auto 0;font:300 14px/1.5 Alexandria,var(--f-display);color:#6B756F;text-align:center}
+body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+@media (max-height:780px){.la-hero{padding-top:72px}.la-h1{font-size:clamp(36px,11.8vw,48px)}.la-lede{margin-top:10px;font-size:17px}.la-demo{margin-top:18px;padding-top:18px}}
+@media (max-height:600px){.la-hero{padding-top:60px}.la-h1{font-size:clamp(32px,10.6vw,42px)}.la-demo .pen-work{margin-top:16px}}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1766,7 +1708,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794571217", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794575078", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4103,7 +4045,9 @@ function runDrill(d, lesson) {
 /* The teacher's pen: after a wrong pick, a green pen circles, underlines and writes the working on the student's own question.
    A question may carry g.show = [['circle', text, nth?], ['under', text, nth?], ['strike', text, nth?], ['arrow', fromText, toText], ['write', text]].
    Texts are written as in the question source (2, ³, ×…); they are matched against what is on screen (Arabic digits, superscripts).
-   LeenaPen.play(stage, g, { onTick, onSkip }) → Promise, resolves when the drawing is done (or skipped). Plan: docs/PEN_PLAN.md */
+   LeenaPen.play(stage, g, { onTick, onSkip }) → Promise, resolves when the drawing is done (or skipped). Plan: docs/PEN_PLAN.md
+   For a show-piece (the landing page): { free: true } a tap does not skip it; { after: promise } the lines take their place at once,
+   and the first stroke waits for the promise (then everything is measured again, in case the font arrived late). */
 (() => {
   const NS = 'http://www.w3.org/2000/svg', AR = '٠١٢٣٤٥٦٧٨٩', SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
   const MOVE = 0.5, WRITE = 0.75, GAP = 0.15, ARROW = 0.4;
@@ -4166,11 +4110,11 @@ function runDrill(d, lesson) {
   }
   function curve(x1, y1, x2, y2, bend) {
     const mx = (x1 + x2) / 2 - (y2 - y1) * bend, my = (y1 + y2) / 2 + (x2 - x1) * bend, pts = [];
-    for (let i = 0; i <= 16; i++) { const t = i / 16, a = (1 - t) * (1 - t), b = 2 * t * (1 - t), c = t * t; pts.push([a * x1 + b * mx + c * x2 + rnd() * 2, a * y1 + b * my + c * y2 + rnd() * 2]); }
+    for (let i = 0; i <= 16; i++) { const t = i / 16, a = (1 - t) * (1 - t), b = 2 * t * (1 - t), c = t * t; pts.push([a * x1 + b * mx + c * x2 + rnd() * 0.9, a * y1 + b * my + c * y2 + rnd() * 0.9]); }   // a steady hand: under one pixel of wobble
     return pts;
   }
   function arrow(x1, y1, x2, y2, bend) {
-    const pts = curve(x1, y1, x2, y2, bend), n = pts.length, an = Math.atan2(pts[n - 1][1] - pts[n - 4][1], pts[n - 1][0] - pts[n - 4][0]), hd = 11;
+    const pts = curve(x1, y1, x2, y2, bend), n = pts.length, an = Math.atan2(pts[n - 1][1] - pts[n - 4][1], pts[n - 1][0] - pts[n - 4][0]), hd = 9;
     return P(pts) + ` M${(x2 - hd * Math.cos(an - 0.5)).toFixed(1)} ${(y2 - hd * Math.sin(an - 0.5)).toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)} L${(x2 - hd * Math.cos(an + 0.5)).toFixed(1)} ${(y2 - hd * Math.sin(an + 0.5)).toFixed(1)}`;
   }
   const lineUnder = b => P(curve(b.x - 4, b.b + 5, b.r + 4, b.b + 3, 0.02));
@@ -4221,7 +4165,8 @@ function runDrill(d, lesson) {
           marks.slice(-2).forEach((m, j, arr) => {
             const hit = m.text != null && rel(find([span], plain(m.text), m.text === arr[0].text && j ? 2 : 1));
             const tx = hit ? hit.cx : arr.length === 2 ? L.cx + (m.cx > arr[1 - j].cx ? 1 : -1) * Math.min(40, L.w / 4) : L.cx;
-            stroke(arrow(m.cx, m.b + 6, tx, L.y - 2, m.cx > tx + 8 ? -0.15 : m.cx < tx - 8 ? 0.15 : 0.03), ARROW); if (arr.length === 2 && !j) t -= ARROW; used++; });
+            if (L.y - 2 - (m.b + 13) < 12) return;   // a line right under another line: no room for an arrow, only for a stray tick. The eye reads down by itself
+            stroke(arrow(m.cx, m.b + 13, tx, L.y - 2, m.cx > tx + 8 ? -0.15 : m.cx < tx - 8 ? 0.15 : 0.03), ARROW); if (arr.length === 2 && !j) t -= ARROW; used++; });
           marks = [L];
           items.push({ el: line, a: t, b: t + WRITE, k: 'w' }); t += WRITE + GAP;
         }
@@ -4237,17 +4182,20 @@ function runDrill(d, lesson) {
       let t0 = null, done = false, raf = 0, ti = 0, u = 0;
       const onResize = () => { build(); paint(done ? 1e9 : u); };
       addEventListener('resize', onResize);
+      const fonts = document.fonts && document.fonts.addEventListener ? document.fonts : null;   // a font that arrives late moves the numbers: measure again
+      if (fonts) fonts.addEventListener('loadingdone', onResize);
       const end = () => { if (done) return; done = true; cancelAnimationFrame(raf); paint(1e9); document.removeEventListener('click', skip, true); setTimeout(() => res(true), 250); };
       const skip = e => { if (done) return; e.stopPropagation(); e.preventDefault(); o.onSkip && o.onSkip(); end(); };
       const frame = now => { if (done) return; if (t0 == null) t0 = now; u = (now - t0) / 1000; paint(u);
         while (ti < ticks.length && ticks[ti] <= u) { ti++; o.onTick && o.onTick(); }
         if (u >= total) return end(); raf = requestAnimationFrame(frame); };
       // stop listening once this question leaves the screen
-      const watch = setInterval(() => { if (!document.body.contains(svg)) { clearInterval(watch); removeEventListener('resize', onResize); if (!done) { done = true; cancelAnimationFrame(raf); document.removeEventListener('click', skip, true); res(false); } } }, 500);
+      const watch = setInterval(() => { if (!document.body.contains(svg)) { clearInterval(watch); removeEventListener('resize', onResize); if (fonts) fonts.removeEventListener('loadingdone', onResize); if (!done) { done = true; cancelAnimationFrame(raf); document.removeEventListener('click', skip, true); res(false); } } }, 500);
       paint(0);
       if (quiet()) return end();
-      setTimeout(() => document.addEventListener('click', skip, true), 0);   // the tap that opened it does not skip it
-      raf = requestAnimationFrame(frame);
+      if (!o.free) setTimeout(() => document.addEventListener('click', skip, true), 0);   // the tap that opened it does not skip it
+      if (o.after && o.after.then) o.after.then(() => { if (done) return; build(); paint(0); raf = requestAnimationFrame(frame); });
+      else raf = requestAnimationFrame(frame);
     });
   }
 
@@ -4700,7 +4648,7 @@ function runDrill(d, lesson) {
 })();
 
 window.AcademyCourses = window.AcademyCourses || {};
-window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, persist, DISTRICTS, units, playLesson } };
+window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, persist, DISTRICTS, units, playLesson, fmt } };
 })();
 /* ================= visitor statistics (public site only) =================
    Small anonymous events go to the events table (site/supabase/003_events.sql); only the admin can read them.
@@ -4841,48 +4789,76 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const fromAsk = () => /^ad\d$/.test(new URLSearchParams(location.search).get('src') || '');   // an ad whose video already showed a question: no page to read, straight into the first question (docs/AD_CAMPAIGN_PLAN.md)
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
-  function landing() {   // rebuilt 13 Nov 2026 from the research in docs/LANDING_PLAN.md: one promise, the product seen working, every doubt answered, one button
+  /* the real pen (engine/pen.js) on a real question from lesson 1, playing by itself: a wrong pick, the pen, the right answer, again.
+     Drawn by the page, not a video: a phone that refuses to play videos by itself (low power mode, the browser inside TikTok) still shows it moving. */
+  function penDemo(box, tap) {
+    const Q = { q: '`2⁷ ÷ 2⁴` = ؟', opts: [6, 8, 3, 16], miss: 0, right: 1, show: [['circle', '⁷'], ['circle', '⁴'], ['write', '7 − 4 = 3'], ['write', '2³ = 8']] };   // the lesson's own kind of question (courses/quant/d_fast_drill.js); ٦ is the mistake most people make (٢ × ٣)
+    const fmt = api().fmt;   // the lesson's own way of setting numbers and powers
+    box.innerHTML = `<div class="dz-stage" aria-hidden="true"><p class="dz-q">${fmt(Q.q)}</p><div class="dz-opts">${Q.opts.map(o => `<span class="opt dz-o">${fmt(String(o))}</span>`).join('')}</div></div>`;
+    box.onclick = tap;
+    const P = window.LeenaPen, stage = box.firstChild, O = [...stage.querySelectorAll('.opt')]; if (!P) return;
+    const calm = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const live = () => document.body.contains(box), sleep = ms => new Promise(r => setTimeout(r, ms));
+    let onScreen = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => { onScreen = es[es.length - 1].isIntersecting; }, { threshold: .15 }).observe(box);
+    const fontsIn = Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), sleep(2500)]);
+    (async () => {
+      for (let round = 0; live(); round++) {
+        stage.querySelectorAll('.pen-svg,.pen-work').forEach(x => x.remove()); box.classList.remove('out'); O.forEach(o => o.classList.remove('bad', 'ok', 'press'));
+        let go; const gate = new Promise(r => { go = r; });
+        const pen = P.play(stage, Q, { free: true, after: gate });   // its lines take their place now, hidden: nothing on the page shifts when it starts
+        if (calm) { O[Q.miss].classList.add('bad'); go(); await pen; O[Q.right].classList.add('ok'); return; }   // a phone that asks for less motion gets the finished drawing
+        if (!round) await fontsIn;
+        while (live() && !(onScreen && !document.hidden)) await sleep(300);   // it rests while nobody is looking
+        await sleep(round ? 500 : 800); O[Q.miss].classList.add('press');
+        await sleep(170); O[Q.miss].classList.remove('press'); O[Q.miss].classList.add('bad');
+        await sleep(700); go(); await pen;
+        if (!live()) return;
+        O[Q.right].classList.add('ok');
+        await sleep(3800); box.classList.add('out'); O.forEach(o => o.classList.remove('bad', 'ok'));
+        await sleep(480);
+      }
+    })();
+  }
+  function landing() {   // third build, 13 Nov 2026 (docs/LANDING_PLAN.md): one promise, the pen seen working, the price, the doubts, one button
     LT('land_view', { once: true });
-    const w = room('tun-land'), N = ar(lessons().length), free = ar(first().drill.freeMin || 5);
-    const sec = (name, eb, h, body) => `<section class="ld-sec ld-${name}" data-sec="${name}"><p class="tun-eyebrow">${eb}</p><i class="tun-rule"></i><h2 class="tun-h stop">${h}</h2>${body}</section>`;
-    const HOW = [['تحل بنفسك', 'كل درس أسئلة قصيرة، سؤالًا بعد سؤال.'], ['إذا أخطأت، تعرف السبب', 'القلم يكتب لك الحل على السؤال نفسه.'],
-      ['أرقام جديدة كل مرة', 'لا ينفع حفظ الإجابة، كما في الاختبار.'], ['بدون آلة حاسبة', 'كل الأسئلة تُحل ذهنيًا، كما في قاعة الاختبار.']];
-    const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['كم يأخذ الدرس؟', `من ${ar(10)} إلى ${ar(20)} دقيقة. والدرس الأول المجاني ${free} دقائق.`],
-      ['مستواي ضعيف في الرياضيات، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية ثم يتدرّج.'], ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'],
-      ['كيف أشترك؟', 'بعد الدرس المجاني اضغط «اشترك» واترك رقمك، ونتواصل معك لإتمام الاشتراك.'], ['هل أستطيع استرجاع المبلغ؟', `نعم، خلال ${ar(7)} أيام من الدفع إذا لم تُكمل أكثر من ${ar(3)} دروس مدفوعة.`]];
-    const SHIELD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-2.9 8-7 10-4.1-2-7-5.4-7-10V6l7-3z"/><path d="M8.8 12.2l2.3 2.3 4.2-4.6"/></svg>';
+    const w = room('tun-land'), L = lessons(), N = ar(L.length), free = ar(first().drill.freeMin || 5);
+    const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
+    /* every fact has one home on this page: how long a lesson takes is said with the lessons, the refund with the price */
+    const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
+      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'بعد الدرس المجاني اضغط «اشترك» واترك رقمك، ونتواصل معك لإتمام الاشتراك.']];
     w.insertAdjacentHTML('beforeend',
-      `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop"><span>كمّي القدرات</span><br><span>بالحل، لا بالحفظ</span></h1>
-        <p class="tun-p">${N} درسًا قصيرًا على جوالك. تحل، وإذا أخطأت تعرف السبب فورًا.</p>
-        <p class="ld-ticks">مجانًا<i></i>بدون تسجيل<i></i>${free} دقائق</p>
-        <div class="ld-demo" role="img" aria-label="سؤال من الدرس الأول، والقلم يشرح الخطأ"><video muted loop playsinline preload="none" width="520" height="766" aria-hidden="true"></video></div></section>` +
-      sec('how', 'الطريقة', 'تتعلّم وأنت تحل', `<ol class="ld-steps">${HOW.map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('')}</ol>`) +
-      sec('map', 'المنهج', `${N} درسًا تغطي الكمّي`, `<ul class="ld-chips">${lessons().map(l => `<li>${esc(l.title)}</li>`).join('')}</ul><p class="ld-note">كل درس من ${ar(10)} إلى ${ar(20)} دقيقة، وبعده تدريب مفتوح.</p>`) +
-      sec('plan', 'الاشتراك', 'الكمّي كاملًا', `<div class="ld-tiers">
-        <div class="ld-tier"><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span></p><ul><li>${N} درسًا لمدة ${PERIOD}</li><li>تدريب مفتوح بعد كل درس</li><li>دفعة واحدة، بلا تجديد تلقائي</li></ul></div>
-      </div><p class="ld-safe">${SHIELD}<span>استرجاع المبلغ خلال ${ar(7)} أيام من الدفع، إذا لم تُكمل أكثر من ${ar(3)} دروس مدفوعة. <a href="refund.html">سياسة الاسترجاع</a></span></p>
-      <p class="ld-note">جرّب الدرس الأول أولًا. الاشتراك بعده إذا أعجبك.</p>`) +
-      sec('ask', 'أسئلة شائعة', 'قبل أن تبدأ', `<div class="ld-fqs">${FAQ.map(([q, a2]) => `<details class="ld-fq"><summary>${q}</summary><p>${a2}</p></details>`).join('')}</div>`) +
-      `<section class="ld-sec ld-end" data-sec="end"><h2 class="tun-h stop">فاهم؟ جرّب تحل</h2><p class="tun-p">الدرس الأول مجانًا، وبدون تسجيل.</p></section>`);
-    const go = el('button', 'tun-go ld-go', 'جرّب الدرس الأول مجانًا');
+      `<header class="la-hero"><h1 class="la-h1">${two('الكمّي يُفهم،', 'لا يُحفظ.')}</h1>
+        <p class="la-lede">${N} درسًا قصيرًا في كمّي القدرات.</p>
+        <div class="la-demo" role="img" aria-label="مثال من الدرس الأول: إجابة خاطئة، ثم القلم يكتب الحل على السؤال نفسه"></div>
+        <p class="la-cap">إذا أخطأت، يكتب القلم الحل على سؤالك نفسه.</p></header>
+      <section class="la-sec" data-sec="how"><h2 class="la-h2">${two('حفظت الإجابة،', 'فتغيّر الرقم.')}</h2>
+        <p class="la-p">لهذا لا نعطيك إجابات تحفظها. تتدرّب على الفكرة بأرقام جديدة في كل مرة، وبدون آلة حاسبة، كما في قاعة الاختبار.</p></section>
+      <section class="la-sec" data-sec="map"><h2 class="la-h2">${two('الكمّي كاملًا،', `في ${N} درسًا.`)}</h2>
+        <p class="la-p">من قوانين الأسس والكسور والنِّسب، إلى الهندسة والاحتمالات.<br>كل درس من ${ar(10)} إلى ${ar(20)} دقيقة.</p>
+        <details class="la-all"><summary>أسماء الدروس كلها</summary><ol>${L.map(l => `<li>${esc(l.title)}</li>`).join('')}</ol></details></section>
+      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('اشتراك واحد،', `<span class="ld-price">${ar(PRICE)} ريال.</span>`)}</h2>
+        <p class="la-p">${N} درسًا، لمدة ${PERIOD}.<br>تدريب مفتوح بعد كل درس.<br>دفعة واحدة، بلا تجديد تلقائي.</p>
+        <p class="la-note">جرّب الدرس الأول أولًا، ثم قرّر. وإذا اشتركت، تسترجع المبلغ كاملًا خلال ${ar(7)} أيام من الدفع إذا لم تُكمل أكثر من ${ar(3)} دروس مدفوعة. <a href="refund.html">سياسة الاسترجاع</a></p></section>
+      <section class="la-sec" data-sec="ask"><h2 class="la-h2">قد تسأل.</h2>
+        <div class="la-faq">${FAQ.map(([q, a2]) => `<details class="la-fq"><summary>${q}</summary><p>${a2}</p></details>`).join('')}</div></section>
+      <footer class="la-foot" data-sec="end"></footer>`);
     const start = how => { LT('land_go', { val: how }); LT('tunnel_enter', { val: 'land', lesson: first().id }); try { sessionStorage.setItem('leena-land', '1'); } catch (e) {} play(first()); };
+    penDemo(w.querySelector('.la-demo'), () => start('demo'));   // a tap on the example means «let me try»: it opens the lesson too
+    /* the button stays on screen from the first paint, with the two things that make trying easy right under it */
+    const dock = el('div', 'la-dock'), go = el('button', 'tun-go ld-go show', 'جرّب الدرس الأول مجانًا');
     go.onclick = () => start('button');
-    w.appendChild(go);
-    go.classList.add('show');   // the button is there from the first paint: nothing on this page arrives late
-    account(w, 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
-    /* the clip of the real lesson starts once the page has painted; a phone that asks for less motion keeps the still picture */
-    const v = w.querySelector('.ld-demo video'), calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (v && !calm) setTimeout(() => { if (!document.body.contains(v)) return; v.muted = true; v.defaultMuted = true; v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');   // iPhone plays a clip by itself only when it is silent and stays inside the page
-      v.addEventListener('playing', () => v.classList.add('on'), { once: true });   // shown only once it really plays: a phone that cannot play it never shows a broken picture
-      v.src = 'land/demo.mp4'; const pl = v.play(); if (pl && pl.catch) pl.catch(() => {}); }, 400);   // if the phone refuses (low power mode), the still picture under it stays
+    dock.appendChild(go); dock.insertAdjacentHTML('beforeend', `<p class="la-micro">بدون تسجيل، ${free} دقائق فقط</p>`); w.appendChild(dock);
+    account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
     /* how far down do they get? one event per section, the first time a third of it is on screen */
-    const hero = w.querySelector('.ld-hero'); let saw = false;
+    const hero = w.querySelector('.la-hero'); let saw = false;
     const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll);
       if (!saw && hero.getBoundingClientRect().bottom < innerHeight * 0.4) { saw = true; LT('land_scroll'); } };
     addEventListener('scroll', onScroll, { passive: true });
     if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { LT('land_' + e.target.dataset.sec); io.unobserve(e.target); } }), { threshold: .3 });
       w.querySelectorAll('[data-sec]').forEach(x => io.observe(x)); }
-    w.querySelectorAll('.ld-fq').forEach((d, i) => d.addEventListener('toggle', () => { if (d.open) LT('land_faq', { val: String(i + 1) }); }));
+    w.querySelectorAll('.la-fq').forEach((d, i) => d.addEventListener('toggle', () => { if (d.open) LT('land_faq', { val: String(i + 1) }); }));
+    w.querySelector('.la-all').addEventListener('toggle', e => { if (e.target.open) LT('land_list'); });   // who wants the full list of lessons?
   }
 
   /* ---------- the gate: lesson 1 is done, lesson 2 is for subscribers ---------- */
@@ -5025,10 +5001,6 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       return `<li class="${s}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : ''}</li>`; }).join('')}</ol>`);
     w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l);
       if (s === 'done' || s === 'here' || s === 'open') li.onclick = () => { LT('tunnel_enter', { val: 'pick', lesson: l.id }); door(l); }; });
-    const Au = window.LeenaAuth, P = Au && Au.payOn && Au.plan;
-    if (P && P.credits > 0 && !(P.booking && P.booking.status === 'booked')) {   // a tutor session waiting to be booked
-      const s = el('button', 'jn-pill', '<i></i>احجز جلستك مع المدرّس'); s.onclick = () => { LT('road_book'); Au.book(); }; w.insertBefore(s, w.querySelector('.tun-st'));
-    }
     account(w, 'tun-link');
     if (nx) {
       const started = L.some(l => { const m = mem(l); return m && (m.started || m.finished); });
@@ -5173,16 +5145,12 @@ window.__leenaAuth = function () {
     if (!A.user) return openLogin();
     const names = { 'qudurat-quant': 'القدرات: الكمّي' };
     const rows = A.access.length ? A.access.map(a => { const on = a.expires >= today(); return `<li class="${on ? 'on' : 'off'}"><b>${esc(names[a.course] || a.course)}</b><small>${on ? 'مفتوحة حتى ' : 'انتهت في '}${fmtDate(a.expires)}</small></li>`; }).join('') : '<li class="off"><b>ما فيه اشتراك في حسابك</b></li>';
-    const P = A.plan, bk = P && P.booking && P.booking.status === 'booked' && new Date(P.booking.starts_at) > new Date() ? P.booking : null;
-    const when = iso => new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { timeZone: 'Asia/Riyadh', weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
-    const session = !A.payOn || !P ? '' : bk ? `<li class="on"><b>جلستك مع المدرّس</b><small>${when(bk.starts_at)}</small></li>` : P.credits > 0 ? '<li class="on jn-li"><b>جلستك مع المدرّس</b><small>لم تُحجز بعد</small></li>' : '';
     const ending = A.access.find(a => a.course === 'qudurat-quant'), soon = !ending || ending.expires < new Date(Date.now() + 14 * 864e5).toISOString().slice(0, 10);
     const who = A.user.phone ? `<bdi dir="ltr">+${esc(A.user.phone)}</bdi>` : `<bdi dir="ltr">${esc(A.user.username)}</bdi>`;
-    const { m, box } = modal(`<h2>حسابي</h2><p class="acct-sub">${esc(A.user.name || '')} · ${who}</p><ul class="acct-list">${rows}${session}</ul>
-      <div class="acct-acts">${A.payOn && P && (P.credits > 0 || bk) ? `<button class="play-btn acct-book"><span>${bk ? 'موعد الجلسة' : 'احجز جلستك'}</span></button>` : ''}${A.payOn && soon ? `<button class="play-btn acct-renew"><span>${ending ? 'جدّد الاشتراك' : 'اشترك'}</span></button>` : ''}
+    const { m, box } = modal(`<h2>حسابي</h2><p class="acct-sub">${esc(A.user.name || '')} · ${who}</p><ul class="acct-list">${rows}</ul>
+      <div class="acct-acts">${A.payOn && soon ? `<button class="play-btn acct-renew"><span>${ending ? 'جدّد الاشتراك' : 'اشترك'}</span></button>` : ''}
       <button class="ghost-btn acct-out"><span>تسجيل الخروج</span></button></div>`);
     box.querySelector('.acct-out').onclick = () => { m.remove(); logout(); };
-    const bb = box.querySelector('.acct-book'); if (bb) bb.onclick = () => { m.remove(); A.book(); };
     const rb = box.querySelector('.acct-renew'); if (rb) rb.onclick = () => { m.remove(); A.join('renew'); };
   }
   async function logout() { await sb.auth.signOut(); location.reload(); }

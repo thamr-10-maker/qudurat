@@ -73,11 +73,6 @@ h1,h2{font-weight:900} button,input{font-family:var(--f)}
 details.card>summary{cursor:pointer;font:900 18px/1.4 var(--f);list-style:none}details.card>summary::after{content:' +';color:var(--ink2)}details.card[open]>summary::after{content:' −'}
 details.card>summary::-webkit-details-marker{display:none}details.card[open]>summary{margin-bottom:10px}
 .mebtn{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:12px;background:var(--ink,#eee);color:var(--bg,#111);text-decoration:none;font-weight:600}
-.day{font-weight:700;margin:14px 0 6px;font-size:15px}
-.slot{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin-bottom:6px}
-.slot.bk{border-color:var(--accent);background:var(--accent-soft)}.slot .t{font-weight:700;font-variant-numeric:tabular-nums;min-width:64px}
-.slot .who{flex:1;font-size:14px}.slot .who small{display:block;color:var(--ink2)}.slot .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
-.times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.times button{padding:9px 0;font-size:14px}.times button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 button.small.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .badge{display:inline-block;min-width:18px;padding:0 6px;margin-inline-start:4px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;line-height:18px}
 .pill.ld-new{color:var(--warn);border:1px solid currentColor}.pill.ld-contacted{background:var(--accent-soft);color:var(--ink2)}.pill.ld-paid{background:var(--accent-soft);color:var(--accent)}.pill.ld-no{color:var(--ink2);border:1px solid var(--line)}
@@ -147,20 +142,20 @@ function loginScreen(msg, setup) {
 /* ---------- the tool ---------- */
 function shell() {
   app.innerHTML = `<header><h1>لوحة لينا</h1><button class="small" id="out">خروج</button></header>
-    <div class="tabs">${CFG.pay ? '<button data-t="orders">الطلبات</button><button data-t="cal">المواعيد</button>' : ''}<button data-t="leads">المهتمون <span class="badge" id="lb" hidden></span></button><button data-t="list">الطلاب</button><button data-t="new">طالب جديد</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
+    <div class="tabs">${CFG.pay ? '<button data-t="orders">الطلبات</button>' : ''}<button data-t="leads">المهتمون <span class="badge" id="lb" hidden></span></button><button data-t="list">الطلاب</button><button data-t="new">طالب جديد</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
   document.getElementById('out').onclick = async () => { await sb.auth.signOut(); loginScreen(); };
   app.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.t; draw(); });
   draw(); leadBadge();
 }
 function draw() {
   app.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
-  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else if (tab === 'orders') orders(); else if (tab === 'cal') calendar(); else if (tab === 'leads') leads(); else listStudents();
+  if (tab === 'new') newStudent(); else if (tab === 'stats') stats(); else if (tab === 'orders') orders(); else if (tab === 'leads') leads(); else listStudents();
 }
 
 /* ---------- statistics: how many came and what they did ---------- */
 let statsDays = 'd0';
 const PATHS = [
-  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_how', 'صفحة الإعلان: وصلوا «الطريقة»'], ['land_map', 'صفحة الإعلان: وصلوا «المنهج»'], ['land_plan', 'صفحة الإعلان: وصلوا السعر'], ['land_ask', 'صفحة الإعلان: وصلوا الأسئلة'], ['land_faq', 'صفحة الإعلان: فتحوا سؤالًا'], ['land_end', 'صفحة الإعلان: وصلوا آخرها'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
+  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_how', 'صفحة الإعلان: وصلوا «حفظت الإجابة»'], ['land_map', 'صفحة الإعلان: وصلوا الدروس'], ['land_list', 'صفحة الإعلان: فتحوا أسماء الدروس'], ['land_plan', 'صفحة الإعلان: وصلوا السعر'], ['land_ask', 'صفحة الإعلان: وصلوا الأسئلة'], ['land_faq', 'صفحة الإعلان: فتحوا سؤالًا'], ['land_end', 'صفحة الإعلان: وصلوا آخرها'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
     ['save_view', 'وصلوا «احفظ مكانك» (نص الطريق)'], ['save_sent', 'حفظوا مكانهم (تركوا رقمهم)'], ['boss_ok', 'حلّوا السؤال الأخير'], ['part_done', 'خلّصوا الجزء الأول'], ['win_view', 'شافوا شاشة الفوز والسعر'], ['gate_join', 'ضغطوا «اشترك»'], ['lead_view', 'فتحوا نموذج الاشتراك'], ['lead_sent', 'أرسلوا طلب الاشتراك'], ['gate_wa', 'ضغطوا واتساب']]],
   ['🔑 المشتركين', [['login_open', 'فتحوا نافذة الدخول'], ['login_ok', 'دخلوا بحساب مشترك'], ['tunnel_view', 'فتحوا قائمة الدروس'], ['lesson_done', 'خلّصوا درس واختباره'], ['tunnel_next', 'انتقلوا للدرس اللي بعده'], ['open_all', 'فتحوا كل الدروس (رابط)']]],
 ];
@@ -173,7 +168,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794571217343;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794575078171;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -207,7 +202,7 @@ async function stats() {
       <p class="tip">كل خطوة محسوبة من الخطوة اللي قبلها، مو من الكل.</p></div>`;
   /* 2b · the ad landing page (docs/LANDING_PLAN.md): how many saw it, pressed its button, and how far down they read */
   const LV = f('land_view'), landCard = LV ? `<div class="card"><h2>صفحة الإعلان</h2><div class="trio"><div><b>${ar(LV)}</b>شافوها</div><div><b>${ar(f('land_go'))}</b>ضغطوا الزر (${ar(pct(f('land_go'), LV))}٪)</div><div><b>${ar(f('land_faq'))}</b>فتحوا سؤال</div></div>
-      <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_how', 'الطريقة'], ['land_map', 'المنهج'], ['land_plan', 'السعر'], ['land_ask', 'الأسئلة'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
+      <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_how', 'الفكرة'], ['land_map', 'الدروس'], ['land_plan', 'السعر'], ['land_ask', 'الأسئلة'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
       <p class="tip">الزر ظاهر من أول الصفحة، فالضغط عليه ما يحتاج نزول. الأقسام محسوبة من ١٣ نوفمبر.</p></div>` : '';
   /* 3 · the trial */
   const trial = `<div class="card"><h2>التجربة</h2><p class="h3" style="margin-top:0">سؤال البداية</p><div class="trio"><div><b>${ar(f('door_miss'))}</b>غلط</div><div><b>${ar(f('door_slow'))}</b>صح لكن بطيء</div><div><b>${ar(f('door_fast'))}</b>سريع</div></div>
@@ -328,46 +323,6 @@ async function leads() {
   });
 }
 
-/* ---------- tutor sessions: open times, see who booked ---------- */
-async function calendar() {
-  const view = document.getElementById('view'); view.innerHTML = '<div class="card"><p class="muted">جارٍ التحميل…</p></div>';
-  const { data, error } = await sb.rpc('admin_slots');
-  if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p></div>`; return; }
-  const slots = data || [], now = Date.now();
-  const tomorrow = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Riyadh' }).format(new Date(now + 864e5));
-  const HOURS = []; for (let h = 9; h <= 23; h++) for (const m of [0, 30]) HOURS.push(String(h).padStart(2, '0') + ':' + (m ? '30' : '00'));
-  const label = t => { const [h, m] = t.split(':').map(Number); return ar(`${h % 12 || 12}:${String(m).padStart(2, '0')}`) + (h < 12 ? ' ص' : ' م'); };
-  view.innerHTML = `<div class="card stack"><h2>أضف أوقات متاحة</h2>
-      <label>اليوم<input type="date" id="d" value="${tomorrow}" min="${tomorrow}"></label>
-      <label style="margin-bottom:-4px">الأوقات (بتوقيت السعودية، كل جلسة ٣٠ دقيقة)</label><div class="times" id="tm">${HOURS.map(t => `<button type="button" data-t="${t}">${label(t)}</button>`).join('')}</div>
-      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input type="checkbox" id="rep" style="width:20px;height:20px">كرّرها كل يوم لمدة أسبوع</label>
-      <p class="err" id="e" hidden></p><button class="main" id="add">أضف الأوقات</button>
-      <p class="tip">الطالب يشوف الأوقات اللي بعد ٣ ساعات أو أكثر، لمدة ٣٠ يوم قدّام.</p></div>
-    <div class="card"><h2>الجدول</h2><div id="cal"></div></div>`;
-  const pick = new Set();
-  view.querySelectorAll('#tm button').forEach(b => b.onclick = () => { pick.has(b.dataset.t) ? pick.delete(b.dataset.t) : pick.add(b.dataset.t); b.classList.toggle('on'); });
-  view.querySelector('#add').onclick = async () => {
-    const e = view.querySelector('#e'); e.hidden = true;
-    const d = view.querySelector('#d').value; if (!d || !pick.size) { e.textContent = 'اختر اليوم والأوقات.'; e.hidden = false; return; }
-    const days = view.querySelector('#rep').checked ? 7 : 1, times = [];
-    for (let i = 0; i < days; i++) { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + i); const day = x.toISOString().slice(0, 10); pick.forEach(t => times.push(`${day}T${t}:00+03:00`)); }
-    const { data: n, error } = await sb.rpc('admin_add_slots', { p_times: times });
-    if (error) { e.textContent = errText(error); e.hidden = false; return; }
-    calendar();
-  };
-  const byDay = {}; slots.forEach(s => { const k = RY(s.starts_at, { weekday: 'long', day: 'numeric', month: 'long' }); (byDay[k] = byDay[k] || []).push(s); });
-  const ST2 = { booked: 'محجوز', done: 'تمت', no_show: 'ما حضر' };
-  view.querySelector('#cal').innerHTML = Object.entries(byDay).map(([day, list]) => `<div class="day">${day}</div>` + list.map(s => {
-    const b = s.booking, past = new Date(s.starts_at).getTime() < now;
-    return `<div class="slot${b ? ' bk' : ''}" data-id="${s.id}"><span class="t">${RY(s.starts_at, { hour: 'numeric', minute: '2-digit' })}</span>
-      <span class="who">${b ? `<b>${esc(b.name || 'بدون اسم')}</b><small dir="ltr" style="text-align:right">+${esc(b.phone || '')} · <a class="wa" href="${waLink(b.phone, `أهلًا ${b.name || ''} 👋 معك مدرّس أكاديمية لينا، جاهز لجلستك؟`)}" target="_blank" rel="noopener">واتساب</a></small><small>${ST2[b.status] || b.status}${b.moves ? ' · غيّر موعده مرة' : ''}</small>` : `<small>${past ? 'مرّ ولم يُحجز' : 'متاح'}</small>`}</span>
-      <span class="acts">${b ? (b.status === 'booked' ? `<button class="small" data-b="${b.id}" data-s="done">تمت</button><button class="small" data-b="${b.id}" data-s="no_show">ما حضر</button><button class="small" data-b="${b.id}" data-s="cancelled">ألغِ</button>` : '')
-        : past ? '' : `<button class="small" data-del="${s.id}">احذف</button>`}</span></div>`; }).join('')).join('') || '<p class="muted">ما فيه أوقات بعد. أضف أوقات من فوق.</p>';
-  view.querySelectorAll('[data-b]').forEach(x => x.onclick = async () => {
-    if (x.dataset.s === 'cancelled' && !confirm('إلغاء الحجز يرجّع الجلسة للطالب ويفتح الوقت لغيره. متأكد؟')) return;
-    const { error } = await sb.rpc('admin_set_booking', { p_booking: +x.dataset.b, p_status: x.dataset.s }); if (error) return alert(errText(error)); calendar(); });
-  view.querySelectorAll('[data-del]').forEach(x => x.onclick = async () => { const { error } = await sb.rpc('admin_delete_slot', { p_slot: +x.dataset.del }); if (error) return alert(errText(error)); calendar(); });
-}
 function meCard() {
   const site = (window.ACADEMY_SITE || 'https://leena.syyad.net/') + '#me';
   return `<div class="card" id="me"><h2>لا تحسب جوالي</h2><p class="muted">افتح الرابط من كل جوال تستخدمه، وزياراته الجاية ما تنحسب في الإحصاءات.</p>
