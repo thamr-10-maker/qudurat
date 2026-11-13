@@ -1705,7 +1705,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794527816", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794530150", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3751,6 +3751,8 @@ function runDrill(d, lesson) {
       ask(p, g, lv.t, lv.hints || {}, (res, fb, used) => {
         st.q++; st.t += used || 0; learn(s, res);
         guideOff();
+        /* the first answer on this phone: a deliberate act (a tap on «جرّب الدرس» can be an accident). TikTok learns from this one (site.html) */
+        try { if (localStorage.getItem('leena-ans1') !== '1') { localStorage.setItem('leena-ans1', '1'); LT('first_answer', { lesson: id, val: res }); } } catch (e) {}
         if (VIS) { m.n = (m.n || 0) + 1; m.s = (m.s || 0) + (used || 0); if (res === 'fast' || res === 'ok') m.r = (m.r || 0) + 1; }
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
         if (res !== 'miss') {   // a wrong pick already took its point off the ring the moment he picked it
@@ -5055,7 +5057,8 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     ttq.page();
   }(window, document, 'ttq');
   /* our own steps → TikTok's standard event names (each once per visit) */
-  var MAP = { land_answer: 'ClickButton', lesson_start: 'ViewContent', lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment', lead_sent: 'SubmitForm', part_done: 'Lead' };
+  var MAP = { lesson_start: 'ClickButton', first_answer: 'ViewContent',   /* 13 Nov: ViewContent (what the ad optimises for) = answered a question, not just tapped the button */
+     lesson_done: 'Lead', wa_click: 'Contact', gate_join: 'InitiateCheckout', otp_ok: 'CompleteRegistration', pay_go: 'AddPaymentInfo', pay_ok: 'CompletePayment', lead_sent: 'SubmitForm', part_done: 'Lead' };
   var orig = window.LeenaTrack || function () {}, sent = {};
   window.LeenaTrack = function (ev, o) {
     orig(ev, o);
