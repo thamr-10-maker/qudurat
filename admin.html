@@ -170,7 +170,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794610121477;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794610327345;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -204,8 +204,9 @@ async function stats() {
       <p class="tip">كل خطوة محسوبة من الخطوة اللي قبلها، مو من الكل.</p></div>`;
   /* 2b · the ad landing page (docs/LANDING_PLAN.md): how many saw it, pressed its button, and how far down they read */
   const LV = f('land_view'), landCard = LV ? `<div class="card"><h2>صفحة الاشتراك</h2><div class="trio"><div><b>${ar(LV)}</b>شافوها</div><div><b>${ar(f('plan_pick'))}</b>اختاروا مدة (${ar(pct(f('plan_pick'), LV))}٪)</div><div><b>${ar(f('order_wa'))}</b>أرسلوا الطلب على واتساب</div></div>
-      <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_how', 'الفكرة'], ['land_map', 'الدروس'], ['land_plan', 'السعر'], ['land_ask', 'الأسئلة'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
-      <p class="tip">الزر ظاهر من أول الصفحة، فالضغط عليه ما يحتاج نزول. الأقسام محسوبة من ١٣ نوفمبر.</p></div>` : '';
+      <p class="h3">مسألة التجربة</p><div class="trio"><div><b>${ar(f('land_try'))}</b>وصلوا لها</div><div><b>${ar(f('try_start'))}</b>بدأوا الحل (${ar(pct(f('try_start'), LV))}٪)</div><div><b>${ar(f('try_done'))}</b>أكملوها (${ar(pct(f('try_done'), f('try_start')))}٪ ممن بدأ)</div></div>
+      <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_try', 'التجربة'], ['land_how', 'الفكرة'], ['land_map', 'الدروس'], ['land_plan', 'السعر'], ['land_ask', 'الأسئلة'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
+      <p class="tip">الزر ظاهر من أول الصفحة، فالضغط عليه ما يحتاج نزول. الأقسام محسوبة من ١٣ نوفمبر، ومسألة التجربة من ١٤ نوفمبر.</p></div>` : '';
   /* 3 · the trial */
   const trial = `<div class="card"><h2>التجربة</h2><p class="h3" style="margin-top:0">سؤال البداية</p><div class="trio"><div><b>${ar(f('door_miss'))}</b>غلط</div><div><b>${ar(f('door_slow'))}</b>صح لكن بطيء</div><div><b>${ar(f('door_fast'))}</b>سريع</div></div>
       <p class="h3">السؤال الأخير</p><div class="trio"><div><b>${ar(f('boss_ok'))}</b>انحل</div><div><b>${ar(f('boss_miss'))}</b>ما انحل</div><div><b>${ar(f('win_again'))}</b>أعادوا التجربة</div></div>
