@@ -1489,6 +1489,27 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .tun-win .tun-txt{align-items:flex-start;width:100%}
 .tun-lead .sv-skip{align-self:flex-start}
 
+/* ---------- «جرّبه أول» and the hero (docs/TRY_FIRST_PLAN.md) ---------- */
+.dz-hero{position:fixed;left:0;bottom:0;z-index:7;pointer-events:none;opacity:0;transform:translateY(26px);transition:opacity .3s ease,transform .32s cubic-bezier(.2,.8,.2,1)}
+.dz-hero.in{opacity:1;transform:none}.dz-hero.out{opacity:0;transform:translateY(26px)}
+.dz-hero img{display:block;width:100%;height:auto}
+.dz-hero-hi{width:190px;left:-18px;bottom:-34px}
+.dz-hero-hi.small{width:140px;bottom:-30px}
+.dz-hero-say{position:absolute;left:calc(100% - 22px);bottom:calc(100% - 92px);margin:0;white-space:nowrap;padding:10px 15px;border-radius:18px 18px 18px 4px;background:#FFFFFF;border:1px solid #E4E0D6;box-shadow:0 6px 20px rgba(22,32,27,.08);font:200 15px/1.7 Alexandria,var(--f-display);color:#16201B;direction:rtl;text-align:right}
+.dz-hero-say b{font-weight:900}
+.dz-hero-oops{width:104px;left:10px;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:5}
+.dz-hero-oops.small{width:78px}
+.dz-hero-yes{width:136px;left:-26px;bottom:-34px}
+.dz-hero-yes.small{width:100px;bottom:-28px}
+.dz-next{margin:0 0 2px;text-align:center;font:900 17px/1.6 Alexandria,var(--f-display);color:#16201B}
+.dz-easy{align-items:center;text-align:center}
+.dz-easy-hero{width:150px;height:auto;margin:0 auto 6px;display:block}
+.tun-win .tun-txt{position:relative}
+.tun-hero{position:absolute;left:-4px;top:-6px;width:118px;height:auto;pointer-events:none;-webkit-mask-image:linear-gradient(#000 62%,transparent 96%);mask-image:linear-gradient(#000 62%,transparent 96%);animation:tunHero .45s cubic-bezier(.2,.8,.2,1) both .15s}
+.tun-win-line{margin:12px 0 0;font:200 16px/1.7 Alexandria,var(--f-display);color:#1F7A5A;text-align:right}
+@keyframes tunHero{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.dz-hero,.dz-hero.out{transition:none;transform:none}.tun-hero{animation:none}}
+
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
 .cover-btn.soon{opacity:.55;filter:saturate(.4)}
@@ -1705,7 +1726,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794530150", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794544022", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3502,7 +3523,15 @@ function runDrill(d, lesson) {
   const TUN = D.tunnel && window.AcademyTunnel;
   /* «الجزء الأول» (docs/PART_ONE_PLAN.md): a visitor plays only the first D.free levels, then the win screen; a subscriber plays the whole lesson */
   const VIS = !!(TUN && D.free && TUN.subscriber && !TUN.subscriber());
-  const NV = VIS ? Math.min(D.free, N) : N;
+  let NV = VIS ? Math.min(D.free, N) : N;
+  /* «جرّبه أول» (docs/TRY_FIRST_PLAN.md): a visitor tries a question first, then a short path of levels picked by what he did, then that question again.
+     State in mem().try = { step, doors, kind, a, path, at, cur, tries, b, doorStep }. m.lv stays 0 for a visitor (the path jumps around the lesson). */
+  const TRY = VIS && D.tryFirst ? D.tryFirst : null;
+  const secAr = n => n === 2 ? 'ثانيتين' : n === 1 ? 'ثانية' : `${ar(n)} ${n >= 3 && n <= 10 ? 'ثواني' : 'ثانية'}`;   // «٦ ثواني», «ثانيتين», «١٣ ثانية»
+  const byName = nm => D.levels.findIndex(l => l.name === nm);
+  const tr = () => mem().try;
+  const pos = i => TRY && tr() && tr().path ? tr().at : i;   // where he is on the track
+  let trLabel = null;
   const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(lesson); } else showDistrict(d); };
   const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(lesson); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
   x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); toDoor(); };
@@ -3525,14 +3554,23 @@ function runDrill(d, lesson) {
   wrap.append(glow, top); if (partL) wrap.appendChild(partL); wrap.appendChild(pane); app.append(wrap, dock);
   cleanupFns.push(() => { gone = true; stopT(); dock.remove(); document.body.classList.remove('dz'); });
 
+  function setTrack(n) { NV = n; track.innerHTML = '<i></i>'.repeat(n) + '<span class="dz-dot"></span>'; }
   function paintTrack(frac) {
+    if (TRY) {
+      const t = tr(), at = t && t.path ? Math.min(t.at || 0, NV) : 0;
+      track.querySelectorAll('i').forEach((x, i) => x.classList.toggle('on', i < at));
+      const f = frac == null ? at / NV : Math.max(0, Math.min(1, frac));
+      if (partL) partL.textContent = trLabel || `الجزء الأول · ${ar(Math.min(NV, at + 1))} من ${ar(NV)}`;
+      track.querySelector('.dz-dot').style.right = (f * 100) + '%';
+      return;
+    }
     const m = mem(), doneN = m.finished && frac == null ? NV : Math.min(NV, m.lv);
     track.querySelectorAll('i').forEach((t, i) => t.classList.toggle('on', i < doneN));
     const f = frac == null ? doneN / NV : Math.max(0, Math.min(1, frac));
     if (partL) partL.textContent = `الجزء الأول · ${ar(Math.min(NV, (m.lv || 0) + 1))} من ${ar(NV)}`;
     track.querySelector('.dz-dot').style.right = (f * 100) + '%';
   }
-  function page(cls = '', glowOn) { stopT(); helpLv = null; curAsk = null; helpB.hidden = true; pane.innerHTML = ''; window.scrollTo(0, 0); glow.classList.toggle('on', !!glowOn); const p = h('div', 'lpage lad-page dz-stage ' + cls); pane.appendChild(p); return p; }
+  function page(cls = '', glowOn) { stopT(); heroOff(); helpLv = null; curAsk = null; helpB.hidden = true; pane.innerHTML = ''; window.scrollTo(0, 0); glow.classList.toggle('on', !!glowOn); const p = h('div', 'lpage lad-page dz-stage ' + cls); pane.appendChild(p); return p; }
   function dockBtn(label, fn, extra) {
     dock.className = 'dock'; dockIn.innerHTML = '';
     const b = h('button', 'cta', label); b.onclick = () => { FX.play('tap'); fn(); }; dockIn.appendChild(b);
@@ -3653,7 +3691,7 @@ function runDrill(d, lesson) {
   /* a new idea: «فكرة جديدة» big in the middle, it fades, the explanation takes its place */
   function idea(i) {
     const lv = D.levels[i];
-    paintTrack((i + (mem().lv === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0)) / NV);
+    paintTrack((pos(i) + (TRY ? (tr().cur === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0) : mem().lv === i ? (mem().pts || 0) / (lv.goal || DR_GOAL) : 0)) / NV);
     const p = page('dz-idea-page', true);
     p.innerHTML = '<h1 class="dz-big">فكرة<br>جديدة</h1><div class="dz-line"></div>';
     dockNone();
@@ -3701,7 +3739,7 @@ function runDrill(d, lesson) {
   const GLOGO = '<svg viewBox="-110 -110 220 220" aria-hidden="true"><rect x="-110" y="-110" width="220" height="220" rx="110" fill="#16201B"/><path d="M-62 10 C-62 72 62 72 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/></svg>';
   const GD = { q: 0, last: -9, pending: null, here: false };   // q: questions shown in this sitting; last: the one the guide spoke on
   const COMMON = new Set(D.common || []);
-  function guideOff() { document.querySelectorAll('.dz-guide').forEach(g => { g.classList.remove('in'); g.classList.add('out'); setTimeout(() => g.remove(), 300); }); }
+  function guideOff() { heroOff('yes'); document.querySelectorAll('.dz-guide').forEach(g => { g.classList.remove('in'); g.classList.add('out'); setTimeout(() => g.remove(), 300); }); }
   function guide(stage, html, free) {   // free: not tied to a question (the level-done page)
     if (!stage || gone) return false;
     if (!free && (GD.here || GD.last === GD.q - 1)) return false;
@@ -3710,7 +3748,7 @@ function runDrill(d, lesson) {
     g.setAttribute('role', 'status');
     stage.appendChild(g);
     /* it must never cover the answers: without the logo if needed, or not at all */
-    const clash = () => { const o = stage.querySelector('.dz-opts'), f = stage.querySelector('.dz-msg'); const top = g.getBoundingClientRect().top;
+    const clash = () => { const o = stage.querySelector('.dz-opts'), f = stage.querySelector('.dz-msg'); const top = g.getBoundingClientRect().top - (g.classList.contains('in') ? 0 : (new DOMMatrix(getComputedStyle(g).transform).m42 || 0));   // where it will rest, not where it rises from
       return [o, f].some(x => x && x.getBoundingClientRect().height && x.getBoundingClientRect().bottom > top - 8); };
     if (clash()) { g.classList.add('nologo'); if (clash()) { g.remove(); return false; } }
     requestAnimationFrame(() => g.classList.add('in'));
@@ -3721,18 +3759,20 @@ function runDrill(d, lesson) {
   function guideAsk(stage, i, first) {   // called when a question appears
     GD.q++; GD.here = false;
     let line = null;
-    if (first && i === 0 && !mem().pts) line = 'خذ وقتك. الغلط هنا يعلّم.';
+    if (first && !TRY && i === 0 && !mem().pts) line = 'خذ وقتك. الغلط هنا يعلّم.';
+    else if (first && TRY && tr() && tr().path) { const t = tr(), L = t.path.length, left = L - t.at;
+      if (t.at === L - 1) line = 'آخر فكرة قبل السؤال الأول.'; else if (t.at === Math.floor(L / 2)) line = `نص الطريق. باقي لك ${left === 2 ? 'فكرتين' : ar(left) + ' أفكار'}.`; }
     else if (first && VIS && i === 3 && NV === 6) line = 'نص الطريق. باقي لك ٣ أفكار.';
     else if (first && VIS && i === NV - 1) line = 'آخر فكرة في الجزء الأول.';
     if (!line && GD.pending) line = GD.pending;
     GD.pending = null;
-    if (line) guide(stage, line);
+    if (line && guide(stage, line) && /^<b>٣ صح ورا بعض/.test(line)) setTimeout(() => !gone && hero('yes'), 120);   // the hero peeks with the guide's streak line
   }
 
   let lvStat = null;
   function level(i) {
     const lv = D.levels[i], m = mem(), goal = lv.goal || DR_GOAL, s = sk(id, i);
-    if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
+    if (TRY) { if (m.try.cur !== i) { m.try.cur = i; m.pts = 0; m.k = 0; } } else if (m.lv !== i) { m.lv = i; m.pts = 0; m.k = 0; }
     persist();
     s.miss = s.miss || {};
     let pts = m.pts || 0, k = m.k || 0, streak = 0, missRow = 0, guessRow = 0, aim = null, aimLeft = 0, firstKey = null, firstAt = 0;
@@ -3741,7 +3781,7 @@ function runDrill(d, lesson) {
     let firstQ = true;
     const next = () => {
       if (gone) return;
-      paintTrack((i + pts / goal) / NV);
+      paintTrack((pos(i) + pts / goal) / NV);
       const p = page('dz-drill');
       firstKey = null; firstAt = 0;
       const g = make(lv, k, aim);
@@ -3752,14 +3792,13 @@ function runDrill(d, lesson) {
         st.q++; st.t += used || 0; learn(s, res);
         guideOff();
         /* the first answer on this phone: a deliberate act (a tap on «جرّب الدرس» can be an accident). TikTok learns from this one (site.html) */
-        try { if (localStorage.getItem('leena-ans1') !== '1') { localStorage.setItem('leena-ans1', '1'); LT('first_answer', { lesson: id, val: res }); } } catch (e) {}
-        if (VIS) { m.n = (m.n || 0) + 1; m.s = (m.s || 0) + (used || 0); if (res === 'fast' || res === 'ok') m.r = (m.r || 0) + 1; }
+        firstAnswer(res); countVis(res, used);
         const delta = res === 'fast' ? 2 : res === 'ok' ? 1 : -1;
         if (res !== 'miss') {   // a wrong pick already took its point off the ring the moment he picked it
           pts = Math.max(0, Math.min(goal, pts + delta));
           if (delta > 0) { const r = rate(); k += r >= 0.9 && res === 'fast' ? 2 : r < 0.7 && res !== 'fast' ? 0 : 1; }
           m.pts = pts; m.k = k; persist();
-          ringPts(p, pts, delta); paintTrack((i + pts / goal) / NV);
+          ringPts(p, pts, delta); paintTrack((pos(i) + pts / goal) / NV);
         }
         if (delta > 0) {
           streak++; missRow = 0; guessRow = 0;
@@ -3777,7 +3816,7 @@ function runDrill(d, lesson) {
         if (key) s.miss[key] = (s.miss[key] || 0) + 1;
         if (missRow === 2 && k > 0) { k--; m.k = k; st.down++; }
         persist();
-        if (g._pen) { if (res === 'miss') guide(p, COMMON.has(key) ? 'عادي. هذا من أكثر الأخطاء.' : 'عادي. جرّب اللي بعدها.'); }   // the pen showed the way: the guide says one calm line
+        if (g._pen) { if (res === 'miss') guide(p, COMMON.has(key) ? 'عادي. هذا من أكثر الأخطاء.' : 'عادي. جرّب اللي بعدها.'); if (res === 'miss' && !st.oops) { st.oops = 1; setTimeout(() => !gone && hero('oops'), 60); } }   // the hero makes the face once per level   // the pen showed the way: the guide says one calm line
         else if (guess) fb.innerHTML += `<br><span class="dz-coach">${drT('slow')}</span>`;
         else if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
@@ -3789,7 +3828,7 @@ function runDrill(d, lesson) {
         if (key && s.miss[key] >= 2 && !aimed[key] && (lv.hints || {})[key]) { aimed[key] = 1; aim = key; aimLeft = 2; st.focus++; return dockBtn('التالي', () => focus(i, key, next)); }
         if (res === 'time') setTimeout(next, 1600);
         else dockBtn(g._pen ? 'فهمت' : 'التالي', next);
-      }, (key, at) => { guideOff(); firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((i + pts / goal) / NV); }, { pts, goal }, { auto: true });   // the pen plays by itself on every wrong pick (owner, 12 Nov 2026)
+      }, (key, at) => { guideOff(); firstKey = key; firstAt = at; pts = Math.max(0, pts - 1); m.pts = pts; persist(); ringPts(pane, pts, -1); paintTrack((pos(i) + pts / goal) / NV); }, { pts, goal }, { auto: true });   // the pen plays by itself on every wrong pick (owner, 12 Nov 2026)
       guideAsk(p, i, firstQ); firstQ = false;
     };
     next();
@@ -3907,19 +3946,121 @@ function runDrill(d, lesson) {
     /* anonymous numbers for this level (no names): questions | misses | average seconds | long explanations | steps down | look-agains | mistake notes */
     LT('drill_stat', { lesson: id, n: i + 1, val: [st.q, st.miss, st.q ? Math.round(st.t / st.q) : 0, st.bone, st.down, st.again, st.focus].join('|') });
     lvStat = null;
-    m.lv = i + 1; m.pts = 0; m.k = 0; persist();
-    paintTrack((i + 1) / NV);
+    if (TRY) { m.try.at = (m.try.at || 0) + 1; m.try.cur = null; } else m.lv = i + 1;
+    m.pts = 0; m.k = 0; persist();
+    paintTrack(TRY ? m.try.at / NV : (i + 1) / NV);
     const tone = lv.tone || (i < N / 2 ? 'strict' : 'warm');
     const p = page('dz-done', true);
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${drT('up_' + tone)}</h1><p class="dz-p">ضبطت «${lv.name}»</p>`;
-    dockBtn('كمّل', () => between(i + 1));
+    dockBtn('كمّل', () => TRY ? tryNext() : between(i + 1));
     const secs = Math.round(st.t);
-    if (st.q && secs > 0 && secs < 40) guide(p, `خلّصتها في ${ar(secs)} ثانية.`, true);
+    if (st.q && secs > 0 && secs < 40) guide(p, `خلّصتها في ${secAr(secs)}.`, true);
+  }
+
+  /* ---------- small shared pieces ---------- */
+  function firstAnswer(res) {   // the first answer on this phone: a deliberate act (a tap on «جرّب الدرس» can be an accident). TikTok learns from this one (site.html)
+    try { if (localStorage.getItem('leena-ans1') !== '1') { localStorage.setItem('leena-ans1', '1'); LT('first_answer', { lesson: id, val: res }); } } catch (e) {}
+  }
+  function countVis(res, used) { if (!VIS) return; const m = mem(); m.n = (m.n || 0) + 1; m.s = (m.s || 0) + (used || 0); if (res === 'fast' || res === 'ok') m.r = (m.r || 0) + 1; }
+
+  /* ---------- the hero of the films (docs/TRY_FIRST_PLAN.md): a classmate who only reacts. The guide (the smile) teaches. ----------
+     Pictures: site/land/hero-*.webp (made by video/hero_export.js). He never covers an answer, the hint, the question or a button: smaller, or not at all. */
+  const HERO = {};
+  function heroClash(e) {
+    const dy = e.classList.contains('in') ? 0 : (new DOMMatrix(getComputedStyle(e).transform).m42 || 0);   // measured where he WILL stand, not where he rises from
+    const mine = [e.querySelector('img'), e.querySelector('.dz-hero-say')].filter(Boolean).map(x => { const r = x.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top - dy, bottom: r.bottom - dy }; });
+    const behind = e.classList.contains('dz-hero-oops');   // he stands behind the dock: the dock covers him, not the other way round
+    const others = [...document.querySelectorAll('.dz-opts .opt, .dz-msg, .dz-q, .pen-btn, .dz-guide p, .dz-guide i' + (behind ? '' : ', .dock .cta, .dock .btn'))]
+      .filter(x => x.getBoundingClientRect().height && (!x.classList.contains('dz-msg') || x.textContent.trim())).map(x => x.getBoundingClientRect());
+    return mine.some(a => others.some(b => a.left < b.right - 2 && a.right > b.left + 2 && a.top < b.bottom - 2 && a.bottom > b.top + 2));
+  }
+  function hero(name, say) {
+    if (gone) return null;
+    heroOff(name);
+    const e = h('div', 'dz-hero dz-hero-' + name, `<img src="land/hero-${name}.webp" alt="">${say ? `<p class="dz-hero-say">${say}</p>` : ''}`);
+    e.setAttribute('aria-hidden', 'true'); document.body.appendChild(e); HERO[name] = e;
+    const img = e.querySelector('img');
+    const place = () => { if (gone || !e.isConnected) return; if (heroClash(e)) { e.classList.add('small'); if (heroClash(e)) { e.remove(); if (HERO[name] === e) delete HERO[name]; return; } } requestAnimationFrame(() => e.classList.add('in')); };
+    if (img.complete && img.naturalWidth) place(); else { img.onload = place; img.onerror = () => e.remove(); }
+    cleanupFns.push(() => e.remove());
+    return e;
+  }
+  function heroOff(name) { Object.keys(HERO).forEach(k => { if (name && k !== name) return; const e = HERO[k]; delete HERO[k]; e.classList.remove('in'); e.classList.add('out'); setTimeout(() => e.remove(), 320); }); }
+
+  /* ---------- «جرّبه أول» ---------- */
+  const doorLv = T => T.door === 'mix' ? { gen: TRY.mix, hints: D.levels[0].hints, t: T.t } : D.levels[byName(T.door)];
+  function tryStart() {
+    const m = mem();
+    if (m.part && !m.again) return partDone();
+    if (!m.try) {   // first time (or «أعد الجزء الأول»): a visitor in the middle of the old part one starts again at the door
+      if (m.lv || m.pts) ['n', 'r', 's'].forEach(k => delete m[k]);
+      m.lv = 0; m.pts = 0; m.k = 0; m.started = true; persist();
+      return door(0);
+    }
+    const t = m.try;
+    if (!t.path) return door(t.step || 0);
+    setTrack(t.path.length + 1);
+    if (t.at >= t.path.length) return boss();
+    idea(t.path[t.at]);
+  }
+  /* one question before anything is explained. step 0: the hero says «جرّب أنت». */
+  function door(step) {
+    const T = TRY.steps[step], m = mem();
+    m.try = { step, doors: (m.try && m.try.doors) || [] }; persist();
+    setTrack(1); trLabel = step === 0 ? 'قبل ما نبدأ: جرّب هذا السؤال' : 'طيب، وهذا؟'; paintTrack(0);
+    const p = page('dz-drill dz-door'); dockNone();
+    const lv = doorLv(T), g = make(lv, T.k || 0);
+    ask(p, g, T.t || 30, lv.hints || {}, (res, fb, used) => {
+      heroOff(); firstAnswer(res); countVis(res, used);
+      const t = mem().try, right = res === 'fast' || res === 'ok', fast = right && used <= TRY.fastSecs, secs = Math.max(1, Math.round(used));
+      t.doors.push(right ? secs : null);
+      LT(right ? (fast ? 'door_fast' : 'door_slow') : 'door_miss', { lesson: id, n: step + 1 });
+      if (fast) { persist(); fb.className = 'lad-fb dz-msg ok'; fb.textContent = drT('right'); return setTimeout(() => !gone && tooEasy(step, secs), 900); }
+      const path = (right ? T.short : T.long).map(byName).filter(x => x >= 0);
+      Object.assign(t, { kind: right ? 'short' : 'long', a: right ? secs : null, path, at: 0, cur: null, tries: 0, doorStep: step }); persist();
+      if (right) { fb.className = 'lad-fb dz-msg ok'; fb.innerHTML = `حلّيته في ${secAr(secs)}.<br>نخلّيها أقل من ١٠.`; }
+      dockBtn('يلا', () => { trLabel = null; setTrack(path.length + 1); idea(path[0]); });
+      if (!right) dockIn.insertBefore(h('p', 'dz-next', `${ar(path.length)} أفكار قصيرة، وتحلّه في ثواني.`), dockIn.firstChild);   // under the pen's work, above the button
+    }, () => heroOff(), null, { auto: true });
+    if (step === 0) hero('hi', 'هذا طيّحني أول مرة.<br><b>جرّب أنت.</b>');
+    ['oops', 'yes', 'win', 'easy'].forEach(n => { const im = new Image(); im.src = `land/hero-${n}.webp`; });   // after the question is on screen
+  }
+  function tooEasy(step, secs) {
+    const last = step >= TRY.steps.length - 1;
+    const p = page('dz-easy', true);
+    p.innerHTML = `<img class="dz-easy-hero" src="land/hero-easy.webp" alt=""><h1 class="dz-h">هذا سهل عليك.</h1><p class="dz-p">حلّيته في ${secAr(secs)}.</p>`;
+    if (last) { mem().try.kind = 'strong'; persist(); dockBtn('كمّل', partDone); }
+    else dockBtn('عطني أصعب', () => door(step + 1));
+  }
+  function tryNext() {
+    const t = mem().try;
+    if (t.at === 2 && t.at < t.path.length && TUN.wantSave && TUN.wantSave()) { cleanup(); lesson._resumed = true; return TUN.save(lesson); }   // «احفظ مكانك» after the 2nd level of a path
+    if (t.at >= t.path.length) return boss();
+    idea(t.path[t.at]);
+  }
+  /* the door question again, new numbers. Wrong: the pen, then one more (the last). */
+  function boss() {
+    const t = mem().try, T = TRY.steps[t.doorStep || 0];
+    trLabel = 'نرجع للسؤال الأول'; paintTrack(t.path.length / NV);
+    const p = page('dz-drill dz-boss'); dockNone();
+    const lv = doorLv(T), g = make(lv, T.k || 0);
+    ask(p, g, T.t || 30, lv.hints || {}, (res, fb, used) => {
+      firstAnswer(res); countVis(res, used);
+      if (res === 'fast' || res === 'ok') {
+        t.b = Math.max(1, Math.round(used)); persist(); LT('boss_ok', { lesson: id, n: t.b });
+        fb.className = 'lad-fb dz-msg ok'; fb.textContent = drT('right');
+        return setTimeout(() => !gone && partDone(), 1100);
+      }
+      t.tries = (t.tries || 0) + 1;
+      if (t.tries >= 2) { t.b = null; persist(); LT('boss_miss', { lesson: id, n: Math.round(used) }); return dockBtn('كمّل', partDone); }
+      persist(); dockBtn('جرّب واحد ثاني', boss);
+    }, null, null, { auto: true });
+    const fb = p.querySelector('.dz-msg'); fb.className = 'lad-fb dz-msg dz-tag'; fb.textContent = t.tries ? 'آخر محاولة. أرقام جديدة.' : 'نفس النوع، أرقام جديدة.';
   }
 
   /* a visitor finished «الجزء الأول»: no final test, the tunnel's win screen (with the price) */
   function partDone() {
-    const m = mem(); m.part = true; m.lv = NV; persist();
+    const m = mem(); m.part = true; delete m.again; if (!TRY) m.lv = NV; persist();
     LT('part_done', { lesson: id, n: Math.round(m.s || 0), val: (m.r || 0) + '/' + (m.n || 0) });
     FX.play('finish');
     cleanup(); TUN.win(lesson);
@@ -3998,6 +4139,7 @@ function runDrill(d, lesson) {
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">خلّصت هذا الدرس قبل</h1><p class="dz-p">راجع بخمسة أسئلة سريعة، أو ابدأه من أوله.</p>`;
     dockBtn('مراجعة سريعة', () => open(0, 5), ['ابدأ الدرس من أوله', () => { S.drill[id] = { lv: 0, pts: 0, k: 0, started: true, finished: true, v: D.v || 1 }; persist(); idea(0); }]);
   }
+  else if (TRY) tryStart();
   else if (VIS && m.lv >= NV) partDone();
   else if (m.lv >= N) finalIntro();
   else if (TUN) { m.started = true; persist(); idea(m.lv); }   // the tunnel's door already said everything: straight to the first idea (no warm-up: reviews come between levels)
@@ -4329,6 +4471,10 @@ function runDrill(d, lesson) {
   const valQ = (b, e) => { const a = b ** e; return { q: m_(P(b, e)) + ' = ؟', ans: a, show: [['circle', sp(e)], ['write', (e <= 5 ? rep(b, e) : `${b} × ${b} × …`) + ' = ' + a]], wr: [[b * e, 'mul'], [b + e, 'add'], [e ** b <= 99999 ? e ** b : null, 'flip'], [b ** (e - 1), 'less'], [b ** (e + 1), 'more'], ...near(a)] }; };
   const countQ = (b, e) => ({ q: m_(rep(b, e)) + ' = ' + b + ' أس كم؟', ans: e, show: [['under', rep(b, e)], ['write', times(e)]], wr: [[b ** e, 'val'], [b * e, 'mulc'], [e + 1, 'more'], [e > 2 ? e - 1 : null, 'less'], ...near(e)] });
   const meanQ = (b, e) => ({ q: m_(P(b, e)) + ' معناها:', ans: m_(rep(b, e)), show: [['circle', sp(e)], ['write', rep(b, e)]], wr: [[m_(b + ' × ' + e), 'mul'], [b <= 6 && e ** b !== b ** e ? m_(rep(e, b)) : null, 'flip'], [m_(rep(b, e, ' + ')), 'add'], [e > 3 ? m_(rep(b, e - 1)) : null, 'less'], [m_(rep(b, e + 1)), 'more']] });
+  /* «جرّبه أول» (docs/TRY_FIRST_PLAN.md): the door question  bᵐ × bⁿ ÷ bᵒ = ؟  — the answer never above 1000, no calculator */
+  const mixQ = () => { const b = pick([2, 3, 5, 10]), d = R(...{ 2: [2, 4], 3: [1, 3], 5: [1, 2], 10: [1, 3] }[b]), o = R(3, 7), sum = o + d, m = R(2, sum - 2), n = sum - m;
+    return { q: m_(P(b, m) + ' × ' + P(b, n) + ' ÷ ' + P(b, o)) + ' = ؟', ans: b ** d, show: [...rings(sp(m), sp(n), sp(o)), ['write', `${m} + ${n} − ${o} = ${d}`], ['write', `${P(b, d)} = ${b ** d}`]],
+      wr: [[d, 'expOnly'], [b * d, 'mulB'], [b ** (d + 1), 'count'], [d > 1 ? b ** (d - 1) : null, 'count'], [b ** (d + 2), 'count']] }; };
   const powForms = (b, e) => { const f = [valQ, valQ]; if (e <= 6) f.push(countQ); if (e >= 3 && e <= 5) f.push(meanQ); return pick(f)(b, e); };
 
   const H = {   // what each wrong choice means
@@ -4407,6 +4553,19 @@ function runDrill(d, lesson) {
   L.drill = {
     v: 2, weight: 3, finalT: 40, minutes: 20, tunnel: true,
     free: 6, freeMin: 5,   // «الجزء الأول»: a visitor plays the first 6 levels (docs/PART_ONE_PLAN.md)
+    /* «جرّبه أول» (docs/TRY_FIRST_PLAN.md): a visitor tries a question first; what he does picks the path. Levels by NAME. Without this, part one works as above. */
+    tryFirst: {
+      fastSecs: 10, mix: mixQ,
+      steps: [
+        { door: 'mix', t: 30,
+          long: ['معنى الأس', 'الضرب: نجمع الأسس', 'القسمة: نطرح الأسس', 'قيمة القسمة'],
+          short: ['الضرب: نجمع الأسس', 'القسمة: نطرح الأسس', 'قيمة القسمة'] },
+        { door: 'نسخ متساوية', k: 1, t: 30,
+          long: ['العدد بدون أس', 'جمع القوى', 'نسخ متساوية'], short: ['العدد بدون أس', 'جمع القوى', 'نسخ متساوية'] },
+        { door: 'المقارنة بعد التوحيد', k: 2, t: 30,
+          long: ['توحيد الأساس', 'المقارنة', 'المقارنة بعد التوحيد'], short: ['توحيد الأساس', 'المقارنة', 'المقارنة بعد التوحيد'] },
+      ],
+    },
     common: ['mul', 'add', 'zero', 'one', 'zeros'],   // the mistakes most students make: the guide says so after the pen
     learn: ['معنى الأس', 'الأس صفر والأس واحد', 'الضرب والقسمة بالأسس', 'قوة القوة، وإيجاد س', 'المقارنة بين القوى'],
     levels: [
@@ -4817,18 +4976,29 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     l = byId((l || first()).id) || first();
     if (subscriber()) return after(l);
     LT('win_view', { once: true });
-    const m = mem(l) || {}, D = l.drill, free = Math.min(D.free || 6, D.levels.length);
+    const m = mem(l) || {}, D = l.drill, t = m.try && (m.try.path || m.try.kind === 'strong') ? m.try : null, strong = !!(t && t.kind === 'strong');
+    const free = t && t.path ? t.path.length : Math.min(D.free || 6, D.levels.length);
     const mins = Math.max(1, Math.ceil((m.s || 0) / 60)), left = D.levels.length - free, more = lessons().length - 1;
+    /* docs/TRY_FIRST_PLAN.md: the title and the before/after line come only from what he really did */
+    const sec = n => n === 2 ? 'ثانيتين' : n === 1 ? 'ثانية' : `${ar(n)} ${n >= 3 && n <= 10 ? 'ثواني' : 'ثانية'}`;
+    let title = 'خلّصت<br>الجزء الأول', line = '', hero = false;
+    if (strong) { title = 'أنت قوي<br>في الأسس'; line = 'ثلاثة أسئلة صعبة، كلها صح.'; hero = true; }
+    else if (t && t.b != null) { title = 'حلّيتها'; hero = true;
+      if (t.a == null) line = `أول مرة: غلط. الحين: صح في ${sec(t.b)}.`; else if (t.b < t.a) line = `أول مرة ${sec(t.a)}، والحين ${sec(t.b)}.`; }
+    const cards = strong ? `<div><b>${ar(3)}</b>أسئلة</div><div><b>${ar(Math.max(1, Math.round(m.s || 0)))}</b>ثانية</div><div><b dir="rtl">${ar(3)} / ${ar(3)}</b>صح</div>`
+      : `<div><b>${ar(free)}</b>${free === 1 ? 'فكرة' : 'أفكار'}</div><div><b>${ar(mins)}</b>${mins <= 2 || mins > 10 ? 'دقيقة' : 'دقايق'}</div><div><b dir="rtl">${ar(m.r || 0)} / ${ar(m.n || 0)}</b>صح</div>`;
+    const rest = strong ? `الدرس الكامل فيه ${ar(D.levels.length)} فكرة،<br>وبعده ${ar(more)} درسًا.` : `باقي ${ar(left)} فكرة في هذا الدرس،<br>و${ar(more)} درسًا بعده.`;
     const w = room('tun-door tun-win');
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">${esc(l.title)}</p><i class="tun-rule"></i><h1 class="tun-h big stop">خلّصت<br>الجزء الأول</h1>
-      <div class="tun-wn"><div><b>${ar(free)}</b>أفكار</div><div><b>${ar(mins)}</b>${mins <= 2 || mins > 10 ? 'دقيقة' : 'دقايق'}</div><div><b dir="rtl">${ar(m.r || 0)} / ${ar(m.n || 0)}</b>صح</div></div>
-      <p class="tun-p">باقي ${ar(left)} فكرة في هذا الدرس،<br>و${ar(more)} درسًا بعده.</p>
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt">${hero ? '<img class="tun-hero" src="land/hero-win.webp" alt="">' : ''}<p class="tun-eyebrow">${esc(l.title)}</p><i class="tun-rule"></i><h1 class="tun-h big stop">${title}</h1>
+      ${line ? `<p class="tun-win-line">${line}</p>` : ''}
+      <div class="tun-wn">${cards}</div>
+      <p class="tun-p">${rest}</p>
       ${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال <s>${ar(WAS)}</s><i>سعر الافتتاح</i></p>`}</div>`);
     const act = el('div', 'tun-act'), Au = window.LeenaAuth;
     if (Au && Au.payOn) { const b = el('button', 'tun-go', 'اشترك وكمّل'); b.onclick = () => { LT('gate_join', { val: 'win' }); Au.join('join'); }; act.appendChild(b); }
     else subscribeBtn(act, 'win');
     const re = el('button', 'tun-ghost', 'أعد الجزء الأول');
-    re.onclick = () => { LT('win_again'); const S = api().S, mm = S.drill[l.id]; S.drill[l.id] = { lv: 0, pts: 0, k: 0, started: true, part: true, v: mm ? mm.v : (D.v || 1) }; api().persist(); play(l); };
+    re.onclick = () => { LT('win_again'); const S = api().S, mm = S.drill[l.id]; S.drill[l.id] = { lv: 0, pts: 0, k: 0, started: true, part: true, again: true, v: mm ? mm.v : (D.v || 1) }; api().persist(); play(l); };   // «again»: the door of step 1 (try is cleared)
     act.appendChild(re);
     if (!(Au && Au.user)) account(act, 'tun-link');
     w.appendChild(act);
