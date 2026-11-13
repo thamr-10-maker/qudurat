@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>لوحة لينا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;500;700;900&display=swap">
 <style>
 /* the admin's pocket tool: one column, big touch targets, works on a phone during a live */
-:root{--bg:#F3F5F2;--card:#fff;--ink:#1C2420;--ink2:#5A665F;--line:#DCE3DE;--accent:#1F7A5A;--accent-soft:#E2F1EA;--bad:#B3261E;--warn:#9A6400}
-@media (prefers-color-scheme:dark){:root{--bg:#111613;--card:#18201C;--ink:#E7EEE9;--ink2:#9DABA3;--line:#2A3530;--accent:#5FC59C;--accent-soft:#1D3229;--bad:#F2B8B5;--warn:#E9B562;color-scheme:dark}}
+:root{--bg:#F6F4EE;--card:#fff;--ink:#16201B;--ink2:#56615B;--line:#E4E0D6;--accent:#1F7A5A;--accent-soft:#E6F1EC;--bad:#9A3B30;--bad-soft:#F6E7E3;--warn:#9A6400;color-scheme:light;--f:Alexandria,system-ui,"Segoe UI",Tahoma,sans-serif}   /* the site's look, in light and in dark mode alike */
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,"Segoe UI",Tahoma,sans-serif;padding:16px max(16px,env(safe-area-inset-left,0px)) 40px max(16px,env(safe-area-inset-right,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 16px/1.6 var(--f);padding:16px max(16px,env(safe-area-inset-left,0px)) 40px max(16px,env(safe-area-inset-right,0px))}
 main{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 header{display:flex;align-items:center;justify-content:space-between;gap:10px}
 h1{font-size:22px;margin:0} h2{font-size:18px;margin:0 0 10px}
@@ -22,7 +23,6 @@ input[dir=ltr]{text-align:left}
 .stack{display:flex;flex-direction:column;gap:12px}
 button{font:600 15px/1 system-ui,sans-serif;border-radius:11px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:12px 14px;cursor:pointer}
 button.main{background:var(--accent);border-color:var(--accent);color:#fff;padding:14px}
-@media (prefers-color-scheme:dark){button.main{color:#0E1A15}}
 button.small{padding:7px 10px;font-size:13px}
 button:disabled{opacity:.55}
 button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -55,6 +55,23 @@ pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;back
 .tbl td.n{text-align:center;font-variant-numeric:tabular-nums}
 .tip{font-size:13px;color:var(--ink2);margin:6px 0 0}
 [hidden]{display:none!important}
+h1,h2{font-weight:900} button,input{font-family:var(--f)}
+/* statistics (rebuilt 13 Nov 2026): four questions in order, everything else folded under «تفاصيل» */
+.big4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.big4 div{border:1px solid var(--line);border-radius:14px;padding:12px}
+.big4 b{font:900 30px/1.2 var(--f);display:block;font-variant-numeric:tabular-nums}.big4 span{font-size:13px;color:var(--ink2);font-weight:500}
+.big4 div.hi{background:var(--accent-soft);border-color:transparent}.big4 div.hi b{color:var(--accent)}
+.steps{display:flex;flex-direction:column;gap:12px}
+.step{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:baseline}
+.step .t{font-weight:500}.step .v{font:900 20px/1.2 var(--f);font-variant-numeric:tabular-nums}
+.step .of{grid-column:1/-1;font-size:13px;color:var(--ink2)}.step i{grid-column:1/-1;height:8px;border-radius:6px;background:var(--line);overflow:hidden;display:block}
+.step i b{display:block;height:100%;background:var(--accent);border-radius:6px;min-width:3px}
+.step.worst .of{color:var(--bad);font-weight:700}.step.worst i b{background:var(--bad)}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.trio div{border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;font-size:13px;color:var(--ink2);font-weight:500}
+.trio b{display:block;font:900 22px/1.3 var(--f);color:var(--ink);font-variant-numeric:tabular-nums}
+.h3{font:700 14px/1.5 var(--f);color:var(--ink2);margin:14px 0 6px}
+.tblw{overflow-x:auto}.tblw .tbl th,.tblw .tbl td{padding:6px 3px;font-size:12.5px}.tbl td.src{font-weight:500;white-space:nowrap}.tbl td.z{color:var(--line)}
+details.card>summary{cursor:pointer;font:900 18px/1.4 var(--f);list-style:none}details.card>summary::after{content:' +';color:var(--ink2)}details.card[open]>summary::after{content:' −'}
+details.card>summary::-webkit-details-marker{display:none}details.card[open]>summary{margin-bottom:10px}
 .mebtn{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:12px;background:var(--ink,#eee);color:var(--bg,#111);text-decoration:none;font-weight:600}
 .day{font-weight:700;margin:14px 0 6px;font-size:15px}
 .slot{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin-bottom:6px}
@@ -143,53 +160,75 @@ function draw() {
 /* ---------- statistics: how many came and what they did ---------- */
 let statsDays = 'd0';
 const PATHS = [
-  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['boss_ok', 'حلّوا السؤال الأخير'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
-    ['save_view', 'وصلوا «احفظ مكانك» (نص الطريق)'], ['save_sent', 'حفظوا مكانهم (تركوا رقمهم)'], ['part_done', 'خلّصوا الجزء الأول'], ['win_view', 'شافوا شاشة الفوز والسعر'], ['gate_join', 'ضغطوا «اشترك»'], ['lead_view', 'فتحوا نموذج الاشتراك'], ['lead_sent', 'أرسلوا طلب الاشتراك'], ['gate_wa', 'ضغطوا واتساب']]],
+  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
+    ['save_view', 'وصلوا «احفظ مكانك» (نص الطريق)'], ['save_sent', 'حفظوا مكانهم (تركوا رقمهم)'], ['boss_ok', 'حلّوا السؤال الأخير'], ['part_done', 'خلّصوا الجزء الأول'], ['win_view', 'شافوا شاشة الفوز والسعر'], ['gate_join', 'ضغطوا «اشترك»'], ['lead_view', 'فتحوا نموذج الاشتراك'], ['lead_sent', 'أرسلوا طلب الاشتراك'], ['gate_wa', 'ضغطوا واتساب']]],
   ['🔑 المشتركين', [['login_open', 'فتحوا نافذة الدخول'], ['login_ok', 'دخلوا بحساب مشترك'], ['tunnel_view', 'فتحوا قائمة الدروس'], ['lesson_done', 'خلّصوا درس واختباره'], ['tunnel_next', 'انتقلوا للدرس اللي بعده'], ['open_all', 'فتحوا كل الدروس (رابط)']]],
 ];
 const OTHER = [['wa_click', 'ضغطوا واتساب (من أي مكان)'], ['door_miss', 'سؤال البداية: غلط'], ['door_slow', 'سؤال البداية: صح لكن بطيء'], ['door_fast', 'سؤال البداية: سريع'], ['boss_miss', 'السؤال الأخير: ما انحل'], ['save_skip', 'تخطّوا «احفظ مكانك»'], ['win_again', 'أعادوا الجزء الأول'], ['guide', 'مرات تكلّم المرشد'], ['gate_view', 'وصلوا البوابة القديمة'], ['restart_lesson', 'أعادوا الدرس من البداية'], ['login_fail', 'فشل دخولهم'], ['login_link', 'ضغطوا «عندي حساب»'], ['gate_train', 'تدرّبوا على الدرس الأول من البوابة'],
   ['drill_miss', 'إجابات غلط'], ['drill_bone', 'احتاجوا الشرح الأطول'], ['pen_show', 'شافوا القلم يحل السؤال'], ['help_open', 'فتحوا المساعدة ؟'], ['pen_skip', 'تخطّوا القلم'], ['drill_back', 'رجعت لهم فكرة قديمة'], ['drill_warm', 'سوّوا تسخين أول الدرس'], ['drill_stat', 'أرقام المستويات (للتحليل)'], ['lesson_exit', 'طلعوا من نص الدرس']];
-const SRC = { tiktok: 'تيك توك', direct: 'مباشر', whatsapp: 'واتساب', instagram: 'إنستقرام', snapchat: 'سناب', google: 'قوقل', x: 'إكس' };
+const SRC = { 'tiktok-ad': 'إعلان تيك توك', 'bio-ad': 'رابط الحساب', tiktok: 'تيك توك (بدون رابط)', direct: 'مباشر', whatsapp: 'واتساب', instagram: 'إنستقرام', snapchat: 'سناب', google: 'قوقل', x: 'إكس' };
 const DEV = { ios: 'آيفون', android: 'أندرويد', desktop: 'كمبيوتر' };
 const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
 const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b[1] - a[1]); return e.length ? `<div class="chips">${e.map(([k, v]) => `<span>${esc((names && names[k]) || k || '؟')} · <b>${ar(v)}</b></span>`).join('')}</div>` : '<p class="muted">لا يوجد بعد</p>'; };
-const when = t => { const d = new Date(t), m = Math.round((Date.now() - d) / 60000); return m < 60 ? `قبل ${ar(m)} دقيقة` : m < 1440 ? `قبل ${ar(Math.round(m / 60))} ساعة` : fmt(iso(d)); };
+const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
+const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
+const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
+const BUILT = 1794553913357;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
-  const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
-  view.innerHTML = `<div class="tabs rg" id="rg">${ranges.map(([d, t]) => `<button class="small${d === statsDays ? ' on' : ''}" data-d="${d}">${t}</button>`).join('')}</div><div id="sv" class="stack" style="margin-top:12px"><div class="card"><p class="muted">جارٍ التحميل…</p></div></div>`;
+  const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
+  view.innerHTML = `<div class="tabs rg" id="rg">${ranges.map(([d, t]) => `<button class="small${d === statsDays ? ' on' : ''}" data-d="${d}">${t}</button>`).join('')}</div><div id="sv" class="stack" style="margin-top:12px"><div class="card"><p class="muted">لحظة…</p></div></div>`;
   view.querySelectorAll('#rg button').forEach(b => b.onclick = () => { statsDays = b.dataset.d; stats(); });
   /* days follow Saudi time (UTC+3), whatever the phone's clock is set to */
-  const DAY = 864e5, KSA = 3 * 36e5, midnight = Math.floor((Date.now() + KSA) / DAY) * DAY - KSA;
-  const span = { d0: [midnight, Date.now() + 6e4], d1: [midnight - DAY, midnight], d2: [midnight - 2 * DAY, midnight - DAY], w: [midnight - 6 * DAY, Date.now() + 6e4], m: [midnight - 29 * DAY, Date.now() + 6e4], all: [Date.UTC(2024, 0, 1), Date.now() + 6e4] }[statsDays] || [midnight, Date.now() + 6e4];
+  const DAY = 864e5, KSA = 3 * 36e5, now = Date.now() + 6e4, midnight = Math.floor((Date.now() + KSA) / DAY) * DAY - KSA;
+  const span = { d0: [midnight, now], d1: [midnight - DAY, midnight], d2: [midnight - 2 * DAY, midnight - DAY], v: [BUILT, now], w: [midnight - 6 * DAY, now], m: [midnight - 29 * DAY, now], all: [Date.UTC(2024, 0, 1), now] }[statsDays] || [midnight, now];
   const from = new Date(span[0]), to = new Date(span[1]);
-  const dayLabel = /^d/.test(statsDays) ? new Date(span[0] + KSA).toLocaleDateString('ar-SA-u-ca-gregory', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
-  const { data: S, error } = await sb.rpc('admin_stats', { p_from: from.toISOString(), p_to: to.toISOString() });
+  const label = /^d/.test(statsDays) ? new Date(span[0] + KSA).toLocaleDateString('ar-SA-u-ca-gregory', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
+    : statsDays === 'v' ? `من ${new Date(BUILT + KSA).toLocaleString('ar-SA-u-ca-gregory', { weekday: 'long', hour: 'numeric', minute: '2-digit', timeZone: 'UTC' })}` : '';
+  const args = { p_from: from.toISOString(), p_to: to.toISOString() };
+  const [{ data: S, error }, srcRes] = await Promise.all([sb.rpc('admin_stats', args), sb.rpc('admin_sources', args).then(r => r, () => ({ error: true }))]);
   const sv = view.querySelector('#sv');
   if (error) { sv.innerHTML = `<div class="card"><p class="err">${/admin_stats|function/i.test(error.message) ? 'الإحصاءات غير مفعّلة بعد: شغّل ملف الإحصاءات في Supabase مرة واحدة.' : esc(errText(error))}</p></div>`; return; }
-  const F = Object.assign({}, S.funnel || {}, { wa_door: (S.wa_from || {}).course_door || 0 }), C = S.counts || {}, V = S.visitors || 0;
-  if (!V) { sv.innerHTML = '<div class="card"><p class="muted">لا زيارات في هذه الفترة.</p></div>' + meCard(); return; }
-  const top = F.visit || V;
+  const F = Object.assign({}, S.funnel || {}, { wa_door: (S.wa_from || {}).course_door || 0 }), V = S.visitors || 0, f = k => F[k] || 0;
+  if (!V) { sv.innerHTML = `${label ? `<p class="muted" style="margin:0 4px">${label}</p>` : ''}<div class="card"><p class="muted">لا زيارات في هذه الفترة.</p></div>` + meCard(); return; }
+  const SR = srcRes && !srcRes.error && srcRes.data ? srcRes.data : null;   // by source (site/supabase/006_stats_sources.sql); the page works without it
+  const tried = Math.max(f('first_answer'), f('door_miss'), f('door_fast'), f('door_slow')), left = f('lead_sent') + f('save_sent');
+  /* 1 · how was it */
+  const moved = SR ? SR.moved : Math.max(f('land_scroll'), f('lesson_start'), f('land_go'));
+  const head = `<div class="card"><div class="big4">
+      <div class="hi"><b>${ar(tried)}</b><span>جاوبوا سؤال</span></div><div><b>${ar(f('part_done'))}</b><span>خلّصوا التجربة</span></div>
+      <div><b>${ar(f('gate_join'))}</b><span>ضغطوا «اشترك»</span></div><div><b>${ar(left)}</b><span>تركوا رقمهم</span></div></div>
+      <p class="tip">${ar(V)} جوال فتح الموقع، منهم ${ar(S.new || 0)} لأول مرة. ${ar(Math.max(0, V - moved))} طلعوا بدون ما يسوّون شي (${ar(pct(Math.max(0, V - moved), V))}٪). متوسط البقاء ${stay(S.minutes)}.</p></div>`;
+  /* 2 · where we lose them: each step against the one before it */
+  const ST = [[f('visit') || V, 'فتحوا الموقع'], [f('lesson_start'), 'دخلوا التجربة'], [tried, 'جاوبوا سؤال البداية'], [f('part_done'), 'خلّصوا التجربة'], [f('win_view'), 'شافوا السعر'], [f('gate_join'), 'ضغطوا «اشترك»'], [f('lead_sent'), 'أرسلوا طلب الاشتراك']];
+  let worst = -1, low = 101; ST.forEach(([v], i) => { if (i && ST[i - 1][0] >= 5) { const p = pct(v, ST[i - 1][0]); if (p < low) { low = p; worst = i; } } });
+  const steps = `<div class="card"><h2>وين نخسرهم؟</h2><div class="steps">${ST.map(([v, t], i) => { const prev = i ? ST[i - 1][0] : 0, p = i ? pct(v, prev) : 100;
+      return `<div class="step${i === worst ? ' worst' : ''}"><span class="t">${t}</span><span class="v">${ar(v)}</span>${i ? `<span class="of">${prev ? `${ar(p)}٪ من اللي قبلها${i === worst ? ' · أكبر خسارة' : ''}` : '—'}</span>` : ''}<i><b style="width:${Math.min(100, p)}%"></b></i></div>`; }).join('')}</div>
+      <p class="tip">كل خطوة محسوبة من الخطوة اللي قبلها، مو من الكل.</p></div>`;
+  /* 3 · the trial */
+  const trial = `<div class="card"><h2>التجربة</h2><p class="h3" style="margin-top:0">سؤال البداية</p><div class="trio"><div><b>${ar(f('door_miss'))}</b>غلط</div><div><b>${ar(f('door_slow'))}</b>صح لكن بطيء</div><div><b>${ar(f('door_fast'))}</b>سريع</div></div>
+      <p class="h3">السؤال الأخير</p><div class="trio"><div><b>${ar(f('boss_ok'))}</b>انحل</div><div><b>${ar(f('boss_miss'))}</b>ما انحل</div><div><b>${ar(f('win_again'))}</b>أعادوا التجربة</div></div>
+      <p class="h3">في الطريق</p><div class="trio"><div><b>${ar(f('pen_show'))}</b>شافوا القلم</div><div><b>${ar(f('lesson_exit'))}</b>طلعوا من النص</div><div><b>${ar(f('save_sent'))}</b>حفظوا مكانهم</div></div></div>`;
+  /* 4 · where they came from: one count (phones), under the first source each came from */
+  const z = n => `<td class="n${n ? '' : ' z'}">${ar(n)}</td>`;
+  const sources = SR ? `<div class="card"><h2>من أين جاؤوا</h2><div class="tblw"><table class="tbl"><tr><th>المصدر</th><th>جوال</th><th>تحرّك</th><th>جاوب</th><th>خلّص</th><th>اشترك</th></tr>
+      ${SR.by_source.map(r => `<tr><td class="src">${esc(SRC[r.src] || r.src)}</td>${z(r.phones)}${z(r.moved)}${z(r.answered)}${z(r.finished)}${z(r.asked)}</tr>`).join('')}</table></div>
+      <p class="tip">كل جوال محسوب مرة وحدة، تحت أول مصدر جاء منه. «تحرّك»: نزل في الصفحة أو ضغط شي.</p>
+      <p class="h3">أجهزتهم</p><div class="chips">${SR.by_device.map(r => `<span>${esc(DEV[r.dev] || r.dev)} · <b>${ar(r.phones)}</b>${r.answered ? ` · جاوبوا ${ar(r.answered)}` : ''}</span>`).join('')}</div></div>`
+    : `<div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<p class="tip">الأرقام هنا تتكرر إذا نفس الجوال جاء من مصدرين. للتفصيل (مين جاوب من كل مصدر): شغّل ملف <b dir="ltr">006_stats_sources.sql</b> في Supabase مرة واحدة.</p><p class="h3">أجهزتهم</p>${chips(S.devices, DEV)}</div>`;
   const days = S.days || [], maxD = Math.max(1, ...days.map(d => d.v));
-  const hours = Object.entries(S.hours || {}).sort((a, b) => b[1] - a[1]).slice(0, 3);
-  const lessons = (S.lessons || []).filter(l => l.started || l.done);
-  sv.innerHTML = `${dayLabel ? `<p class="muted" style="margin:0 4px">${dayLabel}</p>` : ''}
-    <div class="card"><div class="big3">
-      <div><b>${ar(V)}</b><span class="muted">زائر</span></div><div><b>${ar(S.new || 0)}</b><span class="muted">زائر جديد لأول مرة</span></div>
-      <div><b>${ar(S.minutes || 0)}</b><span class="muted">دقيقة متوسط الزيارة</span></div><div><b>${ar(F.wa_click || 0)}</b><span class="muted">ضغطوا واتساب</span></div></div>
-      <p class="tip">${ar(S.visits || 0)} زيارة. الزائر = جوال واحد، حتى لو فتح الموقع أكثر من مرة.</p></div>
-    <div class="card"><h2>وش سووا بعد ما فتحوا الموقع؟</h2>${PATHS.map(([name, steps]) => `<h3 class="path">${name}</h3><div class="bars">${steps.map(([k, t]) => { const v = F[k] || 0; return `<div class="bar"><span>${t}</span><span>${ar(v)} · ${ar(pct(v, top))}٪</span><i><b style="width:${pct(v, top)}%"></b></i></div>`; }).join('')}</div>`).join('')}
-      <p class="tip">من ${ar(top)} فتحوا الموقع. النسبة من الكل. أكبر نزول بين خطوتين هو المكان اللي نخسر فيه الناس.</p></div>
-    <div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<h2 style="margin-top:12px">أجهزتهم</h2>${chips(S.devices, DEV)}</div>
-    ${days.length > 1 ? `<div class="card"><h2>الزوار كل يوم</h2><div class="cols">${days.map(d => `<div title="${d.d}: ${d.v}" style="height:${100 * d.v / maxD}%"></div>`).join('')}</div>
-      <p class="tip">من ${fmt(days[0].d)} إلى ${fmt(days[days.length - 1].d)} · أعلى يوم ${ar(maxD)} زائر</p></div>` : ''}
-    ${hours.length ? `<div class="card"><h2>أكثر الساعات زيارة</h2>${chips(Object.fromEntries(hours.map(([h, c]) => [`${ar(h)}:٠٠`, c])))}<p class="tip">بتوقيت السعودية. انشر قبلها بساعة تقريبًا.</p></div>` : ''}
-    <div class="card"><h2>الدروس</h2>${lessons.length ? `<table class="tbl"><tr><th>الدرس</th><th>بدأ</th><th>أنهى</th><th>يخرجون عند</th><th>صح</th></tr>${lessons.map(l => `<tr><td>${esc(TITLES[l.lesson] || l.lesson)}</td><td class="n">${ar(l.started)}</td><td class="n">${ar(l.done)}${l.started ? ` <small>(${ar(pct(l.done, l.started))}٪)</small>` : ''}</td><td class="n">${l.exit_step ? 'الخطوة ' + ar(l.exit_step) : '—'}</td><td class="n">${l.right + l.wrong ? ar(pct(l.right, l.right + l.wrong)) + '٪' : '—'}</td></tr>`).join('')}</table>
-      <p class="tip">«يخرجون عند»: أكثر خطوة يقفل عندها الطلاب الدرس قبل ما يكملونه. «صح»: نسبة الإجابات الصحيحة في الدرس.</p>` : '<p class="muted">لم يبدأ أحد درسًا بعد</p>'}</div>
-    <div class="card"><h2>رسالة الاشتراك</h2><p class="muted">ظهرت لهم عند:</p>${chips(S.paywall)}<h2 style="margin-top:12px">ضغطوا واتساب من</h2>${chips(S.wa_from, { landing: 'الصفحة الرئيسية (قديم)', paywall: 'رسالة الاشتراك', course_door: '«أرسل مقررك»', quick_test: 'نتيجة الاختبار' })}</div>
-    <div class="card"><h2>الأسئلة الشائعة اللي فتحوها</h2>${chips(S.faq)}</div>
-    <div class="card"><h2>أشياء أخرى</h2><div class="bars">${OTHER.map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(F[k] || 0)}</span></div>`).join('')}</div></div>
-    <div class="card"><h2>نشاط المشتركين</h2>${(S.students || []).length ? `<table class="tbl"><tr><th>الطالب</th><th>آخر دخول</th><th>زيارات</th><th>دروس أنهاها</th></tr>${S.students.map(s => `<tr><td>${esc(s.name || s.username)}</td><td>${when(s.last)}</td><td class="n">${ar(s.visits)}</td><td class="n">${ar(s.lessons)}</td></tr>`).join('')}</table>` : '<p class="muted">لم يدخل مشترك في هذه الفترة</p>'}</div>` + meCard();
+  const daily = days.length > 1 ? `<div class="card"><h2>الزوار كل يوم</h2><div class="cols">${days.map(d => `<div title="${d.d}: ${d.v}" style="height:${100 * d.v / maxD}%"></div>`).join('')}</div>
+      <p class="tip">من ${fmt(days[0].d)} إلى ${fmt(days[days.length - 1].d)} · أعلى يوم ${ar(maxD)} جوال</p></div>` : '';
+  const subs = (S.students || []).length ? `<div class="card"><h2>نشاط المشتركين</h2><table class="tbl"><tr><th>الطالب</th><th>آخر دخول</th><th>زيارات</th><th>دروس أنهاها</th></tr>${S.students.map(x => `<tr><td>${esc(x.name || x.username)}</td><td>${when(x.last)}</td><td class="n">${ar(x.visits)}</td><td class="n">${ar(x.lessons)}</td></tr>`).join('')}</table></div>` : '';
+  /* everything else, folded */
+  const top = f('visit') || V, hours = Object.entries(S.hours || {}).sort((a, b) => b[1] - a[1]).slice(0, 3), lessons = (S.lessons || []).filter(l => l.done || (l.started && l.lesson !== 'fs1'));
+  const more = `<details class="card"><summary>تفاصيل</summary>
+      ${PATHS.map(([name, list]) => `<h3 class="path">${name}</h3><div class="bars">${list.map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))}</span></div>`).join('')}</div>`).join('')}
+      <p class="h3">أشياء أخرى</p><div class="bars">${OTHER.filter(([k]) => f(k)).map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))}</span></div>`).join('') || '<p class="muted">لا يوجد</p>'}</div>
+      ${hours.length ? `<p class="h3">أكثر الساعات زيارة (بتوقيت السعودية)</p>${chips(Object.fromEntries(hours.map(([h, c]) => [`${ar(h)}:٠٠`, c])))}` : ''}
+      ${lessons.length ? `<p class="h3">دروس المشتركين</p><table class="tbl"><tr><th>الدرس</th><th>بدأ</th><th>أنهى</th></tr>${lessons.map(l => `<tr><td>${esc(TITLES[l.lesson] || l.lesson)}</td><td class="n">${ar(l.started)}</td><td class="n">${ar(l.done)}</td></tr>`).join('')}</table>` : ''}
+      <p class="tip">${ar(S.visits || 0)} زيارة من ${ar(top)} جوال. الأرقام هنا عدد الجوالات اللي سوّت كل شي.</p></details>`;
+  sv.innerHTML = `${label ? `<p class="muted" style="margin:0 4px">${label}</p>` : ''}${head}${steps}${trial}${sources}${daily}${subs}${more}${meCard()}`;
   bindMe();
 }
 /* don't count my own phone: the flag lives on the site's address, so the site sets it via #me */
