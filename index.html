@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>أكاديمية لينا</title>
-<meta name="description" content="استعد لاختبار القدرات بقسميه الكمّي واللفظي: دروس تفاعلية تشرح الفكرة قبل التمرين، وتدريب لا ينتهي، ودرجة متوقعة تتحدث مع كل إجابة.">
+<title>أكاديمية لينا | قدرات</title>
+<meta name="description" content="تحضير لاختبار القدرات، القسم الكمّي. تتدرّب بالحل، وتعرف سبب كل خطأ فورًا. جرّب الدرس الأول مجانًا، وبدون تسجيل.">
 <meta name="theme-color" content="#0D5A4A">
 <meta property="og:type" content="website">
-<meta property="og:title" content="أكاديمية لينا">
-<meta property="og:description" content="دروس تفاعلية للكمّي واللفظي، وتدريب لا ينتهي، ودرجتك المتوقعة. ابدأ مجانًا.">
+<meta property="og:title" content="أكاديمية لينا | قدرات">
+<meta property="og:description" content="تدرّب على كمّي القدرات بالحل، واعرف سبب كل خطأ فورًا. جرّب الدرس الأول مجانًا.">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
@@ -1726,7 +1726,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794544022", "pay": false}, "landing": true, "whatsapp": "966501320239"};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794549758", "pay": false}, "landing": true, "whatsapp": "966501320239"};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3280,202 +3280,116 @@ function showProfile() {
    Questions are generated fresh every time (never the same question twice in a session). */
 const DR_GOAL = 5;
 const drPick = a => a[Math.floor(Math.random() * a.length)];
-/* every encouraging line, in Saudi dialect (rewritten with Grok, Nov 2026): 8 per moment, picked at random */
+/* every encouraging line, in plain Saudi dialect (rewritten 13 Nov 2026, docs/ARABIC_VOICE.md): a few per moment, picked at random. No emoji: the ring and the colours already say it. */
 const DR_TXT = {
  "up_strict": [
-  "كفو، بس الجاي أثقل",
-  "تمام، لا تتمدد الحين",
-  "خلصته، شد حيلك أكثر",
-  "متوقع منك، الجاي أصعب",
-  "زين، بس لا تسترخي",
-  "ماشي، الحين نرفع الضغط",
-  "كفو، بس الطريق طول",
-  "تم، الجاي يختبرك زيادة"
+  "كفو، الجاي أثقل شوي",
+  "تمام، بس لا ترتاح",
+  "ضبطتها، نرفع المستوى",
+  "زين، اللي بعدها تبغى تركيز",
+  "خلّصتها، نكمّل",
+  "كفو، باقي أصعب"
  ],
  "up_warm": [
-  "يا سلام، قليل يوصل هنا",
-  "أبدعت والله، كمّل كذا",
-  "هذا مستوى قدرات، وأنت فيه",
-  "قوي، استمر على هالنَفَس",
-  "ما شاء الله، ثابت كذا",
-  "ضبطتها، الجاي لك أسهل",
-  "مستوى عالي، وأنت ماشي",
-  "كفو كبير، كمّل بنفس القوة"
+  "أبدعت، كمّل كذا",
+  "ما شاء الله، كمّل",
+  "قوي، استمر كذا",
+  "ضبطتها، وهذي ما كانت سهلة",
+  "كفو عليك، كمّل بنفس القوة",
+  "شغل نظيف"
  ],
  "miss_strict": [
-  "ركز، هذي سهلة عليك",
-  "لا تستعجل، ركز بس",
+  "ركّز، تقدر عليها",
+  "لا تستعجل، اقرأها مرة ثانية",
   "شوي تركيز وتمشي",
-  "هذي ما لها عذر",
-  "انتبه، السؤال سهل",
-  "لا تطيح في السهل",
-  "ركز أكثر، تمشيها",
-  "هذي أسهل من كذا"
+  "على مهلك، ركّز",
+  "انتبه للتفاصيل"
  ],
  "miss_warm": [
-  "عادي، المستوى صعب",
-  "قربت، الجاية لك",
+  "عادي، هذي صعبة شوي",
+  "قريب، كمّل",
   "كل غلطة هنا تفيدك",
   "ما عليك، كمّل",
-  "صعبة، بس راح تضبطها",
   "عادي، شوف الملاحظة",
-  "قربت جدًا، جرب ثاني",
-  "الغلط هنا يعلمك"
- ],
- "streak_3": [
-  "🔥 ٣ ورا بعض",
-  "٣ ورا بعض، ماشي",
-  "٣ صح ورا بعض",
-  "كفو، ٣ متتالية",
-  "٣ ورا بعض يا وحش",
-  "٣ صح، استمر",
-  "٣ ورا بعض تمام",
-  "٣ متتالية، قوي"
- ],
- "streak_5": [
-  "🚀 ٥ ورا بعض! صاروخ",
-  "٥ ورا بعض، ما توقف",
-  "٥ صح ورا بعض",
-  "صاروخ، ٥ متتالية",
-  "٥ ورا بعض كفو",
-  "٥ صح، ماشي نار",
-  "٥ متتالية، استمر",
-  "٥ ورا بعض يا نجم"
+  "الغلط هنا يعلّمك"
  ],
  "streak_8": [
-  "👑 ٨ ورا بعض. ما يوقفك أحد",
-  "٨ ورا بعض، أسطوري",
-  "٨ صح متتالية",
-  "٨ ورا بعض، ما فيه أحد",
-  "٨ متتالية، أنت نار",
-  "٨ ورا بعض كفو كبير",
-  "٨ صح، ما توقف",
-  "٨ ورا بعض يا بطل"
+  "٨ صح ورا بعض، ما شاء الله",
+  "٨ ورا بعض، كفو",
+  "٨ صح متتالية، ممتاز"
  ],
  "right": [
-  "صح ✓",
-  "تمام ✓",
-  "كذا ✓",
-  "زين ✓",
-  "ماشي ✓",
-  "ضبط ✓",
-  "كفو ✓",
-  "تم ✓"
+  "صح",
+  "تمام",
+  "كفو",
+  "ضبطتها",
+  "زين",
+  "ممتاز",
+  "صح عليك",
+  "أحسنت"
  ],
  "fast": [
-  "⚡ سريع! +٢",
-  "⚡ برق +٢",
-  "⚡ سرعة خيالية +٢",
-  "⚡ ما تأخرت +٢",
-  "⚡ سريع جدًا +٢",
-  "⚡ طير +٢",
-  "⚡ وقت قياسي +٢",
-  "⚡ صاروخ +٢"
+  "صح وبسرعة",
+  "سريع، كفو",
+  "برق",
+  "سرعة ممتازة",
+  "على طول، كفو",
+  "ما شاء الله، سريع"
  ],
  "time_up": [
-  "⏰ خلص الوقت، سرّع شوي",
-  "⏰ الوقت انتهى، القدرات بوقت",
-  "⏰ خلص، خلنا نسرّعك",
-  "⏰ الوقت طار، ركز أسرع",
-  "⏰ انتهى الوقت، سرّع",
-  "⏰ الوقت خلص، تدريب السرعة",
-  "⏰ فات الوقت، نسرّع الحين",
-  "⏰ خلص الوقت، القدرات بوقت"
+  "خلص الوقت، سرّع شوي",
+  "خلص الوقت. القدرات بوقت",
+  "انتهى الوقت، ركّز وسرّع",
+  "الوقت خلص، اللي بعده أسرع"
  ],
  "stuck_title": [
-  "خلنا نوقف ثانية",
-  "تعثرت كم مرة، عادي",
-  "وقف شوي، نشوفها أوضح",
-  "ثلاث غلطات، خلنا نوضح",
-  "عادي، خلنا نشرحها",
-  "توقف بسيط، نشوفها",
-  "كم غلطة ورا بعض، عادي",
-  "خلنا نوضحها أكثر"
+  "خلّنا نوقف لحظة",
+  "عادي، نشرحها أوضح",
+  "٣ غلطات ورا بعض، نوضّحها",
+  "وقفة بسيطة، ونشوفها بهدوء"
  ],
  "stuck_button": [
-  "خلني أفهمها أول",
-  "أبغى الشرح أوضح",
-  "وضحها لي",
-  "خلني أشوف الشرح",
-  "أبي أفهمها صح",
-  "شرح أوضح لو سمحت",
-  "خلني أستوعبها",
-  "أبغى أتأكد منها"
+  "وضّحها لي",
+  "ورّني الشرح",
+  "أبغى شرح أوضح",
+  "خلّني أفهمها أول"
  ],
  "stuck_done_button": [
   "فهمت، كمّل",
-  "تمام، نكمل",
-  "استوعبت، يلا",
-  "فهمتها، كمّل",
-  "زين، نكمل الحين",
-  "واضح، كمّل",
-  "تم، نرجع للأسئلة",
-  "فهمت، يلا نكمل"
- ],
- "resume": [
-  "كمّلنا من المستوى (رقم)",
-  "رجعنا للمستوى (رقم)",
-  "نكمل من المستوى (رقم)",
-  "من المستوى (رقم) يلا",
-  "كمّل من المستوى (رقم)",
-  "رجعنا نكمل المستوى (رقم)",
-  "المستوى (رقم) ينتظرك",
-  "نكمل الحين المستوى (رقم)"
+  "واضح، نكمّل",
+  "تمام، يلا",
+  "فهمتها، نرجع للأسئلة"
  ],
  "final_intro": [
-  "خلّصت كل المستويات",
-  "الحين الاختبار النهائي",
-  "كل المستويات تمت",
-  "الحين ٥ أسئلة قدرات",
-  "خلصت التدريب، الاختبار",
-  "المستويات خلصت، النهائي",
-  "الحين الاختبار الحقيقي",
-  "٥ أسئلة بمستوى القدرات"
+  "خلّصت كل الأفكار",
+  "التدريب خلص",
+  "باقي الخطوة الأخيرة"
  ],
  "final_all_right": [
   "الاختبار كله صح",
   "كل الأسئلة صح",
-  "ضبطت الاختبار كامل",
-  "كله صح، مستوى قدرات",
-  "ما غلطت ولا واحد",
-  "الاختبار كامل تمام",
-  "كل شي صح في الوقت",
-  "مستوى قدرات وأنت فيه"
+  "ما غلطت في ولا سؤال",
+  "ضبطت الاختبار كامل"
  ],
  "final_some_wrong": [
-  "المهارات صارت عندك",
-  "التدريب المفتوح يسرّعك",
-  "شوي تدريب وتصير أسرع",
-  "المهارات موجودة، سرّع",
-  "راجع شوي وترتاح",
-  "التدريب يخليها أسهل",
-  "صارت عندك، كمّل تدريب",
-  "المرة الجاية أسرع"
+  "الأفكار صارت عندك، والتدريب المفتوح يثبّتها.",
+  "شوي تدريب وتصير أسرع.",
+  "راجع أخطاءك، وكمّل تدريب."
  ],
  "review_all_right": [
   "ما نسيت شي",
-  "المهارات ثابتة",
-  "كل شي موجود",
-  "ما طاح منك شي",
-  "ثابت تمام",
-  "المهارات مكانها",
-  "ما نسيت ولا واحدة",
-  "كل المهارات حاضرة"
+  "كل شي حاضر",
+  "الأفكار ثابتة عندك"
  ],
  "review_some_wrong": [
-  "المهارات تحتاج تسخين",
-  "شوي تدريب ويرجع",
-  "تسخين بسيط ويرجع",
-  "تحتاج تسخين سريع",
-  "شوي مراجعة وتمشي",
-  "التدريب يرجّعها",
-  "تسخين ويرجع كل شي",
-  "شوي تدريب وتصير سريع"
+  "تحتاج تسخين بسيط",
+  "شوي مراجعة وترجع",
+  "التدريب يرجّعها"
  ]
 };
 /* lines for the quiet helpers (slow down · look again · warm-up · an older idea coming back) */
 Object.assign(DR_TXT, {
-  slow: ['على مهلك، اقرأها أول', 'لا تستعجل، ركّز فيها', 'خذ نَفَس واقرأ السؤال', 'هدّي شوي، اقرأها زين'],
+  slow: ['على مهلك، اقرأها أول', 'لا تستعجل، ركّز فيها', 'خذ نَفَس واقرأ السؤال', 'اهدأ شوي واقرأها زين'],
   again_title: ['نرجع لها مرة ثانية', 'خلنا نشوفها بهدوء', 'نعيدها سوا'],
   focus_title: ['انتبه لهذي', 'هنا الغلطة', 'ركّز على هالنقطة'],
   warm_title: ['تسخين'], back: ['تذكر هذي؟', 'هذي مرّت عليك', 'من قبل شوي'], warm: ['من اللي فات', 'تذكرها؟', 'مرّت عليك قبل'],
@@ -3684,7 +3598,7 @@ function runDrill(d, lesson) {
     const p = page('dz-start', true);
     p.innerHTML = `<p class="dz-eyebrow">${fmt(d.name || '')}</p><h1 class="dz-title">${fmt(lesson.title)}</h1><p class="dz-sub">${resume ? 'كمّل من المكان اللي وقفت فيه.' : 'أسئلة سريعة تبني عندك الحسّ، فكرة فكرة.'}</p>
       <div class="dz-chips"><span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>حوالي ${ar(D.minutes || 20)} دقيقة</span>
-      <span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg>توقف وترجع متى ما تبي</span></div>`;
+      <span class="dz-chip"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FE0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg>وقّف وارجع متى ما تبغى</span></div>`;
     dockBtn(resume ? 'كمّل' : 'ابدأ', () => { mem().started = true; persist(); idea(mem().lv); });
   }
 
@@ -3761,7 +3675,7 @@ function runDrill(d, lesson) {
     let line = null;
     if (first && !TRY && i === 0 && !mem().pts) line = 'خذ وقتك. الغلط هنا يعلّم.';
     else if (first && TRY && tr() && tr().path) { const t = tr(), L = t.path.length, left = L - t.at;
-      if (t.at === L - 1) line = 'آخر فكرة قبل السؤال الأول.'; else if (t.at === Math.floor(L / 2)) line = `نص الطريق. باقي لك ${left === 2 ? 'فكرتين' : ar(left) + ' أفكار'}.`; }
+      if (t.at === L - 1) line = 'آخر فكرة. بعدها نرجع لسؤال البداية.'; else if (t.at === Math.floor(L / 2)) line = `نص الطريق. باقي لك ${left === 2 ? 'فكرتين' : ar(left) + ' أفكار'}.`; }
     else if (first && VIS && i === 3 && NV === 6) line = 'نص الطريق. باقي لك ٣ أفكار.';
     else if (first && VIS && i === NV - 1) line = 'آخر فكرة في الجزء الأول.';
     if (!line && GD.pending) line = GD.pending;
@@ -3802,7 +3716,7 @@ function runDrill(d, lesson) {
         }
         if (delta > 0) {
           streak++; missRow = 0; guessRow = 0;
-          if (streak === 3 || streak === 5) GD.pending = `<b>${ar(streak)} ${streak === 3 ? 'صح' : ''} ورا بعض.</b> ${streak === 3 ? 'كمّل كذا.' : 'هذا مستوى ممتاز.'}`.replace('  ', ' ');   // the streak speaks through the guide now
+          if (streak === 3 || streak === 5) GD.pending = `<b>${ar(streak)} صح ورا بعض.</b> ${streak === 3 ? 'كمّل كذا.' : 'ما شاء الله.'}`;   // the streak speaks through the guide now
           const line = streak === 8 ? drT('streak_8') : res === 'fast' && streak !== 3 && streak !== 5 ? drT('fast') : '';
           fb.className = 'lad-fb dz-msg ok'; fb.textContent = line || drT('right');
           if (pts >= goal) return setTimeout(() => !gone && levelDone(i), 900);
@@ -3816,7 +3730,7 @@ function runDrill(d, lesson) {
         if (key) s.miss[key] = (s.miss[key] || 0) + 1;
         if (missRow === 2 && k > 0) { k--; m.k = k; st.down++; }
         persist();
-        if (g._pen) { if (res === 'miss') guide(p, COMMON.has(key) ? 'عادي. هذا من أكثر الأخطاء.' : 'عادي. جرّب اللي بعدها.'); if (res === 'miss' && !st.oops) { st.oops = 1; setTimeout(() => !gone && hero('oops'), 60); } }   // the hero makes the face once per level   // the pen showed the way: the guide says one calm line
+        if (g._pen) { if (res === 'miss') guide(p, COMMON.has(key) ? 'عادي. هذي غلطة معروفة.' : 'عادي. جرّب اللي بعدها.'); if (res === 'miss' && !st.oops) { st.oops = 1; setTimeout(() => !gone && hero('oops'), 60); } }   // the hero makes the face once per level   // the pen showed the way: the guide says one calm line
         else if (guess) fb.innerHTML += `<br><span class="dz-coach">${drT('slow')}</span>`;
         else if (res === 'miss' && Math.random() < 0.5) fb.innerHTML += `<br><span class="dz-coach">${drT('miss_' + tone)}</span>`;
         if (missRow >= 3) {
@@ -4018,11 +3932,11 @@ function runDrill(d, lesson) {
       if (fast) { persist(); fb.className = 'lad-fb dz-msg ok'; fb.textContent = drT('right'); return setTimeout(() => !gone && tooEasy(step, secs), 900); }
       const path = (right ? T.short : T.long).map(byName).filter(x => x >= 0);
       Object.assign(t, { kind: right ? 'short' : 'long', a: right ? secs : null, path, at: 0, cur: null, tries: 0, doorStep: step }); persist();
-      if (right) { fb.className = 'lad-fb dz-msg ok'; fb.innerHTML = `حلّيته في ${secAr(secs)}.<br>نخلّيها أقل من ١٠.`; }
+      if (right) { fb.className = 'lad-fb dz-msg ok'; fb.innerHTML = `حلّيته في ${secAr(secs)}.<br>الهدف أقل من ١٠.`; }
       dockBtn('يلا', () => { trLabel = null; setTrack(path.length + 1); idea(path[0]); });
-      if (!right) dockIn.insertBefore(h('p', 'dz-next', `${ar(path.length)} أفكار قصيرة، وتحلّه في ثواني.`), dockIn.firstChild);   // under the pen's work, above the button
+      if (!right) dockIn.insertBefore(h('p', 'dz-next', `${ar(path.length)} أفكار سريعة، ونرجع له.`), dockIn.firstChild);   // under the pen's work, above the button
     }, () => heroOff(), null, { auto: true });
-    if (step === 0) hero('hi', 'هذا طيّحني أول مرة.<br><b>جرّب أنت.</b>');
+    if (step === 0) hero('hi', 'أنا غلطت فيه أول مرة.<br><b>جرّب أنت.</b>');
     ['oops', 'yes', 'win', 'easy'].forEach(n => { const im = new Image(); im.src = `land/hero-${n}.webp`; });   // after the question is on screen
   }
   function tooEasy(step, secs) {
@@ -4041,7 +3955,7 @@ function runDrill(d, lesson) {
   /* the door question again, new numbers. Wrong: the pen, then one more (the last). */
   function boss() {
     const t = mem().try, T = TRY.steps[t.doorStep || 0];
-    trLabel = 'نرجع للسؤال الأول'; paintTrack(t.path.length / NV);
+    trLabel = 'نرجع لسؤال البداية'; paintTrack(t.path.length / NV);
     const p = page('dz-drill dz-boss'); dockNone();
     const lv = doorLv(T), g = make(lv, T.k || 0);
     ask(p, g, T.t || 30, lv.hints || {}, (res, fb, used) => {
@@ -4053,9 +3967,9 @@ function runDrill(d, lesson) {
       }
       t.tries = (t.tries || 0) + 1;
       if (t.tries >= 2) { t.b = null; persist(); LT('boss_miss', { lesson: id, n: Math.round(used) }); return dockBtn('كمّل', partDone); }
-      persist(); dockBtn('جرّب واحد ثاني', boss);
+      persist(); dockBtn('جرّب سؤال ثاني', boss);
     }, null, null, { auto: true });
-    const fb = p.querySelector('.dz-msg'); fb.className = 'lad-fb dz-msg dz-tag'; fb.textContent = t.tries ? 'آخر محاولة. أرقام جديدة.' : 'نفس النوع، أرقام جديدة.';
+    const fb = p.querySelector('.dz-msg'); fb.className = 'lad-fb dz-msg dz-tag'; fb.textContent = t.tries ? 'آخر محاولة، بأرقام جديدة.' : 'نفس النوع، بأرقام جديدة.';
   }
 
   /* a visitor finished «الجزء الأول»: no final test, the tunnel's win screen (with the price) */
@@ -4103,7 +4017,7 @@ function runDrill(d, lesson) {
     LT('lesson_done', { lesson: id, n: stars, val: 'drill' });
     paintTrack(1);
     const p = page('dz-done lad-end', true);
-    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('final_all_right') : `حليت ${ar(got)} من ${ar(n)}`}</h1><p class="dz-p">${got === n ? 'هذا مستوى أسئلة القدرات، وأنت حليتها في الوقت.' : drT('final_some_wrong')}</p>`;
+    p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('final_all_right') : `حلّيت ${ar(got)} من ${ar(n)}`}</h1><p class="dz-p">${got === n ? 'هذي أسئلة بمستوى القدرات، وحلّيتها في الوقت.' : drT('final_some_wrong')}</p>`;
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
     dockBtn(TUN ? 'كمّل' : 'الدرس التالي', toGate, ['تدريب مفتوح', () => open(0)]);
     void rank;   // no rank pop-up here: the next door is the reward
@@ -4495,7 +4409,7 @@ function runDrill(d, lesson) {
     add1: '`7¹` = ٧ بالضبط، ما نزيد شي.',
     zero: 'أي عدد أس صفر = ١، مو صفر.',
     self0: 'أس صفر ما يعني العدد نفسه. `7⁰ = 1`.',
-    undef: 'ممكن! أي عدد أس صفر = ١.',
+    undef: 'لها جواب: أي عدد أس صفر = ١.',
     both: 'كل عدد أس ٠ = ١، وكل عدد أس ١ = نفسه. احسب كل واحد لحاله.',
     sign: 'انتبه للإشارة: العدد أس ١ = نفسه، وأس ٠ = ١.',
     mulx: 'في الضرب <b>نجمع</b> الأسس، ما نضربها.',
@@ -4508,7 +4422,7 @@ function runDrill(d, lesson) {
     zeroD: 'أي عدد ÷ نفسه = ١، مو صفر.',
     selfD: 'أي عدد ÷ نفسه = ١.',
     exp0: 'الأس صار ٠، والمطلوب القيمة: أي عدد أس ٠ = ١.',
-    val1: 'هذي القيمة. المطلوب الأس: م − م = ٠.',
+    val1: 'هذي القيمة. المطلوب الأس: الأس ناقص نفسه = ٠.',
     expOnly: 'هذا الأس بس. المطلوب القيمة: احسب العدد أس هذا الرقم.',
     mulB: 'الأس مو ضرب: `2³ = 8` مو ٦.',
     addP: 'القوس عليه أس: نكرر اللي داخله. `(2³)⁴ = 2³ × 2³ × 2³ × 2³ = 2¹²`. نضرب الأسس.',
@@ -4577,14 +4491,14 @@ function runDrill(d, lesson) {
         k => { const [b, e] = pick(T(k, [[[3, 2], [4, 2], [5, 2]], [[6, 2], [7, 2], [3, 3]], [[8, 2], [9, 2], [4, 3]], [[5, 3], [3, 4], [2, 7]], [[11, 2], [12, 2], [6, 3], [2, 8]], [[3, 5], [4, 4], [5, 4], [2, 9], [2, 10], [7, 3]]])); return powForms(b, e); }),
       lv('قوى العشرة', 25, 'في الـ١٠: الأس = عدد الأصفار.', '`10⁴ = 10000` (٤ أصفار)',
         k => { const e = R(...T(k, [[2, 3], [3, 4], [4, 5], [5, 6], [6, 8]])), n = 10 ** e;
-          return Math.random() < 0.55 ? { q: m_(P(10, e)) + ' = ؟', ans: n, show: [['circle', sp(e)], ['write', `${e} أصفار: ${n}`]], wr: [[10 * e, 'mul'], [10 + e, 'add'], [n / 10, 'zeros'], [n * 10, 'zeros']] }
-            : { q: m_(n) + ' = 10 أس كم؟', ans: e, show: [['circle', String(n)], ['write', `${e} أصفار`]], wr: [[e + 1, 'digits'], [n / 10, 'div'], [e - 1, 'zeros'], ...near(e)] }; }),
+          return Math.random() < 0.55 ? { q: m_(P(10, e)) + ' = ؟', ans: n, show: [['circle', sp(e)], ['write', `${e === 2 ? 'صفرين' : e + ' أصفار'}: ${n}`]], wr: [[10 * e, 'mul'], [10 + e, 'add'], [n / 10, 'zeros'], [n * 10, 'zeros']] }
+            : { q: m_(n) + ' = 10 أس كم؟', ans: e, show: [['circle', String(n)], ['write', e === 2 ? 'صفرين ← 2' : `${e} أصفار`]], wr: [[e + 1, 'digits'], [n / 10, 'div'], [e - 1, 'zeros'], ...near(e)] }; }),
 
       /* ---------- 2) power 1 and power 0 ---------- */
       lv('الأس واحد', 25, 'أي عدد أس ١ = نفسه.', '`7¹ = 7`<br>`25¹ = 25`',
         k => { const b = pick(T(k, [[2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 15, 20], [25, 30, 50, 99, 100, 17]])); return { q: m_(P(b, 1)) + ' = ؟', ans: b, show: [['circle', '¹'], ['write', `${b}¹ = ${b}`]], wr: [[1, 'one'], [0, 'zero1'], [b * b, 'sq'], [b + 1, 'add1']] }; }),
       lv('الأس صفر', 25, 'أي عدد أس ٠ = ١ (مو صفر!).', '`7⁰ = 1`<br>`100⁰ = 1`',
-        k => { const b = pick(T(k, [[2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 15, 20], [25, 30, 50, 99, 100, 17]])); return { q: m_(P(b, 0)) + ' = ؟', ans: 1, show: [['circle', '⁰'], ['write', `${b}⁰ = 1`]], wr: [[0, 'zero'], [b, 'self0'], ['ما ينفع', 'undef']] }; },
+        k => { const b = pick(T(k, [[2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 15, 20], [25, 30, 50, 99, 100, 17]])); return { q: m_(P(b, 0)) + ' = ؟', ans: 1, show: [['circle', '⁰'], ['write', `${b}⁰ = 1`]], wr: [[0, 'zero'], [b, 'self0'], ['ما لها جواب', 'undef']] }; },
         { bone: 'شوف الدرج، كل درجة ننزلها نقسم على ٢:<br>`2³ = 8` ← `2² = 4` ← `2¹ = 2` ← `2⁰ = 1`<br>يعني `2⁰ = 2 ÷ 2 = 1`. ونفس الشي لأي عدد.' }),
       lv('صفر وواحد مع بعض', 25, 'الحين نخلطهم: احسب كل قوة لحالها.', '`5⁰ + 5¹ = 1 + 5 = 6`',
         k => { const B = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20], b = pick(B), c = pick(B.filter(x => x !== b)), d = pick(B);
@@ -4596,7 +4510,7 @@ function runDrill(d, lesson) {
       lv('اكتب العدد كقوة', 25, 'بالعكس: العدد هذا = كم مرة ضربنا؟', '`8 = 2 × 2 × 2 = 2³`',
         k => { const [n, b, e] = pick(T(k, [[[4, 2, 2], [9, 3, 2], [8, 2, 3], [25, 5, 2]], [[16, 2, 4], [27, 3, 3], [49, 7, 2], [36, 6, 2]], [[32, 2, 5], [81, 3, 4], [125, 5, 3], [64, 8, 2]], [[64, 2, 6], [64, 4, 3], [16, 4, 2], [243, 3, 5]], [[128, 2, 7], [256, 2, 8], [625, 5, 4], [216, 6, 3], [343, 7, 3]], [[512, 2, 9], [1024, 2, 10], [81, 9, 2], [256, 4, 4]]]));
           return { q: m_(n) + ' = ' + b + ' أس كم؟', ans: e, show: [['circle', String(n)], ['write', (e <= 5 ? rep(b, e) : `${b} × ${b} × … × ${b}`) + ` = ${n}`], ['write', times(e)]], wr: [[n / b, 'div'], [e + 1, 'more'], [e - 1, 'less'], [n % 2 ? null : n / 2, 'div'], ...near(e)] }; },
-        { bone: 'حيلة: اضرب وعدّ.<br>٢ ← ٤ ← ٨ ← ١٦ ← ٣٢: وصلنا ٣٢ بعد ٥ ضربات، إذن `32 = 2⁵`.<br>احفظ قوى ٢ لين ١٠٢٤، وقوى ٣ لين ٢٤٣، وقوى ٥ لين ٦٢٥.' }),
+        { bone: 'حيلة: اضرب وعدّ.<br>٢ ← ٤ ← ٨ ← ١٦ ← ٣٢: وصلنا ٣٢ بعد ٥ ضربات، إذن `32 = 2⁵`.<br>مع التمرين تصير في بالك: قوى ٢ لين ١٠٢٤، وقوى ٣ لين ٢٤٣، وقوى ٥ لين ٦٢٥.' }),
 
       /* ---------- 4) multiply ---------- */
       lv('الضرب: نجمع الأسس', 25, 'نفس الأساس وبينهم ضرب؟ <b>نجمع الأسس</b>.', '`2³ × 2⁴ = 2⁷`',
@@ -4812,6 +4726,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   if (!C[TUN]) { app.innerHTML = '<p class="gut">لا توجد دروس.</p>'; return; }
   C[TUN].init();
   const ar = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+  /* a number and its noun, the Arabic way: 1 → the noun, 2 → the dual, 3–10 → the plural, 11+ → the singular (docs/ARABIC_VOICE.md) */
+  const count = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;
+  const mins = n => count(n, 'دقيقة', 'دقيقتين', 'دقايق'), secs = n => count(n, 'ثانية', 'ثانيتين', 'ثواني');
+  const clock = s => { s = Math.max(1, Math.round(s || 0)); return `<span dir="ltr">${ar(Math.floor(s / 60))}:${ar(String(s % 60).padStart(2, '0'))}</span>`; };   // ١:٤٧
   const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const waLink = msg => CFG.whatsapp ? `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}` : '';
@@ -4866,8 +4784,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const L = lessons(), n = L.indexOf(l) + 1, learn = l.drill.learn, isFirst = n === 1;
     const trip = `<div class="tun-trip" aria-hidden="true"><div class="tr-bar">${L.map((x, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}"></i>`).join('')}</div><div class="tr-ends"><span>${n === 1 ? 'أنت هنا' : `${ar(n)} من ${ar(L.length)}`}</span><span>اختبار القدرات</span></div></div>`;
     const know = learn && learn.length ? `<p class="tun-k">بعد هذا الدرس بتعرف:</p><ol class="tun-learn">${learn.map(x => `<li><b></b>${esc(x)}</li>`).join('')}</ol>` : '';
-    const how = isFirst ? `<div class="tun-how"><div><b>${ar(1)}</b>اختر الإجابة اللي تشوفها أصح</div><div><b>${ar(2)}</b>انتبه للوقت، الدائرة تعدّ</div><div><b>${ar(3)}</b>أخطأت؟ اقرأ السبب وكمّل</div></div>` : '';
-    w.insertAdjacentHTML('beforeend', `${HOLE()}${trip}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<p class="tun-eyebrow tun-time">الدرس ${ar(n)}<i class="sep">|</i>${ar(!subscriber() && l.drill.free ? l.drill.freeMin || 5 : l.drill.minutes || 20)} دقيقة</p><i class="tun-rule"></i><h1 class="tun-h big${dot(l.title)}">${esc(l.title)}</h1>${subscriber() || know ? '' : '<p class="tun-p">ابدأ الآن مجانًا.</p>'}${know}${how}</div>`);
+    const how = isFirst ? `<div class="tun-how"><div><b>${ar(1)}</b>اختر الجواب الصح</div><div><b>${ar(2)}</b>انتبه للوقت، الدائرة تعدّ</div><div><b>${ar(3)}</b>غلطت؟ القلم يوريك السبب</div></div>` : '';
+    w.insertAdjacentHTML('beforeend', `${HOLE()}${trip}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<p class="tun-eyebrow tun-time">الدرس ${ar(n)}<i class="sep">|</i>${mins(!subscriber() && l.drill.free ? l.drill.freeMin || 5 : l.drill.minutes || 20)}</p><i class="tun-rule"></i><h1 class="tun-h big${dot(l.title)}">${esc(l.title)}</h1>${subscriber() || know ? '' : '<p class="tun-p">ابدأ الآن مجانًا.</p>'}${know}${how}</div>`);
     const act = el('div', 'tun-act');
     const go = el('button', 'tun-go', going ? 'كمّل' : isFirst && !done(l) ? 'ابدأ الرحلة' : 'ادخل');
     go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson', lesson: l.id }); play(l); };
@@ -4877,7 +4795,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- the landing page: only for visitors who come from an ad (?src=…-ad) or #land ---------- */
-  const PRICE = 59, WAS = 129;   // 59 = the opening price
+  const PRICE = 129;   // a plain price: no crossed-out number, no «opening price» (owner, 13 Nov 2026; a shown discount needs a Commerce licence)
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
   function landing() {
@@ -4887,9 +4805,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const phone = src => `<div class="ld-phone"><img src="${src}" alt=""></div>`;
     w.insertAdjacentHTML('beforeend',
       `<section class="ld-hero"><p class="tun-eyebrow">القدرات العامة<i class="sep">|</i>الكمّي</p><i class="tun-rule"></i><h1 class="tun-h big stop">تحضير منظّم<br>لاختبار القدرات</h1><p class="tun-p">ابدأ بالدرس الأول مجانًا،<br>وبدون تسجيل.</p></section>` +
-      sec('الخدمة', 'منهج الكمّي كاملًا', `${ar(lessons().length)} درسًا. تتدرّب بالحل،<br>وتعرف سبب كل خطأ فورًا.`, phone('land/q.webp')) +
+      sec('المنهج', 'تتدرّب بالحل', `${ar(lessons().length)} درسًا في الكمّي.<br>وإذا أخطأت، تعرف السبب فورًا.`, phone('land/q.webp')) +
       sec('الاشتراك', 'الكمّي كاملًا', '', `<div class="ld-tiers">
-        <div class="ld-tier"><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span><s>${ar(WAS)}</s></p><p class="ld-open">سعر الافتتاح</p><ul><li>${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر</li><li>تتدرّب بالحل، وتعرف سبب كل خطأ</li></ul></div>
+        <div class="ld-tier"><p class="ld-price"><b>${ar(PRICE)}</b><span>ريال</span></p><ul><li>${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر</li><li>تدريب مفتوح بعد كل درس</li></ul></div>
       </div><p class="tun-p">دفعة واحدة<i class="sep">|</i>بلا تجديد تلقائي</p>`) +
       `<section class="ld-sec ld-end"><h2 class="tun-h stop">ابدأ بالدرس الأول</h2><p class="tun-p">مجانًا، وبدون تسجيل.</p></section>`);
     const go = el('button', 'tun-go ld-go', 'جرّب الدرس الأول مجانًا');
@@ -4910,7 +4828,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const f = first();
     LT('gate_view');
     const w = room('tun-door tun-gate');
-    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">كمّل الكمّي<br>كاملًا</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر.</p>${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال <s>${ar(WAS)}</s><i>سعر الافتتاح</i></p>`}</div>`);
+    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">افتح الكمّي<br>كاملًا</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${ar(3)} أشهر.</p>${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال</p>`}</div>`);
     const act = el('div', 'tun-act'), Au = window.LeenaAuth, ended = !!(Au && Au.user && Au.access && Au.access.length);
     if (Au && Au.payOn) {   // online payment: phone + code → plan → pay
       const b = el('button', 'tun-go', ended ? 'جدّد اشتراكك' : 'اشترك وكمّل'); b.onclick = () => { LT('gate_join'); Au.join(ended ? 'renew' : 'join'); }; act.appendChild(b);
@@ -4925,7 +4843,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- plan B while online payment is off: he leaves his name and number, we contact him ---------- */
-  const WA_MSG = `السلام عليكم، جرّبت الدرس الأول وأبغى أشترك في الكمّي كاملًا بسعر الافتتاح (${ar(PRICE)} ريال)`;
+  const WA_MSG = `السلام عليكم، جرّبت الدرس الأول وأبغى أشترك في الكمّي كاملًا (${ar(PRICE)} ريال)`;
   /* name + Saudi mobile (5XXXXXXXX) → the leads table (site/supabase/005_leads.sql). tag: '' or '|save'. Resolves true/false, never throws */
   async function sendLead(n, d, tag) {
     try {
@@ -4951,7 +4869,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     LT('save_view');
     const w = room('tun-door jn tun-lead');
     const back = how => { LT(how); play(byId(l.id) || first()); };
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">نص الطريق</p><i class="tun-rule"></i><h1 class="tun-h stop">احفظ مكانك</h1><p class="tun-p">نرجّعك لنفس السؤال إذا طلعت.</p></div>
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">نص الطريق</p><i class="tun-rule"></i><h1 class="tun-h stop">احفظ مكانك</h1><p class="tun-p">إذا طلعت، ترجع لنفس المكان.</p></div>
       <form class="jn-form" novalidate><input id="sv-name" class="jn-in" type="text" autocomplete="given-name" maxlength="40" placeholder="اسمك" aria-label="الاسم">
       <label class="jn-phone"><span>+966</span><input id="sv-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
       <p class="jn-err" hidden></p><button class="tun-go" type="submit">احفظ وكمّل</button></form>
@@ -4963,7 +4881,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       e.preventDefault(); err.hidden = true;
       const n = nm.value.trim(), d = ph.value.replace(/\D/g, '').replace(/^(966|0)/, '');
       if (n.length < 2) { err.textContent = 'اكتب اسمك'; err.hidden = false; return; }
-      if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال سعودي صحيح'; err.hidden = false; return; }
+      if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال صحيح يبدأ بـ ٥'; err.hidden = false; return; }
       go.disabled = true; go.textContent = 'نحفظ…';
       const ok = await sendLead(n, d, '|save');   // the place is already kept on this phone: if the call fails he simply goes on
       if (ok) { try { localStorage.setItem('leena-lead', '1'); } catch (x) {} }
@@ -4978,22 +4896,21 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     LT('win_view', { once: true });
     const m = mem(l) || {}, D = l.drill, t = m.try && (m.try.path || m.try.kind === 'strong') ? m.try : null, strong = !!(t && t.kind === 'strong');
     const free = t && t.path ? t.path.length : Math.min(D.free || 6, D.levels.length);
-    const mins = Math.max(1, Math.ceil((m.s || 0) / 60)), left = D.levels.length - free, more = lessons().length - 1;
+    const left = D.levels.length - free, more = lessons().length - 1;
     /* docs/TRY_FIRST_PLAN.md: the title and the before/after line come only from what he really did */
-    const sec = n => n === 2 ? 'ثانيتين' : n === 1 ? 'ثانية' : `${ar(n)} ${n >= 3 && n <= 10 ? 'ثواني' : 'ثانية'}`;
     let title = 'خلّصت<br>الجزء الأول', line = '', hero = false;
-    if (strong) { title = 'أنت قوي<br>في الأسس'; line = 'ثلاثة أسئلة صعبة، كلها صح.'; hero = true; }
+    if (strong) { title = 'الأسس<br>عندك قوية'; line = `${ar(3)} أسئلة صعبة، وكلها صح.`; hero = true; }
     else if (t && t.b != null) { title = 'حلّيتها'; hero = true;
-      if (t.a == null) line = `أول مرة: غلط. الحين: صح في ${sec(t.b)}.`; else if (t.b < t.a) line = `أول مرة ${sec(t.a)}، والحين ${sec(t.b)}.`; }
-    const cards = strong ? `<div><b>${ar(3)}</b>أسئلة</div><div><b>${ar(Math.max(1, Math.round(m.s || 0)))}</b>ثانية</div><div><b dir="rtl">${ar(3)} / ${ar(3)}</b>صح</div>`
-      : `<div><b>${ar(free)}</b>${free === 1 ? 'فكرة' : 'أفكار'}</div><div><b>${ar(mins)}</b>${mins <= 2 || mins > 10 ? 'دقيقة' : 'دقايق'}</div><div><b dir="rtl">${ar(m.r || 0)} / ${ar(m.n || 0)}</b>صح</div>`;
+      if (t.a == null) line = `أول مرة: غلط. الحين: صح في ${secs(t.b)}.`; else if (t.b < t.a) line = `أول مرة ${secs(t.a)}، والحين ${secs(t.b)}.`; }
+    const cards = strong ? `<div><b>${ar(3)}</b>أسئلة</div><div><b>${clock(m.s)}</b>الوقت</div><div><b dir="rtl">${ar(3)} / ${ar(3)}</b>صح</div>`
+      : `<div><b>${ar(free)}</b>${free === 1 ? 'فكرة' : free === 2 ? 'فكرتين' : 'أفكار'}</div><div><b>${clock(m.s)}</b>الوقت</div><div><b dir="rtl">${ar(m.r || 0)} / ${ar(m.n || 0)}</b>صح</div>`;
     const rest = strong ? `الدرس الكامل فيه ${ar(D.levels.length)} فكرة،<br>وبعده ${ar(more)} درسًا.` : `باقي ${ar(left)} فكرة في هذا الدرس،<br>و${ar(more)} درسًا بعده.`;
     const w = room('tun-door tun-win');
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt">${hero ? '<img class="tun-hero" src="land/hero-win.webp" alt="">' : ''}<p class="tun-eyebrow">${esc(l.title)}</p><i class="tun-rule"></i><h1 class="tun-h big stop">${title}</h1>
       ${line ? `<p class="tun-win-line">${line}</p>` : ''}
       <div class="tun-wn">${cards}</div>
       <p class="tun-p">${rest}</p>
-      ${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال <s>${ar(WAS)}</s><i>سعر الافتتاح</i></p>`}</div>`);
+      ${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال</p>`}</div>`);
     const act = el('div', 'tun-act'), Au = window.LeenaAuth;
     if (Au && Au.payOn) { const b = el('button', 'tun-go', 'اشترك وكمّل'); b.onclick = () => { LT('gate_join', { val: 'win' }); Au.join('join'); }; act.appendChild(b); }
     else subscribeBtn(act, 'win');
@@ -5020,10 +4937,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       e.preventDefault(); err.hidden = true;
       const n = nm.value.trim(), d = ph.value.replace(/\D/g, '').replace(/^(966|0)/, '');
       if (n.length < 2) { err.textContent = 'اكتب اسمك'; err.hidden = false; return; }
-      if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال سعودي صحيح'; err.hidden = false; return; }
+      if (!/^5\d{8}$/.test(d)) { err.textContent = 'اكتب رقم جوال صحيح يبدأ بـ ٥'; err.hidden = false; return; }
       go.disabled = true; go.textContent = 'نرسل…';
       const ok = await sendLead(n, d);
-      if (!ok) { go.disabled = false; go.textContent = 'أرسل'; err.textContent = 'تعذّر الإرسال. جرّب مرة ثانية أو راسلنا على واتساب.'; err.hidden = false; return; }
+      if (!ok) { go.disabled = false; go.textContent = 'أرسل'; err.textContent = 'ما قدرنا نرسل طلبك. جرّب مرة ثانية، أو راسلنا على واتساب.'; err.hidden = false; return; }
       try { localStorage.setItem('leena-lead', '1'); } catch (x) {}
       LT('lead_sent'); thanks(n);
     };
@@ -5170,28 +5087,28 @@ window.__leenaAuth = function () {
   function openLogin(mode) {
     LT('login_open');
     if (A.payOn && mode !== 'user') return A.join('login');   // phone + WhatsApp code; the old username form stays for older accounts
-    const { m, box } = modal(`<h2>تسجيل الدخول</h2><p class="acct-sub">اكتب اسم المستخدم وكلمة المرور اللذين وصلاك.</p>
+    const { m, box } = modal(`<h2>تسجيل الدخول</h2><p class="acct-sub">اكتب اسم المستخدم وكلمة المرور اللي أرسلناها لك.</p>
       <form class="acct-form"><label>اسم المستخدم<input id="lg-user" autocomplete="username" autocapitalize="none" spellcheck="false" dir="ltr" required></label>
       <label>كلمة المرور<input id="lg-pass" type="password" autocomplete="current-password" dir="ltr" required></label>
       <p class="acct-err" hidden></p><button class="play-btn acct-go" type="submit"><span>دخول</span></button></form>`);
     const f = box.querySelector('form'), err = box.querySelector('.acct-err'), go = box.querySelector('.acct-go');
     setTimeout(() => box.querySelector('#lg-user').focus(), 50);
     f.onsubmit = async e => {
-      e.preventDefault(); err.hidden = true; go.disabled = true; go.querySelector('span').textContent = 'جارٍ الدخول…';
+      e.preventDefault(); err.hidden = true; go.disabled = true; go.querySelector('span').textContent = 'لحظة…';
       const u = box.querySelector('#lg-user').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''), p = box.querySelector('#lg-pass').value;
       const { error } = await sb.auth.signInWithPassword({ email: u + '@leena.academy', password: p });
       LT(error ? 'login_fail' : 'login_ok');
-      if (error) { err.textContent = /invalid/i.test(error.message) ? 'اسم المستخدم أو كلمة المرور غير صحيحة.' : 'تعذّر الدخول الآن. تأكد من الإنترنت وحاول مرة ثانية.'; err.hidden = false; go.disabled = false; go.querySelector('span').textContent = 'دخول'; return; }
-      go.querySelector('span').textContent = 'نفتح دوراتك…';
+      if (error) { err.textContent = /invalid/i.test(error.message) ? 'اسم المستخدم أو كلمة المرور غير صحيحة.' : 'ما قدرنا ندخّلك الحين. تأكد من الإنترنت، وجرّب مرة ثانية.'; err.hidden = false; go.disabled = false; go.querySelector('span').textContent = 'دخول'; return; }
+      go.querySelector('span').textContent = 'نفتح دروسك…';
       try { await load(); } catch (e2) { console.warn(e2); }
-      m.remove(); toast(A.access.some(a => a.expires >= today()) ? `أهلًا ${A.user.name || A.user.username}، دوراتك مفتوحة` : 'دخلت، لكن لا توجد دورة فعّالة في حسابك');
+      m.remove(); toast(A.access.some(a => a.expires >= today()) ? `أهلًا ${A.user.name || A.user.username}، دروسك مفتوحة` : 'دخلت، بس ما فيه اشتراك فعّال في حسابك');
       window.Academy.home();
     };
   }
   function showAccount() {
     if (!A.user) return openLogin();
     const names = { 'qudurat-quant': 'القدرات: الكمّي' };
-    const rows = A.access.length ? A.access.map(a => { const on = a.expires >= today(); return `<li class="${on ? 'on' : 'off'}"><b>${esc(names[a.course] || a.course)}</b><small>${on ? 'مفتوحة حتى ' : 'انتهت في '}${fmtDate(a.expires)}</small></li>`; }).join('') : '<li class="off"><b>لا توجد دورات في حسابك</b></li>';
+    const rows = A.access.length ? A.access.map(a => { const on = a.expires >= today(); return `<li class="${on ? 'on' : 'off'}"><b>${esc(names[a.course] || a.course)}</b><small>${on ? 'مفتوحة حتى ' : 'انتهت في '}${fmtDate(a.expires)}</small></li>`; }).join('') : '<li class="off"><b>ما فيه اشتراك في حسابك</b></li>';
     const P = A.plan, bk = P && P.booking && P.booking.status === 'booked' && new Date(P.booking.starts_at) > new Date() ? P.booking : null;
     const when = iso => new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { timeZone: 'Asia/Riyadh', weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
     const session = !A.payOn || !P ? '' : bk ? `<li class="on"><b>جلستك مع المدرّس</b><small>${when(bk.starts_at)}</small></li>` : P.credits > 0 ? '<li class="on jn-li"><b>جلستك مع المدرّس</b><small>لم تُحجز بعد</small></li>' : '';

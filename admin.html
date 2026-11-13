@@ -253,8 +253,8 @@ const LSRC = { 'tiktok-ad': 'إعلان تيك توك', 'bio-ad': 'رابط ال
 const LS = { new: 'جديد', contacted: 'تم التواصل', paid: 'اشترك', no: 'لا' };
 const leadSave = l => /\|save$/.test(l.src || '');   // left his number at «احفظ مكانك» in lesson 1 (not a subscribe request)
 const leadSrc = l => { const b = String(l.src || '').replace(/\|save$/, ''); const t = b ? (LSRC[b] || SRC[b] || b) : ''; return leadSave(l) ? 'حفظ مكانه' + (t ? ' · ' + t : '') : t; };
-const leadMsg = (n, l) => l && leadSave(l) ? `أهلًا ${n || ''} 👋 شفناك بدأت الدرس الأول في أكاديمية لينا. إذا وقفت عند شي، نساعدك هنا.`
-  : `وعليكم السلام ${n || ''}، حيّاك الله في أكاديمية لينا 🌿 وصلنا طلب اشتراكك في الكمّي كاملًا بسعر الافتتاح (٥٩ ريال).`;
+const leadMsg = (n, l) => l && leadSave(l) ? `السلام عليكم ${n || ''} 👋 معك أكاديمية لينا. حفظنا مكانك في الدرس الأول، وإذا وقفت عند شي نساعدك هنا.`
+  : `السلام عليكم ${n || ''}، حيّاك الله في أكاديمية لينا 🌿 وصلنا طلب اشتراكك في الكمّي كاملًا (١٢٩ ريال).`;
 let leadRows = [];
 async function leadBadge(rows) {
   if (!rows) { try { const { data } = await sb.rpc('admin_leads', { p_days: 30 }); rows = data || []; } catch (e) { rows = []; } }
