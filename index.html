@@ -1880,7 +1880,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794655572", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794656432", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -5100,7 +5100,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
     const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
-      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اضغط «أكمل الاشتراك» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
+      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اضغط «اشترك الآن» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
       ['كيف تكون ساعة المعلّم؟', 'حصة فردية، نرتّب موعدها معك على واتساب. وبعدها يتابع تقدّمك.'],
       ['كيف أسترجع مبلغي؟', `راسلنا على واتساب خلال ${ar(BACK)} أيام من الدفع، ونعيده كاملًا.`]];
     const PTS = ['تأسيس', 'تدريب', 'قياس مستوى', 'دعم معلّمين سعوديين'];   // four of the mountain film's points, a word or two each (owner, 14 Nov 02:18: «a lot of words. Be elegant.»)
@@ -5135,13 +5135,12 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const stage = () => plans.getBoundingClientRect().top < innerHeight * .6 ? 'send' : solved || trySec.getBoundingClientRect().bottom <= innerHeight * .5 ? 'plans' : 'try';
     const draw = () => {
       at = stage(); dock.classList.toggle('off', at === 'try');   // at the problem the answers are the only buttons
-      go.textContent = at === 'send' ? 'أكمل الاشتراك' : 'اشترك الآن';
+      go.textContent = 'اشترك الآن';
       micro.textContent = at === 'send' ? `تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب` : `${ar(PRICE)} ريال لشهر كامل`;
       go.href = '#';
     };
-    const toPlans = () => plans.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    go.addEventListener('click', e => { e.preventDefault(); if (at === 'send') { LT('order_open'); return order(); }   // the order is a short form now, not WhatsApp (owner, 14 Nov 13:23)
-      LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
+    /* one press, wherever he is on the page: the form (owner, 14 Nov 14:38: it used to scroll to the price first and want a second press) */
+    go.addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); LT('order_open'); order(scrollY); });
     /* the four words: beside the name on a computer; on a phone the name is one thin line over the problem, and the words come after it */
     { const pts = w.querySelector('.la-pts'), hero = w.querySelector('.la-hero'), wide = matchMedia('(min-width:1100px)');
       const place = () => { if (!document.body.contains(w)) return wide.removeEventListener('change', place); if (wide.matches) hero.appendChild(pts); else trySec.after(pts); };
@@ -5293,10 +5292,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- the order: first name, family name (if he likes), mobile → the leads table; the owner sees it under «المهتمون» and calls him ---------- */
-  function order() {
-    enter(lockedOut() && sawOffer ? 2 : 1, () => { landing(); const to = () => { const pl = document.querySelector('.tun-land [data-sec=plan]'); if (pl) pl.scrollIntoView({ block: 'start' }); }; to(); setTimeout(to, 120); });   // back: the page, at the price where he left it
+  function order(fromY) {
+    enter(lockedOut() && sawOffer ? 2 : 1, () => { landing(); const to = () => scrollTo(0, fromY || 0); to(); setTimeout(to, 120); });   // back: the page, where he left it
     const w = room('tun-door jn tun-lead tun-order', goBack, 'رجوع');
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">أكمل الاشتراك</h1><p class="tun-p">اكتب اسمك ورقمك، ونتواصل معك.</p></div>
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">اشترك الآن</h1><p class="tun-p">اكتب اسمك ورقمك، ونتواصل معك.</p></div>
       <form class="jn-form" novalidate><input id="or-first" class="jn-in" type="text" autocomplete="given-name" maxlength="20" placeholder="الاسم الأول" aria-label="الاسم الأول">
       <input id="or-last" class="jn-in" type="text" autocomplete="family-name" maxlength="18" placeholder="اسم العائلة (اختياري)" aria-label="اسم العائلة، اختياري">
       <label class="jn-phone"><span>+966</span><input id="or-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
