@@ -1880,7 +1880,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794656432", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794664162", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4835,9 +4835,24 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
 (function () {
   const CFG = (window.ACADEMY_CONFIG || {}).auth;
   if (!CFG || !window.fetch) return;
-  /* the owner's own phones: open the site once with #me and this phone stops counting */
-  try { if (location.hash === '#me') { localStorage.setItem('leena-me', '1'); history.replaceState(null, '', location.pathname + location.search); setTimeout(() => alert('تم ✓ هذا الجوال ما راح ينحسب في الإحصاءات'), 300); } } catch (e) {}
-  try { if (localStorage.getItem('leena-me') === '1') { window.LeenaTrack = () => {}; return; } } catch (e) {}
+  /* the owner's own phones: open the site once with #me and this phone stops counting. The database is told once («me»):
+     it forgets what this phone did before and keeps nothing new from it (site/supabase/010_my_tests.sql) */
+  let mine = false;
+  try {
+    if (location.hash === '#me') { localStorage.setItem('leena-me', '1'); history.replaceState(null, '', location.pathname + location.search); setTimeout(() => alert('تم ✓ هذا الجوال ما راح ينحسب في الإحصاءات'), 300); }
+    mine = localStorage.getItem('leena-me') === '1';
+  } catch (e) {}
+  if (mine) {
+    window.LeenaTrack = () => {};
+    try {
+      const v = localStorage.getItem('leena-vid');
+      if (v && localStorage.getItem('leena-me-told') !== '1') fetch(CFG.url + '/rest/v1/events', { method: 'POST', keepalive: true,
+        body: JSON.stringify([{ vid: v, sid: 'me' + Date.now().toString(36), ev: 'me', course: null, lesson: null, n: null, val: null }]),
+        headers: { apikey: CFG.key, Authorization: 'Bearer ' + CFG.key, 'Content-Type': 'application/json', Prefer: 'return=minimal' } })
+        .then(r => { if (r.ok) localStorage.setItem('leena-me-told', '1'); }).catch(() => {});
+    } catch (e) {}
+    return;
+  }
   const rnd = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
   let vid = null, back = 0;
   try { vid = localStorage.getItem('leena-vid'); back = vid ? 1 : 0; if (!vid) { vid = rnd(); localStorage.setItem('leena-vid', vid); } } catch (e) { vid = vid || rnd(); }

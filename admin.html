@@ -173,7 +173,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794656432145;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794664162252;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -321,23 +321,33 @@ async function leads() {
       <div><b>${ar(nw)}</b><span class="muted">ينتظرون تواصلك</span></div>
       <div><b>${ar(leadRows.length)}</b><span class="muted">آخر ٦٠ يوم</span></div>
       <div><b>${ar(pd)}</b><span class="muted">اشتركوا</span></div></div>
-      <p class="tip">اضغط «واتساب» والرسالة مكتوبة. بعدها أرسل ردّك الجاهز بتفاصيل التحويل، وغيّر الحالة.</p></div>
+      <p class="tip">اضغط «واتساب» والرسالة مكتوبة. بعدها أرسل ردّك الجاهز بتفاصيل التحويل، وغيّر الحالة.</p>
+      <p class="tip">طلب أرسلته أنت للتجربة؟ اضغط «هذا أنا أجرّب»: ينحذف الطلب، وزيارات الجوال اللي أرسله تطلع من الأرقام.</p></div>
     <div class="list" id="l">${leadRows.map(l => `<div class="card stack lead" data-id="${l.id}">
       <div class="row" style="justify-content:space-between"><b>${esc(l.name)}</b><span class="pill ld-${l.status}" style="flex:none">${LS[l.status] || l.status}</span></div>
       <small class="muted" dir="ltr" style="text-align:right">+${esc(l.phone)}</small>
       <small class="muted">${atTime(l.at)}${leadSrc(l) ? ' · ' + esc(leadSrc(l)) : ''}</small>
       <a class="mebtn" href="${waLink(l.phone, leadMsg(l.name, l))}" target="_blank" rel="noopener">واتساب</a>
-      <div class="row">${['contacted', 'paid', 'no'].map(s => `<button class="small${l.status === s ? ' on' : ''}" data-s="${s}">${LS[s]}</button>`).join('')}</div></div>`).join('') || '<div class="card"><p class="muted">ما فيه أحد للحين.</p></div>'}</div>`;
+      <div class="row">${['contacted', 'paid', 'no'].map(s => `<button class="small${l.status === s ? ' on' : ''}" data-s="${s}">${LS[s]}</button>`).join('')}</div>
+      <button type="button" class="link mine">هذا أنا أجرّب</button></div>`).join('') || '<div class="card"><p class="muted">ما فيه أحد للحين.</p></div>'}</div>`;
   view.querySelectorAll('.lead [data-s]').forEach(b => b.onclick = async () => {
     const id = +b.closest('.lead').dataset.id, cur = leadRows.find(l => l.id === id), s = cur.status === b.dataset.s ? 'new' : b.dataset.s;
     const { error } = await sb.rpc('admin_set_lead', { p_lead: id, p_status: s }); if (error) return alert(errText(error));
     leads();
   });
+  /* the owner's own test order: asked twice (like deleting an account), then the order goes and so do that phone's visits (010_my_tests.sql) */
+  view.querySelectorAll('.lead .mine').forEach(b => { let sure = false; b.onclick = async () => {
+    if (!sure) { sure = true; b.textContent = 'متأكد؟ ينحذف الطلب، وزيارات جواله تطلع من الأرقام. اضغط مرة ثانية'; return; }
+    b.disabled = true;
+    const { error } = await sb.rpc('admin_lead_test', { p_lead: +b.closest('.lead').dataset.id });
+    if (error) { b.disabled = false; sure = false; b.textContent = 'هذا أنا أجرّب'; return alert(/admin_lead_test|PGRST202|find the function/i.test(error.message || '') ? 'يحتاج تشغيل ملف 010_my_tests.sql في Supabase مرة واحدة.' : errText(error)); }
+    leads();
+  }; });
 }
 
 function meCard() {
   const site = (window.ACADEMY_SITE || 'https://leena.syyad.net/') + '#me';
-  return `<div class="card" id="me"><h2>لا تحسب جوالي</h2><p class="muted">افتح الرابط من كل جوال تستخدمه، وزياراته الجاية ما تنحسب في الإحصاءات.</p>
+  return `<div class="card" id="me"><h2>لا تحسب جوالي</h2><p class="muted">افتح الرابط من كل جوال تستخدمه: زياراته القديمة تطلع من الأرقام، والجاية ما تنحسب.</p>
     <a class="mebtn" href="${site}" target="_blank" rel="noopener">لا تحسب هذا الجوال</a></div>`;
 }
 function bindMe() { try { localStorage.setItem('leena-me', '1'); } catch (e) {} }
