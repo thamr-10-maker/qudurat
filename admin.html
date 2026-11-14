@@ -160,9 +160,9 @@ function draw() {
 /* ---------- statistics: how many came and what they did ---------- */
 let statsDays = 'd0';
 const PATHS = [
-  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_how', 'صفحة الإعلان: وصلوا «حفظت الإجابة»'], ['land_map', 'صفحة الإعلان: وصلوا الدروس'], ['plan_pick', 'اختاروا مدة'], ['tutor_hours', 'غيّروا ساعات المعلّم الخاص'], ['order_wa', 'أرسلوا الطلب على واتساب'], ['land_plan', 'صفحة الإعلان: وصلوا السعر'], ['land_ask', 'صفحة الإعلان: وصلوا الأسئلة'], ['land_faq', 'صفحة الإعلان: فتحوا سؤالًا'], ['land_end', 'صفحة الإعلان: وصلوا آخرها'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
+  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_how', 'صفحة الإعلان: وصلوا «حفظت الإجابة»'], ['land_map', 'صفحة الإعلان: وصلوا الدروس'], ['land_try', 'وصلوا لمسألة التجربة'], ['try_start', 'بدأوا حل المسألة'], ['try_miss', 'غلطوا في خطوة من المسألة'], ['try_done', 'أكملوا المسألة'], ['plan_pick', 'ضغطوا «اشترك الآن»'], ['land_back', 'وصلوا لقسم الاسترجاع'], ['order_wa', 'أرسلوا الطلب على واتساب'], ['land_plan', 'صفحة الإعلان: وصلوا السعر'], ['land_ask', 'صفحة الإعلان: وصلوا الأسئلة'], ['land_faq', 'صفحة الإعلان: فتحوا سؤالًا'], ['land_end', 'صفحة الإعلان: وصلوا آخرها'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
     ['save_view', 'وصلوا «احفظ مكانك» (نص الطريق)'], ['save_sent', 'حفظوا مكانهم (تركوا رقمهم)'], ['boss_ok', 'حلّوا السؤال الأخير'], ['part_done', 'خلّصوا الجزء الأول'], ['win_view', 'شافوا شاشة الفوز والسعر'], ['gate_join', 'ضغطوا «اشترك»'], ['lead_view', 'فتحوا نموذج الاشتراك'], ['lead_sent', 'أرسلوا طلب الاشتراك'], ['gate_wa', 'ضغطوا واتساب']]],
-  ['🔑 المشتركين', [['login_open', 'فتحوا نافذة الدخول'], ['login_ok', 'دخلوا بحساب مشترك'], ['tunnel_view', 'فتحوا قائمة الدروس'], ['lesson_done', 'خلّصوا درس واختباره'], ['tunnel_next', 'انتقلوا للدرس اللي بعده'], ['open_all', 'فتحوا كل الدروس (رابط)']]],
+  ['🔑 المشتركين', [['login_open', 'فتحوا نافذة الدخول'], ['login_ok', 'دخلوا بحساب مشترك'], ['tunnel_view', 'فتحوا قائمة الدروس'], ['lesson_done', 'خلّصوا درس واختباره'], ['tunnel_next', 'انتقلوا للدرس اللي بعده'], ['open_all', 'فتحوا كل الدروس (رابط)'], ['no_access', 'دخلوا بحساب بلا اشتراك'], ['road_locked', 'ضغطوا درسًا مقفولًا'], ['nav_back', 'استخدموا زر الرجوع'], ['open_end', 'أنهوا التدريب المفتوح']]],
 ];
 const OTHER = [['wa_click', 'ضغطوا واتساب (من أي مكان)'], ['door_miss', 'سؤال البداية: غلط'], ['door_slow', 'سؤال البداية: صح لكن بطيء'], ['door_fast', 'سؤال البداية: سريع'], ['boss_miss', 'السؤال الأخير: ما انحل'], ['save_skip', 'تخطّوا «احفظ مكانك»'], ['win_again', 'أعادوا الجزء الأول'], ['guide', 'مرات تكلّم المرشد'], ['gate_view', 'وصلوا البوابة القديمة'], ['restart_lesson', 'أعادوا الدرس من البداية'], ['login_fail', 'فشل دخولهم'], ['login_link', 'ضغطوا «عندي حساب»'], ['gate_train', 'تدرّبوا على الدرس الأول من البوابة'],
   ['drill_miss', 'إجابات غلط'], ['drill_bone', 'احتاجوا الشرح الأطول'], ['pen_show', 'انكتب لهم الحل على السؤال'], ['help_open', 'فتحوا المساعدة ؟'], ['pen_skip', 'تخطّوا القلم'], ['drill_back', 'رجعت لهم فكرة قديمة'], ['drill_warm', 'سوّوا تسخين أول الدرس'], ['drill_stat', 'أرقام المستويات (للتحليل)'], ['lesson_exit', 'طلعوا من نص الدرس']];
@@ -173,7 +173,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794639540060;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794640153918;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -192,15 +192,18 @@ async function stats() {
   const F = Object.assign({}, S.funnel || {}, { wa_door: (S.wa_from || {}).course_door || 0 }), V = S.visitors || 0, f = k => F[k] || 0;
   if (!V) { sv.innerHTML = `${label ? `<p class="muted" style="margin:0 4px">${label}</p>` : ''}<div class="card"><p class="muted">لا زيارات في هذه الفترة.</p></div>` + meCard(); return; }
   const SR = srcRes && !srcRes.error && srcRes.data ? srcRes.data : null;   // by source (site/supabase/006_stats_sources.sql); the page works without it
-  const tried = Math.max(f('first_answer'), f('door_miss'), f('door_fast'), f('door_slow')), left = f('lead_sent') + f('save_sent');
+  /* The site has no free lesson since 14 Nov 2026: a visitor reads the page, may solve the «تجربة» problem, reaches the price and sends his order on
+     WhatsApp. These cards count that, and nothing of the old trial. */
+  const WF = S.wa_from || {}, orders = f('order_wa'), talk = WF.talk || 0;
   /* 1 · how was it */
-  const moved = SR ? SR.moved : Math.max(f('land_scroll'), f('tunnel_enter'), f('land_go'), tried);
+  const moved = SR ? SR.moved : Math.max(f('land_scroll'), f('try_start'), f('plan_pick'), f('tunnel_enter'), orders);
   const head = `<div class="card"><div class="big4">
-      <div class="hi"><b>${ar(tried)}</b><span>جاوبوا سؤال</span></div><div><b>${ar(f('part_done'))}</b><span>خلّصوا التجربة</span></div>
-      <div><b>${ar(f('gate_join'))}</b><span>ضغطوا «اشترك»</span></div><div><b>${ar(left)}</b><span>تركوا رقمهم</span></div></div>
+      <div class="hi"><b>${ar(orders)}</b><span>أرسلوا طلب اشتراك</span></div><div><b>${ar(f('plan_pick'))}</b><span>ضغطوا «اشترك الآن»</span></div>
+      <div><b>${ar(f('try_done'))}</b><span>حلّوا مسألة التجربة</span></div><div><b>${ar(talk)}</b><span>كلّمونا على واتساب</span></div></div>
       <p class="tip">${ar(V)} جوال فتح الموقع، منهم ${ar(S.new || 0)} لأول مرة. ${ar(Math.max(0, V - moved))} طلعوا بدون ما يسوّون شي (${ar(pct(Math.max(0, V - moved), V))}٪). متوسط البقاء ${stay(S.minutes)}.</p></div>`;
-  /* 2 · where we lose them: each step against the one before it */
-  const ST = [[f('visit') || V, 'فتحوا الموقع'], [f('lesson_start'), 'دخلوا التجربة'], [tried, 'جاوبوا سؤال البداية'], [f('part_done'), 'خلّصوا التجربة'], [f('win_view'), 'شافوا السعر'], [f('gate_join'), 'ضغطوا «اشترك»'], [f('lead_sent'), 'أرسلوا طلب الاشتراك']];
+  /* 2 · where we lose them: each step against the one before it. Four steps every buyer passes, in order */
+  const past = Math.max(f('land_scroll'), f('land_how'), f('land_plan'));
+  const ST = [[f('visit') || V, 'فتحوا الموقع'], [past, 'نزلوا عن الشاشة الأولى'], [f('land_plan'), 'وصلوا للسعر'], [orders, 'أرسلوا طلب اشتراك']];
   let worst = -1, low = 101; ST.forEach(([v], i) => { if (i && ST[i - 1][0] >= 5) { const p = pct(v, ST[i - 1][0]); if (p < low) { low = p; worst = i; } } });
   const steps = `<div class="card"><h2>وين نخسرهم؟</h2><div class="steps">${ST.map(([v, t], i) => { const prev = i ? ST[i - 1][0] : 0, p = i ? pct(v, prev) : 100;
       return `<div class="step${i === worst ? ' worst' : ''}"><span class="t">${t}</span><span class="v">${ar(v)}</span>${i ? `<span class="of">${prev ? `${ar(p)}٪ من اللي قبلها${i === worst ? ' · أكبر خسارة' : ''}` : '—'}</span>` : ''}<i><b style="width:${Math.min(100, p)}%"></b></i></div>`; }).join('')}</div>
@@ -209,18 +212,19 @@ async function stats() {
   const LV = f('land_view'), landCard = LV ? `<div class="card"><h2>صفحة الاشتراك</h2><div class="trio"><div><b>${ar(LV)}</b>شافوها</div><div><b>${ar(f('plan_pick'))}</b>ضغطوا «اشترك الآن» (${ar(pct(f('plan_pick'), LV))}٪)</div><div><b>${ar(f('order_wa'))}</b>أرسلوا الطلب على واتساب</div></div>
       <p class="h3">مسألة التجربة</p><div class="trio"><div><b>${ar(f('land_try'))}</b>وصلوا لها</div><div><b>${ar(f('try_start'))}</b>بدأوا الحل (${ar(pct(f('try_start'), LV))}٪)</div><div><b>${ar(f('try_done'))}</b>أكملوها (${ar(pct(f('try_done'), f('try_start')))}٪ ممن بدأ)</div></div>
       <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_try', 'التجربة'], ['land_how', 'الفكرة'], ['land_map', 'الدروس'], ['land_plan', 'السعر'], ['land_back', 'الاسترجاع'], ['land_ask', 'الأسئلة'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
-      <p class="tip">الزر ظاهر من أول الصفحة، فالضغط عليه ما يحتاج نزول. الأقسام محسوبة من ١٣ نوفمبر، ومسألة التجربة من ١٤ نوفمبر.</p></div>` : '';
-  /* 3 · the trial */
-  const trial = `<div class="card"><h2>التجربة</h2><p class="h3" style="margin-top:0">سؤال البداية</p><div class="trio"><div><b>${ar(f('door_miss'))}</b>غلط</div><div><b>${ar(f('door_slow'))}</b>صح لكن بطيء</div><div><b>${ar(f('door_fast'))}</b>سريع</div></div>
-      <p class="h3">السؤال الأخير</p><div class="trio"><div><b>${ar(f('boss_ok'))}</b>انحل</div><div><b>${ar(f('boss_miss'))}</b>ما انحل</div><div><b>${ar(f('win_again'))}</b>أعادوا التجربة</div></div>
-      <p class="h3">في الطريق</p><div class="trio"><div><b>${ar(f('pen_show'))}</b>انكتب لهم الحل</div><div><b>${ar(f('lesson_exit'))}</b>طلعوا من النص</div><div><b>${ar(f('save_sent'))}</b>حفظوا مكانهم</div></div></div>`;
+      <p class="tip">«ضغطوا اشترك الآن»: الزر اللي يظهر بعد التجربة ويودّيهم للسعر. الأقسام محسوبة من ١٣ نوفمبر، ومسألة التجربة من ١٤ نوفمبر.</p></div>` : '';
+  /* 3 · inside the lessons: subscribers only (there is no trial lesson any more) */
+  const trial = f('lesson_start') || f('lesson_done') || f('tunnel_view') ? `<div class="card"><h2>داخل الدروس</h2><div class="trio"><div><b>${ar(f('lesson_start'))}</b>بدأوا درسًا</div><div><b>${ar(f('lesson_done'))}</b>أنهوا درسًا</div><div><b>${ar(f('lesson_exit'))}</b>طلعوا من نص درس</div></div>
+      <div class="trio" style="margin-top:8px"><div><b>${ar(f('pen_show'))}</b>انكتب لهم الحل</div><div><b>${ar(f('help_open'))}</b>فتحوا المساعدة</div><div><b>${ar(f('nav_back'))}</b>رجعوا بزر الرجوع</div></div>
+      <p class="tip">هذي أرقام المشتركين فقط. وتدخل فيها تجاربك أنت، إلا من الأجهزة اللي فتحت منها رابط «لا تحسب جوالي».</p></div>` : '';
   /* 4 · where they came from: one count (phones), under the first source each came from */
   const z = n => `<td class="n${n ? '' : ' z'}">${ar(n)}</td>`;
-  const sources = SR ? `<div class="card"><h2>من أين جاؤوا</h2><div class="tblw"><table class="tbl"><tr><th>المصدر</th><th>جوال</th><th>تحرّك</th><th>جاوب</th><th>خلّص</th><th>اشترك</th></tr>
-      ${SR.by_source.map(r => `<tr><td class="src">${esc(SRC[r.src] || r.src)}</td>${z(r.phones)}${z(r.moved)}${z(r.answered)}${z(r.finished)}${z(r.asked)}</tr>`).join('')}</table></div>
-      <p class="tip">كل جوال محسوب مرة وحدة، تحت أول مصدر جاء منه. «تحرّك»: نزل في الصفحة أو ضغط شي.</p>
-      <p class="h3">أجهزتهم</p><div class="chips">${SR.by_device.map(r => `<span>${esc(DEV[r.dev] || r.dev)} · <b>${ar(r.phones)}</b>${r.answered ? ` · جاوبوا ${ar(r.answered)}` : ''}</span>`).join('')}</div></div>`
-    : `<div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<p class="tip">الأرقام هنا تتكرر إذا نفس الجوال جاء من مصدرين. للتفصيل (مين جاوب من كل مصدر): شغّل ملف <b dir="ltr">006_stats_sources.sql</b> في Supabase مرة واحدة.</p><p class="h3">أجهزتهم</p>${chips(S.devices, DEV)}</div>`;
+  const V2 = !!(SR && SR.by_source && SR.by_source.some(r => 'ordered' in r));   // site/supabase/009_stats_sources_v2.sql has been run
+  const sources = SR ? `<div class="card"><h2>من أين جاؤوا</h2><div class="tblw"><table class="tbl"><tr><th>المصدر</th><th>جوال</th><th>تحرّك</th>${V2 ? '<th>حلّ</th><th>السعر</th><th>طلب</th>' : ''}</tr>
+      ${SR.by_source.map(r => `<tr><td class="src">${esc(SRC[r.src] || r.src)}</td>${z(r.phones)}${z(r.moved)}${V2 ? z(r.solved) + z(r.price) + z(r.ordered) : ''}</tr>`).join('')}</table></div>
+      <p class="tip">كل جوال محسوب مرة وحدة، تحت أول مصدر جاء منه. «تحرّك»: نزل في الصفحة أو ضغط شي.${V2 ? ' «حلّ»: أكمل مسألة التجربة. «السعر»: وصل لقسم السعر. «طلب»: أرسل طلب اشتراك على واتساب.' : ' لتعرف من كل مصدر كم حلّ المسألة ووصل للسعر وأرسل طلبًا: شغّل ملف <b dir="ltr">009_stats_sources_v2.sql</b> في Supabase مرة واحدة.'}</p>
+      <p class="h3">أجهزتهم</p><div class="chips">${SR.by_device.map(r => `<span>${esc(DEV[r.dev] || r.dev)} · <b>${ar(r.phones)}</b>${r.ordered ? ` · طلبوا ${ar(r.ordered)}` : ''}</span>`).join('')}</div></div>`
+    : `<div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<p class="tip">الأرقام هنا تتكرر إذا نفس الجوال جاء من مصدرين. للتفصيل (من كل مصدر كم وصل للسعر وأرسل طلبًا): شغّل ملف <b dir="ltr">009_stats_sources_v2.sql</b> في Supabase مرة واحدة.</p><p class="h3">أجهزتهم</p>${chips(S.devices, DEV)}</div>`;
   const days = S.days || [], maxD = Math.max(1, ...days.map(d => d.v));
   const daily = days.length > 1 ? `<div class="card"><h2>الزوار كل يوم</h2><div class="cols">${days.map(d => `<div title="${d.d}: ${d.v}" style="height:${100 * d.v / maxD}%"></div>`).join('')}</div>
       <p class="tip">من ${fmt(days[0].d)} إلى ${fmt(days[days.length - 1].d)} · أعلى يوم ${ar(maxD)} جوال</p></div>` : '';
