@@ -1454,7 +1454,7 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .la-pts{list-style:none;margin:auto 0 0;padding:48px 0 0}
 .la-pts li{font:300 clamp(24px,7.4vw,29px)/1.95 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
 /* «تجربة»: the long expression, the piece being asked, three answers */
-.la-sec[data-sec=try]{min-height:100svh;box-sizing:border-box}   /* while he solves, the problem has the screen to itself: no other title shows at the foot */
+.la-sec[data-sec=what]{min-height:100svh;box-sizing:border-box}   /* while he solves, the problem has the screen to itself: no other title shows at the foot */
 .la-try{margin:30px 0 0}
 .la-mon-w{text-align:center;display:flex;flex-direction:column;align-items:center}
 .la-mon-b{display:flex;align-items:center;justify-content:center;width:100%}
@@ -1529,12 +1529,12 @@ body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
   .la-logo{width:34px;height:34px;flex:none}
   .la-h1{margin:0;font-size:clamp(18px,5.4vw,21px);line-height:34px}
   .la-lede{margin:0;margin-inline-start:auto;font-size:clamp(13px,3.9vw,15px);line-height:34px;white-space:nowrap}
-  .la-sec[data-sec=try]{padding-top:30px;min-height:calc(100svh - 52px)}
+  .la-sec[data-sec=what]{padding-top:30px;min-height:calc(100svh - 52px)}
   .tun-land>.la-pts{margin:0;padding:88px 0 0}
 }
 @media (max-height:780px){.la-try{margin-top:18px}.la-ask{margin-top:12px}.la-eq{height:52px}}
-@media (max-width:1099px) and (min-height:780px){.la-sec[data-sec=try]{padding-top:54px}}   /* a tall phone: the problem sits lower, nearer the thumb */
-@media (max-width:1099px) and (max-height:600px){.la-sec[data-sec=try]{padding-top:18px}.la-sec[data-sec=try] .la-h2{font-size:26px}}
+@media (max-width:1099px) and (min-height:780px){.la-sec[data-sec=what]{padding-top:54px}}   /* a tall phone: the problem sits lower, nearer the thumb */
+@media (max-width:1099px) and (max-height:600px){.la-sec[data-sec=what]{padding-top:18px}.la-sec[data-sec=what] .la-h2{font-size:26px}}
 /* the one subscription: what it holds, in the same light lines as the first screen (owner, 14 Nov 2026, 06:09) */
 .la-incl{list-style:none;margin:26px 0 0;padding:0}
 .la-incl li{font:300 clamp(19px,5.6vw,22px)/2.05 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
@@ -1577,12 +1577,12 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
   .la-lede{margin-top:6px;font-size:clamp(22px,1.9vw,28px)}
   .la-pts{margin:0;padding-top:clamp(26px,6vh,72px)}
   .la-pts li{font-size:clamp(24px,min(2.4vw,4.5vh),40px);line-height:1.75}
-  .lt .tun-land>.la-sec[data-sec=try]{grid-column:2;grid-row:1;min-height:100svh;padding:24px 0;display:flex;flex-direction:column;justify-content:center}
-  .la-sec[data-sec=try] .la-h2{font-size:40px}
-  .lt .tun-land>.la-sec:not([data-sec=try]){display:grid;grid-template-columns:minmax(0,1fr) clamp(440px,34vw,560px);column-gap:clamp(60px,7vw,110px);align-items:start;padding:150px 0 0}
-  .la-sec:not([data-sec=try])>.la-h2{grid-column:1;grid-row:1 / span 6;font-size:clamp(46px,4.3vw,62px);line-height:1.36}
-  .la-sec:not([data-sec=try])>:not(.la-h2){grid-column:2}
-  .la-sec:not([data-sec=try])>.la-h2+*{margin-top:14px}
+  .lt .tun-land>.la-sec[data-sec=what]{grid-column:2;grid-row:1;min-height:100svh;padding:24px 0;display:flex;flex-direction:column;justify-content:center}
+  .la-sec[data-sec=what] .la-h2{font-size:40px}
+  .lt .tun-land>.la-sec:not([data-sec=what]){display:grid;grid-template-columns:minmax(0,1fr) clamp(440px,34vw,560px);column-gap:clamp(60px,7vw,110px);align-items:start;padding:150px 0 0}
+  .la-sec:not([data-sec=what])>.la-h2{grid-column:1;grid-row:1 / span 6;font-size:clamp(46px,4.3vw,62px);line-height:1.36}
+  .la-sec:not([data-sec=what])>:not(.la-h2){grid-column:2}
+  .la-sec:not([data-sec=what])>.la-h2+*{margin-top:14px}
   .la-p{font-size:21px;line-height:2}
   .la-note{font-size:16.5px}
   .la-incl{margin-top:8px}
@@ -1663,6 +1663,29 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
   .dz-stage:has(>.dz-opts) .dz-opts:not(.one) .opt{min-height:66px}
 }
 
+/* ---- sixth build (14 Nov 2026, 19:23): what it is · the free trial · what the price holds. No problem to solve, nothing beside the point ---- */
+.la-what{list-style:none;margin:30px 0 0;padding:0}
+.la-what li{font:300 clamp(19px,5.6vw,23px)/1.6 Alexandria,var(--f-display);color:#16201B;padding:13px 0;border-bottom:1px solid #E4E0D6}
+.la-what li:last-child{border-bottom:0}
+.la-steps{list-style:none;margin:26px 0 0;padding:0}
+.la-steps li{display:flex;align-items:baseline;gap:16px;padding:10px 0;font:300 clamp(18px,5.3vw,21px)/1.7 Alexandria,var(--f-display);color:#16201B}
+.la-steps b{flex:none;width:1.2em;font-weight:900;color:#1F7A5A}
+.la-perks{list-style:none;margin:26px 0 0;padding:0}
+.la-perks li{padding:15px 0;border-bottom:1px solid #E4E0D6}
+.la-perks b{display:block;font:500 clamp(18px,5.3vw,20px)/1.6 Alexandria,var(--f-display);color:#16201B}
+.la-perks span{display:block;margin-top:2px;font:300 16px/1.75 Alexandria,var(--f-display);color:#3D4A44}
+.la-buy{margin:30px 0 0;display:flex;align-items:center;justify-content:center;min-height:58px;border-radius:18px;border:1.5px solid #16201B;color:#16201B;font:500 18px/1 Alexandria,var(--f-display);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:background .2s,transform .14s}
+.la-buy:active{transform:scale(.98);background:#EDE9DF}
+.la-buy:focus-visible{outline:2px solid #16201B;outline-offset:3px}
+.la-buy+.la-note{text-align:center}
+@media (max-width:1099px){.la-sec[data-sec=what]{padding-bottom:150px}}
+@media (min-width:1100px){
+  .la-sec[data-sec=what] .la-h2{font-size:clamp(40px,3.6vw,54px);line-height:1.36}
+  .la-what li{font-size:25px;padding:16px 0}
+  .la-steps li{font-size:23px}
+  .la-perks b{font-size:22px}.la-perks span{font-size:18px}
+  .la-buy{max-width:340px}.la-buy+.la-note{text-align:right}
+}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1880,7 +1903,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794664162", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794675485", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -5093,82 +5116,68 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
      and no way on). It gets a screen of its own that says what is wrong and what to do: activate on WhatsApp, read the offer, or log out. */
   const visitor = () => lockedOut() && !sawOffer ? noAccess() : landing();
   function noAccess() {
-    const A = window.LeenaAuth, u = A.user || {}, acc = (A.access || []).find(a => a.course === TUN), failed = !!A.failed;
-    LT('no_access', { val: failed ? 'failed' : acc ? 'ended' : 'none', once: true }); enter(0);
+    const A = window.LeenaAuth, u = A.user || {}, acc = (A.access || []).find(a => a.course === TUN), failed = !!A.failed, tr = !failed && A.trial ? A.trial(TUN) : null, T = !!(tr && tr.over);   // T: a free trial account whose hour is over
+    LT('no_access', { val: failed ? 'failed' : T ? 'trial_over' : acc ? 'ended' : 'none', once: true }); enter(0);
     const w = room('tun-door tun-none'), day = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">${u.name ? 'أهلًا ' + esc(u.name) : 'دخلت إلى حسابك'}</p><i class="tun-rule"></i>
-      <h1 class="tun-h big stop">${failed ? 'ما قدرنا نقرأ<br>اشتراكك' : acc ? 'اشتراكك<br>انتهى' : 'حسابك بلا<br>اشتراك'}</h1>
-      <p class="tun-p">${failed ? 'تأكد من الإنترنت، وجرّب مرة ثانية.' : acc ? `انتهى في ${day(acc.expires)}. جدّده على واتساب، ونفتح دروسك من جديد.` : 'فعّله على واتساب، ونفتح لك الدروس.'}</p></div>`);
+      <h1 class="tun-h big stop">${failed ? 'ما قدرنا نقرأ<br>اشتراكك' : T ? 'تجربتك<br>انتهت' : acc ? 'اشتراكك<br>انتهى' : 'حسابك بلا<br>اشتراك'}</h1>
+      <p class="tun-p">${failed ? 'تأكد من الإنترنت، وجرّب مرة ثانية.' : T ? `كمّل من حيث وقفت: شهر كامل بـ${ar(PRICE)} ريال، وتسترجع مبلغك خلال ${ar(BACK)} أيام بدون سبب.` : acc ? `انتهى في ${day(acc.expires)}. جدّده على واتساب، ونفتح دروسك من جديد.` : 'فعّله على واتساب، ونفتح لك الدروس.'}</p></div>`);
     const act = el('div', 'tun-act');
     if (failed) { const b = el('button', 'tun-go', 'جرّب مرة ثانية'); b.onclick = () => { b.disabled = true; b.textContent = 'لحظة…'; A.reload().catch(() => {}).then(() => home()); }; act.appendChild(b); }
+    else if (T) { const b = el('button', 'tun-go', 'اشترك الآن'); b.onclick = () => { LT('plan_pick', { val: 'trial_over' }); LT('order_open'); sawOffer = true; order(0); }; act.appendChild(b); }
     else { const b = el('a', 'tun-go', acc ? 'جدّد اشتراكي على واتساب' : 'فعّل اشتراكي على واتساب'); b.target = '_blank'; b.rel = 'noopener';
       b.href = waLink(`السلام عليكم، حسابي في أكاديمية لينا: ${u.username || u.phone || ''}\nأبغى ${acc ? 'أجدّد' : 'أفعّل'} اشتراكي.`); b.onclick = () => LT('wa_click', { val: 'noaccess' }); act.appendChild(b); }
     const see = el('button', 'tun-ghost', 'تفاصيل الاشتراك'); see.onclick = () => { sawOffer = true; landing(); }; act.appendChild(see);
     const out = el('button', 'tun-link', 'تسجيل الخروج'); out.onclick = () => A.logout(); act.appendChild(out);
     w.appendChild(act);
   }
-  function landing() {   // fifth build, 14 Nov 2026: the name and four words, a problem solved by the visitor on the page, then the plans, the bill, WhatsApp.
-    // The problem is on the first screen (owner, 14 Nov 10:12: of 63 phones that saw the page about 14 scrolled; the old first screen gave them nothing to do).
-    // One button, and it follows him: hidden at the problem (the answers are the buttons) → «اشترك الآن» → the price → «اشترك على واتساب»
+  function landing() {   // sixth build, 14 Nov 2026, 19:23 (owner): «everything clear, nothing extra, nothing out of context. Sharp.»
+    // Visitors come from films with different ideas, so the page says in order: what this is · how to try it free · what 249 buys · questions.
+    // The problem to solve is gone. One button follows him, «جرّب مجانًا»: he leaves a name and a number, the owner sends a trial account
+    // (every lesson open, one hour from the first login: site/supabase/011_trial_hour.sql). «اشترك الآن» sits under the list of what the price holds.
     LT('land_view', { once: true });
     if (lockedOut() && sawOffer) enter(1, () => { sawOffer = false; noAccess(); }); else enter(0);   // opened from «تفاصيل الاشتراك»: back returns to the account's screen
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
-    const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
-      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اضغط «اشترك الآن» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
-      ['كيف تكون ساعة المعلّم؟', 'حصة فردية، نرتّب موعدها معك على واتساب. وبعدها يتابع تقدّمك.'],
+    const WHAT = [`${N} درسًا قصيرًا، من الأساس.`, 'تحلّ بنفسك، بأرقام جديدة كل مرة.', 'تعلق؟ نكتب لك الحل خطوة خطوة.', 'ومعك معلّم سعودي يتابعك.'];
+    const STEPS = ['اكتب اسمك ورقم جوالك.', 'نرسل لك حساب تجربة على واتساب.', 'الدروس كلها مفتوحة لك ساعة.'];
+    const PERKS = [['كل دروس الكمّي', `${N} درسًا، من الأسس والكسور إلى الهندسة والاحتمالات.`], ['تدريب مفتوح', 'أرقام جديدة في كل مرة، فتفهم الفكرة ولا تحفظ الجواب.'],
+      ['الحل مكتوب لك', 'إذا علقت في مسألة، نكتب لك حلها خطوة خطوة.'], ['اختبار بعد كل درس', 'تعرف مستواك قبل أن تنتقل.'],
+      ['ساعة مع معلّم خاص', 'حصة فردية، نرتّب موعدها معك على واتساب.'], ['متابعة من المعلّم', 'يتابع تقدّمك بعد الحصة.'],
+      ['استرجاع كامل', `خلال ${ar(BACK)} أيام من الدفع، بدون أي سبب.`]];
+    const FAQ = [['كيف التجربة المجانية؟', 'اضغط «جرّب مجانًا» واكتب اسمك ورقمك. نرسل لك حساب تجربة على واتساب: كل الدروس مفتوحة ساعة كاملة، تبدأ من أول دخول.'],
+      ['كيف أشترك؟', 'اضغط «اشترك الآن» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
+      ['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
+      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'],
       ['كيف أسترجع مبلغي؟', `راسلنا على واتساب خلال ${ar(BACK)} أيام من الدفع، ونعيده كاملًا.`]];
-    const PTS = ['تأسيس', 'تدريب', 'قياس مستوى', 'دعم معلّمين سعوديين'];   // four of the mountain film's points, a word or two each (owner, 14 Nov 02:18: «a lot of words. Be elegant.»)
     w.insertAdjacentHTML('beforeend',
       `<header class="la-hero"><svg class="la-logo" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="110" fill="#16201B"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/><path d="M-62 10 C-62 92 62 92 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/></svg>
         <h1 class="la-h1">أكاديمية لينا</h1><p class="la-lede">كمّي القدرات.</p>
         </header>
-      <section class="la-sec" data-sec="try"><h2 class="la-h2">${two('تجربة.', 'حلّ هذا بنفسك.')}</h2>
-        <div class="la-try"></div></section>
-      <ul class="la-pts">${PTS.map(t => `<li>${t}</li>`).join('')}</ul>
-      <section class="la-sec" data-sec="how"><h2 class="la-h2">${two('حفظت الإجابة،', 'فتغيّر الرقم.')}</h2>
-        <p class="la-p">لهذا لا نعطيك إجابات تحفظها. تتدرّب على الفكرة بأرقام جديدة في كل مرة، حتى تصير لك.</p></section>
-      <section class="la-sec" data-sec="map"><h2 class="la-h2">${two('الكمّي كاملًا،', `في ${N} درسًا.`)}</h2>
-        <p class="la-p">من قوانين الأسس والكسور والنِّسب، إلى الهندسة والاحتمالات.<br>كل درس من ${ar(10)} إلى ${ar(20)} دقيقة.</p></section>
-      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('شهر كامل،', `بـ${ar(PRICE)} ريال.`)}</h2>
-        <ul class="la-incl"><li>الدروس كلها والتدريب المفتوح</li><li>ساعة مع معلّم خاص</li><li>ومتابعة منه لتقدّمك</li></ul>
-        <p class="la-note">دفعة واحدة، بلا تجديد تلقائي.</p></section>
-      <section class="la-sec" data-sec="back"><h2 class="la-h2">${two('ما أعجبك؟', 'استرجع مبلغك.')}</h2>
-        <p class="la-p">خلال ${ar(BACK)} أيام من الدفع، بدون أي سبب.</p>
-        <p class="la-note"><a href="refund.html">سياسة الاسترجاع</a></p></section>
+      <section class="la-sec" data-sec="what"><h2 class="la-h2">${two('كمّي القدرات كاملًا،', 'من جوالك.')}</h2>
+        <ul class="la-what">${WHAT.map(t => `<li>${t}</li>`).join('')}</ul></section>
+      <section class="la-sec" data-sec="trial"><h2 class="la-h2">${two('جرّب أولًا،', 'مجانًا.')}</h2>
+        <ol class="la-steps">${STEPS.map((t, i) => `<li><b>${ar(i + 1)}</b><span>${t}</span></li>`).join('')}</ol></section>
+      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('الاشتراك شهر،', `بـ${ar(PRICE)} ريال.`)}</h2>
+        <ul class="la-perks">${PERKS.map(([a2, b2]) => `<li><b>${a2}</b><span>${b2}</span></li>`).join('')}</ul>
+        <a class="la-buy" href="#" role="button">اشترك الآن</a>
+        <p class="la-note">دفعة واحدة، بلا تجديد تلقائي. <a href="refund.html">سياسة الاسترجاع</a></p></section>
       <section class="la-sec" data-sec="ask"><h2 class="la-h2">قد تسأل.</h2>
         <div class="la-faq">${FAQ.map(([q, a2]) => `<details class="la-fq"><summary>${q}</summary><p>${a2}</p></details>`).join('')}</div></section>
       <section class="la-sec" data-sec="talk"><h2 class="la-h2">${two('سؤال آخر؟', 'كلّمنا.')}</h2>
         <a class="la-talk" target="_blank" rel="noopener" href="${waLink('السلام عليكم، عندي سؤال عن أكاديمية لينا.')}">كلّمنا على واتساب</a></section>
       <footer class="la-foot" data-sec="end"></footer>`);
-    /* one subscription, so nothing to choose: the button's last step is the order itself, sent on WhatsApp */
-    let solved = false, at = '';
-    const plans = w.querySelector('[data-sec=plan]'), trySec = w.querySelector('[data-sec=try]');
-    const dock = el('div', 'la-dock off'), go = el('a', 'tun-go ld-go show', 'اشترك الآن'), micro = el('p', 'la-micro');
+    /* the button that follows him: the free trial, the same words everywhere */
+    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'جرّب مجانًا'), micro = el('p', 'la-micro', 'حساب تجربة: كل الدروس، ساعة كاملة');
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
-    /* where he is: 'try' he is at the problem and has not solved it · 'plans' after it · 'send' the price is on the screen (or behind him) */
-    const stage = () => plans.getBoundingClientRect().top < innerHeight * .6 ? 'send' : solved || trySec.getBoundingClientRect().bottom <= innerHeight * .5 ? 'plans' : 'try';
-    const draw = () => {
-      at = stage(); dock.classList.toggle('off', at === 'try');   // at the problem the answers are the only buttons
-      go.textContent = 'اشترك الآن';
-      micro.textContent = at === 'send' ? `تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب` : `${ar(PRICE)} ريال لشهر كامل`;
-      go.href = '#';
-    };
-    /* one press, wherever he is on the page: the form (owner, 14 Nov 14:38: it used to scroll to the price first and want a second press) */
-    go.addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); LT('order_open'); order(scrollY); });
-    /* the four words: beside the name on a computer; on a phone the name is one thin line over the problem, and the words come after it */
-    { const pts = w.querySelector('.la-pts'), hero = w.querySelector('.la-hero'), wide = matchMedia('(min-width:1100px)');
-      const place = () => { if (!document.body.contains(w)) return wide.removeEventListener('change', place); if (wide.matches) hero.appendChild(pts); else trySec.after(pts); };
-      if (wide.matches) hero.appendChild(pts); wide.addEventListener('change', place); }
-    tryIt(w.querySelector('.la-try'), () => { solved = true; draw(); });
-    draw();
+    go.addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'trial' }); LT('trial_open'); order(scrollY, 'trial'); });
+    w.querySelector('.la-buy').addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); LT('order_open'); order(scrollY); });
     if (wantLogin && window.LeenaAuth) { const A = window.LeenaAuth; wantLogin = false; A.whenReady(() => { if (!A.user && !document.querySelector('.modal.acct')) A.openLogin('user'); }); }
     account(w, 'tun-link la-acc-top');   // shown on a computer only (style.css): no stray thumbs there, and a subscriber should not have to scroll to the end to log in
     account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
-    /* how far down do they get? one event per section, the first time a third of it is on screen */
+    /* how far down do they get? one event per section, the first time a fifth of it is on screen */
     let saw = false;
     const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll);
-      if (stage() !== at) draw();
       if (!saw && scrollY > innerHeight * 0.6) { saw = true; LT('land_scroll'); } };   // he left the first screen
     addEventListener('scroll', onScroll, { passive: true });
     if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { LT('land_' + e.target.dataset.sec); io.unobserve(e.target); } }), { threshold: .2 });
@@ -5307,15 +5316,16 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- the order: first name, family name (if he likes), mobile → the leads table; the owner sees it under «المهتمون» and calls him ---------- */
-  function order(fromY) {
+  function order(fromY, kind) {   // kind 'trial': he asks for the free trial account · otherwise: he orders the subscription. The same three boxes
+    const T = kind === 'trial';
     enter(lockedOut() && sawOffer ? 2 : 1, () => { landing(); const to = () => scrollTo(0, fromY || 0); to(); setTimeout(to, 120); });   // back: the page, where he left it
     const w = room('tun-door jn tun-lead tun-order', goBack, 'رجوع');
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">اشترك الآن</h1><p class="tun-p">اكتب اسمك ورقمك، ونتواصل معك.</p></div>
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">${T ? 'جرّب مجانًا' : 'اشترك الآن'}</h1><p class="tun-p">${T ? 'اكتب اسمك ورقمك، ونرسل لك حساب التجربة على واتساب.' : 'اكتب اسمك ورقمك، ونتواصل معك.'}</p></div>
       <form class="jn-form" novalidate><input id="or-first" class="jn-in" type="text" autocomplete="given-name" maxlength="20" placeholder="الاسم الأول" aria-label="الاسم الأول">
       <input id="or-last" class="jn-in" type="text" autocomplete="family-name" maxlength="18" placeholder="اسم العائلة (اختياري)" aria-label="اسم العائلة، اختياري">
       <label class="jn-phone"><span>+966</span><input id="or-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
       <p class="jn-err" hidden></p><button class="tun-go" type="submit">أرسل</button></form>
-      <p class="jn-small">اشتراك شهر: ${ar(PRICE)} ريال. تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب.<br>نستخدم رقمك للتواصل معك فقط.</p>`);
+      <p class="jn-small">${T ? 'كل الدروس مفتوحة لك ساعة كاملة، تبدأ من أول دخول. بدون دفع.' : `اشتراك شهر: ${ar(PRICE)} ريال. تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب.`}<br>نستخدم رقمك للتواصل معك فقط.</p>`);
     const f = w.querySelector('form'), fn = w.querySelector('#or-first'), ln = w.querySelector('#or-last'), ph = w.querySelector('#or-phone'), err = w.querySelector('.jn-err'), go = f.querySelector('.tun-go');
     const bad = (m, at) => { err.textContent = m; err.hidden = false; at.focus(); };
     f.onsubmit = async e => {
@@ -5324,12 +5334,13 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       if (a.length < 2) return bad('اكتب اسمك الأول', fn);
       if (!/^5\d{8}$/.test(d)) return bad('اكتب رقم جوال صحيح يبدأ بـ ٥', ph);
       go.disabled = true; go.textContent = 'نرسل…';
-      const ok = await sendLead((a + (b ? ' ' + b : '')).slice(0, 40), d);
+      const ok = await sendLead((a + (b ? ' ' + b : '')).slice(0, 40), d, T ? '|trial' : '');
       if (!ok) { go.disabled = false; go.textContent = 'أرسل'; err.textContent = 'ما قدرنا نرسل طلبك. جرّب مرة ثانية.'; err.hidden = false; return; }
       try { localStorage.setItem('leena-lead', '1'); } catch (x) {}
-      LT('order_wa', { val: `m1=${PRICE}` }); LT('lead_sent');   // «order_wa» keeps its old name so the numbers page and its SQL go on counting orders
+      if (T) LT('trial_sent'); else LT('order_wa', { val: `m1=${PRICE}` });   // «order_wa» keeps its old name so the numbers page and its SQL go on counting orders
+      LT('lead_sent');
       const w2 = room('tun-door jn tun-lead tun-order', goBack, 'رجوع');
-      w2.insertAdjacentHTML('beforeend', `<div class="jn-ok">${TICK}</div><div class="tun-txt"><h1 class="tun-h stop">وصلنا طلبك</h1><p class="tun-p">${esc(a)}، واحد من فريق أكاديمية لينا<br>بيتواصل معك قريبًا.</p></div>`);
+      w2.insertAdjacentHTML('beforeend', `<div class="jn-ok">${TICK}</div><div class="tun-txt"><h1 class="tun-h stop">وصلنا طلبك</h1><p class="tun-p">${esc(a)}، ${T ? 'بنرسل لك حساب التجربة<br>على واتساب قريبًا.' : 'واحد من فريق أكاديمية لينا<br>بيتواصل معك قريبًا.'}</p></div>`);
       const bk = el('button', 'tun-go', 'رجوع إلى الصفحة'); bk.onclick = goBack; w2.appendChild(bk);
     };
   }
@@ -5426,12 +5437,18 @@ window.__leenaAuth = function () {
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const toast = msg => { document.querySelectorAll('.toast').forEach(t => t.remove()); const t = el('div', 'toast', esc(msg)); document.body.appendChild(t); setTimeout(() => t.remove(), 3000); };
   const fmtDate = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
+  const mins = ms => { const m = Math.max(1, Math.round(ms / 6e4)); return m >= 60 ? 'ساعة كاملة' : m === 1 ? 'دقيقة' : m === 2 ? 'دقيقتان' : m <= 10 ? ar(m) + ' دقائق' : ar(m) + ' دقيقة'; };
   const today = () => new Date(Date.now() + 3 * 36e5).toISOString().slice(0, 10);   // the day in Saudi time, same as the database
   const A = window.LeenaAuth = { user: null, access: [], plan: null, ready: false, failed: false, openLogin, showAccount, logout, _sb: sb, reload: () => load(),
-    has: id => A.access.some(a => a.course === id && a.expires >= today()),
-    openAll: id => A.access.some(a => a.course === id && a.open_all === true && a.expires >= today()),   // the owner opened every lesson for this account (admin page)
+    has: id => A.access.some(a => a.course === id && live(a)),
+    openAll: id => A.access.some(a => a.course === id && a.open_all === true && live(a)),   // the owner opened every lesson for this account (admin page)
     whenReady: fn => { if (A.ready) fn(); else waiting.push(fn); } };
   const waiting = [];
+  /* a free trial account (site/supabase/011_trial_hour.sql): every lesson, for trial_min minutes from the first login. trial_until: when it ends */
+  const isTrial = a => a.trial_min != null, trialLeft = a => a.trial_until ? Date.parse(a.trial_until) - Date.now() : 0;
+  const live = a => a.expires >= today() && (!isTrial(a) || trialLeft(a) > 0);
+  A.trial = id => { const a = A.access.find(x => x.course === id && isTrial(x)); return a ? { min: a.trial_min, left: Math.max(0, trialLeft(a)), over: !live(a) } : null; };
+  let trialTimer = 0;
 
   /* ---------- open a course with its key ---------- */
   const b64 = s => Uint8Array.from(atob(s.trim()), c => c.charCodeAt(0));
@@ -5455,9 +5472,19 @@ window.__leenaAuth = function () {
     A.user = { id: user.id, username: (st.data && st.data.username) || String(user.email || user.phone || '').split('@')[0], name: (st.data && st.data.name) || '',
                phone: (st.data && st.data.phone) || (user.phone || '') };
     A.access = acc.data || []; A.failed = !!acc.error;   // could not read his subscription: say so, do not call it «no subscription»
+    /* a trial account's first login: the database starts the hour, then the key is given. Asked once per load */
+    let ks = keys.data || [];
+    if (A.access.some(a => isTrial(a) && !a.trial_until && a.expires >= today())) {
+      try { const r = await sb.rpc('trial_start'); if (r && r.data) { A.trialNew = true;
+        const [acc2, keys2] = await Promise.all([sb.from('access').select('*').eq('user_id', user.id), sb.from('course_keys').select('course,key')]);
+        if (acc2.data) A.access = acc2.data; ks = keys2.data || ks; } } catch (e) { console.warn('trial', e); }
+    }
+    /* when the hour ends the lessons close: the page starts again and says so (road.js noAccess) */
+    clearTimeout(trialTimer);
+    { const left = Math.min(...A.access.filter(a => isTrial(a) && live(a)).map(trialLeft)); if (isFinite(left)) trialTimer = setTimeout(() => location.reload(), Math.min(left + 800, 2147e6)); }
     if (CFG.pay) { try { const r = await sb.rpc('my_plan'); A.plan = r.data || null; } catch (e) { A.plan = null; } }
     let opened = 0;
-    for (const k of keys.data || []) { if (!C[k.course]) continue; try { await unlock(k.course, k.key); opened++; } catch (e) { console.warn('unlock failed', k.course, e); } }
+    for (const k of ks) { if (!C[k.course]) continue; try { await unlock(k.course, k.key); opened++; } catch (e) { console.warn('unlock failed', k.course, e); } }
     return opened;
   }
   async function start() {
@@ -5493,14 +5520,15 @@ window.__leenaAuth = function () {
       if (error) { err.textContent = /invalid/i.test(error.message) ? 'اسم المستخدم أو كلمة المرور غير صحيحة.' : 'ما قدرنا ندخّلك الحين. تأكد من الإنترنت، وجرّب مرة ثانية.'; err.hidden = false; go.disabled = false; go.querySelector('span').textContent = 'دخول'; return; }
       go.querySelector('span').textContent = 'نفتح دروسك…';
       try { await load(); } catch (e2) { console.warn(e2); }
-      m.remove(); toast(A.access.some(a => a.expires >= today()) ? `أهلًا ${A.user.name || A.user.username}، دروسك مفتوحة` : 'دخلت، بس ما فيه اشتراك فعّال في حسابك');
+      m.remove(); toast(A.access.some(a => isTrial(a) && live(a)) ? `أهلًا ${A.user.name || A.user.username}، تجربتك المجانية ${A.trialNew ? 'بدأت' : 'مفتوحة'}: ${mins(Math.min(...A.access.filter(a => isTrial(a) && live(a)).map(trialLeft)))}`
+        : A.access.some(live) ? `أهلًا ${A.user.name || A.user.username}، دروسك مفتوحة` : 'دخلت، بس ما فيه اشتراك فعّال في حسابك');
       window.Academy.home();
     };
   }
   function showAccount() {
     if (!A.user) return openLogin();
     const names = { 'qudurat-quant': 'القدرات: الكمّي' };
-    const rows = A.access.length ? A.access.map(a => { const on = a.expires >= today(); return `<li class="${on ? 'on' : 'off'}"><b>${esc(names[a.course] || a.course)}</b><small>${on ? 'مفتوحة حتى ' : 'انتهت في '}${fmtDate(a.expires)}</small></li>`; }).join('') : '<li class="off"><b>ما فيه اشتراك في حسابك</b></li>';
+    const rows = A.access.length ? A.access.map(a => { const on = live(a); return `<li class="${on ? 'on' : 'off'}"><b>${esc(names[a.course] || a.course)}</b><small>${isTrial(a) ? (on ? 'تجربة مجانية · باقي ' + mins(trialLeft(a)) : 'انتهت التجربة المجانية') : (on ? 'مفتوحة حتى ' : 'انتهت في ') + fmtDate(a.expires)}</small></li>`; }).join('') : '<li class="off"><b>ما فيه اشتراك في حسابك</b></li>';
     const ending = A.access.find(a => a.course === 'qudurat-quant'), soon = !ending || ending.expires < new Date(Date.now() + 14 * 864e5).toISOString().slice(0, 10);
     const who = A.user.phone ? `<bdi dir="ltr">+${esc(A.user.phone)}</bdi>` : `<bdi dir="ltr">${esc(A.user.username)}</bdi>`;
     const { m, box } = modal(`<h2>حسابي</h2><p class="acct-sub">${esc(A.user.name || '')} · ${who}</p><ul class="acct-list">${rows}</ul>

@@ -160,7 +160,7 @@ function draw() {
 /* ---------- statistics: how many came and what they did ---------- */
 let statsDays = 'd0';
 const PATHS = [
-  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_how', 'صفحة الإعلان: وصلوا «حفظت الإجابة»'], ['land_map', 'صفحة الإعلان: وصلوا الدروس'], ['land_try', 'وصلوا لمسألة التجربة'], ['try_start', 'بدأوا حل المسألة'], ['try_miss', 'غلطوا في خطوة من المسألة'], ['try_done', 'أكملوا المسألة'], ['plan_pick', 'ضغطوا «اشترك الآن»'], ['land_back', 'وصلوا لقسم الاسترجاع'], ['order_wa', 'أرسلوا طلب الاشتراك'], ['land_plan', 'صفحة الإعلان: وصلوا السعر'], ['land_ask', 'صفحة الإعلان: وصلوا الأسئلة'], ['land_faq', 'صفحة الإعلان: فتحوا سؤالًا'], ['land_end', 'صفحة الإعلان: وصلوا آخرها'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
+  ['🎓 الطريق (دورة القدرات)', [['home', 'فتحوا الموقع'], ['land_view', 'شافوا صفحة الإعلان'], ['land_scroll', 'نزلوا تحت في صفحة الإعلان'], ['land_how', 'صفحة الإعلان: وصلوا «حفظت الإجابة»'], ['land_map', 'صفحة الإعلان: وصلوا الدروس'], ['trial_open', 'ضغطوا «جرّب مجانًا»'], ['trial_sent', 'أرسلوا طلب التجربة المجانية'], ['land_trial', 'صفحة الموقع: وصلوا «جرّب أولًا»'], ['land_try', 'وصلوا لمسألة التجربة (قديم)'], ['try_start', 'بدأوا حل المسألة'], ['try_miss', 'غلطوا في خطوة من المسألة'], ['try_done', 'أكملوا المسألة'], ['plan_pick', 'ضغطوا «اشترك الآن»'], ['land_back', 'وصلوا لقسم الاسترجاع'], ['order_wa', 'أرسلوا طلب الاشتراك'], ['land_plan', 'صفحة الإعلان: وصلوا السعر'], ['land_ask', 'صفحة الإعلان: وصلوا الأسئلة'], ['land_faq', 'صفحة الإعلان: فتحوا سؤالًا'], ['land_end', 'صفحة الإعلان: وصلوا آخرها'], ['land_go', 'دخلوا الدرس من صفحة الإعلان'], ['direct_lesson', 'دخلوا من رابط الدرس المباشر'], ['tunnel_enter', 'ضغطوا «ادخل»'], ['lesson_start', 'بدأوا الدرس'], ['first_answer', 'جاوبوا أول سؤال'], ['drill_level', 'خلّصوا فكرة واحدة على الأقل'],
     ['save_view', 'وصلوا «احفظ مكانك» (نص الطريق)'], ['save_sent', 'حفظوا مكانهم (تركوا رقمهم)'], ['boss_ok', 'حلّوا السؤال الأخير'], ['part_done', 'خلّصوا الجزء الأول'], ['win_view', 'شافوا شاشة الفوز والسعر'], ['gate_join', 'ضغطوا «اشترك»'], ['lead_view', 'فتحوا نموذج الاشتراك'], ['lead_sent', 'أرسلوا طلب الاشتراك'], ['gate_wa', 'ضغطوا واتساب']]],
   ['🔑 المشتركين', [['login_open', 'فتحوا نافذة الدخول'], ['login_ok', 'دخلوا بحساب مشترك'], ['tunnel_view', 'فتحوا قائمة الدروس'], ['lesson_done', 'خلّصوا درس واختباره'], ['tunnel_next', 'انتقلوا للدرس اللي بعده'], ['open_all', 'فتحوا كل الدروس (رابط)'], ['no_access', 'دخلوا بحساب بلا اشتراك'], ['road_locked', 'ضغطوا درسًا مقفولًا'], ['nav_back', 'استخدموا زر الرجوع'], ['open_end', 'أنهوا التدريب المفتوح']]],
 ];
@@ -173,7 +173,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794664162252;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794675485646;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -196,25 +196,25 @@ async function stats() {
      WhatsApp. These cards count that, and nothing of the old trial. */
   const WF = S.wa_from || {}, orders = f('order_wa'), talk = WF.talk || 0;
   /* 1 · how was it */
-  const moved = SR ? SR.moved : Math.max(f('land_scroll'), f('try_start'), f('plan_pick'), f('tunnel_enter'), orders);
+  const moved = SR ? SR.moved : Math.max(f('land_scroll'), f('trial_open'), f('plan_pick'), f('tunnel_enter'), orders);
   const head = `<div class="card"><div class="big4">
-      <div class="hi"><b>${ar(orders)}</b><span>أرسلوا طلب اشتراك</span></div><div><b>${ar(f('plan_pick'))}</b><span>ضغطوا «اشترك الآن»</span></div>
-      <div><b>${ar(f('try_done'))}</b><span>حلّوا مسألة التجربة</span></div><div><b>${ar(talk)}</b><span>كلّمونا على واتساب</span></div></div>
+      <div class="hi"><b>${ar(f('trial_sent'))}</b><span>طلبوا التجربة المجانية</span></div><div><b>${ar(orders)}</b><span>أرسلوا طلب اشتراك</span></div>
+      <div><b>${ar(f('trial_open'))}</b><span>ضغطوا «جرّب مجانًا»</span></div><div><b>${ar(talk)}</b><span>كلّمونا على واتساب</span></div></div>
       <p class="tip">${ar(V)} جوال فتح الموقع، منهم ${ar(S.new || 0)} لأول مرة. ${ar(Math.max(0, V - moved))} طلعوا بدون ما يسوّون شي (${ar(pct(Math.max(0, V - moved), V))}٪). متوسط البقاء ${stay(S.minutes)}.</p></div>`;
   /* 2 · where we lose them: each step against the one before it. Four steps every buyer passes, in order */
-  const past = Math.max(f('land_scroll'), f('land_how'), f('land_plan'));
+  /* since 14 Nov 19:23 the way is: open the page → press «جرّب مجانًا» (it is on the first screen) → send the form */
   const ST = [[V || f('visit'), 'فتحوا الموقع'],   // the same count as the line at the top (a phone whose visit began before the window has events but no «visit» in it)
-    [past, 'نزلوا عن الشاشة الأولى'], [f('land_plan'), 'وصلوا للسعر'], [orders, 'أرسلوا طلب اشتراك']];
+    [f('trial_open'), 'ضغطوا «جرّب مجانًا»'], [f('trial_sent'), 'أرسلوا طلب التجربة']];
   let worst = -1, low = 101; ST.forEach(([v], i) => { if (i && ST[i - 1][0] >= 20) {   // under 20 phones a percentage is luck, not a loss (14 Nov: 1 order of 10 was marked the biggest loss, over 62 of 75 leaving the first screen)
      const p = pct(v, ST[i - 1][0]); if (p < low) { low = p; worst = i; } } });
   const steps = `<div class="card"><h2>وين نخسرهم؟</h2><div class="steps">${ST.map(([v, t], i) => { const prev = i ? ST[i - 1][0] : 0, p = i ? pct(v, prev) : 100;
       return `<div class="step${i === worst ? ' worst' : ''}"><span class="t">${t}</span><span class="v">${ar(v)}</span>${i ? `<span class="of">${prev ? `${ar(p)}٪ من اللي قبلها${i === worst ? ' · أكبر خسارة' : ''}` : '—'}</span>` : ''}<i><b style="width:${Math.min(100, p)}%"></b></i></div>`; }).join('')}</div>
       <p class="tip">كل خطوة محسوبة من الخطوة اللي قبلها، مو من الكل. «أكبر خسارة» تتحدد فقط للخطوات اللي وصلها ٢٠ جوال أو أكثر.</p></div>`;
   /* 2b · the ad landing page (docs/LANDING_PLAN.md): how many saw it, pressed its button, and how far down they read */
-  const LV = f('land_view'), landCard = LV ? `<div class="card"><h2>صفحة الاشتراك</h2><div class="trio"><div><b>${ar(LV)}</b>شافوها</div><div><b>${ar(f('plan_pick'))}</b>ضغطوا «اشترك الآن» (${ar(pct(f('plan_pick'), LV))}٪)</div><div><b>${ar(f('order_wa'))}</b>أرسلوا طلب الاشتراك</div></div>
-      <p class="h3">مسألة التجربة</p><div class="trio"><div><b>${ar(f('land_try'))}</b>وصلوا لها</div><div><b>${ar(f('try_start'))}</b>بدأوا الحل (${ar(pct(f('try_start'), LV))}٪)</div><div><b>${ar(f('try_done'))}</b>أكملوها (${ar(pct(f('try_done'), f('try_start')))}٪ ممن بدأ)</div></div>
-      <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_try', 'التجربة'], ['land_how', 'الفكرة'], ['land_map', 'الدروس'], ['land_plan', 'السعر'], ['land_back', 'الاسترجاع'], ['land_ask', 'الأسئلة'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
-      <p class="tip">«ضغطوا اشترك الآن»: الزر اللي يظهر بعد التجربة ويودّيهم للسعر. الأقسام محسوبة من ١٣ نوفمبر، ومسألة التجربة من ١٤ نوفمبر.</p></div>` : '';
+  const LV = f('land_view'), landCard = LV ? `<div class="card"><h2>صفحة الموقع</h2><div class="trio"><div><b>${ar(LV)}</b>شافوها</div><div><b>${ar(f('trial_open'))}</b>ضغطوا «جرّب مجانًا» (${ar(pct(f('trial_open'), LV))}٪)</div><div><b>${ar(f('trial_sent'))}</b>أرسلوا طلب التجربة</div></div>
+      <p class="h3">الاشتراك</p><div class="trio"><div><b>${ar(f('land_plan'))}</b>وصلوا للسعر</div><div><b>${ar(f('plan_pick'))}</b>ضغطوا «اشترك الآن»</div><div><b>${ar(orders)}</b>أرسلوا طلب الاشتراك</div></div>
+      <p class="h3">إلى وين نزلوا</p><div class="bars">${[['land_trial', 'التجربة المجانية'], ['land_plan', 'السعر'], ['land_ask', 'الأسئلة'], ['land_talk', 'كلّمنا'], ['land_end', 'آخر الصفحة']].map(([k, t]) => `<div class="bar"><span>${t}</span><span>${ar(f(k))} · ${ar(pct(f(k), LV))}٪</span></div>`).join('')}</div>
+      <p class="tip">الصفحة تغيّرت يوم ١٤ نوفمبر المساء: انشالت مسألة التجربة، وصار الزر «جرّب مجانًا». أرقام التجربة المجانية تبدأ من وقتها.</p></div>` : '';
   /* 3 · inside the lessons: subscribers only (there is no trial lesson any more) */
   const trial = f('lesson_start') || f('lesson_done') || f('tunnel_view') ? `<div class="card"><h2>داخل الدروس</h2><div class="trio"><div><b>${ar(f('lesson_start'))}</b>بدأوا درسًا</div><div><b>${ar(f('lesson_done'))}</b>أنهوا درسًا</div><div><b>${ar(f('lesson_exit'))}</b>طلعوا من نص درس</div></div>
       <div class="trio" style="margin-top:8px"><div><b>${ar(f('pen_show'))}</b>انكتب لهم الحل</div><div><b>${ar(f('help_open'))}</b>فتحوا المساعدة</div><div><b>${ar(f('nav_back'))}</b>رجعوا بزر الرجوع</div></div>
@@ -222,9 +222,10 @@ async function stats() {
   /* 4 · where they came from: one count (phones), under the first source each came from */
   const z = n => `<td class="n${n ? '' : ' z'}">${ar(n)}</td>`;
   const V2 = !!(SR && SR.by_source && SR.by_source.some(r => 'ordered' in r));   // site/supabase/009_stats_sources_v2.sql has been run
-  const sources = SR ? `<div class="card"><h2>من أين جاؤوا</h2><div class="tblw"><table class="tbl"><tr><th>المصدر</th><th>جوال</th><th>تحرّك</th>${V2 ? '<th>حلّ</th><th>السعر</th><th>طلب</th>' : ''}</tr>
-      ${SR.by_source.map(r => `<tr><td class="src">${esc(SRC[r.src] || r.src)}</td>${z(r.phones)}${z(r.moved)}${V2 ? z(r.solved) + z(r.price) + z(r.ordered) : ''}</tr>`).join('')}</table></div>
-      <p class="tip">كل جوال محسوب مرة وحدة، تحت أول مصدر جاء منه. «تحرّك»: نزل في الصفحة أو ضغط شي.${V2 ? ' «حلّ»: أكمل مسألة التجربة. «السعر»: وصل لقسم السعر. «طلب»: أرسل طلب اشتراك على واتساب.' : ' لتعرف من كل مصدر كم حلّ المسألة ووصل للسعر وأرسل طلبًا: شغّل ملف <b dir="ltr">009_stats_sources_v2.sql</b> في Supabase مرة واحدة.'}</p>
+  const V3 = !!(SR && SR.by_source && SR.by_source.some(r => 'trial' in r));     // site/supabase/011_trial_hour.sql has been run
+  const sources = SR ? `<div class="card"><h2>من أين جاؤوا</h2><div class="tblw"><table class="tbl"><tr><th>المصدر</th><th>جوال</th><th>تحرّك</th>${V3 ? '<th>تجربة</th>' : ''}${V2 ? '<th>السعر</th><th>اشتراك</th>' : ''}</tr>
+      ${SR.by_source.map(r => `<tr><td class="src">${esc(SRC[r.src] || r.src)}</td>${z(r.phones)}${z(r.moved)}${V3 ? z(r.trial) : ''}${V2 ? z(r.price) + z(r.ordered) : ''}</tr>`).join('')}</table></div>
+      <p class="tip">كل جوال محسوب مرة وحدة، تحت أول مصدر جاء منه. «تحرّك»: نزل في الصفحة أو ضغط شي.${V3 ? ' «تجربة»: أرسل طلب التجربة المجانية.' : ' لتعرف من كل مصدر كم طلب التجربة المجانية: شغّل ملف <b dir="ltr">011_trial_hour.sql</b> في Supabase مرة واحدة.'}${V2 ? ' «السعر»: وصل لقسم السعر. «اشتراك»: أرسل طلب اشتراك.' : ' لتعرف من كل مصدر كم حلّ المسألة ووصل للسعر وأرسل طلبًا: شغّل ملف <b dir="ltr">009_stats_sources_v2.sql</b> في Supabase مرة واحدة.'}</p>
       <p class="h3">أجهزتهم</p><div class="chips">${SR.by_device.map(r => `<span>${esc(DEV[r.dev] || r.dev)} · <b>${ar(r.phones)}</b>${r.ordered ? ` · طلبوا ${ar(r.ordered)}` : ''}</span>`).join('')}</div></div>`
     : `<div class="card"><h2>من أين جاؤوا</h2>${chips(S.sources, SRC)}<p class="tip">الأرقام هنا تتكرر إذا نفس الجوال جاء من مصدرين. للتفصيل (من كل مصدر كم وصل للسعر وأرسل طلبًا): شغّل ملف <b dir="ltr">009_stats_sources_v2.sql</b> في Supabase مرة واحدة.</p><p class="h3">أجهزتهم</p>${chips(S.devices, DEV)}</div>`;
   const days = S.days || [], maxD = Math.max(1, ...days.map(d => d.v));
@@ -301,9 +302,11 @@ function orderCard(o) {
 /* ---------- interested students: left their name and mobile after lesson 1 ---------- */
 const LSRC = { 'tiktok-ad': 'إعلان تيك توك', 'bio-ad': 'رابط الحساب' };
 const LS = { new: 'جديد', contacted: 'تم التواصل', paid: 'اشترك', no: 'لا' };
+const leadTrial = l => /\|trial$/.test(l.src || '');   // asked for the free trial account (the landing page's «جرّب مجانًا»)
 const leadSave = l => /\|save$/.test(l.src || '');   // left his number at «احفظ مكانك» in lesson 1 (not a subscribe request)
-const leadSrc = l => { const b = String(l.src || '').replace(/\|save$/, ''); const t = b ? (LSRC[b] || SRC[b] || b) : ''; return leadSave(l) ? 'حفظ مكانه' + (t ? ' · ' + t : '') : t; };
-const leadMsg = (n, l) => l && leadSave(l) ? `السلام عليكم ${n || ''} 👋 معك أكاديمية لينا. حفظنا مكانك في الدرس الأول، وإذا وقفت عند شي نساعدك هنا.`
+const leadSrc = l => { const b = String(l.src || '').replace(/\|(save|trial)$/, ''); const t = b ? (LSRC[b] || SRC[b] || b) : ''; return leadTrial(l) ? 'يبي تجربة مجانية' + (t ? ' · ' + t : '') : leadSave(l) ? 'حفظ مكانه' + (t ? ' · ' + t : '') : 'يبي يشترك' + (t ? ' · ' + t : ''); };
+const leadMsg = (n, l) => l && leadTrial(l) ? `السلام عليكم ${n || ''}، حيّاك الله في أكاديمية لينا 🌿 وصلنا طلبك للتجربة المجانية. هذا حسابك:`
+  : l && leadSave(l) ? `السلام عليكم ${n || ''} 👋 معك أكاديمية لينا. حفظنا مكانك في الدرس الأول، وإذا وقفت عند شي نساعدك هنا.`
   : `السلام عليكم ${n || ''}، حيّاك الله في أكاديمية لينا 🌿 وصلنا طلب اشتراكك في الكمّي كاملًا (٢٤٩ ريال).`;
 let leadRows = [];
 async function leadBadge(rows) {
@@ -322,6 +325,7 @@ async function leads() {
       <div><b>${ar(leadRows.length)}</b><span class="muted">آخر ٦٠ يوم</span></div>
       <div><b>${ar(pd)}</b><span class="muted">اشتركوا</span></div></div>
       <p class="tip">اضغط «واتساب» والرسالة مكتوبة. بعدها أرسل ردّك الجاهز بتفاصيل التحويل، وغيّر الحالة.</p>
+      <p class="tip">«يبي تجربة مجانية»: اضغط «أنشئ حساب التجربة»، انسخ الرسالة، وأرسلها له على واتساب.</p>
       <p class="tip">طلب أرسلته أنت للتجربة؟ اضغط «هذا أنا أجرّب»: ينحذف الطلب، وزيارات الجوال اللي أرسله تطلع من الأرقام.</p></div>
     <div class="list" id="l">${leadRows.map(l => `<div class="card stack lead" data-id="${l.id}">
       <div class="row" style="justify-content:space-between"><b>${esc(l.name)}</b><span class="pill ld-${l.status}" style="flex:none">${LS[l.status] || l.status}</span></div>
@@ -329,12 +333,15 @@ async function leads() {
       <small class="muted">${atTime(l.at)}${leadSrc(l) ? ' · ' + esc(leadSrc(l)) : ''}</small>
       <a class="mebtn" href="${waLink(l.phone, leadMsg(l.name, l))}" target="_blank" rel="noopener">واتساب</a>
       <div class="row">${['contacted', 'paid', 'no'].map(s => `<button class="small${l.status === s ? ' on' : ''}" data-s="${s}">${LS[s]}</button>`).join('')}</div>
+      ${leadTrial(l) ? '<button type="button" class="small mk">أنشئ حساب التجربة</button>' : ''}
       <button type="button" class="link mine">هذا أنا أجرّب</button></div>`).join('') || '<div class="card"><p class="muted">ما فيه أحد للحين.</p></div>'}</div>`;
   view.querySelectorAll('.lead [data-s]').forEach(b => b.onclick = async () => {
     const id = +b.closest('.lead').dataset.id, cur = leadRows.find(l => l.id === id), s = cur.status === b.dataset.s ? 'new' : b.dataset.s;
     const { error } = await sb.rpc('admin_set_lead', { p_lead: id, p_status: s }); if (error) return alert(errText(error));
     leads();
   });
+  view.querySelectorAll('.lead .mk').forEach(b => b.onclick = () => { const l = leadRows.find(x => x.id === +b.closest('.lead').dataset.id) || {};
+    document.querySelectorAll('.tabs [data-t]').forEach(t => t.classList.toggle('on', t.dataset.t === 'new')); newStudent({ name: l.name, trial: true }); });
   /* the owner's own test order: asked twice (like deleting an account), then the order goes and so do that phone's visits (010_my_tests.sql) */
   view.querySelectorAll('.lead .mine').forEach(b => { let sure = false; b.onclick = async () => {
     if (!sure) { sure = true; b.textContent = 'متأكد؟ ينحذف الطلب، وزيارات جواله تطلع من الأرقام. اضغط مرة ثانية'; return; }
@@ -351,16 +358,22 @@ function meCard() {
     <a class="mebtn" href="${site}" target="_blank" rel="noopener">لا تحسب هذا الجوال</a></div>`;
 }
 function bindMe() { try { localStorage.setItem('leena-me', '1'); } catch (e) {} }
+let TRIAL_READY = false;      // true once the database has the trial columns (supabase/011_trial_hour.sql)
+const TRIAL_MIN = 60, TR_TXT = () => TRIAL_READY ? 'كل الدروس مفتوحة له ساعة واحدة، تبدأ من أول دخول. بعدها يقفل الحساب.' : 'يحتاج تشغيل ملف 011_trial_hour.sql في Supabase مرة واحدة.';
 let OPEN_ALL_READY = false;   // true once the database has the open_all column (supabase/008_open_all.sql)
 const OA_TXT = () => OPEN_ALL_READY ? 'يدخل أي درس مباشرة، بدون ترتيب.' : 'يحتاج تشغيل ملف 008_open_all.sql في Supabase مرة واحدة.';
-function paintOA() { document.querySelectorAll('.oa').forEach(l => { l.querySelector('.oa-cb').disabled = !OPEN_ALL_READY; l.querySelector('small').textContent = OA_TXT(); }); }
-async function probeOA() { try { const oa = await sb.from('access').select('open_all').limit(1); OPEN_ALL_READY = !oa.error; } catch (e) { OPEN_ALL_READY = false; } paintOA(); }
+function paintOA() { document.querySelectorAll('.oa:not(.tr)').forEach(l => { l.querySelector('.oa-cb').disabled = !OPEN_ALL_READY; l.querySelector('small').textContent = OA_TXT(); });
+  document.querySelectorAll('.oa.tr').forEach(l => { l.querySelector('.tr-cb').disabled = !TRIAL_READY; l.querySelector('small').textContent = TR_TXT(); }); }
+async function probeOA() { try { const oa = await sb.from('access').select('open_all').limit(1); OPEN_ALL_READY = !oa.error; } catch (e) { OPEN_ALL_READY = false; }
+  try { const t = await sb.from('access').select('trial_min').limit(1); TRIAL_READY = !t.error; } catch (e) { TRIAL_READY = false; } paintOA(); }
 function coursePicker(access) {
   const box = document.createElement('div'); box.className = 'stack';
   box.innerHTML = '<label style="margin:0">الدورات وتاريخ الانتهاء</label>' + COURSES.map(c => { const a = (access || []).find(x => x.course === c.id);
     return `<div class="course${a ? ' on' : ''}" data-c="${c.id}"><label class="top" style="flex-direction:row;color:var(--ink)"><input type="checkbox" ${a ? 'checked' : ''}>${esc(c.name)}</label>
     <div class="when"><input type="date" value="${a ? a.expires : ''}" aria-label="تاريخ انتهاء ${esc(c.name)}"><button type="button" class="small" data-d="3">+٣ أيام</button><button type="button" class="small" data-d="7">+أسبوع</button><button type="button" class="small" data-m="1">+شهر</button><button type="button" class="small" data-m="3">+٣ أشهر</button></div>
-    <label class="oa"><input type="checkbox" class="oa-cb" ${a && a.open_all ? 'checked' : ''} ${OPEN_ALL_READY ? '' : 'disabled'}><span>كل الدروس مفتوحة له من البداية<small>${OA_TXT()}</small></span></label></div>`; }).join('');
+    <label class="oa"><input type="checkbox" class="oa-cb" ${a && a.open_all ? 'checked' : ''} ${OPEN_ALL_READY ? '' : 'disabled'}><span>كل الدروس مفتوحة له من البداية<small>${OA_TXT()}</small></span></label>
+    <label class="oa tr"><input type="checkbox" class="tr-cb" ${a && a.trial_min != null ? 'checked' : ''} ${TRIAL_READY ? '' : 'disabled'}><span>حساب تجربة مجانية<small>${TR_TXT()}</small></span></label>
+    ${a && a.trial_min != null ? `<p class="muted tr-state">${a.trial_until ? (new Date(a.trial_until) > new Date() ? 'التجربة شغّالة الآن.' : 'التجربة انتهت. إذا اشترك: شِل علامة «حساب تجربة مجانية» وحدّد تاريخ الانتهاء.') : 'ما دخل للحين. الساعة تبدأ من أول دخول.'}</p>` : ''}</div>`; }).join('');
   box.querySelectorAll('.course').forEach(row => {
     const cb = row.querySelector('.top input[type=checkbox]'), dt = row.querySelector('input[type=date]');
     cb.onchange = () => { row.classList.toggle('on', cb.checked); if (cb.checked && !dt.value) { dt.value = plusMonths(1); dt.dataset.auto = '1'; } };   // a month, until he picks the plan that was paid for
@@ -368,11 +381,16 @@ function coursePicker(access) {
     const base = () => dt.value && dt.value > today() && dt.dataset.auto !== '1' ? dt.value : null;   // a date we filled in ourselves is replaced; a real end date is added to
     row.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { dt.value = plusMonths(+b.dataset.m, base()); dt.dataset.auto = ''; });
     row.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { dt.value = plusDays(+b.dataset.d, base()); dt.dataset.auto = ''; });   // the plans of 14 Nov: 3 days, a week
+    /* a trial account: every lesson open, and a week to log in for the first time (the hour itself starts at that login) */
+    const tr = row.querySelector('.tr-cb'), oa = row.querySelector('.oa-cb');
+    tr.onchange = () => { if (!tr.checked) return; if (!cb.checked) { cb.checked = true; row.classList.add('on'); } dt.value = plusDays(7); dt.dataset.auto = '1'; if (OPEN_ALL_READY || TRIAL_READY) oa.checked = true; };
   });
-  box.read = () => [...box.querySelectorAll('.course')].filter(r => r.querySelector('.top input[type=checkbox]').checked).map(r => Object.assign({ course: r.dataset.c, expires: r.querySelector('input[type=date]').value }, OPEN_ALL_READY ? { open_all: r.querySelector('.oa-cb').checked } : {}));
+  box.read = () => [...box.querySelectorAll('.course')].filter(r => r.querySelector('.top input[type=checkbox]').checked).map(r => Object.assign({ course: r.dataset.c, expires: r.querySelector('input[type=date]').value }, OPEN_ALL_READY || TRIAL_READY ? { open_all: r.querySelector('.oa-cb').checked } : {}, TRIAL_READY ? { trial_min: r.querySelector('.tr-cb').checked ? TRIAL_MIN : null } : {}));
+  box.trial = () => { const r = box.querySelector('.course'), t = r && r.querySelector('.tr-cb'); if (t && !t.disabled) { t.checked = true; t.onchange(); } return !!(t && t.checked); };
   return box;
 }
 function message(name, username, password, access) {
+  if (access.some(a => a.trial_min != null)) return `أهلًا ${name} 👋\nهذا حساب تجربتك المجانية في أكاديمية لينا:\n\nالرابط: ${SITE}\nاسم المستخدم: ${username}\nكلمة المرور: ${password}\n\nكل الدروس مفتوحة لك ساعة كاملة، تبدأ من أول دخول. فادخل لما تكون فاضي.\nافتح الرابط، واكتب اسم المستخدم وكلمة المرور.`;
   const lines = access.map(a => `• ${nameOf(a.course)}: حتى ${fmt(a.expires)}`).join('\n');
   return `أهلًا ${name} 👋\nحسابك في أكاديمية لينا جاهز:\n\nالرابط: ${SITE}\nاسم المستخدم: ${username}\nكلمة المرور: ${password}\n\nدوراتك:\n${lines}\n\nافتح الرابط، واكتب اسم المستخدم وكلمة المرور.`;
 }
@@ -382,7 +400,7 @@ function result(view, title, text) {
   c.querySelector('button').onclick = async e => { try { await navigator.clipboard.writeText(text); e.target.textContent = 'تم النسخ ✓'; } catch (err) { const r = document.createRange(); r.selectNodeContents(c.querySelector('pre')); getSelection().removeAllRanges(); getSelection().addRange(r); e.target.textContent = 'حدّدتُ النص: انسخه'; } };
   view.prepend(c); c.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-function newStudent() {
+function newStudent(pre) {   // pre: { name, trial } from an order in «المهتمون» that asked for the free trial
   const view = document.getElementById('view'); view.innerHTML = '';
   const f = document.createElement('form'); f.className = 'card stack';
   f.innerHTML = `<h2>طالب جديد</h2><label>اسم الطالب<input id="nm" required placeholder="مثل: سارة"></label>
@@ -393,6 +411,9 @@ function newStudent() {
     <label>ملاحظة<input id="note" placeholder="مثل: بث ١"></label></div><p class="muted" style="margin-top:-6px">للمدير فقط، ولا تظهر للطالب.</p>
     <p class="err" id="e" hidden></p><button class="main" id="go">إنشاء الحساب</button>`);
   view.appendChild(f);
+  if (pre && pre.name) f.querySelector('#nm').value = pre.name;
+  if (pre && pre.trial) { const set = () => { if (!picker.trial()) { const e = f.querySelector('#e'); e.textContent = 'حساب التجربة يحتاج تشغيل ملف 011_trial_hour.sql في Supabase مرة واحدة.'; e.hidden = false; } };
+    if (TRIAL_READY) set(); else probeOA().then(set); }
   f.onsubmit = async ev => {
     ev.preventDefault(); const go = f.querySelector('#go'), e = f.querySelector('#e'); e.hidden = true;
     const access = picker.read(), name = f.querySelector('#nm').value.trim(), u = f.querySelector('#u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''), p = f.querySelector('#p').value.trim();
@@ -411,9 +432,10 @@ async function listStudents() {
   const { data, error } = await sb.rpc('admin_list');
   if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p></div>`; return; }
   students = data || [];
-  try { const oa = await sb.from('access').select('user_id,course,open_all');   // which accounts have every lesson open (the admin may read every row)
-    OPEN_ALL_READY = !oa.error; const on = new Set((oa.data || []).filter(x => x.open_all).map(x => x.user_id + '|' + x.course));
-    students.forEach(st => (st.access || []).forEach(a => { a.open_all = on.has(st.user_id + '|' + a.course); })); } catch (e) { OPEN_ALL_READY = false; }
+  try { let oa = await sb.from('access').select('user_id,course,open_all,trial_min,trial_until');   // which accounts have every lesson open, which are trials (the admin may read every row)
+    TRIAL_READY = !oa.error; if (oa.error) oa = await sb.from('access').select('user_id,course,open_all');
+    OPEN_ALL_READY = !oa.error; const by = {}; (oa.data || []).forEach(x => { by[x.user_id + '|' + x.course] = x; });
+    students.forEach(st => (st.access || []).forEach(a => { const x = by[st.user_id + '|' + a.course] || {}; a.open_all = !!x.open_all; a.trial_min = x.trial_min == null ? null : x.trial_min; a.trial_until = x.trial_until || null; })); } catch (e) { OPEN_ALL_READY = false; }
   const pays = students.flatMap(s => s.payments || []), total = pays.reduce((n, x) => n + +x.amount, 0);
   const byPrice = {}; students.forEach(s => { const first = (s.payments || [])[0]; if (first) byPrice[+first.amount] = (byPrice[+first.amount] || 0) + 1; });
   const since = d => pays.filter(x => new Date(x.at) >= d).reduce((n, x) => n + +x.amount, 0), d7 = new Date(Date.now() - 7 * 864e5);
