@@ -1687,6 +1687,24 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
   .la-buy{max-width:340px}.la-buy+.la-note{text-align:right}
 }
 
+/* ---- the mock exam («اختبار محاكي», 15 Nov 2026): its door on the lessons screen, the marks it leaves there, and its result ---- */
+.tun-mock{display:block;width:100%;margin:26px 0 6px;padding:18px 20px;text-align:right;border-radius:18px;border:1.5px solid #1F7A5A;background:rgba(31,122,90,.06);color:#16201B;font-family:Alexandria,var(--f-display);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,transform .14s}
+.tun-mock:active{transform:scale(.985);background:rgba(31,122,90,.13)}
+.tun-mock:focus-visible{outline:2px solid #16201B;outline-offset:3px}
+.tun-mock b{display:block;font-weight:500;font-size:21px;line-height:1.5;color:#16201B}
+.tun-mock small{display:block;margin-top:2px;font-weight:300;font-size:15px;line-height:1.7;color:#4A5650}
+.tun-st li .wk{margin-inline-start:auto;flex:none;font-size:13px;font-weight:500;color:#1F7A5A;border:1px solid #1F7A5A;border-radius:99px;padding:3px 10px;white-space:nowrap}
+.tun-st li.weak:not(.done){color:#16201B}
+.dz-mock{list-style:none;margin:22px 0 0;padding:0;width:100%;text-align:right}
+.dz-mock li{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #E4E0D6;font:300 17px/1.6 Alexandria,var(--f-display);color:#16201B}
+.dz-mock li:last-child{border-bottom:0}
+.dz-mock li b{flex:none;font-weight:500;font-size:15px;color:#1F7A5A}
+.dz-mock li.bad b{color:#B4472F}.dz-mock li.mid b{color:#9A7B5B}
+.dz-mock li.weak span{font-weight:500}
+.dz-mock-end{justify-content:flex-start;padding-top:12px}
+.dz-mock-after{margin-top:6px;color:#6B756F}
+@media (min-width:1100px){.lt .tun-road{grid-template-rows:auto auto 1fr}.lt .tun-road>.tun-mock{grid-column:1;grid-row:3;position:sticky;top:418px;max-width:340px;margin:20px 0 0;align-self:start}}
+
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
 .cover-btn.soon{opacity:.55;filter:saturate(.4)}
@@ -1903,7 +1921,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794683738", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794693237", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3626,7 +3644,7 @@ function runDrill(d, lesson) {
   let trLabel = null;
   const toDoor = () => { if (TUN) { cleanup(); window.AcademyTunnel.door(lesson); } else showDistrict(d); };
   const toGate = () => { if (TUN) { cleanup(); window.AcademyTunnel.gate(lesson); } else { const nextL = d.lessons[d.lessons.indexOf(lesson) + 1]; nextL ? playLesson(d, nextL) : showDistrict(d); } };
-  x.onclick = () => { FX.play('tap'); LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); toDoor(); };
+  x.onclick = () => { FX.play('tap'); if (lesson.mock) { LT('mock_exit', { n: mres.length }); if (S.drill && S.drill[id]) { delete S.drill[id]; persist(); } return toDoor(); } LT('lesson_exit', { lesson: id, val: 'drill', n: mem().lv + 1 }); toDoor(); };
   const snd = h('button', 'dz-btn'); snd.setAttribute('aria-label', 'الصوت');
   const paintSnd = () => { snd.innerHTML = !S.settings || S.settings.sound !== false ? SVG_ON : SVG_OFF; };
   snd.onclick = () => { S.settings = S.settings || {}; S.settings.sound = S.settings.sound === false; persist(); paintSnd(); };
@@ -4168,13 +4186,13 @@ function runDrill(d, lesson) {
     dockBtn('ابدأ الاختبار', () => final(0, 0));
   }
   function final(i, got) {
-    if (i >= D.final.length) return finished(got);
+    if (i >= D.final.length) return lesson.mock ? mockDone(got) : finished(got);
     const p = page('dz-drill dz-final');
     const s = D.final[i];
     const g = { q: s.q, a: s.a, b: s.b, fig: s.fig, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
     dockNone();
     ask(p, g, D.finalT || 40, { final: '' }, (res, fb) => {
-      const ok = res === 'fast' || res === 'ok';
+      const ok = res === 'fast' || res === 'ok'; mres[i] = ok;
       LT('drill_final', { lesson: id, n: i + 1, val: ok ? 'ok' : res });
       if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = drT('right'); }
       else fb.innerHTML += s.why ? `<br><span class="dz-why">${fmt(s.why)}</span>` : '';
@@ -4185,9 +4203,35 @@ function runDrill(d, lesson) {
       if (g.opts[ci].key == null) return;
       stopT(); p.classList.add('answered'); p.querySelectorAll('.opt').forEach((x, cj) => { x.disabled = true; if (g.opts[cj].key == null) x.classList.add('ok'); });
       const fb = p.querySelector('.dz-msg'); fb.className = 'lad-fb dz-msg bad'; fb.innerHTML = s.why ? fmt(s.why) : '';
-      LT('drill_final', { lesson: id, n: i + 1, val: 'wrong' });
+      LT('drill_final', { lesson: id, n: i + 1, val: 'wrong' }); mres[i] = false;
       dockBtn(i + 1 < D.final.length ? 'السؤال التالي' : 'النتيجة', () => final(i + 1, got));
     }));
+  }
+  /* ---------- the mock exam: the exam's own mix, a minute a question, one try each (docs/EXAM_MAP.md, A) ---------- */
+  function mockIntro() {
+    paintTrack(1);
+    const p = page('dz-final-intro dz-mock-intro', true), n = D.final.length;
+    p.innerHTML = `<h1 class="dz-big">اختبار<br>محاكي</h1><div class="dz-line"></div><p class="dz-p">${ar(n)} سؤال من كل المواضيع، مخلوطة مثل يوم الاختبار. دقيقة لكل سؤال، ومحاولة وحدة.</p><p class="dz-p dz-mock-after">في آخره نقول لك وين تبدأ.</p>`;
+    LT('mock_start');
+    dockBtn('ابدأ الاختبار', () => final(0, 0));
+  }
+  function mockDone(got) {
+    const n = D.final.length, by = {};
+    D.final.forEach((q, i) => { const b = by[q.les] = by[q.les] || [0, 0]; b[1]++; if (mres[i]) b[0]++; });
+    const ids = Object.keys(by).sort((a, b) => by[a][0] / by[a][1] - by[b][0] / by[b][1] || by[b][1] - by[a][1]);   // weakest first
+    const weak = ids.filter(k => by[k][0] < by[k][1]).slice(0, 3);
+    const M = S.mock = S.mock || { n: 0, seen: [] }; M.n = (M.n || 0) + 1; M.last = { at: Date.now(), got, total: n, by }; M.weak = weak;
+    M.seen = (M.seen || []).concat(D.final.map(q => q.key)).slice(-150);   // these wait before they come back
+    if (S.drill) delete S.drill[id]; persist();
+    LT('mock_done', { n: got, val: weak.join(',') });
+    paintTrack(1);
+    const name = k => { const l = d.lessons.find(x => x.id === k); return l ? l.title : k; };
+    const p = page('dz-done dz-mock-end', true);
+    p.innerHTML = `<h1 class="dz-h">حلّيت ${ar(got)} من ${ar(n)}</h1><p class="dz-p">${got === n ? 'ولا غلطة ، وفي الوقت.' : weak.length ? 'هذي المواضيع تحتاجك أكثر. علّمنا لك عليها في قائمة الدروس.' : ''}</p>
+      <ul class="dz-mock">${ids.map(k => `<li class="${by[k][0] === by[k][1] ? 'ok' : by[k][0] === 0 ? 'bad' : 'mid'}${weak.includes(k) ? ' weak' : ''}"><span>${name(k)}</span><b>${ar(by[k][0])} من ${ar(by[k][1])}</b></li>`).join('')}</ul>`;
+    if (got === n) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
+    dockBtn('رجوع إلى الدروس', toDoor);
+    if (S.drill && S.drill[id]) { delete S.drill[id]; persist(); }   // the mock exam keeps no place of its own
   }
   function finished(got) {
     const n = D.final.length, stars = got === n ? 3 : got >= n - 2 ? 2 : 1;
@@ -4228,6 +4272,8 @@ function runDrill(d, lesson) {
   }
 
   /* where to start */
+  const mres = [];   // the mock exam: right or wrong, question by question
+  if (lesson.mock) return mockIntro();   // «اختبار محاكي» (docs/EXAM_MAP.md): no levels, no saved place; questions from every lesson, then a result per topic
   const m = mem(), m0 = m;
   if (lesson._drillMode === 'open') { lesson._drillMode = null; open(0); }   // the gate's "open training"
   else if (m.finished) {   // finished THIS lesson before (an old version's "done" doesn't count): he chooses
@@ -5346,14 +5392,34 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- the road (subscribers): every lesson in order ---------- */
+  /* ---------- the mock exam («اختبار محاكي», docs/EXAM_MAP.md A): 24 questions in the exam's own mix, taken from the lessons' final tests ----------
+     The share of each family follows the count of real questions (tools/bank_map.py): comparisons about a quarter, then algebra, geometry, percent… */
+  const MOCK = [['cmp', 6], ['al', 4], ['ge', 3], ['pc1 pc2', 2], ['pc3', 1], ['fr fs5', 2], ['nm fs6', 2], ['dt', 1], ['pt', 1], ['fs1 fs2 fs3 fs4', 1], ['mo', 1]];
+  function mockLesson() {
+    const S = api().S, seen = new Set((S.mock && S.mock.seen) || []), shuf = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    const pool = []; lessons().forEach(l => { if (ready(l)) (l.drill.final || []).forEach((q, i) => pool.push({ q, les: l.id, key: l.id + ':' + i })); });
+    const used = new Set(), picked = [];
+    const take = (fits, n) => { const c = shuf(pool.filter(x => !used.has(x.key) && fits(x))).sort((a, b) => seen.has(a.key) - seen.has(b.key)), les = new Set();   // new to him first
+      for (const pass of [1, 2]) for (const x of c) { if (picked.length && n <= 0) break; if (n <= 0 || used.has(x.key) || (pass === 1 && les.has(x.les))) continue; used.add(x.key); les.add(x.les); picked.push(x); n--; }   // spread over lessons first
+      return n; };
+    let short = 0;
+    for (const [fam, n] of MOCK) { const pre = fam.split(' ');
+      short += take(fam === 'cmp' ? x => !!x.q.a : x => !x.q.a && pre.some(p => x.les.startsWith(p)), n); }
+    if (short > 0) take(() => true, short);   // a family too thin today: fill from anywhere
+    return { id: 'mock', title: 'اختبار محاكي', mock: true, sub: '', steps: [], drill: { v: 1, tunnel: true, levels: [], finalT: 60, final: shuf(picked).map(x => Object.assign({}, x.q, { les: x.les, key: x.key })) } };
+  }
   function road() {
     if (!subscriber()) return home();
     LT('tunnel_view');
     const L = lessons(), nx = nextUp(), all = openAll();
-    const st = l => !ready(l) ? 'soon' : done(l) ? 'done' : l === nx ? 'here' : all ? 'open' : 'lock';
+    const MK = api().S.mock || null, weak = l => !!(MK && MK.weak && MK.weak.includes(l.id)) && ready(l) && !done(l);   // what the mock exam found weakest: open to him, and marked
+    const st = l => !ready(l) ? 'soon' : done(l) ? 'done' : l === nx ? 'here' : all || weak(l) ? 'open' : 'lock';
     const w = room('tun-door tun-list tun-road');
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">القدرات العامة</p><i class="tun-rule"></i><h1 class="tun-h big stop">الكمّي</h1></div><ol class="tun-st">${L.map(l => { const s = st(l);
-      return `<li class="${s}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : ''}</li>`; }).join('')}</ol>`);
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">القدرات العامة</p><i class="tun-rule"></i><h1 class="tun-h big stop">الكمّي</h1></div>
+      <button type="button" class="tun-mock"><b>اختبار محاكي</b><small>${MK && MK.last ? `آخر نتيجة: ${ar(MK.last.got)} من ${ar(MK.last.total)}. أعده متى ما تبي.` : 'أسئلة من كل المواضيع ، مثل يوم الاختبار. يقول لك وين تبدأ.'}</small></button>
+      <ol class="tun-st">${L.map(l => { const s = st(l);
+      return `<li class="${s}${weak(l) ? ' weak' : ''}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : weak(l) ? '<small class="wk">ابدأ من هنا</small>' : ''}</li>`; }).join('')}</ol>`);
+    w.querySelector('.tun-mock').onclick = () => { LT('mock_open', { n: (MK && MK.n) || 0 }); play(mockLesson()); };
     { const ol = w.querySelector('.tun-st'); ol.style.setProperty('--rows', Math.ceil(L.length / 2)); ol.classList.toggle('odd', L.length % 2 === 1); }   // on a computer the lessons stand in two columns (style.css)
     enter(0);
     w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l), n = i + 1;
