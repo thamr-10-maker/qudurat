@@ -162,7 +162,7 @@ const PATHS = [
   ['🔑 المشتركين', [['login_open', 'فتحوا نافذة الدخول'], ['login_ok', 'دخلوا بحساب مشترك'], ['tunnel_view', 'فتحوا قائمة الدروس'], ['lesson_done', 'خلّصوا درس واختباره'], ['tunnel_next', 'انتقلوا للدرس اللي بعده'], ['open_all', 'فتحوا كل الدروس (رابط)']]],
 ];
 const OTHER = [['wa_click', 'ضغطوا واتساب (من أي مكان)'], ['door_miss', 'سؤال البداية: غلط'], ['door_slow', 'سؤال البداية: صح لكن بطيء'], ['door_fast', 'سؤال البداية: سريع'], ['boss_miss', 'السؤال الأخير: ما انحل'], ['save_skip', 'تخطّوا «احفظ مكانك»'], ['win_again', 'أعادوا الجزء الأول'], ['guide', 'مرات تكلّم المرشد'], ['gate_view', 'وصلوا البوابة القديمة'], ['restart_lesson', 'أعادوا الدرس من البداية'], ['login_fail', 'فشل دخولهم'], ['login_link', 'ضغطوا «عندي حساب»'], ['gate_train', 'تدرّبوا على الدرس الأول من البوابة'],
-  ['drill_miss', 'إجابات غلط'], ['drill_bone', 'احتاجوا الشرح الأطول'], ['pen_show', 'شافوا القلم يحل السؤال'], ['help_open', 'فتحوا المساعدة ؟'], ['pen_skip', 'تخطّوا القلم'], ['drill_back', 'رجعت لهم فكرة قديمة'], ['drill_warm', 'سوّوا تسخين أول الدرس'], ['drill_stat', 'أرقام المستويات (للتحليل)'], ['lesson_exit', 'طلعوا من نص الدرس']];
+  ['drill_miss', 'إجابات غلط'], ['drill_bone', 'احتاجوا الشرح الأطول'], ['pen_show', 'انكتب لهم الحل على السؤال'], ['help_open', 'فتحوا المساعدة ؟'], ['pen_skip', 'تخطّوا القلم'], ['drill_back', 'رجعت لهم فكرة قديمة'], ['drill_warm', 'سوّوا تسخين أول الدرس'], ['drill_stat', 'أرقام المستويات (للتحليل)'], ['lesson_exit', 'طلعوا من نص الدرس']];
 const SRC = { ad1: 'الحملة الجديدة', ad2: 'إعلان ٢ · غيّروا الرقم', ad3: 'إعلان ٣ · القطّة', 'dad-ad': 'إعلان ٤ · طول اليوم جوال', 'price-ad': 'صفحة السعر', 'parent-ad': 'صور الأهل', 'tiktok-ad': 'الإعلان القديم', 'bio-ad': 'رابط الحساب', tiktok: 'تيك توك (بدون رابط)', direct: 'مباشر', whatsapp: 'واتساب', instagram: 'إنستقرام', snapchat: 'سناب', google: 'قوقل', x: 'إكس' };
 const DEV = { ios: 'آيفون', android: 'أندرويد', desktop: 'كمبيوتر' };
 const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
@@ -170,7 +170,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794626882197;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794631952013;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -210,7 +210,7 @@ async function stats() {
   /* 3 · the trial */
   const trial = `<div class="card"><h2>التجربة</h2><p class="h3" style="margin-top:0">سؤال البداية</p><div class="trio"><div><b>${ar(f('door_miss'))}</b>غلط</div><div><b>${ar(f('door_slow'))}</b>صح لكن بطيء</div><div><b>${ar(f('door_fast'))}</b>سريع</div></div>
       <p class="h3">السؤال الأخير</p><div class="trio"><div><b>${ar(f('boss_ok'))}</b>انحل</div><div><b>${ar(f('boss_miss'))}</b>ما انحل</div><div><b>${ar(f('win_again'))}</b>أعادوا التجربة</div></div>
-      <p class="h3">في الطريق</p><div class="trio"><div><b>${ar(f('pen_show'))}</b>شافوا القلم</div><div><b>${ar(f('lesson_exit'))}</b>طلعوا من النص</div><div><b>${ar(f('save_sent'))}</b>حفظوا مكانهم</div></div></div>`;
+      <p class="h3">في الطريق</p><div class="trio"><div><b>${ar(f('pen_show'))}</b>انكتب لهم الحل</div><div><b>${ar(f('lesson_exit'))}</b>طلعوا من النص</div><div><b>${ar(f('save_sent'))}</b>حفظوا مكانهم</div></div></div>`;
   /* 4 · where they came from: one count (phones), under the first source each came from */
   const z = n => `<td class="n${n ? '' : ' z'}">${ar(n)}</td>`;
   const sources = SR ? `<div class="card"><h2>من أين جاؤوا</h2><div class="tblw"><table class="tbl"><tr><th>المصدر</th><th>جوال</th><th>تحرّك</th><th>جاوب</th><th>خلّص</th><th>اشترك</th></tr>

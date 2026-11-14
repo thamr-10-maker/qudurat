@@ -1507,6 +1507,10 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .la-fq summary::after{content:"";flex:none;width:8px;height:8px;margin:0 6px 4px;border:solid #7A847F;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);transition:transform .2s}
 .la-fq[open] summary::after{transform:rotate(-135deg);margin-bottom:-4px}
 .la-fq p{margin:0 0 20px;font:300 16.5px/1.85 Alexandria,var(--f-display);color:#3D4A44}
+/* an account with no active subscription: a calm screen that says so */
+.lt .tun-none .tun-p{margin:14px 0 0;font:300 18px/1.9 Alexandria,var(--f-display);color:#3D4A44}
+.lt .tun-none a.tun-go{text-decoration:none;box-sizing:border-box}
+.lt .tun-none .tun-link{align-self:center;margin-top:8px;min-height:44px;background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
 /* «كلّمنا»: a quiet second button. The black one stays the order */
 .la-talk{margin:26px 0 0;display:flex;align-items:center;justify-content:center;min-height:58px;border-radius:18px;border:1.5px solid #16201B;color:#16201B;font:500 18px/1 Alexandria,var(--f-display);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:background .2s,transform .14s}
 .la-talk:active{transform:scale(.98);background:#EDE9DF}
@@ -1525,6 +1529,70 @@ body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 .la-incl{list-style:none;margin:26px 0 0;padding:0}
 .la-incl li{font:300 clamp(19px,5.6vw,22px)/2.05 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
 .lt .la-dock a.ld-go{display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;margin-inline:auto}
+
+.la-acc-top{display:none}
+/* ================= a computer screen (owner, 14 Nov 2026, 07:24: «the layout looks like a mobile phone on the middle of my PC screen… Redesign it») =================
+   From 1100px wide the pages stop being a phone column. Nothing here touches a phone or an upright tablet. */
+@media (min-width:1100px){
+  #app.in-room{max-width:none}
+  /* ---- the landing page: the name on the right, the problem beside it, then every part as a title with its words beside it ---- */
+  .lt .tun-land{max-width:min(1480px,92vw);padding:0 64px 70px;display:grid;grid-template-columns:minmax(0,1fr) clamp(440px,34vw,560px);column-gap:clamp(60px,7vw,110px);align-items:start}
+  .lt .tun-land>*{grid-column:1 / -1}
+  .lt .tun-land>.la-hero{grid-column:1;grid-row:1;min-height:100svh;padding:24px 0;justify-content:center}
+  .la-logo{width:min(76px,9.5vh);height:min(76px,9.5vh)}
+  .la-h1{margin-top:min(26px,2.6vh);font-size:clamp(56px,min(6.4vw,12.6vh),132px);line-height:1.2;white-space:normal;width:min-content}   /* the name on two lines: «أكاديمية» over «لينا» */
+  .la-lede{margin-top:6px;font-size:clamp(22px,1.9vw,28px)}
+  .la-pts{margin:0;padding-top:clamp(26px,6vh,72px)}
+  .la-pts li{font-size:clamp(24px,min(2.4vw,4.5vh),40px);line-height:1.75}
+  .lt .tun-land>.la-sec[data-sec=try]{grid-column:2;grid-row:1;min-height:100svh;padding:24px 0;display:flex;flex-direction:column;justify-content:center}
+  .la-sec[data-sec=try] .la-h2{font-size:40px}
+  .lt .tun-land>.la-sec:not([data-sec=try]){display:grid;grid-template-columns:minmax(0,1fr) clamp(440px,34vw,560px);column-gap:clamp(60px,7vw,110px);align-items:start;padding:150px 0 0}
+  .la-sec:not([data-sec=try])>.la-h2{grid-column:1;grid-row:1 / span 6;font-size:clamp(46px,4.3vw,62px);line-height:1.36}
+  .la-sec:not([data-sec=try])>:not(.la-h2){grid-column:2}
+  .la-sec:not([data-sec=try])>.la-h2+*{margin-top:14px}
+  .la-p{font-size:21px;line-height:2}
+  .la-note{font-size:16.5px}
+  .la-incl{margin-top:8px}
+  .la-incl li{font-size:26px}
+  .la-faq{margin-top:10px}
+  .la-fq summary{min-height:72px;font-size:20px}
+  .la-fq p{font-size:18.5px}
+  .la-talk{margin-top:18px}
+  .la-foot{padding-top:90px}
+  /* the button: a quiet bar along the foot of the screen, what it offers on the right and the button on the left. Solid, so it never sits on top of words */
+  .la-dock{padding:14px max(64px,calc(50vw - min(740px,46vw) + 64px));background:#F6F4EE;border-top:1px solid #E4E0D6;display:flex;flex-direction:row-reverse;align-items:center;justify-content:space-between;gap:28px}
+  .la-dock>*{max-width:none;margin:0}
+  .lt .la-dock a.ld-go{width:340px;max-width:none;height:58px;margin:0;font-size:19px}
+  .la-micro{margin:0;min-height:0;font-size:18px;color:#3D4A44}
+  body.ld-on .legal{padding-bottom:120px}
+  /* a subscriber on a computer finds his way in at the top, not at the very end of the page */
+  .lt .tun-land .la-acc-top{display:block;position:absolute;top:22px;left:64px;z-index:2;min-height:44px;padding:0 6px;background:none;border:0;cursor:pointer;font:300 16px/1 Alexandria,var(--f-display);color:#3D4A44;text-decoration:underline;text-underline-offset:5px;text-decoration-color:#C9C4B6;animation:none}
+  /* ---- the small rooms (a lesson's door, the account with no subscription): the words large on the right, what to press on the left ---- */
+  .lt .tun-door:not(.tun-list){max-width:1100px;padding:90px 64px 70px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);column-gap:clamp(60px,7vw,110px);align-items:center;align-content:center}
+  .lt .tun-door:not(.tun-list)>*{grid-column:1 / -1}
+  .lt .tun-door:not(.tun-list)>.tun-txt{grid-column:1;margin:0}
+  .lt .tun-door:not(.tun-list)>.tun-act{grid-column:2;margin:0;align-self:center}
+  .lt .tun-door:not(.tun-list) .tun-h,.lt .tun-door:not(.tun-list) .tun-h.big{font-size:clamp(64px,6vw,92px);line-height:1.3}
+  .lt .tun-door:not(.tun-list) .tun-eyebrow,.lt .tun-door:not(.tun-list) .tun-time{font-size:22px}
+  .lt .tun-door:not(.tun-list) .tun-p{font-size:23px}
+  .lt .tun-door .tun-mark{font-size:20px}
+  /* ---- the road: the course's name and the way in on the right, the lessons in two columns on the left ---- */
+  .lt .tun-road{max-width:1160px;padding:110px 64px 80px;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);column-gap:clamp(60px,7vw,110px);align-items:start;align-content:start;overflow:visible}
+  .lt .tun-road>.tun-txt{grid-column:1;grid-row:1;position:sticky;top:110px}
+  .lt .tun-road .tun-h.big{font-size:88px;line-height:1.25}
+  .lt .tun-road .tun-eyebrow{font-size:22px}
+  .lt .tun-road>.tun-st{grid-column:2;grid-row:1 / span 3;max-width:none;margin:8px 0 0;display:grid;grid-template-rows:repeat(var(--rows,14),auto);grid-auto-flow:column;grid-template-columns:1fr 1fr;column-gap:56px}
+  .lt .tun-road>.tun-st::after{content:"";position:absolute;right:calc(50% + 41px);top:20px;bottom:20px;width:1.5px;background:#E4E0D6}   /* the road's line goes on down the second column */
+  .lt .tun-road>.tun-st.odd::after{bottom:74px}
+  .lt .tun-road .tun-st li{min-height:54px;font-size:20px}
+  .lt .tun-road .tun-st li.here{font-size:24px}
+  .lt .tun-road .tun-st li[class~=done],.lt .tun-road .tun-st li[class~=here],.lt .tun-road .tun-st li[class~=open]{cursor:pointer}
+  .lt .tun-road>.tun-go{grid-column:1;grid-row:2;position:sticky;top:330px;bottom:auto;left:auto;right:auto;width:100%;max-width:340px;margin:44px 0 0;height:64px;font-size:20px}
+  .lt .tun-road>.tun-link{grid-column:1;grid-row:3;align-self:start;justify-self:start;margin-top:22px;position:sticky;top:440px}
+  .lt .tun-road::after{display:none}
+}
+}
+
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1742,7 +1810,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794626882", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794631952", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4259,7 +4327,7 @@ function runDrill(d, lesson) {
     plain(f.slice(at));
     return out;
   }
-  // an exponent piece is drawn as a real superscript (any sign works: + − ×); everything else through the site's own maths
+  // an exponent piece is drawn as a real superscript on the LEFT of its base, the Arabic way (any sign works: + − ×); everything else through the site's own maths
   const pieceHTML = p => p.sup ? `<span class="m"><sup>${typeof ar === 'function' ? ar(String(p.text).replace(/-/g, '−')) : p.text}</sup></span>` : html(p.text);
 
   /* lay every frame out invisibly with the site's own maths, read where each piece sits */
@@ -4272,7 +4340,7 @@ function runDrill(d, lesson) {
       const groups = [];
       items.forEach((p, k) => { const span = `<span class="mo-p" data-k="${k}">${pieceHTML(p)}</span>`; if (p.sup && groups.length && !groups[groups.length - 1].paren) groups[groups.length - 1].push(span); else { const g = [span]; g.paren = !p.name && /^[()]$/.test(p.text) ? p.text : null; groups.push(g); } });
       // brackets hug what is inside them; everything else gets a space
-      row.innerHTML = groups.map((g, gi) => (gi && !(groups[gi - 1].paren === '(' || g.paren === ')') ? ' ' : '') + (g.length > 1 ? `<span class="mo-pw" dir="ltr">${g.join('')}</span>` : g[0])).join('');
+      row.innerHTML = groups.map((g, gi) => (gi && !(groups[gi - 1].paren === '(' || g.paren === ')') ? ' ' : '') + (g.length > 1 ? `<span class="mo-pw" dir="rtl">${g.join('')}</span>` : g[0])).join('');
       meas.appendChild(row); return row;
     });
     const maxW = Math.max(...rows.map(r => r.scrollWidth)), avail = Math.max(120, box.width - 8);
@@ -4770,6 +4838,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const visEnd = () => partDone(first()) && !done(first()) ? win(first()) : gate();   // where a visitor goes when lesson 1 is behind him
   const first = () => lessons()[0];
   const subscriber = () => !!(window.LeenaAuth && window.LeenaAuth.has && window.LeenaAuth.has(TUN));
+  const lockedOut = () => !!(window.LeenaAuth && window.LeenaAuth.user) && !subscriber();   // logged in, but no active subscription to this course
+  let sawOffer = false;   // he asked to read the subscription page from the «no subscription» screen
   const openAll = () => { if (!subscriber()) return false; try { return localStorage.getItem('leena-open-all') === '1'; } catch (e) { return false; } };
   /* the next lesson he has not finished (only lessons that are built) */
   const nextUp = () => lessons().find(l => ready(l) && !done(l)) || null;
@@ -4781,7 +4851,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
 
   function room(cls, back) {
     document.querySelectorAll('.modal:not(.acct),.dock').forEach(m => m.remove());
-    app.innerHTML = ''; app.className = 'academy'; app.style.removeProperty('--theme'); document.body.classList.add('dz', 'lt'); bar('#F6F4EE');
+    app.innerHTML = ''; app.className = 'academy in-room'; app.style.removeProperty('--theme'); document.body.classList.add('dz', 'lt'); bar('#F6F4EE');   // in-room: on a computer a room may be as wide as the screen (style.css)
     document.documentElement.style.removeProperty('--brand-base'); window.scrollTo(0, 0);
     document.body.classList.toggle('ld-on', /tun-land/.test(cls));   // the landing page keeps its button on screen: the footer under it needs room
     const w = el('div', 'tun ' + cls); w.insertAdjacentHTML('beforeend', '<span class="tun-mark">أكاديمية لينا</span>');
@@ -4799,12 +4869,12 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* Owner, 14 Nov 2026: no free lesson. A visitor sees the page with the plans and nothing else; lessons open for subscribers only.
      Everything a visitor's trial needed (the door question, part one, «احفظ مكانك», the gate) is still here behind this switch, in case he brings it back. */
   const TRIAL = CFG.trial === true;   // set by build.py; off on the live site
-  const play = l => { if (!TRIAL && !subscriber()) return landing(); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l); };
+  const play = l => { if (!TRIAL && !subscriber()) return visitor(); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l); };
 
   /* ---------- a lesson's door: its name and how long it takes ---------- */
   function door(l, prev) {
     l = l || first();
-    if (!TRIAL && !subscriber()) return landing();
+    if (!TRIAL && !subscriber()) return visitor();
     if (!subscriber() && (l.id !== first().id || done(l) || partDone(l))) return visEnd();
     if (!ready(l)) return road();
     const m = mem(l), going = !!(m && m.started && !m.finished && (m.lv || m.pts));
@@ -4812,7 +4882,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const L = lessons(), n = L.indexOf(l) + 1, learn = l.drill.learn, isFirst = n === 1;
     const trip = `<div class="tun-trip" aria-hidden="true"><div class="tr-bar">${L.map((x, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}"></i>`).join('')}</div><div class="tr-ends"><span>${n === 1 ? 'أنت هنا' : `${ar(n)} من ${ar(L.length)}`}</span><span>اختبار القدرات</span></div></div>`;
     const know = learn && learn.length ? `<p class="tun-k">بعد هذا الدرس بتعرف:</p><ol class="tun-learn">${learn.map(x => `<li><b></b>${esc(x)}</li>`).join('')}</ol>` : '';
-    const how = isFirst ? `<div class="tun-how"><div><b>${ar(1)}</b>اختر الجواب الصح</div><div><b>${ar(2)}</b>انتبه للوقت، الدائرة تعدّ</div><div><b>${ar(3)}</b>غلطت؟ القلم يوريك السبب</div></div>` : '';
+    const how = isFirst ? `<div class="tun-how"><div><b>${ar(1)}</b>اختر الجواب الصح</div><div><b>${ar(2)}</b>انتبه للوقت، الدائرة تعدّ</div><div><b>${ar(3)}</b>غلطت؟ نكتب لك السبب</div></div>` : '';
     w.insertAdjacentHTML('beforeend', `${HOLE()}${trip}<div class="tun-txt">${prev ? `<p class="tun-done">${TICK} ${esc(prev.title)}</p>` : ''}<p class="tun-eyebrow tun-time">الدرس ${ar(n)}<i class="sep">|</i>${mins(!subscriber() && l.drill.free ? l.drill.freeMin || 5 : l.drill.minutes || 20)}</p><i class="tun-rule"></i><h1 class="tun-h big${dot(l.title)}">${esc(l.title)}</h1>${subscriber() || know ? '' : '<p class="tun-p">ابدأ الآن مجانًا.</p>'}${know}${how}</div>`);
     const act = el('div', 'tun-act');
     const go = el('button', 'tun-go', going ? 'كمّل' : isFirst && !done(l) ? 'ابدأ الرحلة' : 'ادخل');
@@ -4860,7 +4930,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const fit = () => {   // the whole expression on one line, as large as the screen allows: measured on the untouched one, so the size never jumps mid-way
       const probe = mon.cloneNode(false); probe.innerHTML = html0; probe.style.cssText = 'position:absolute;visibility:hidden;font-size:24px'; wrap.appendChild(probe);
       const w = probe.getBoundingClientRect().width, h = probe.getBoundingClientRect().height; probe.remove(); if (!w || !wrap.clientWidth) return;
-      const f = Math.max(11, Math.min(24, Math.floor(240 * (wrap.clientWidth - 2) / w) / 10)); mon.style.fontSize = f + 'px';
+      const f = Math.max(11, Math.min(28, Math.floor(240 * (wrap.clientWidth - 2) / w) / 10)); mon.style.fontSize = f + 'px';
       mon.parentNode.style.minHeight = Math.ceil(h * f / 24) + 'px';   // its place keeps the height of the untouched one: nothing under it moves as it shrinks
     };
     fit(); addEventListener('resize', () => { if (document.body.contains(box)) fit(); });
@@ -4884,6 +4954,24 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const win = () => { LT('try_done', { once: true }); askB.style.minHeight = askB.offsetHeight + 'px'; askB.classList.add('won');
       askB.innerHTML = `<p class="la-won"><span>بنفس الطريقة،</span><span>تتعلّم الكمّي كله.</span></p>`; if (onDone) onDone(); };
     ask(0);
+  }
+  /* A logged-in account with no active subscription (owner, 14 Nov 07:24: he logged in on his computer and was dropped on the landing page with no word
+     and no way on). It gets a screen of its own that says what is wrong and what to do: activate on WhatsApp, read the offer, or log out. */
+  const visitor = () => lockedOut() && !sawOffer ? noAccess() : landing();
+  function noAccess() {
+    const A = window.LeenaAuth, u = A.user || {}, acc = (A.access || []).find(a => a.course === TUN), failed = !!A.failed;
+    LT('no_access', { val: failed ? 'failed' : acc ? 'ended' : 'none', once: true });
+    const w = room('tun-door tun-none'), day = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">${u.name ? 'أهلًا ' + esc(u.name) : 'دخلت إلى حسابك'}</p><i class="tun-rule"></i>
+      <h1 class="tun-h big stop">${failed ? 'ما قدرنا نقرأ<br>اشتراكك' : acc ? 'اشتراكك<br>انتهى' : 'حسابك بلا<br>اشتراك'}</h1>
+      <p class="tun-p">${failed ? 'تأكد من الإنترنت، وجرّب مرة ثانية.' : acc ? `انتهى في ${day(acc.expires)}. جدّده على واتساب، ونفتح دروسك من جديد.` : 'فعّله على واتساب، ونفتح لك الدروس.'}</p></div>`);
+    const act = el('div', 'tun-act');
+    if (failed) { const b = el('button', 'tun-go', 'جرّب مرة ثانية'); b.onclick = () => { b.disabled = true; b.textContent = 'لحظة…'; A.reload().catch(() => {}).then(() => home()); }; act.appendChild(b); }
+    else { const b = el('a', 'tun-go', acc ? 'جدّد اشتراكي على واتساب' : 'فعّل اشتراكي على واتساب'); b.target = '_blank'; b.rel = 'noopener';
+      b.href = waLink(`السلام عليكم، حسابي في أكاديمية لينا: ${u.username || u.phone || ''}\nأبغى ${acc ? 'أجدّد' : 'أفعّل'} اشتراكي.`); b.onclick = () => LT('wa_click', { val: 'noaccess' }); act.appendChild(b); }
+    const see = el('button', 'tun-ghost', 'تفاصيل الاشتراك'); see.onclick = () => { sawOffer = true; landing(); }; act.appendChild(see);
+    const out = el('button', 'tun-link', 'تسجيل الخروج'); out.onclick = () => A.logout(); act.appendChild(out);
+    w.appendChild(act);
   }
   function landing() {   // fifth build, 14 Nov 2026: the name and four words, a problem solved by the visitor on the page, then the plans, the bill, WhatsApp.
     // One button, and it follows him: «جرّب بنفسك» → the problem (the button steps aside there) → «اشترك الآن» → the price → «اشترك على واتساب»
@@ -4937,6 +5025,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
     tryIt(w.querySelector('.la-try'), () => { solved = true; draw(); });
     draw();
+    account(w, 'tun-link la-acc-top');   // shown on a computer only (style.css): no stray thumbs there, and a subscriber should not have to scroll to the end to log in
     account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
     /* how far down do they get? one event per section, the first time a third of it is on screen */
     const hero = w.querySelector('.la-hero'); let saw = false;
@@ -5088,6 +5177,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const w = room('tun-door tun-list tun-road');
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">القدرات العامة</p><i class="tun-rule"></i><h1 class="tun-h big stop">الكمّي</h1></div><ol class="tun-st">${L.map(l => { const s = st(l);
       return `<li class="${s}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : ''}</li>`; }).join('')}</ol>`);
+    { const ol = w.querySelector('.tun-st'); ol.style.setProperty('--rows', Math.ceil(L.length / 2)); ol.classList.toggle('odd', L.length % 2 === 1); }   // on a computer the lessons stand in two columns (style.css)
     w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l);
       if (s === 'done' || s === 'here' || s === 'open') li.onclick = () => { LT('tunnel_enter', { val: 'pick', lesson: l.id }); door(l); }; });
     account(w, 'tun-link');
@@ -5132,7 +5222,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       if (saved) { room('tun-door tun-wait').insertAdjacentHTML('beforeend', HOLE()); setTimeout(() => { if (!waited) { waited = true; if (document.querySelector('#app .tun-wait')) home(); } }, 6000); return; } }
     waited = true;
     if (subscriber()) { LT('home', { val: 'road', once: true }); return road(); }
-    if (!TRIAL) { LT('home', { val: 'land', once: true }); return landing(); }
+    if (!TRIAL) { LT('home', { val: lockedOut() ? 'noaccess' : 'land', once: true }); return visitor(); }
     if (partDone(first()) && !done(first())) { LT('home', { val: 'win', once: true }); return win(first()); }
     if (done(first())) { LT('home', { val: 'gate', once: true }); return gate(); }
     if (fromAsk() && !landSeen()) { LT('home', { val: 'ask', once: true }); try { sessionStorage.setItem('leena-land', '1'); } catch (e) {} return play(first()); }
@@ -5140,7 +5230,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     LT('home', { val: 'door', once: true }); door();
   }
   /* auth.js calls this when it knows who is here. Never pulls a student out of a lesson. */
-  function authDone() { waited = true; const land = document.querySelector('#app .tun-land'); if (document.querySelector('#app .tun') && !(land && (landPreview || !subscriber()))) home(); }
+  function authDone() { waited = true; const land = document.querySelector('#app .tun-land');
+    if (!document.querySelector('#app .tun')) return;                                             // in a lesson: stay there
+    if (land && (landPreview || (!subscriber() && !(lockedOut() && !sawOffer)))) return;          // a visitor reading the landing page stays on it; an account with no subscription is told so
+    home(); }
 
   window.Academy = { home, openAll, authDone, plan: null };
   home();
@@ -5163,7 +5256,7 @@ window.__leenaAuth = function () {
   const toast = msg => { document.querySelectorAll('.toast').forEach(t => t.remove()); const t = el('div', 'toast', esc(msg)); document.body.appendChild(t); setTimeout(() => t.remove(), 3000); };
   const fmtDate = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
   const today = () => new Date(Date.now() + 3 * 36e5).toISOString().slice(0, 10);   // the day in Saudi time, same as the database
-  const A = window.LeenaAuth = { user: null, access: [], plan: null, ready: false, openLogin, showAccount, logout, _sb: sb, reload: () => load(),
+  const A = window.LeenaAuth = { user: null, access: [], plan: null, ready: false, failed: false, openLogin, showAccount, logout, _sb: sb, reload: () => load(),
     has: id => A.access.some(a => a.course === id && a.expires >= today()),
     whenReady: fn => { if (A.ready) fn(); else waiting.push(fn); } };
   const waiting = [];
@@ -5189,7 +5282,7 @@ window.__leenaAuth = function () {
     ]);
     A.user = { id: user.id, username: (st.data && st.data.username) || String(user.email || user.phone || '').split('@')[0], name: (st.data && st.data.name) || '',
                phone: (st.data && st.data.phone) || (user.phone || '') };
-    A.access = acc.data || [];
+    A.access = acc.data || []; A.failed = !!acc.error;   // could not read his subscription: say so, do not call it «no subscription»
     if (CFG.pay) { try { const r = await sb.rpc('my_plan'); A.plan = r.data || null; } catch (e) { A.plan = null; } }
     let opened = 0;
     for (const k of keys.data || []) { if (!C[k.course]) continue; try { await unlock(k.course, k.key); opened++; } catch (e) { console.warn('unlock failed', k.course, e); } }
