@@ -1531,6 +1531,29 @@ body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 .lt .la-dock a.ld-go{display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;margin-inline:auto}
 
 .la-acc-top{display:none}
+/* ---- finding the way (owner, 14 Nov 2026) ---- */
+/* a back button that says where it goes: «‹ الدروس» on a lesson's door */
+.lt .tun-back{position:absolute;top:16px;right:20px;z-index:2;display:inline-flex;align-items:center;gap:4px;height:42px;padding:0 16px 0 12px;border-radius:21px;border:1px solid #D9D5CA;background:transparent;color:#16201B;font:300 16px/1 Alexandria,var(--f-display);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lt .tun-back:active{background:#EDE9DF}
+.lt .tun-back:focus-visible,.lt .tun-st li:focus-visible,.lt .tun-go:focus-visible,.lt .tun-ghost:focus-visible,.lt .tun-link:focus-visible,.dz-btn:focus-visible{outline:2px solid #16201B;outline-offset:3px}
+.lt .tun-st li.lock,.lt .tun-st li.soon{cursor:default}
+.lt .tun-road .tun-p{margin-top:14px;font-size:17px}
+/* a short word at the top of the screen (a closed lesson was tapped) */
+body.lt .toast{background:#16201B;color:#F6F4EE;border:0;border-radius:14px;padding:12px 18px;font:300 15.5px/1.6 Alexandria,var(--f-display);box-shadow:0 12px 34px rgba(22,32,27,.25);max-width:min(88vw,420px);text-align:center}
+/* the account windows: a way to a person */
+.acct-help{display:block;margin:16px 0 2px;text-align:center;font:300 15px/1.6 Alexandria,var(--f-display);color:#3D4A44;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#C9C4B6}
+a.acct-wa{text-decoration:none;box-sizing:border-box}
+/* a keyboard and a mouse: the answers are numbered, because 1 to 4 pick them */
+@media (hover:hover) and (pointer:fine){
+  .dz-opts{counter-reset:opt}
+  .dz-opts .opt{counter-increment:opt;position:relative}
+  .dz-opts .opt::after{content:counter(opt,arabic-indic);position:absolute;top:7px;inset-inline-start:12px;font:300 13px/1 Alexandria,var(--f-display);color:#9AA19C;pointer-events:none}
+  .dz-opts .opt.ok::after,.dz-opts .opt.right::after{color:rgba(246,244,238,.7)}
+  .la-os{counter-reset:lo}
+  .la-o{counter-increment:lo;position:relative}
+  .la-o::after{content:counter(lo,arabic-indic);position:absolute;top:6px;inset-inline-start:10px;font:300 12.5px/1 Alexandria,var(--f-display);color:#9AA19C;pointer-events:none}
+  .la-o.ok::after{color:rgba(246,244,238,.7)}
+}
 /* ================= a computer screen (owner, 14 Nov 2026, 07:24: «the layout looks like a mobile phone on the middle of my PC screen… Redesign it») =================
    From 1100px wide the pages stop being a phone column. Nothing here touches a phone or an upright tablet. */
 @media (min-width:1100px){
@@ -1588,7 +1611,9 @@ body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
   .lt .tun-road .tun-st li.here{font-size:24px}
   .lt .tun-road .tun-st li[class~=done],.lt .tun-road .tun-st li[class~=here],.lt .tun-road .tun-st li[class~=open]{cursor:pointer}
   .lt .tun-road>.tun-go{grid-column:1;grid-row:2;position:sticky;top:330px;bottom:auto;left:auto;right:auto;width:100%;max-width:340px;margin:44px 0 0;height:64px;font-size:20px}
-  .lt .tun-road>.tun-link{grid-column:1;grid-row:3;align-self:start;justify-self:start;margin-top:22px;position:sticky;top:440px}
+  .lt .tun-road>.tun-link.tun-top{top:26px;right:64px}
+  .lt .tun-door:not(.tun-list)>.tun-back{top:26px;right:64px}
+  .lt .tun-road>.tun-txt .tun-p{font-size:19px}
   .lt .tun-road::after{display:none}
 }
 }
@@ -1810,7 +1835,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794632908", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794637339", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4104,7 +4129,7 @@ function runDrill(d, lesson) {
     const p = page('dz-done lad-end', true);
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('final_all_right') : `حلّيت ${ar(got)} من ${ar(n)}`}</h1><p class="dz-p">${got === n ? 'هذي أسئلة بمستوى القدرات، وحلّيتها في الوقت.' : drT('final_some_wrong')}</p>`;
     if (stars === 3) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
-    dockBtn(TUN ? 'كمّل' : 'الدرس التالي', toGate, ['تدريب مفتوح', () => open(0)]);
+    dockBtn(TUN && TUN.next && !TUN.next(lesson) ? 'رجوع إلى الدروس' : 'الدرس التالي', toGate, ['تدريب مفتوح', () => open(0)]);   // the button says where it goes (owner, 14 Nov 2026)
     void rank;   // no rank pop-up here: the next door is the reward
   }
 
@@ -4115,18 +4140,21 @@ function runDrill(d, lesson) {
     paintTrack(1);
     const p = page('dz-drill');
     dockNone();
+    /* open training has no end of its own: a quiet button says how to stop, so nobody wonders */
+    const stop = ['إنهاء التدريب', () => { LT('open_end', { lesson: id, n: k }); toDoor(); }];
+    if (!limit) { dock.className = 'dock'; const e = h('button', 'btn lad-alt', stop[0]); e.onclick = () => { FX.play('tap'); stop[1](); }; dockIn.appendChild(e); }
     ask(p, make(lv, 2 + Math.floor(Math.random() * 4)), lv.t, lv.hints || {}, (res, fb) => {
       const ok = res !== 'miss' && res !== 'time';
       learn(sk(id, i), res); persist();
       if (ok) { fb.className = 'lad-fb dz-msg ok'; fb.textContent = res === 'fast' ? drT('fast') : drT('right'); setTimeout(() => !gone && open(k + 1, limit, got + 1), 800); }
       else if (res === 'time') setTimeout(() => !gone && open(k + 1, limit, got), 1600);
-      else dockBtn('التالي', () => open(k + 1, limit, got));
+      else dockBtn('التالي', () => open(k + 1, limit, got), limit ? null : stop);
     });
   }
   function reviewed(got, n) {
     const p = page('dz-done', true);
     p.innerHTML = `<div class="dz-ring">${SVG_OK}</div><h1 class="dz-h">${got === n ? drT('review_all_right') : drT('review_some_wrong')}</h1><p class="dz-p">${ar(got)} من ${ar(n)}</p>`;
-    dockBtn('تدريب مفتوح', () => open(0), [TUN ? 'رجوع' : 'الدرس التالي', toGate]);
+    dockBtn('تدريب مفتوح', () => open(0), [TUN ? 'رجوع إلى الدروس' : 'الدرس التالي', TUN ? toDoor : toGate]);   // «back» goes back (it used to open the next lesson's door)
   }
 
   /* where to start */
@@ -4807,7 +4835,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
    One door for everyone, one line of lessons.
      visitor:     lesson 1's door → lesson 1 → the gate (lesson 2, locked)
      subscriber:  the road (every lesson in order) → a lesson's door → the lesson → the next door
-   Links:  #lesson1 (door of lesson 1) · #restart (start lesson 1 from zero) · #open-all (subscriber: every lesson opens on this device) · #me (track.js) */
+   Links:  #login (the login window opens: sent to new subscribers) · #lesson1 (door of lesson 1) · #restart (start lesson 1 from zero) · #open-all (subscriber: every lesson opens on this device) · #me (track.js) */
 (function () {
   const C = window.AcademyCourses || {};
   const CFG = window.ACADEMY_CONFIG || {};
@@ -4824,7 +4852,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const waLink = msg => CFG.whatsapp ? `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}` : '';
-  const clearHash = () => history.replaceState(null, '', location.pathname + location.search);
+  const clearHash = () => history.replaceState(history.state, '', location.pathname + location.search);
 
   /* the course is swapped for the full one when a subscriber's key opens it: always read it fresh */
   const api = () => C[TUN].api;
@@ -4850,13 +4878,54 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const TICK = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   const HOLE = cls => `<div class="tun-hole ${cls || ''}" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b>${/shut/.test(cls || '') ? `<span class="tun-lock">${LOCK}</span>` : ''}</div>`;
 
-  function room(cls, back) {
+  /* ================= the way back (owner, 14 Nov 2026: «make sure no one feels stuck») =================
+     One rule everywhere: BACK goes to the screen he came from. The phone's back gesture, the browser's back button, Esc on a keyboard and the
+     button on the screen all do the same thing. Screens have a level: 0 the home screen (the landing page, the road, «no subscription»),
+     1 a lesson's door (or the offer opened from «no subscription»), 2 inside a lesson; a window on top (login, account, help) is one more step.
+     Going deeper adds one browser history entry (always from a tap, so the browser honours it); going up by a button takes it away again;
+     the browser's own back only tells us it happened. On a home screen, back leaves the site, as it should. */
+  let navN = (history.state && history.state.leena) || 0;   // our history entries behind the one showing
+  let level = 0, backFn = null, silent = false, skipPop = 0, ovSkip = 0;
+  const quiet = fn => { const was = silent; silent = true; try { fn(); } finally { silent = was; } };
+  const enter = (lv, fn) => { backFn = fn || null; if (!silent && lv > level) { try { history.pushState({ leena: ++navN }, ''); } catch (e) {} } level = lv; };
+  const consume = k => { if (k > 0 && navN >= k) { skipPop++; history.go(-k); } };
+  /* a move up made on the page itself (a back button, leaving or finishing a lesson): do it, then drop the history entries it leaves behind */
+  const up = fn => { if (silent) return fn(); const was = level; quiet(fn); if (was > level) consume(was - level); };
+  const goBack = () => { if (backFn) up(backFn); };
+  const overlay = () => document.querySelector('.dz-help.on, .dz-help:not(.bye)') || document.querySelector('.modal.acct');
+  const closeOverlay = o => { const x = o.querySelector('.dz-help-x, .acct-x'); if (x) x.click(); else o.remove(); };
+  addEventListener('popstate', e => { const n = (e.state && e.state.leena) || 0, back = n < navN; navN = n;
+    if (skipPop) { skipPop--; return; }
+    if (!back) return;                                                   // the forward button: nothing of ours to bring back
+    const o = overlay(); if (o) { ovSkip++; LT('nav_back', { val: 'window' }); return closeOverlay(o); }    // a window is open: back closes it and nothing else
+    if (backFn) { LT('nav_back', { val: level === 2 ? 'lesson' : 'door' }); return quiet(backFn); }
+    history.go(-(n + 1)); });                                            // a home screen: he wants out of the site
+  /* windows on top open and close in other files (auth.js, drill.js): watch for them here so that back closes them, and closing them spends the entry */
+  new MutationObserver(ms => ms.forEach(m => { const is = x => x.nodeType === 1 && (x.classList.contains('dz-help') || (x.classList.contains('modal') && x.classList.contains('acct')));
+    m.addedNodes.forEach(x => { if (is(x)) { try { history.pushState({ leena: ++navN }, ''); } catch (e) {} } });
+    m.removedNodes.forEach(x => { if (is(x)) { if (ovSkip) ovSkip--; else consume(1); } }); })).observe(document.body, { childList: true });
+  /* a keyboard (a computer): Esc = back or close · Enter = the main button · 1 to 4 = the answers */
+  addEventListener('keydown', e => { if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+    const t = e.target, typing = t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName), o = overlay();
+    const seen = x => { if (!x || x.disabled) return false; const r = x.getBoundingClientRect(), c = getComputedStyle(x); return r.width > 0 && r.bottom > 0 && r.top < innerHeight && c.visibility !== 'hidden' && c.display !== 'none'; };   // not opacity: a button still fading in is already his to press
+    if (e.key === 'Escape') { if (o) closeOverlay(o); else if (backFn) goBack(); return; }
+    if (typing) return;
+    const d = '1234'.indexOf(e.key) + 1 || '١٢٣٤'.indexOf(e.key) + 1;
+    if (d && !o) { const os = [...document.querySelectorAll('.dz-opts .opt')].filter(seen), ls = os.length ? os : [...document.querySelectorAll('.la-os .la-o')].filter(seen); if (ls[d - 1]) { e.preventDefault(); ls[d - 1].click(); } return; }
+    if (e.key === 'Enter' || e.key === ' ') { if (t && /^(BUTTON|A|SUMMARY)$/.test(t.tagName) && t !== document.body) return;   // a focused button answers for itself
+      const main = o ? o.querySelector('.dz-help-x') : [...document.querySelectorAll('.dock .dock-in .cta, #app .tun .tun-go, .la-dock:not(.off) .ld-go')].find(seen);
+      if (main) { e.preventDefault(); main.click(); } } });
+  const say = msg => { document.querySelectorAll('.toast').forEach(x => x.remove()); const x = el('div', 'toast', esc(msg)); x.setAttribute('role', 'status'); document.body.appendChild(x); setTimeout(() => x.remove(), 2800); };
+  const CHEV = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';   // points right: «back» in a right-to-left page
+
+  function room(cls, back, label) {
     document.querySelectorAll('.modal:not(.acct),.dock').forEach(m => m.remove());
     app.innerHTML = ''; app.className = 'academy in-room'; app.style.removeProperty('--theme'); document.body.classList.add('dz', 'lt'); bar('#F6F4EE');   // in-room: on a computer a room may be as wide as the screen (style.css)
     document.documentElement.style.removeProperty('--brand-base'); window.scrollTo(0, 0);
     document.body.classList.toggle('ld-on', /tun-land/.test(cls));   // the landing page keeps its button on screen: the footer under it needs room
     const w = el('div', 'tun ' + cls); w.insertAdjacentHTML('beforeend', '<span class="tun-mark">أكاديمية لينا</span>');
-    if (back) { const x = el('button', 'dz-btn tun-x', X); x.setAttribute('aria-label', 'رجوع'); x.onclick = back; w.appendChild(x); }
+    if (back) { const x = label ? el('button', 'tun-x tun-back', CHEV + `<span>${label}</span>`) : el('button', 'dz-btn tun-x', X);   // a back button says where it goes
+      x.setAttribute('aria-label', label ? 'رجوع إلى ' + label : 'رجوع'); x.onclick = back; w.appendChild(x); }
     app.appendChild(w); return w;
   }
   const account = (w, cls) => {   // «عندي حساب» for a visitor, «حسابي» once logged in
@@ -4870,7 +4939,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* Owner, 14 Nov 2026: no free lesson. A visitor sees the page with the plans and nothing else; lessons open for subscribers only.
      Everything a visitor's trial needed (the door question, part one, «احفظ مكانك», the gate) is still here behind this switch, in case he brings it back. */
   const TRIAL = CFG.trial === true;   // set by build.py; off on the live site
-  const play = l => { if (!TRIAL && !subscriber()) return visitor(); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l); };
+  const play = l => { if (!TRIAL && !subscriber()) return visitor(); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l);
+    enter(2, () => { const x = document.querySelector('.dz-top .dz-btn[aria-label="خروج"]'); if (x) x.click(); else leave(l); }); };   // back inside a lesson = its own «خروج»: his place is kept
 
   /* ---------- a lesson's door: its name and how long it takes ---------- */
   function door(l, prev) {
@@ -4879,7 +4949,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (!subscriber() && (l.id !== first().id || done(l) || partDone(l))) return visEnd();
     if (!ready(l)) return road();
     const m = mem(l), going = !!(m && m.started && !m.finished && (m.lv || m.pts));
-    const w = room('tun-door', subscriber() ? road : null);
+    const w = room('tun-door', subscriber() ? goBack : null, 'الدروس');
+    enter(subscriber() ? 1 : 0, subscriber() ? () => road() : null);
     const L = lessons(), n = L.indexOf(l) + 1, learn = l.drill.learn, isFirst = n === 1;
     const trip = `<div class="tun-trip" aria-hidden="true"><div class="tr-bar">${L.map((x, i) => `<i class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}"></i>`).join('')}</div><div class="tr-ends"><span>${n === 1 ? 'أنت هنا' : `${ar(n)} من ${ar(L.length)}`}</span><span>اختبار القدرات</span></div></div>`;
     const know = learn && learn.length ? `<p class="tun-k">بعد هذا الدرس بتعرف:</p><ol class="tun-learn">${learn.map(x => `<li><b></b>${esc(x)}</li>`).join('')}</ol>` : '';
@@ -4961,7 +5032,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const visitor = () => lockedOut() && !sawOffer ? noAccess() : landing();
   function noAccess() {
     const A = window.LeenaAuth, u = A.user || {}, acc = (A.access || []).find(a => a.course === TUN), failed = !!A.failed;
-    LT('no_access', { val: failed ? 'failed' : acc ? 'ended' : 'none', once: true });
+    LT('no_access', { val: failed ? 'failed' : acc ? 'ended' : 'none', once: true }); enter(0);
     const w = room('tun-door tun-none'), day = d => { const [y, m, dd] = String(d).split('-'); return ar(`${+dd}/${+m}/${y}`); };
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">${u.name ? 'أهلًا ' + esc(u.name) : 'دخلت إلى حسابك'}</p><i class="tun-rule"></i>
       <h1 class="tun-h big stop">${failed ? 'ما قدرنا نقرأ<br>اشتراكك' : acc ? 'اشتراكك<br>انتهى' : 'حسابك بلا<br>اشتراك'}</h1>
@@ -4977,6 +5048,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   function landing() {   // fifth build, 14 Nov 2026: the name and four words, a problem solved by the visitor on the page, then the plans, the bill, WhatsApp.
     // One button, and it follows him: «جرّب بنفسك» → the problem (the button steps aside there) → «اشترك الآن» → the price → «اشترك على واتساب»
     LT('land_view', { once: true });
+    if (lockedOut() && sawOffer) enter(1, () => { sawOffer = false; noAccess(); }); else enter(0);   // opened from «تفاصيل الاشتراك»: back returns to the account's screen
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
     const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
@@ -5026,6 +5098,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
     tryIt(w.querySelector('.la-try'), () => { solved = true; draw(); });
     draw();
+    if (wantLogin && window.LeenaAuth) { const A = window.LeenaAuth; wantLogin = false; A.whenReady(() => { if (!A.user && !document.querySelector('.modal.acct')) A.openLogin('user'); }); }
     account(w, 'tun-link la-acc-top');   // shown on a computer only (style.css): no stray thumbs there, and a subscriber should not have to scroll to the end to log in
     account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
     /* how far down do they get? one event per section, the first time a third of it is on screen */
@@ -5179,14 +5252,17 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">القدرات العامة</p><i class="tun-rule"></i><h1 class="tun-h big stop">الكمّي</h1></div><ol class="tun-st">${L.map(l => { const s = st(l);
       return `<li class="${s}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : ''}</li>`; }).join('')}</ol>`);
     { const ol = w.querySelector('.tun-st'); ol.style.setProperty('--rows', Math.ceil(L.length / 2)); ol.classList.toggle('odd', L.length % 2 === 1); }   // on a computer the lessons stand in two columns (style.css)
-    w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l);
-      if (s === 'done' || s === 'here' || s === 'open') li.onclick = () => { LT('tunnel_enter', { val: 'pick', lesson: l.id }); door(l); }; });
-    account(w, 'tun-link');
+    enter(0);
+    w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l), n = i + 1;
+      if (s === 'done' || s === 'here' || s === 'open') { li.tabIndex = 0; li.setAttribute('role', 'button'); li.onclick = () => { LT('tunnel_enter', { val: 'pick', lesson: l.id }); door(l); };
+        li.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); li.click(); } }; }
+      else li.onclick = () => { LT('road_locked', { val: s, lesson: l.id }); say(s === 'soon' ? 'هذا الدرس قريبًا.' : `يفتح بعد ما تخلّص الدرس ${ar(n - 1)}.`); }; });   // a tap on a closed lesson is answered, never ignored
+    account(w, 'tun-link tun-top');   // at the top, where it is found without scrolling past 27 lessons
     if (nx) {
-      const started = L.some(l => { const m = mem(l); return m && (m.started || m.finished); });
-      const go = el('button', 'tun-go', started ? 'كمّل' : 'ادخل'); go.onclick = () => { LT('tunnel_enter', { val: 'road' }); door(nx); };
+      const m = mem(nx), going = !!(m && m.started && !m.finished && (m.lv || m.pts)), n = L.indexOf(nx) + 1;
+      const go = el('button', 'tun-go', `${going ? 'كمّل' : 'ابدأ'} الدرس ${ar(n)}`); go.onclick = () => { LT('tunnel_enter', { val: 'road' }); door(nx); };   // the button says which lesson it opens
       w.appendChild(go);
-    }
+    } else w.querySelector('.tun-txt').insertAdjacentHTML('beforeend', '<p class="tun-p">أكملت الدروس كلها. تقدر تعيد أي درس.</p>');
     const here = w.querySelector('.tun-st li.here'); if (here && here.offsetTop > innerHeight * 0.6) here.scrollIntoView({ block: 'center' });
   }
 
@@ -5194,19 +5270,20 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   function leave(l) {
     l = l && byId(l.id);
     if (!subscriber()) return partDone(first()) && !done(first()) ? win(first()) : door();
-    l && !done(l) ? door(l) : road();
+    up(() => { l && !done(l) ? door(l) : road(); });
   }
+  /* what comes next: for an account with every lesson open, the lesson after this one (he may have started at lesson 10); for everyone else, the first lesson not yet finished */
+  const nextAfter = l => { const L = lessons(); return (openAll() && l ? L.slice(L.indexOf(l) + 1).find(x => ready(x) && !done(x)) : null) || nextUp() || null; };
   function after(l) {
     if (!subscriber()) return visEnd();
     l = l && byId(l.id);
-    const nx = nextUp();
-    if (nx && l) { LT('tunnel_next', { lesson: nx.id }); return door(nx, l); }
-    road();
+    const nx = nextAfter(l);
+    up(() => { if (nx && l) { LT('tunnel_next', { lesson: nx.id }); return door(nx, l); } road(); });
   }
-  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave };
+  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave, next: l => subscriber() ? nextAfter(l && byId(l.id)) : true };
 
   /* ---------- home: where each person lands ---------- */
-  let waited = false, landPreview = false;
+  let waited = false, landPreview = false, wantLogin = false;
   function home() {
     if (landPreview && document.querySelector('#app .tun-land')) return landing();   // the #land preview stays put when the account code redraws
     const h = location.hash;
@@ -5215,6 +5292,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       LT('restart_lesson'); return subscriber() ? door(first()) : door();
     }
     if (h === '#open-all') { clearHash(); try { localStorage.setItem('leena-open-all', '1'); } catch (e) {} LT('open_all'); }
+    if (h === '#login') { clearHash(); wantLogin = true; }   // the link in a subscriber's welcome message: the login window opens by itself
     if (h === '#land') { clearHash(); landPreview = true; return landing(); }   // preview: the landing page for anyone, even a subscriber
     if (h === '#lesson1') { clearHash(); LT('direct_lesson'); if (!subscriber()) return door(); }
     /* a returning subscriber: wait a moment for his account instead of flashing the visitor's door */
@@ -5305,13 +5383,14 @@ window.__leenaAuth = function () {
     document.body.appendChild(m); return { m, box };
   }
   const LT = (e, o) => { try { if (window.LeenaTrack) window.LeenaTrack(e, o); } catch (x) {} };
+  const WA = (window.ACADEMY_CONFIG || {}).whatsapp, wa = msg => `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;   // a way to a person from every account window: nobody is left stuck at a login
   function openLogin(mode) {
     LT('login_open');
     if (A.payOn && mode !== 'user') return A.join('login');   // phone + WhatsApp code; the old username form stays for older accounts
     const { m, box } = modal(`<h2>تسجيل الدخول</h2><p class="acct-sub">اكتب اسم المستخدم وكلمة المرور اللي أرسلناها لك.</p>
       <form class="acct-form"><label>اسم المستخدم<input id="lg-user" autocomplete="username" autocapitalize="none" spellcheck="false" dir="ltr" required></label>
       <label>كلمة المرور<input id="lg-pass" type="password" autocomplete="current-password" dir="ltr" required></label>
-      <p class="acct-err" hidden></p><button class="play-btn acct-go" type="submit"><span>دخول</span></button></form>`);
+      <p class="acct-err" hidden></p><button class="play-btn acct-go" type="submit"><span>دخول</span></button></form>${WA ? `<a class="acct-help" target="_blank" rel="noopener" href="${wa('السلام عليكم، ما أقدر أدخل حسابي في أكاديمية لينا.')}">نسيت بياناتك؟ راسلنا على واتساب</a>` : ''}`);
     const f = box.querySelector('form'), err = box.querySelector('.acct-err'), go = box.querySelector('.acct-go');
     setTimeout(() => box.querySelector('#lg-user').focus(), 50);
     f.onsubmit = async e => {
@@ -5334,6 +5413,7 @@ window.__leenaAuth = function () {
     const who = A.user.phone ? `<bdi dir="ltr">+${esc(A.user.phone)}</bdi>` : `<bdi dir="ltr">${esc(A.user.username)}</bdi>`;
     const { m, box } = modal(`<h2>حسابي</h2><p class="acct-sub">${esc(A.user.name || '')} · ${who}</p><ul class="acct-list">${rows}</ul>
       <div class="acct-acts">${A.payOn && soon ? `<button class="play-btn acct-renew"><span>${ending ? 'جدّد الاشتراك' : 'اشترك'}</span></button>` : ''}
+      ${WA ? `<a class="ghost-btn acct-wa" target="_blank" rel="noopener" href="${wa('السلام عليكم، حسابي في أكاديمية لينا: ' + A.user.username + '\nعندي سؤال.')}"><span>مساعدة على واتساب</span></a>` : ''}
       <button class="ghost-btn acct-out"><span>تسجيل الخروج</span></button></div>`);
     box.querySelector('.acct-out').onclick = () => { m.remove(); logout(); };
     const rb = box.querySelector('.acct-renew'); if (rb) rb.onclick = () => { m.remove(); A.join('renew'); };

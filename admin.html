@@ -89,7 +89,7 @@ a.wa{color:var(--accent);font-weight:600;font-size:13px}
 <script>
 const CFG = {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "pay": false};
 const COURSES = [{ id: 'qudurat-quant', name: 'القدرات: الكمّي' }, { id: 'qudurat-verbal', name: 'القدرات: اللفظي' }];
-const SITE = 'https://leena-academy.pages.dev/';
+const SITE = (window.ACADEMY_SITE || 'https://leena.syyad.net/') + '#login';   // the link a subscriber is sent: it opens the login window itself (he does not have to look for it), on the same address as the ads so he stays logged in there
 const TITLES = {"خالد": "فهد", "نورة": "سارة", "write": "تغيّر ← غير كافية", "fs1": "قوانين الأسس", "fs2": "الجذور", "fs3": "حيل الحساب الذهني", "fs4": "الفرق بين مربعين", "fs5": "الأعداد العشرية", "fs6": "آخر رقم", "pc1": "النسبة المئوية", "pc2": "الخصم والربح", "pc3": "التناسب والتقسيم", "cm1": "قواعد المقارنة", "al1": "المعادلات السريعة", "al2": "ترجمة الكلام والأعمار", "al3": "المتطابقات", "nm1": "ترتيب العمليات والسالب", "nm2": "القسمة والعوامل", "nm3": "ألغاز الأرقام", "fr1": "تبسيط الكسور ومقارنتها", "fr2": "عمليات الكسور", "mo1": "السرعة والمسافة", "mo2": "العمل والزمن", "pt1": "المتتابعات", "dt1": "المتوسطات", "dt2": "الاحتمالات", "ge1": "الزوايا والمثلثات", "ge2": "المحيط والمساحة", "ge3": "المجسمات والإحداثيات", "cm2": "مقارنات مختلطة", "mul": "add", "circle": "¹", "under": "(", "2": "3", "١٠": "٥", "٥": "`5⁸`", "٨": "٢", "٣": "٤", "١٤": "١٠", "٢٤٥٠": "٢٥٠٠", "٥٢٢٥": "٥٦٢٥", "٤٧٠٠": "٤٧٤٧", "٣٦٠٠": "٣٧٠٠", "٤٧٤٧": "٤٦٥٣", "١": "١٧٧٥", "٩٩٩٩": "١٠٠٠١", "٤": "٤٠٠", "٩": "٤٠", "١١٦٣": "١١٦١", "٠": "٥", "٢": "٤", "٢٤": "٣٦", "cmp": "35 × 80 ÷ 100", "٦٠٠": "٥٠٠", "جوال": "ساعة", "٤٢٠": "٧٨٠", "٣٨٤": "٤٠٠", "٣٥٠": "٣٦٠", "أقلام": "قلم", "كتب": "كتاب", "علب": "علبة", "دفاتر": "دفتر", "تذاكر": "تذكرة", "٢٠٠": "١٥٠", "٤٥": "٣١", "٤٠": "٨٠", "vary": "س²", "٧": "٤٫٢", "٦": "٧", "١٣": "٧", "big": "small", "mid": "big", "٣١": "٢٥", "٤٤": "٦٢", "٢٥": "٢٤", "٣٤": "٦٤", "٩٦٠٤": "٩٦١٦", "٧٠": "١٠", "is": "div", "زوجي": "فردي", "٢٤٣": "٣٤٤", "١٤٢": "٦", "الآحاد": "العشرات", "٥٠": "٤٩", "٠٢٥٨": "٢٠٥٨", "frac": "84 ÷ 126", "٧٢": "٩٠", "الأحد": "الاثنين", "١٥٥": "٢٧٥", "٢٤٠": "١٢٠", "الجمعة": "السبت", "day": "الخميس", "١٠٤": "٩٩", "٣٥": "٣٧", "٨٠٠": "٨٢٠", "السبت": "الأحد", "٢٢": "٣٤", "٨٠": "٧٨", "١٠٥": "١٠٦", "حمرا": "زرقا", "بيضا": "سودا", "خضرا": "صفرا", "المطر": "ما تمطر", "الفوز": "ما يفوز", "النجاح": "ما ينجح", "صورة": "كتابة", "٥٦": "٢٨", "١٢٠": "٦٠", "١٣٠": "٥٠", "٢١": "١٥", "٧٥": "١٠٥", "مربع": "طول ضلعه", "مستطيل": "طوله وعرضه", "دائرة": "نصف قطرها", "مثلث": "كل أضلاعه", "١٢": "١٤٤", "pi": "(14 ÷ 2)² × ط", "١٠٨": "٥٤", "حجمه": "حجمه", "مكعب": "صندوق"};
 const app = document.getElementById('app');
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -173,7 +173,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794632908859;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794637339784;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -358,7 +358,7 @@ function coursePicker(access) {
 }
 function message(name, username, password, access) {
   const lines = access.map(a => `• ${nameOf(a.course)}: حتى ${fmt(a.expires)}`).join('\n');
-  return `أهلًا ${name} 👋\nحسابك في أكاديمية لينا جاهز:\n\nالرابط: ${SITE}\nاسم المستخدم: ${username}\nكلمة المرور: ${password}\n\nدوراتك:\n${lines}\n\nادخل من زر «دخول المشتركين» أعلى الصفحة.`;
+  return `أهلًا ${name} 👋\nحسابك في أكاديمية لينا جاهز:\n\nالرابط: ${SITE}\nاسم المستخدم: ${username}\nكلمة المرور: ${password}\n\nدوراتك:\n${lines}\n\nافتح الرابط، واكتب اسم المستخدم وكلمة المرور.`;
 }
 function result(view, title, text) {
   const c = document.createElement('div'); c.className = 'card ok';
