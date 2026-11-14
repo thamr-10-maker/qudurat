@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>أكاديمية لينا | قدرات</title>
-<meta name="description" content="تحضير لاختبار القدرات، القسم الكمّي. تتدرّب بالحل، وتعرف سبب كل خطأ فورًا. اشتراكات من ٣ أيام إلى ٣ أشهر.">
+<meta name="description" content="تحضير لاختبار القدرات، القسم الكمّي. تتدرّب بالحل، وتعرف سبب كل خطأ فورًا. اشتراك شهر، وتسترجع مبلغك خلال ٣ أيام بدون سبب.">
 <meta name="theme-color" content="#0D5A4A">
 <meta property="og:type" content="website">
 <meta property="og:title" content="أكاديمية لينا | قدرات">
-<meta property="og:description" content="تدرّب على كمّي القدرات بالحل، واعرف سبب كل خطأ فورًا. اختر المناسب لك وابدأ اليوم.">
+<meta property="og:description" content="تدرّب على كمّي القدرات بالحل، واعرف سبب كل خطأ فورًا. وإن لم يعجبك، استرجع مبلغك خلال ٣ أيام.">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
@@ -1507,6 +1507,10 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .la-fq summary::after{content:"";flex:none;width:8px;height:8px;margin:0 6px 4px;border:solid #7A847F;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);transition:transform .2s}
 .la-fq[open] summary::after{transform:rotate(-135deg);margin-bottom:-4px}
 .la-fq p{margin:0 0 20px;font:300 16.5px/1.85 Alexandria,var(--f-display);color:#3D4A44}
+/* «كلّمنا»: a quiet second button. The black one stays the order */
+.la-talk{margin:26px 0 0;display:flex;align-items:center;justify-content:center;min-height:58px;border-radius:18px;border:1.5px solid #16201B;color:#16201B;font:500 18px/1 Alexandria,var(--f-display);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:background .2s,transform .14s}
+.la-talk:active{transform:scale(.98);background:#EDE9DF}
+.la-talk:focus-visible{outline:2px solid #16201B;outline-offset:3px}
 .la-foot{padding:44px 0 0;display:flex;justify-content:center}
 .lt .tun-land .ld-acc{min-height:44px;animation:none}
 .la-dock.off{opacity:0;visibility:hidden}
@@ -1517,29 +1521,9 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 @media (max-height:780px){.la-try{margin-top:18px}.la-ask{margin-top:12px}.la-eq{height:52px}.la-hero{padding-top:30px}.la-logo{width:42px;height:42px}.la-h1{margin-top:14px;font-size:clamp(34px,11vw,44px)}.la-lede{margin-top:0;font-size:17px}.la-pts{padding-top:26px}.la-pts li{line-height:1.75}}
 @media (max-height:600px){.la-hero{padding-top:20px}.la-logo{width:36px;height:36px}.la-h1{font-size:clamp(30px,10vw,38px)}.la-pts{padding-top:16px}.la-pts li{font-size:22px;line-height:1.6}}
-/* the plans, the private hours and the bill (owner, 14 Nov 2026) */
-.la-plans{margin:24px 0 0;display:grid;gap:10px}
-.la-plan{display:flex;align-items:center;gap:14px;width:100%;min-height:72px;padding:0 20px;border-radius:20px;border:1px solid #E4E0D6;background:#fff;box-shadow:0 1px 0 #E4E0D6;cursor:pointer;font-family:Alexandria,var(--f-display);color:#16201B;text-align:right;-webkit-tap-highlight-color:transparent;transition:border-color .15s,box-shadow .15s}
-.la-plan i{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid #C9C4B6;box-sizing:border-box;transition:border .15s}
-.la-plan .nm{flex:1;font-weight:900;font-size:22px}
-.la-plan .pr{font-weight:300;font-size:16px;color:#6B756F;white-space:nowrap}
-.la-plan .pr b{font-weight:900;font-size:26px;color:#16201B;margin-inline-end:4px}
-.la-plan[aria-checked=true]{border-color:#16201B;box-shadow:0 0 0 1px #16201B}
-.la-plan[aria-checked=true] i{border:7px solid #16201B}
-.la-tutor{margin:26px 0 0;padding:22px 0 0;border-top:1px solid #E4E0D6;display:flex;align-items:center;gap:14px}
-.la-tutor .tx{flex:1}
-.la-tutor h3{margin:0;font:900 22px/1.4 Alexandria,var(--f-display);color:#16201B}
-.la-tutor p{margin:4px 0 0;font:300 15px/1.6 Alexandria,var(--f-display);color:#6B756F}
-.la-step{flex:none;display:flex;align-items:center;gap:6px}
-.la-step button{width:48px;height:48px;border-radius:50%;border:1px solid #E4E0D6;background:#fff;box-shadow:0 1px 0 #E4E0D6;font:400 26px/1 Alexandria,var(--f-display);color:#16201B;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.la-step button:disabled{opacity:.35;cursor:default}
-.la-step output{min-width:44px;text-align:center;font:900 26px/1 Alexandria,var(--f-display);color:#16201B}
-.la-bill{margin:26px 0 0;padding:20px 20px 18px;border-radius:22px;background:#fff;border:1px solid #E4E0D6;box-shadow:0 1px 0 #E4E0D6}
-.la-bill>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;font:300 16.5px/1.6 Alexandria,var(--f-display);color:#3D4A44}
-.la-bill>div b{font-weight:500;color:#16201B;white-space:nowrap}
-.la-bill>.sum{margin-top:8px;padding-top:14px;border-top:1px solid #E4E0D6;font-weight:900;font-size:19px;color:#16201B}
-.la-bill>.sum b{font-weight:900;font-size:24px}
-.la-bill>p{margin:12px 0 0;font:300 14.5px/1.75 Alexandria,var(--f-display);color:#6B756F}
+/* the one subscription: what it holds, in the same light lines as the first screen (owner, 14 Nov 2026, 06:09) */
+.la-incl{list-style:none;margin:26px 0 0;padding:0}
+.la-incl li{font:300 clamp(19px,5.6vw,22px)/2.05 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
 .lt .la-dock a.ld-go{display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;margin-inline:auto}
 
 /* ================= academy shell ================= */
@@ -1758,7 +1742,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794612801", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794626882", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4840,11 +4824,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
 
   /* ---------- the landing page: only for visitors who come from an ad (?src=…-ad) or #land ---------- */
   const MONTHS = 1, PERIOD = MONTHS === 1 ? 'شهر' : MONTHS === 2 ? 'شهرين' : `${String(MONTHS).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])} أشهر`;   // how long a subscription opens the course (owner, 13 Nov 2026: one month)
-  /* what is sold (owner, 14 Nov 2026): four lengths of access, and private hours with a teacher that can be added. He charges on WhatsApp and
-     arranges the hours himself, outside the site: there is no calendar here. Plain prices only: no «وفّر», nothing crossed out. */
-  const PLANS = [['d3', '٣ أيام', 29], ['w1', 'أسبوع', 59], ['m1', 'شهر', 129], ['m3', '٣ أشهر', 299]], HOUR = 50, MAX_H = 20;
-  const hrs = n => n === 1 ? 'ساعة واحدة' : n === 2 ? 'ساعتان' : n <= 10 ? `${ar(n)} ساعات` : `${ar(n)} ساعة`;
-  const PRICE = 129;   // a plain price: no crossed-out number, no «opening price» (owner, 13 Nov 2026; a shown discount needs a Commerce licence)
+  /* what is sold (owner, 14 Nov 2026, 06:09): ONE subscription. A month for 249 riyals, with one hour with a private teacher and his follow-up of the
+     student's progress, and the money back within three days for no reason at all. No other lengths, no added hours. He charges on WhatsApp and
+     arranges the hour himself, outside the site: there is no calendar here. A plain price: no «وفّر», nothing crossed out (a shown discount needs a Commerce licence). */
+  const PRICE = 249, BACK = 3;
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const fromAsk = () => /^ad\d$/.test(new URLSearchParams(location.search).get('src') || '');   // an ad whose video already showed a question: no page to read, straight into the first question (docs/AD_CAMPAIGN_PLAN.md)
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
@@ -4903,13 +4886,14 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     ask(0);
   }
   function landing() {   // fifth build, 14 Nov 2026: the name and four words, a problem solved by the visitor on the page, then the plans, the bill, WhatsApp.
-    // One button, and it follows him: «جرّب بنفسك» → the problem (the button steps aside there) → «اختر المناسب لك» → the plans → «أكمل على واتساب»
+    // One button, and it follows him: «جرّب بنفسك» → the problem (the button steps aside there) → «اشترك الآن» → the price → «اشترك على واتساب»
     LT('land_view', { once: true });
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
     const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
-      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اختر المناسب لك واضغط «أكمل على واتساب». نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
-      ['كيف تكون ساعات المعلّم الخاص؟', 'حصص فردية. نرتّب الموعد معك على واتساب.']];
+      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اضغط «اشترك على واتساب». نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
+      ['كيف تكون ساعة المعلّم؟', 'حصة فردية، نرتّب موعدها معك على واتساب. وبعدها يتابع تقدّمك.'],
+      ['كيف أسترجع مبلغي؟', `راسلنا على واتساب خلال ${ar(BACK)} أيام من الدفع، ونعيده كاملًا.`]];
     const PTS = ['تأسيس', 'تدريب', 'قياس مستوى', 'دعم معلّمين سعوديين'];   // four of the mountain film's points, a word or two each (owner, 14 Nov 02:18: «a lot of words. Be elegant.»)
     w.insertAdjacentHTML('beforeend',
       `<header class="la-hero"><svg class="la-logo" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="110" fill="#16201B"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/><path d="M-62 10 C-62 92 62 92 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/></svg>
@@ -4921,41 +4905,36 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
         <p class="la-p">لهذا لا نعطيك إجابات تحفظها. تتدرّب على الفكرة بأرقام جديدة في كل مرة، حتى تصير لك.</p></section>
       <section class="la-sec" data-sec="map"><h2 class="la-h2">${two('الكمّي كاملًا،', `في ${N} درسًا.`)}</h2>
         <p class="la-p">من قوانين الأسس والكسور والنِّسب، إلى الهندسة والاحتمالات.<br>كل درس من ${ar(10)} إلى ${ar(20)} دقيقة.</p></section>
-      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('اختر المناسب لك،', 'وابدأ اليوم.')}</h2>
-        <div class="la-plans" role="radiogroup" aria-label="مدة الاشتراك">${PLANS.map(([id, nm, pr]) => `<button type="button" class="la-plan" role="radio" aria-checked="false" data-id="${id}"><i></i><span class="nm">${nm}</span><span class="pr"><b>${ar(pr)}</b> ريال</span></button>`).join('')}</div>
-        <p class="la-note">كل مدة تفتح الدروس الـ${N} كلها والتدريب المفتوح. دفعة واحدة، بلا تجديد تلقائي.</p>
-        <div class="la-tutor"><div class="tx"><h3>معلّم خاص</h3><p>اختياري. ${ar(HOUR)} ريالًا للساعة.</p></div>
-          <div class="la-step"><button type="button" class="dn" aria-label="ساعة أقل" disabled>−</button><output aria-live="polite">—</output><button type="button" class="up" aria-label="ساعة أكثر">+</button></div></div>
-        <div class="la-bill" hidden></div>
-        <p class="la-note">لا استرجاع بعد أن تبدأ الدروس أو تحضر ساعتك. قبل ذلك، تسترجع المبلغ خلال ${ar(7)} أيام من الدفع. <a href="refund.html">سياسة الاسترجاع</a></p></section>
+      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('شهر كامل،', `بـ${ar(PRICE)} ريال.`)}</h2>
+        <ul class="la-incl"><li>الدروس كلها والتدريب المفتوح</li><li>ساعة مع معلّم خاص</li><li>ومتابعة منه لتقدّمك</li></ul>
+        <p class="la-note">دفعة واحدة، بلا تجديد تلقائي.</p></section>
+      <section class="la-sec" data-sec="back"><h2 class="la-h2">${two('ما أعجبك؟', 'استرجع مبلغك.')}</h2>
+        <p class="la-p">خلال ${ar(BACK)} أيام من الدفع، بدون أي سبب.</p>
+        <p class="la-note"><a href="refund.html">سياسة الاسترجاع</a></p></section>
       <section class="la-sec" data-sec="ask"><h2 class="la-h2">قد تسأل.</h2>
         <div class="la-faq">${FAQ.map(([q, a2]) => `<details class="la-fq"><summary>${q}</summary><p>${a2}</p></details>`).join('')}</div></section>
+      <section class="la-sec" data-sec="talk"><h2 class="la-h2">${two('سؤال آخر؟', 'كلّمنا.')}</h2>
+        <a class="la-talk" target="_blank" rel="noopener" href="${waLink('السلام عليكم، عندي سؤال عن أكاديمية لينا.')}">كلّمنا على واتساب</a></section>
       <footer class="la-foot" data-sec="end"></footer>`);
-    /* the order: one length of access, and as many private hours as he likes. The bill is always the truth of what the button will send */
-    let pick = null, hours = 0, solved = false, at = '';
-    const plans = w.querySelector('[data-sec=plan]'), trySec = w.querySelector('[data-sec=try]'), bill = w.querySelector('.la-bill'), out = w.querySelector('.la-step output'), dn = w.querySelector('.la-step .dn'), up = w.querySelector('.la-step .up');
-    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'جرّب بنفسك'), micro = el('p', 'la-micro', 'من ٢٩ ريال'.replace('٢٩', ar(PLANS[0][2])));
+    /* one subscription, so nothing to choose: the button's last step is the order itself, sent on WhatsApp */
+    let solved = false, at = '';
+    const plans = w.querySelector('[data-sec=plan]'), trySec = w.querySelector('[data-sec=try]');
+    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'جرّب بنفسك'), micro = el('p', 'la-micro');
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
-    const total = () => (pick ? pick[2] : 0) + hours * HOUR;
-    /* where he is: 'top' the problem is still below the screen · 'try' he is at the problem and has not solved it · 'plans' after it · 'send' a plan is chosen */
-    const stage = () => { if (pick) return 'send'; if (solved) return 'plans'; const r = trySec.getBoundingClientRect(); return r.top > innerHeight * .55 ? 'top' : r.bottom > innerHeight * .5 ? 'try' : 'plans'; };
-    const message = () => ['السلام عليكم، أبغى أشترك في أكاديمية لينا.', `الاشتراك: ${pick[1]} (${ar(pick[2])} ريال)`].concat(hours ? [`معلّم خاص: ${hrs(hours)} (${ar(hours * HOUR)} ريال)`] : [], [`الإجمالي: ${ar(total())} ريال`]).join('\n');
+    /* where he is: 'top' the problem is still below the screen · 'try' he is at the problem and has not solved it · 'plans' after it · 'send' the price is on the screen (or behind him) */
+    const stage = () => { if (plans.getBoundingClientRect().top < innerHeight * .6) return 'send'; if (solved) return 'plans';
+      const r = trySec.getBoundingClientRect(); return r.top > innerHeight * .55 ? 'top' : r.bottom > innerHeight * .5 ? 'try' : 'plans'; };
+    const message = () => `السلام عليكم، أبغى أشترك في أكاديمية لينا.\nاشتراك شهر: ${ar(PRICE)} ريال، مع ساعة المعلّم والمتابعة.`;
     const draw = () => {
-      w.querySelectorAll('.la-plan').forEach(b => b.setAttribute('aria-checked', String(!!pick && b.dataset.id === pick[0])));
-      out.textContent = hours ? ar(hours) : '—'; dn.disabled = hours <= 0; up.disabled = hours >= MAX_H;
-      bill.hidden = !pick;
-      if (pick) bill.innerHTML = `<div><span>اشتراك ${pick[1]}</span><b>${ar(pick[2])} ريال</b></div>${hours ? `<div><span>معلّم خاص · ${hrs(hours)}</span><b>${ar(hours * HOUR)} ريال</b></div>` : ''}<div class="sum"><span>الإجمالي</span><b>${ar(total())} ريال</b></div>
-        <p>الخطوة التالية على واتساب: ترسل لنا هذا الطلب، ونرسل لك طريقة الدفع.</p>`;
       at = stage(); dock.classList.toggle('off', at === 'try');   // at the problem the answers are the only buttons
-      go.textContent = at === 'send' ? 'أكمل على واتساب' : at === 'top' ? 'جرّب بنفسك' : 'اختر المناسب لك'; micro.textContent = at === 'send' ? `الإجمالي ${ar(total())} ريال` : at === 'top' ? '' : `من ${ar(PLANS[0][2])} ريال`;
-      if (pick) { go.href = waLink(message()); go.target = '_blank'; go.rel = 'noopener'; } else { go.href = '#'; go.removeAttribute('target'); }
+      go.textContent = at === 'send' ? 'اشترك على واتساب' : at === 'top' ? 'جرّب بنفسك' : 'اشترك الآن';
+      micro.textContent = at === 'send' ? `تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب` : at === 'top' ? '' : `${ar(PRICE)} ريال لشهر كامل`;
+      if (at === 'send') { go.href = waLink(message()); go.target = '_blank'; go.rel = 'noopener'; } else { go.href = '#'; go.removeAttribute('target'); }
     };
     const toPlans = () => plans.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    w.querySelectorAll('.la-plan').forEach(b => b.onclick = () => { pick = PLANS.find(x => x[0] === b.dataset.id); LT('plan_pick', { val: pick[0] }); draw(); });
-    up.onclick = () => { if (hours < MAX_H) { hours++; LT('tutor_hours', { val: String(hours) }); draw(); } };
-    dn.onclick = () => { if (hours > 0) { hours--; LT('tutor_hours', { val: String(hours) }); draw(); } };
-    go.addEventListener('click', e => { if (!pick) { e.preventDefault(); if (at === 'top') { LT('land_go', { val: 'try' }); return trySec.scrollIntoView({ behavior: 'smooth', block: 'start' }); } LT('land_go', { val: 'button' }); return toPlans(); }
-      LT('wa_click', { val: 'bill' }); LT('order_wa', { val: `${pick[0]}+${hours}h=${total()}` }); });
+    go.addEventListener('click', e => { if (at === 'send') { LT('wa_click', { val: 'bill' }); LT('order_wa', { val: `m1=${PRICE}` }); return; }
+      e.preventDefault(); if (at === 'top') { LT('land_go', { val: 'try' }); return trySec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
     tryIt(w.querySelector('.la-try'), () => { solved = true; draw(); });
     draw();
     account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
@@ -4967,6 +4946,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     addEventListener('scroll', onScroll, { passive: true });
     if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { LT('land_' + e.target.dataset.sec); io.unobserve(e.target); } }), { threshold: .2 });
       w.querySelectorAll('[data-sec]').forEach(x => io.observe(x)); }
+    w.querySelector('.la-talk').addEventListener('click', () => LT('wa_click', { val: 'talk' }));   // «كلّمنا»: the same WhatsApp, for a question and not an order (owner, 14 Nov 06:15)
     w.querySelectorAll('.la-fq').forEach((d, i) => d.addEventListener('toggle', () => { if (d.open) LT('land_faq', { val: String(i + 1) }); }));
   }
 
