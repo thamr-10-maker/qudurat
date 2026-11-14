@@ -1704,6 +1704,15 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
 .dz-mock-end{justify-content:flex-start;padding-top:12px}
 .dz-mock-after{margin-top:6px;color:#6B756F}
 @media (min-width:1100px){.lt .tun-road{grid-template-rows:auto auto 1fr}.lt .tun-road>.tun-mock{grid-column:1;grid-row:3;position:sticky;top:418px;max-width:340px;margin:20px 0 0;align-self:start}}
+/* «أعرف هذا» on a lesson's door: quiet, under the start button */
+.tun-know{display:block;margin:0 auto;padding:8px 18px;border:0;background:none;color:#4A5650;font:400 16px/1.4 Alexandria,var(--f-display);text-decoration:underline;text-underline-offset:5px;text-decoration-color:#B9C2BC;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tun-know:active{color:#16201B}
+.tun-know:focus-visible{outline:2px solid #16201B;outline-offset:3px;border-radius:8px}
+.lt .tun-act.two{gap:4px}
+.tun-know{padding:4px 18px}
+.lt .tun-door:has(.tun-know) .tun-how{margin-top:14px;padding-top:12px}
+.lt .tun-door:has(.tun-know) .tun-k{margin-top:18px}
+.lt .tun-door:has(.tun-know) .tun-how div{line-height:1.45}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1921,7 +1930,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794693237", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794694246", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4186,7 +4195,7 @@ function runDrill(d, lesson) {
     dockBtn('ابدأ الاختبار', () => final(0, 0));
   }
   function final(i, got) {
-    if (i >= D.final.length) return lesson.mock ? mockDone(got) : finished(got);
+    if (i >= D.final.length) return lesson.mock ? mockDone(got) : KNOW ? knowDone(got) : finished(got);
     const p = page('dz-drill dz-final');
     const s = D.final[i];
     const g = { q: s.q, a: s.a, b: s.b, fig: s.fig, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
@@ -4206,6 +4215,23 @@ function runDrill(d, lesson) {
       LT('drill_final', { lesson: id, n: i + 1, val: 'wrong' }); mres[i] = false;
       dockBtn(i + 1 < D.final.length ? 'السؤال التالي' : 'النتيجة', () => final(i + 1, got));
     }));
+  }
+  /* ---------- «أعرف هذا» (docs/EXAM_MAP.md B2): the lesson's final test at its door. Two misses at most → the lesson is done. One try per lesson ---------- */
+  function knowIntro() {
+    paintTrack(1);
+    const p = page('dz-final-intro dz-know-intro', true), n = D.final.length;
+    p.innerHTML = `<h1 class="dz-big">تعرف<br>هذا الدرس؟</h1><div class="dz-line"></div><p class="dz-p">${ar(n)} أسئلة بمستوى القدرات، ومحاولة وحدة لكل سؤال. إذا حلّيت ${ar(n - 2)} أو أكثر ، نعتبر الدرس منتهي وتنتقل للي بعده.</p><p class="dz-p dz-mock-after">عندك محاولة وحدة لهذا الدرس.</p>`;
+    dockBtn('ابدأ الاختبار', () => { mem().know = 1; persist(); LT('know_start', { lesson: id }); final(0, 0); }, ['لا ، أبدأ الدرس', () => { KNOW = false; mem().started = true; persist(); idea(mem().lv); }]);
+  }
+  function knowDone(got) {
+    const n = D.final.length, pass = got >= n - 2; KNOW = false;
+    LT(pass ? 'know_pass' : 'know_fail', { lesson: id, n: got });
+    if (pass) return finished(got);
+    paintTrack(1);
+    const p = page('dz-done dz-know-end', true);
+    p.innerHTML = `<h1 class="dz-h">حلّيت ${ar(got)} من ${ar(n)}</h1><p class="dz-p">هذا الدرس يفيدك. نمشيه سوا من أوله ، فكرة فكرة.</p>`;
+    FX.play('task');
+    dockBtn('ابدأ الدرس', () => { mem().started = true; persist(); idea(mem().lv); });
   }
   /* ---------- the mock exam: the exam's own mix, a minute a question, one try each (docs/EXAM_MAP.md, A) ---------- */
   function mockIntro() {
@@ -4275,7 +4301,9 @@ function runDrill(d, lesson) {
   const mres = [];   // the mock exam: right or wrong, question by question
   if (lesson.mock) return mockIntro();   // «اختبار محاكي» (docs/EXAM_MAP.md): no levels, no saved place; questions from every lesson, then a result per topic
   const m = mem(), m0 = m;
-  if (lesson._drillMode === 'open') { lesson._drillMode = null; open(0); }   // the gate's "open training"
+  let KNOW = false;   // «أعرف هذا»: the final test taken at the door
+  if (lesson._drillMode === 'know') { lesson._drillMode = null; KNOW = true; knowIntro(); }
+  else if (lesson._drillMode === 'open') { lesson._drillMode = null; open(0); }   // the gate's "open training"
   else if (m.finished) {   // finished THIS lesson before (an old version's "done" doesn't count): he chooses
     paintTrack();
     const p = page('dz-done', true);
@@ -5091,6 +5119,13 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const go = el('button', 'tun-go', going ? 'كمّل' : isFirst && !done(l) ? 'ابدأ الرحلة' : 'ادخل');
     go.onclick = () => { LT('tunnel_enter', { val: going ? 'resume' : 'lesson', lesson: l.id }); play(l); };
     act.appendChild(go);
+    /* «أعرف هذا» (docs/EXAM_MAP.md B2): a student who knows the topic takes the lesson's final test straight away; two misses at most and the lesson is done.
+       One try per lesson. Subscribers only: a free trial account is for seeing the lessons, not for sitting every test in an hour */
+    { const A = window.LeenaAuth, trialAcc = !!(A && A.trial && A.trial(TUN));
+      if (subscriber() && !trialAcc && !done(l) && !(m && m.know) && (l.drill.final || []).length >= 5) {
+        const k = el('button', 'tun-know', 'أعرف هذا'); k.type = 'button';
+        k.onclick = () => { LT('know_open', { lesson: l.id }); l._drillMode = 'know'; play(l); };
+        act.insertBefore(k, go); act.classList.add('two'); } }   // above the button, so it is on the screen without scrolling
     w.appendChild(act);
     if (!subscriber()) account(w, 'tun-link tun-top');
   }
