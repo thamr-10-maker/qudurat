@@ -1810,7 +1810,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794631952", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794632908", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4840,7 +4840,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const subscriber = () => !!(window.LeenaAuth && window.LeenaAuth.has && window.LeenaAuth.has(TUN));
   const lockedOut = () => !!(window.LeenaAuth && window.LeenaAuth.user) && !subscriber();   // logged in, but no active subscription to this course
   let sawOffer = false;   // he asked to read the subscription page from the «no subscription» screen
-  const openAll = () => { if (!subscriber()) return false; try { return localStorage.getItem('leena-open-all') === '1'; } catch (e) { return false; } };
+  /* every lesson open, no waiting for the one before: for an account the owner switched on (admin page → LeenaAuth.openAll), or on a device that opened the #open-all link */
+  const openAll = () => { if (!subscriber()) return false; const A = window.LeenaAuth; if (A && A.openAll && A.openAll(TUN)) return true; try { return localStorage.getItem('leena-open-all') === '1'; } catch (e) { return false; } };
   /* the next lesson he has not finished (only lessons that are built) */
   const nextUp = () => lessons().find(l => ready(l) && !done(l)) || null;
 
@@ -5258,6 +5259,7 @@ window.__leenaAuth = function () {
   const today = () => new Date(Date.now() + 3 * 36e5).toISOString().slice(0, 10);   // the day in Saudi time, same as the database
   const A = window.LeenaAuth = { user: null, access: [], plan: null, ready: false, failed: false, openLogin, showAccount, logout, _sb: sb, reload: () => load(),
     has: id => A.access.some(a => a.course === id && a.expires >= today()),
+    openAll: id => A.access.some(a => a.course === id && a.open_all === true && a.expires >= today()),   // the owner opened every lesson for this account (admin page)
     whenReady: fn => { if (A.ready) fn(); else waiting.push(fn); } };
   const waiting = [];
 
@@ -5277,7 +5279,7 @@ window.__leenaAuth = function () {
     if (!user) { A.user = null; A.access = []; A.plan = null; return false; }
     const [st, acc, keys] = await Promise.all([
       sb.from('students').select('username,name,phone').eq('user_id', user.id).maybeSingle(),
-      sb.from('access').select('course,expires').eq('user_id', user.id),
+      sb.from('access').select('*').eq('user_id', user.id),   // '*' and not a list of columns: open_all exists only once the owner has run supabase/008, and asking for a column that is not there would lock every subscriber out
       sb.from('course_keys').select('course,key'),
     ]);
     A.user = { id: user.id, username: (st.data && st.data.username) || String(user.email || user.phone || '').split('@')[0], name: (st.data && st.data.name) || '',

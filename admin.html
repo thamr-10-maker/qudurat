@@ -33,6 +33,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .course .top input{width:22px;height:22px;accent-color:var(--accent);flex:none}
 .course .when{display:none;gap:6px;flex-wrap:wrap;align-items:center}.course.on .when{display:flex}
 .course .when input[type=date]{flex:1 1 150px;width:auto}
+.course .oa{display:none;flex-direction:row;align-items:flex-start;gap:10px;margin:2px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--ink);cursor:pointer}.course.on .oa{display:flex}
+.course .oa input{flex:none;width:20px;height:20px;margin-top:3px}.course .oa span{display:flex;flex-direction:column;gap:2px;font-weight:600}.course .oa small{font-weight:400;color:var(--ink2)}.course .oa input:disabled+span{opacity:.6}
 .err{color:var(--bad);font-size:14px;margin:0}
 .ok{background:var(--accent-soft);border-color:var(--accent)}
 pre{white-space:pre-wrap;font:15px/1.7 system-ui,sans-serif;margin:0 0 12px;background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px}
@@ -143,6 +145,7 @@ function loginScreen(msg, setup) {
 
 /* ---------- the tool ---------- */
 function shell() {
+  probeOA();   // does the database know «كل الدروس مفتوحة» yet?
   app.innerHTML = `<header><h1>لوحة لينا</h1><button class="small" id="out">خروج</button></header>
     <div class="tabs">${CFG.pay ? '<button data-t="orders">الطلبات</button>' : ''}<button data-t="leads">المهتمون <span class="badge" id="lb" hidden></span></button><button data-t="list">الطلاب</button><button data-t="new">طالب جديد</button><button data-t="stats">الإحصاءات</button></div><div id="view"></div>`;
   document.getElementById('out').onclick = async () => { await sb.auth.signOut(); loginScreen(); };
@@ -170,7 +173,7 @@ const chips = (o, names) => { const e = Object.entries(o || {}).sort((a, b) => b
 const cnt = (n, one, two, few) => n === 1 ? one : n === 2 ? two : `${ar(n)} ${n >= 3 && n <= 10 ? few : one}`;   // دقيقة · دقيقتين · ٥ دقايق · ٢٠ دقيقة
 const when = t => { const d = new Date(t), m = Math.max(1, Math.round((Date.now() - d) / 60000)), hh = Math.round(m / 60); return m < 60 ? `قبل ${cnt(m, 'دقيقة', 'دقيقتين', 'دقايق')}` : m < 1440 ? `قبل ${cnt(hh, 'ساعة', 'ساعتين', 'ساعات')}` : fmt(iso(d)); };
 const stay = mins => { const s = Math.round((mins || 0) * 60); return s < 90 ? cnt(Math.max(1, s), 'ثانية', 'ثانيتين', 'ثواني') : cnt(Math.round(s / 60), 'دقيقة', 'دقيقتين', 'دقايق'); };
-const BUILT = 1794631952013;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
+const BUILT = 1794632908859;   // when this version of the site was published (ms): «منذ آخر تحديث» starts here
 async function stats() {
   const view = document.getElementById('view');
   const ranges = [['d0', 'اليوم'], ['d1', 'أمس'], ['d2', 'قبل أمس'], ...(BUILT ? [['v', 'منذ آخر تحديث']] : []), ['w', 'آخر ٧ أيام'], ['m', 'آخر ٣٠ يومًا'], ['all', 'الكل']];
@@ -332,20 +335,25 @@ function meCard() {
     <a class="mebtn" href="${site}" target="_blank" rel="noopener">لا تحسب هذا الجوال</a></div>`;
 }
 function bindMe() { try { localStorage.setItem('leena-me', '1'); } catch (e) {} }
+let OPEN_ALL_READY = false;   // true once the database has the open_all column (supabase/008_open_all.sql)
+const OA_TXT = () => OPEN_ALL_READY ? 'يدخل أي درس مباشرة، بدون ترتيب.' : 'يحتاج تشغيل ملف 008_open_all.sql في Supabase مرة واحدة.';
+function paintOA() { document.querySelectorAll('.oa').forEach(l => { l.querySelector('.oa-cb').disabled = !OPEN_ALL_READY; l.querySelector('small').textContent = OA_TXT(); }); }
+async function probeOA() { try { const oa = await sb.from('access').select('open_all').limit(1); OPEN_ALL_READY = !oa.error; } catch (e) { OPEN_ALL_READY = false; } paintOA(); }
 function coursePicker(access) {
   const box = document.createElement('div'); box.className = 'stack';
   box.innerHTML = '<label style="margin:0">الدورات وتاريخ الانتهاء</label>' + COURSES.map(c => { const a = (access || []).find(x => x.course === c.id);
     return `<div class="course${a ? ' on' : ''}" data-c="${c.id}"><label class="top" style="flex-direction:row;color:var(--ink)"><input type="checkbox" ${a ? 'checked' : ''}>${esc(c.name)}</label>
-    <div class="when"><input type="date" value="${a ? a.expires : ''}" aria-label="تاريخ انتهاء ${esc(c.name)}"><button type="button" class="small" data-d="3">+٣ أيام</button><button type="button" class="small" data-d="7">+أسبوع</button><button type="button" class="small" data-m="1">+شهر</button><button type="button" class="small" data-m="3">+٣ أشهر</button></div></div>`; }).join('');
+    <div class="when"><input type="date" value="${a ? a.expires : ''}" aria-label="تاريخ انتهاء ${esc(c.name)}"><button type="button" class="small" data-d="3">+٣ أيام</button><button type="button" class="small" data-d="7">+أسبوع</button><button type="button" class="small" data-m="1">+شهر</button><button type="button" class="small" data-m="3">+٣ أشهر</button></div>
+    <label class="oa"><input type="checkbox" class="oa-cb" ${a && a.open_all ? 'checked' : ''} ${OPEN_ALL_READY ? '' : 'disabled'}><span>كل الدروس مفتوحة له من البداية<small>${OA_TXT()}</small></span></label></div>`; }).join('');
   box.querySelectorAll('.course').forEach(row => {
-    const cb = row.querySelector('input[type=checkbox]'), dt = row.querySelector('input[type=date]');
+    const cb = row.querySelector('.top input[type=checkbox]'), dt = row.querySelector('input[type=date]');
     cb.onchange = () => { row.classList.toggle('on', cb.checked); if (cb.checked && !dt.value) { dt.value = plusMonths(1); dt.dataset.auto = '1'; } };   // a month, until he picks the plan that was paid for
     dt.oninput = () => { dt.dataset.auto = ''; };
     const base = () => dt.value && dt.value > today() && dt.dataset.auto !== '1' ? dt.value : null;   // a date we filled in ourselves is replaced; a real end date is added to
     row.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { dt.value = plusMonths(+b.dataset.m, base()); dt.dataset.auto = ''; });
     row.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { dt.value = plusDays(+b.dataset.d, base()); dt.dataset.auto = ''; });   // the plans of 14 Nov: 3 days, a week
   });
-  box.read = () => [...box.querySelectorAll('.course')].filter(r => r.querySelector('input[type=checkbox]').checked).map(r => ({ course: r.dataset.c, expires: r.querySelector('input[type=date]').value }));
+  box.read = () => [...box.querySelectorAll('.course')].filter(r => r.querySelector('.top input[type=checkbox]').checked).map(r => Object.assign({ course: r.dataset.c, expires: r.querySelector('input[type=date]').value }, OPEN_ALL_READY ? { open_all: r.querySelector('.oa-cb').checked } : {}));
   return box;
 }
 function message(name, username, password, access) {
@@ -387,6 +395,9 @@ async function listStudents() {
   const { data, error } = await sb.rpc('admin_list');
   if (error) { view.innerHTML = `<div class="card"><p class="err">${esc(errText(error))}</p></div>`; return; }
   students = data || [];
+  try { const oa = await sb.from('access').select('user_id,course,open_all');   // which accounts have every lesson open (the admin may read every row)
+    OPEN_ALL_READY = !oa.error; const on = new Set((oa.data || []).filter(x => x.open_all).map(x => x.user_id + '|' + x.course));
+    students.forEach(st => (st.access || []).forEach(a => { a.open_all = on.has(st.user_id + '|' + a.course); })); } catch (e) { OPEN_ALL_READY = false; }
   const pays = students.flatMap(s => s.payments || []), total = pays.reduce((n, x) => n + +x.amount, 0);
   const byPrice = {}; students.forEach(s => { const first = (s.payments || [])[0]; if (first) byPrice[+first.amount] = (byPrice[+first.amount] || 0) + 1; });
   const since = d => pays.filter(x => new Date(x.at) >= d).reduce((n, x) => n + +x.amount, 0), d7 = new Date(Date.now() - 7 * 864e5);
@@ -400,7 +411,7 @@ async function listStudents() {
     const q = view.querySelector('#q').value.trim().toLowerCase();
     const rows = students.filter(s => !q || (s.name || '').toLowerCase().includes(q) || s.username.includes(q) || (s.phone || '').includes(q.replace(/^0/, '')));
     view.querySelector('#n').textContent = `${ar(rows.length)} من ${ar(students.length)} طالب`;
-    view.querySelector('#l').innerHTML = rows.map(s => `<button class="stu" data-id="${s.user_id}"><span><b>${esc(s.name || s.username)}</b><small dir="ltr" style="text-align:right">${s.phone ? '+' + esc(s.phone) : esc(s.username)}</small>${(s.payments || []).length ? `<small>دفع ${ar(money((s.payments || []).reduce((n, x) => n + +x.amount, 0)))} ريال</small>` : ''}</span><span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${(s.access || []).map(a => { const left = (new Date(a.expires) - new Date(today())) / 864e5; return `<span class="pill ${left < 0 ? 'end' : left <= 7 ? 'soon' : 'on'}">${esc(nameOf(a.course).replace('القدرات: ', ''))} · ${fmt(a.expires)}</span>`; }).join('') || '<span class="pill end">بدون دورات</span>'}</span></button>`).join('') || '<p class="muted">لا يوجد طلاب بعد.</p>';
+    view.querySelector('#l').innerHTML = rows.map(s => `<button class="stu" data-id="${s.user_id}"><span><b>${esc(s.name || s.username)}</b><small dir="ltr" style="text-align:right">${s.phone ? '+' + esc(s.phone) : esc(s.username)}</small>${(s.payments || []).length ? `<small>دفع ${ar(money((s.payments || []).reduce((n, x) => n + +x.amount, 0)))} ريال</small>` : ''}</span><span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${(s.access || []).map(a => { const left = (new Date(a.expires) - new Date(today())) / 864e5; return `<span class="pill ${left < 0 ? 'end' : left <= 7 ? 'soon' : 'on'}">${esc(nameOf(a.course).replace('القدرات: ', ''))} · ${fmt(a.expires)}</span>${a.open_all ? '<span class="pill on">كل الدروس مفتوحة</span>' : ''}`; }).join('') || '<span class="pill end">بدون دورات</span>'}</span></button>`).join('') || '<p class="muted">لا يوجد طلاب بعد.</p>';
     view.querySelectorAll('.stu').forEach(b => b.onclick = () => editStudent(students.find(s => s.user_id === b.dataset.id)));
   };
   view.querySelector('#q').oninput = paint; paint();
