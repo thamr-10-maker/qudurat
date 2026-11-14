@@ -1880,7 +1880,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794647979", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794652433", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -5100,7 +5100,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
     const FAQ = [['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
-      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اضغط «اشترك على واتساب». نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
+      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'], ['كيف أشترك؟', 'اضغط «أكمل الاشتراك» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
       ['كيف تكون ساعة المعلّم؟', 'حصة فردية، نرتّب موعدها معك على واتساب. وبعدها يتابع تقدّمك.'],
       ['كيف أسترجع مبلغي؟', `راسلنا على واتساب خلال ${ar(BACK)} أيام من الدفع، ونعيده كاملًا.`]];
     const PTS = ['تأسيس', 'تدريب', 'قياس مستوى', 'دعم معلّمين سعوديين'];   // four of the mountain film's points, a word or two each (owner, 14 Nov 02:18: «a lot of words. Be elegant.»)
@@ -5133,16 +5133,15 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
     /* where he is: 'try' he is at the problem and has not solved it · 'plans' after it · 'send' the price is on the screen (or behind him) */
     const stage = () => plans.getBoundingClientRect().top < innerHeight * .6 ? 'send' : solved || trySec.getBoundingClientRect().bottom <= innerHeight * .5 ? 'plans' : 'try';
-    const message = () => `السلام عليكم، أبغى أشترك في أكاديمية لينا.\nاشتراك شهر: ${ar(PRICE)} ريال، مع ساعة المعلّم والمتابعة.`;
     const draw = () => {
       at = stage(); dock.classList.toggle('off', at === 'try');   // at the problem the answers are the only buttons
-      go.textContent = at === 'send' ? 'اشترك على واتساب' : 'اشترك الآن';
+      go.textContent = at === 'send' ? 'أكمل الاشتراك' : 'اشترك الآن';
       micro.textContent = at === 'send' ? `تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب` : `${ar(PRICE)} ريال لشهر كامل`;
-      if (at === 'send') { go.href = waLink(message()); go.target = '_blank'; go.rel = 'noopener'; } else { go.href = '#'; go.removeAttribute('target'); }
+      go.href = '#';
     };
     const toPlans = () => plans.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    go.addEventListener('click', e => { if (at === 'send') { LT('wa_click', { val: 'bill' }); LT('order_wa', { val: `m1=${PRICE}` }); return; }
-      e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
+    go.addEventListener('click', e => { e.preventDefault(); if (at === 'send') { LT('order_open'); return order(); }   // the order is a short form now, not WhatsApp (owner, 14 Nov 13:23)
+      LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
     /* the four words: beside the name on a computer; on a phone the name is one thin line over the problem, and the words come after it */
     { const pts = w.querySelector('.la-pts'), hero = w.querySelector('.la-hero'), wide = matchMedia('(min-width:1100px)');
       const place = () => { if (!document.body.contains(w)) return wide.removeEventListener('change', place); if (wide.matches) hero.appendChild(pts); else trySec.after(pts); };
@@ -5291,6 +5290,34 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const w = room('tun-door jn tun-lead');
     w.insertAdjacentHTML('beforeend', `<div class="jn-ok">${TICK}</div><div class="tun-txt"><h1 class="tun-h stop">وصلنا طلبك</h1><p class="tun-p">${esc(n)}، نتواصل معك اليوم<br>على واتساب.</p></div>`);
     const tr = el('button', 'tun-go', 'تدرّب على الدرس الأول'); tr.onclick = () => { const f = first(); f._drillMode = 'open'; play(f); }; w.appendChild(tr);
+  }
+
+  /* ---------- the order: first name, family name (if he likes), mobile → the leads table; the owner sees it under «المهتمون» and calls him ---------- */
+  function order() {
+    enter(lockedOut() && sawOffer ? 2 : 1, () => { landing(); const to = () => { const pl = document.querySelector('.tun-land [data-sec=plan]'); if (pl) pl.scrollIntoView({ block: 'start' }); }; to(); setTimeout(to, 120); });   // back: the page, at the price where he left it
+    const w = room('tun-door jn tun-lead tun-order', goBack, 'رجوع');
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">أكمل الاشتراك</h1><p class="tun-p">اكتب اسمك ورقمك، ونتواصل معك.</p></div>
+      <form class="jn-form" novalidate><input id="or-first" class="jn-in" type="text" autocomplete="given-name" maxlength="20" placeholder="الاسم الأول" aria-label="الاسم الأول">
+      <input id="or-last" class="jn-in" type="text" autocomplete="family-name" maxlength="18" placeholder="اسم العائلة (اختياري)" aria-label="اسم العائلة، اختياري">
+      <label class="jn-phone"><span>+966</span><input id="or-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
+      <p class="jn-err" hidden></p><button class="tun-go" type="submit">أرسل</button></form>
+      <p class="jn-small">اشتراك شهر: ${ar(PRICE)} ريال. تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب.<br>نستخدم رقمك للتواصل معك فقط.</p>`);
+    const f = w.querySelector('form'), fn = w.querySelector('#or-first'), ln = w.querySelector('#or-last'), ph = w.querySelector('#or-phone'), err = w.querySelector('.jn-err'), go = f.querySelector('.tun-go');
+    const bad = (m, at) => { err.textContent = m; err.hidden = false; at.focus(); };
+    f.onsubmit = async e => {
+      e.preventDefault(); err.hidden = true;
+      const a = fn.value.trim().replace(/\s+/g, ' '), b = ln.value.trim().replace(/\s+/g, ' '), d = ph.value.replace(/\D/g, '').replace(/^(966|0)/, '');
+      if (a.length < 2) return bad('اكتب اسمك الأول', fn);
+      if (!/^5\d{8}$/.test(d)) return bad('اكتب رقم جوال صحيح يبدأ بـ ٥', ph);
+      go.disabled = true; go.textContent = 'نرسل…';
+      const ok = await sendLead((a + (b ? ' ' + b : '')).slice(0, 40), d);
+      if (!ok) { go.disabled = false; go.textContent = 'أرسل'; err.textContent = 'ما قدرنا نرسل طلبك. جرّب مرة ثانية.'; err.hidden = false; return; }
+      try { localStorage.setItem('leena-lead', '1'); } catch (x) {}
+      LT('order_wa', { val: `m1=${PRICE}` }); LT('lead_sent');   // «order_wa» keeps its old name so the numbers page and its SQL go on counting orders
+      const w2 = room('tun-door jn tun-lead tun-order', goBack, 'رجوع');
+      w2.insertAdjacentHTML('beforeend', `<div class="jn-ok">${TICK}</div><div class="tun-txt"><h1 class="tun-h stop">وصلنا طلبك</h1><p class="tun-p">${esc(a)}، واحد من فريق أكاديمية لينا<br>بيتواصل معك قريبًا.</p></div>`);
+      const bk = el('button', 'tun-go', 'رجوع إلى الصفحة'); bk.onclick = goBack; w2.appendChild(bk);
+    };
   }
 
   /* ---------- the road (subscribers): every lesson in order ---------- */
