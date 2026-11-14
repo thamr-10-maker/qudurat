@@ -1523,8 +1523,18 @@ body.lt .opt.dz-o.ok .mo{color:#F6F4EE}
 .lt .la-dock .ld-go{position:static;width:100%;max-width:408px;animation:none}
 .la-micro{min-height:21px;margin:9px auto 0;font:300 14px/1.5 Alexandria,var(--f-display);color:#6B756F;text-align:center}
 body.ld-on .legal{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
-@media (max-height:780px){.la-try{margin-top:18px}.la-ask{margin-top:12px}.la-eq{height:52px}.la-hero{padding-top:30px}.la-logo{width:42px;height:42px}.la-h1{margin-top:14px;font-size:clamp(34px,11vw,44px)}.la-lede{margin-top:0;font-size:17px}.la-pts{padding-top:26px}.la-pts li{line-height:1.75}}
-@media (max-height:600px){.la-hero{padding-top:20px}.la-logo{width:36px;height:36px}.la-h1{font-size:clamp(30px,10vw,38px)}.la-pts{padding-top:16px}.la-pts li{font-size:22px;line-height:1.6}}
+/* on a phone the first screen is the problem itself: the name is one thin line over it, the four words come after it (14 Nov 2026: 4 of 5 visitors left the old first screen, which had nothing to do) */
+@media (max-width:1099px){
+  .la-hero{flex-direction:row;align-items:center;gap:10px;min-height:0;padding:18px 0 0}
+  .la-logo{width:34px;height:34px;flex:none}
+  .la-h1{margin:0;font-size:clamp(18px,5.4vw,21px);line-height:34px}
+  .la-lede{margin:0;margin-inline-start:auto;font-size:clamp(13px,3.9vw,15px);line-height:34px;white-space:nowrap}
+  .la-sec[data-sec=try]{padding-top:30px;min-height:calc(100svh - 52px)}
+  .tun-land>.la-pts{margin:0;padding:88px 0 0}
+}
+@media (max-height:780px){.la-try{margin-top:18px}.la-ask{margin-top:12px}.la-eq{height:52px}}
+@media (max-width:1099px) and (min-height:780px){.la-sec[data-sec=try]{padding-top:54px}}   /* a tall phone: the problem sits lower, nearer the thumb */
+@media (max-width:1099px) and (max-height:600px){.la-sec[data-sec=try]{padding-top:18px}.la-sec[data-sec=try] .la-h2{font-size:26px}}
 /* the one subscription: what it holds, in the same light lines as the first screen (owner, 14 Nov 2026, 06:09) */
 .la-incl{list-style:none;margin:26px 0 0;padding:0}
 .la-incl li{font:300 clamp(19px,5.6vw,22px)/2.05 Alexandria,var(--f-display);color:#16201B;white-space:nowrap}
@@ -1870,7 +1880,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794640153", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794641523", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -5083,7 +5093,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     w.appendChild(act);
   }
   function landing() {   // fifth build, 14 Nov 2026: the name and four words, a problem solved by the visitor on the page, then the plans, the bill, WhatsApp.
-    // One button, and it follows him: «جرّب بنفسك» → the problem (the button steps aside there) → «اشترك الآن» → the price → «اشترك على واتساب»
+    // The problem is on the first screen (owner, 14 Nov 10:12: of 63 phones that saw the page about 14 scrolled; the old first screen gave them nothing to do).
+    // One button, and it follows him: hidden at the problem (the answers are the buttons) → «اشترك الآن» → the price → «اشترك على واتساب»
     LT('land_view', { once: true });
     if (lockedOut() && sawOffer) enter(1, () => { sawOffer = false; noAccess(); }); else enter(0);   // opened from «تفاصيل الاشتراك»: back returns to the account's screen
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
@@ -5096,9 +5107,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     w.insertAdjacentHTML('beforeend',
       `<header class="la-hero"><svg class="la-logo" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="110" fill="#16201B"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/><path d="M-62 10 C-62 92 62 92 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/></svg>
         <h1 class="la-h1">أكاديمية لينا</h1><p class="la-lede">كمّي القدرات.</p>
-        <ul class="la-pts">${PTS.map(t => `<li>${t}</li>`).join('')}</ul></header>
+        </header>
       <section class="la-sec" data-sec="try"><h2 class="la-h2">${two('تجربة.', 'حلّ هذا بنفسك.')}</h2>
         <div class="la-try"></div></section>
+      <ul class="la-pts">${PTS.map(t => `<li>${t}</li>`).join('')}</ul>
       <section class="la-sec" data-sec="how"><h2 class="la-h2">${two('حفظت الإجابة،', 'فتغيّر الرقم.')}</h2>
         <p class="la-p">لهذا لا نعطيك إجابات تحفظها. تتدرّب على الفكرة بأرقام جديدة في كل مرة، حتى تصير لك.</p></section>
       <section class="la-sec" data-sec="map"><h2 class="la-h2">${two('الكمّي كاملًا،', `في ${N} درسًا.`)}</h2>
@@ -5117,32 +5129,34 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     /* one subscription, so nothing to choose: the button's last step is the order itself, sent on WhatsApp */
     let solved = false, at = '';
     const plans = w.querySelector('[data-sec=plan]'), trySec = w.querySelector('[data-sec=try]');
-    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'جرّب بنفسك'), micro = el('p', 'la-micro');
+    const dock = el('div', 'la-dock off'), go = el('a', 'tun-go ld-go show', 'اشترك الآن'), micro = el('p', 'la-micro');
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
-    /* where he is: 'top' the problem is still below the screen · 'try' he is at the problem and has not solved it · 'plans' after it · 'send' the price is on the screen (or behind him) */
-    const stage = () => { if (plans.getBoundingClientRect().top < innerHeight * .6) return 'send'; if (solved) return 'plans';
-      const r = trySec.getBoundingClientRect(); return r.top > innerHeight * .55 ? 'top' : r.bottom > innerHeight * .5 ? 'try' : 'plans'; };
+    /* where he is: 'try' he is at the problem and has not solved it · 'plans' after it · 'send' the price is on the screen (or behind him) */
+    const stage = () => plans.getBoundingClientRect().top < innerHeight * .6 ? 'send' : solved || trySec.getBoundingClientRect().bottom <= innerHeight * .5 ? 'plans' : 'try';
     const message = () => `السلام عليكم، أبغى أشترك في أكاديمية لينا.\nاشتراك شهر: ${ar(PRICE)} ريال، مع ساعة المعلّم والمتابعة.`;
     const draw = () => {
       at = stage(); dock.classList.toggle('off', at === 'try');   // at the problem the answers are the only buttons
-      go.textContent = at === 'send' ? 'اشترك على واتساب' : at === 'top' ? 'جرّب بنفسك' : 'اشترك الآن';
-      micro.textContent = at === 'send' ? `تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب` : at === 'top' ? '' : `${ar(PRICE)} ريال لشهر كامل`;
+      go.textContent = at === 'send' ? 'اشترك على واتساب' : 'اشترك الآن';
+      micro.textContent = at === 'send' ? `تسترجع مبلغك خلال ${ar(BACK)} أيام، بدون سبب` : `${ar(PRICE)} ريال لشهر كامل`;
       if (at === 'send') { go.href = waLink(message()); go.target = '_blank'; go.rel = 'noopener'; } else { go.href = '#'; go.removeAttribute('target'); }
     };
     const toPlans = () => plans.scrollIntoView({ behavior: 'smooth', block: 'start' });
     go.addEventListener('click', e => { if (at === 'send') { LT('wa_click', { val: 'bill' }); LT('order_wa', { val: `m1=${PRICE}` }); return; }
-      e.preventDefault(); if (at === 'top') { LT('land_go', { val: 'try' }); return trySec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-      LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
+      e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); toPlans(); });
+    /* the four words: beside the name on a computer; on a phone the name is one thin line over the problem, and the words come after it */
+    { const pts = w.querySelector('.la-pts'), hero = w.querySelector('.la-hero'), wide = matchMedia('(min-width:1100px)');
+      const place = () => { if (!document.body.contains(w)) return wide.removeEventListener('change', place); if (wide.matches) hero.appendChild(pts); else trySec.after(pts); };
+      if (wide.matches) hero.appendChild(pts); wide.addEventListener('change', place); }
     tryIt(w.querySelector('.la-try'), () => { solved = true; draw(); });
     draw();
     if (wantLogin && window.LeenaAuth) { const A = window.LeenaAuth; wantLogin = false; A.whenReady(() => { if (!A.user && !document.querySelector('.modal.acct')) A.openLogin('user'); }); }
     account(w, 'tun-link la-acc-top');   // shown on a computer only (style.css): no stray thumbs there, and a subscriber should not have to scroll to the end to log in
     account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
     /* how far down do they get? one event per section, the first time a third of it is on screen */
-    const hero = w.querySelector('.la-hero'); let saw = false;
+    let saw = false;
     const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll);
       if (stage() !== at) draw();
-      if (!saw && hero.getBoundingClientRect().bottom < innerHeight * 0.4) { saw = true; LT('land_scroll'); } };
+      if (!saw && scrollY > innerHeight * 0.6) { saw = true; LT('land_scroll'); } };   // he left the first screen
     addEventListener('scroll', onScroll, { passive: true });
     if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { LT('land_' + e.target.dataset.sec); io.unobserve(e.target); } }), { threshold: .2 });
       w.querySelectorAll('[data-sec]').forEach(x => io.observe(x)); }
