@@ -85,7 +85,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .sq{position:relative;display:inline-flex;align-items:stretch;direction:rtl;unicode-bidi:isolate;vertical-align:-.15em}
 .sq .rad{display:block;width:.55em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;overflow:visible}
 .sq .rc{border-top:2px solid currentColor;padding:.08em 3px 0;line-height:1.2;margin-right:-1px}
-sup{font-size:.62em;line-height:0;direction:rtl;unicode-bidi:isolate;margin-inline-start:.06em}   /* Arabic maths: the power sits up on the LEFT of its base (owner, 14 Nov 2026). Isolated, so a digit power does not join a digit base into one number read the other way */
+sup{font-size:.62em;line-height:0;direction:rtl;unicode-bidi:isolate;margin-inline-start:.12em}   /* Arabic maths: the power sits up on the LEFT of its base (owner, 14 Nov 2026). Isolated, so a digit power does not join a digit base into one number read the other way */
 .pw{direction:rtl;unicode-bidi:isolate;display:inline-block;white-space:nowrap}
 .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.12;font-size:.95em;margin:0 3px;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:600}
 .fr>span{padding:0 4px}
@@ -1616,6 +1616,41 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
   .lt .tun-road>.tun-txt .tun-p{font-size:19px}
   .lt .tun-road::after{display:none}
 }
+
+/* ================= a question and all its answers on one screen (owner, 14 Nov 2026, 09:26: on his computer he had to scroll down in every question
+   to see the choices) =================
+   The lesson was drawn for a tall phone: timer, question, answers in one column. Two things put that right everywhere else:
+   1 · from 760px wide the answers stand BESIDE the question (question on the right, answers on the left), so a wide, short screen is used the way it is shaped;
+   2 · on a short screen that is still one column (a small phone, a phone inside TikTok) the timer and the gaps are smaller.
+   Only sizes and places change: the pen measures where things are after they are laid out, so its rings and arrows follow. Check with node test/fit.js */
+@media (min-width:760px){
+  #app:has(>.dz-player){max-width:none}   /* inside a lesson the page is not a 560px column either */
+  .dz-top{max-width:1020px;padding-inline:32px}
+  .dz-stage:has(>.dz-opts){max-width:1020px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(40px,6vw,84px);row-gap:0;justify-items:center;align-content:start;align-items:start;
+    padding:clamp(8px,calc((100svh - 600px) / 3),130px) 32px 120px}
+  .dz-stage:has(>.dz-opts)>*{grid-column:1;margin-top:20px}
+  .dz-stage:has(>.dz-opts)>.dz-orb{margin-top:0}
+  .dz-stage:has(>.dz-opts)>.dz-msg{margin-top:12px!important}
+  .dz-stage:has(>.dz-opts)>.dz-opts{grid-column:2;grid-row:1 / span 8;width:100%;max-width:460px;align-self:start;margin-top:clamp(44px,calc((100svh - 480px) / 3),104px)}   /* beside the question, and it does not move when the working is written */
+  .dz-stage:has(>.dz-opts)>.pen-svg{margin:0}
+  .dz-stage:has(>.dz-opts)>.dz-cmp,.dz-stage:has(>.dz-opts)>.pen-work{align-self:start;justify-self:stretch}
+}
+@media (min-width:760px) and (max-height:640px){
+  .dz-stage:has(>.dz-opts)>.dz-orb{width:112px;height:112px}
+  .dz-stage:has(>.dz-opts)>.dz-orb svg{width:100%;height:100%}
+  .dz-stage:has(>.dz-opts) .dz-c{font-size:28px}
+  .dz-stage:has(>.dz-opts)>*{margin-top:14px}
+  body.dz .dz-stage:has(>.dz-opts) .dz-opts.one .opt.dz-o{min-height:56px}
+}
+@media (max-width:759px) and (max-height:700px){
+  .dz-stage:has(>.dz-opts){gap:14px;padding-top:10px;padding-bottom:104px;justify-content:flex-start}
+  .dz-stage:has(>.dz-opts)>.dz-orb{width:104px;height:104px}
+  .dz-stage:has(>.dz-opts)>.dz-orb svg{width:100%;height:100%}
+  .dz-stage:has(>.dz-opts) .dz-c{font-size:26px}
+  .dz-stage:has(>.dz-opts)>.dz-q{font-size:30px;line-height:1.45}
+  .dz-stage:has(>.dz-opts)>.dz-msg{min-height:24px;font-size:16px}
+  body.dz .dz-stage:has(>.dz-opts) .dz-opts.one .opt.dz-o{min-height:52px;font-size:19px}
+  .dz-stage:has(>.dz-opts) .dz-opts:not(.one) .opt{min-height:66px}
 }
 
 
@@ -1835,7 +1870,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794637339", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794639540", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3638,7 +3673,9 @@ function runDrill(d, lesson) {
     if (g.fig) { const f = h('div', 'dz-fig'); f.innerHTML = g.fig; stage.appendChild(f); }   // a small drawing (geometry, charts)
     if (g.a != null) stage.appendChild(h('div', 'dz-cmp', `<div><small>القيمة الأولى</small><span>${fmt(g.a)}</span></div><div><small>القيمة الثانية</small><span>${fmt(g.b)}</span></div>`));
     { const qEl = stage.querySelector('.dz-q'); let fs = parseFloat(getComputedStyle(qEl).fontSize) || 28;   // a very long formula: shrink it until it fits the screen
-      for (let t = 0; t < 12 && qEl.scrollWidth > stage.clientWidth + 1 && fs > 15; t++) { fs -= 1.5; qEl.style.fontSize = fs + 'px'; } }
+      /* the room it has is its own column (on a wide screen the answers sit beside it): the column's width plus the 40px a phone always allowed */
+      const room = () => { const c = getComputedStyle(stage), col = c.display === 'grid' ? parseFloat(c.gridTemplateColumns) || stage.clientWidth : stage.clientWidth - parseFloat(c.paddingLeft) - parseFloat(c.paddingRight); return col + 40; };
+      for (let t = 0; t < 12 && qEl.scrollWidth > room() + 1 && fs > 15; t++) { fs -= 1.5; qEl.style.fontSize = fs + 'px'; } }
     const long = g.a != null || g.opts.some(o => String(o.v).replace(/[`\s]/g, '').length > 9);
     const opts = h('div', 'dz-opts' + (long ? ' one' : ''));
     let missed = false, over = false, t0 = performance.now(), last = secs;
