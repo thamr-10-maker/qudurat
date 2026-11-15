@@ -1738,6 +1738,15 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
 .tun-plan .pl-change{margin:22px auto 0}
 @media (min-width:1100px){.lt .tun-road{grid-template-rows:auto auto auto auto 1fr}.lt .tun-road>.tun-st{grid-row:1 / span 5}.lt .tun-road>.tun-mock:not(.tun-plan-card):not(.tun-weak){grid-row:3;top:418px}.lt .tun-road>.tun-mock.tun-plan-card{grid-row:4;top:536px;margin-top:10px}.lt .tun-road>.tun-mock.tun-weak{grid-row:5;top:654px}
   .lt .tun-plan{max-width:720px}}
+/* ---- the visitor's mock exam (15 Nov 2026): the result room and the offer under his weeks ---- */
+.lt .tun-exam-res .dz-mock{margin-top:8px}
+.lt .tun-exam-res>.tun-go{margin-top:26px}
+.pl-offer{margin:30px 0 0;padding:24px 0 0;border-top:2px solid #16201B;width:100%;text-align:center}
+.pl-o-h{margin:0 0 16px;font:500 20px/1.5 Alexandria,var(--f-display);color:#16201B;text-align:right}
+.pl-offer .tun-go{position:static;width:100%;margin:0}
+.pl-offer .tun-know{margin-top:14px;font-size:17px}
+.pl-offer .jn-small{margin-top:16px}
+.lt .tun-plan .pl-weeks ul li:not([role=button]){cursor:default}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1955,7 +1964,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794701360", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794703870", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4279,6 +4288,7 @@ function runDrill(d, lesson) {
     M.seen = (M.seen || []).concat(D.final.map(q => q.key)).slice(-150);   // these wait before they come back
     if (S.drill) delete S.drill[id]; persist();
     LT('mock_done', { n: got, val: weak.join(',') });
+    if (TUN && TUN.visitorExam && TUN.subscriber && !TUN.subscriber()) { if (S.drill && S.drill[id]) { delete S.drill[id]; persist(); } cleanup(); return TUN.visitorExam(); }   // a visitor: his name and number first, then the result and the plan (road.js)
     paintTrack(1);
     const name = k => { const l = d.lessons.find(x => x.id === k); return l ? l.title : k; };
     const p = page('dz-done dz-mock-end', true);
@@ -4957,6 +4967,29 @@ function runDrill(d, lesson) {
   L.drill.levels.forEach(lv => { if (!lv.motion && MO[lv.name]) lv.motion = MO[lv.name]; });
 })();
 
+/* ================= the public mock exam: «a feel» of the real test, for a visitor (owner, 15 Nov 2026, 03:21; docs/EXAM_MAP.md) =================
+   Twelve questions in the exam's own mix (three comparisons, two of algebra, two of geometry, one each of percent, fractions, an
+   everyday story, data and patterns), a minute each. They ship in the open page, so they are a set of their own: none of them is a
+   lesson's final-test question, and nothing here gives a lesson away. Written here, with our own numbers; checked by test/drills.js
+   like any final test. `les` = the lesson the result will name. Never promise a score with it: it is a feel. */
+(() => {
+  const C4 = ['القيمة الأولى أكبر', 'القيمة الثانية أكبر', 'القيمتان متساويتان', 'المعطيات غير كافية'];
+  BUILT.fast.pubExam = [
+    { les: 'al1', q: 'إذا كان `3س − 4 = 11` ، قارن بين:', a: 'س', b: '٥', choices: C4, answer: 2, why: '٣س = ١٥ ← س = ٥ ، نفس العدد', chk: ['cmp', '(11 + 4) ÷ 3', '5'] },
+    { les: 'pc2', q: 'قارن بين السعرين بعد الخصم:', a: '٢٠٠ ريال ، خصم ٢٥٪', b: '١٨٠ ريال ، خصم ١٥٪', choices: C4, answer: 1, why: 'الأول يصير ١٥٠ ، والثاني ١٥٣. الخصم الأكبر مو دايم السعر الأقل', chk: ['cmp', '200 × (100 − 25) ÷ 100', '180 × (100 − 15) ÷ 100'] },
+    { les: 'cm1', q: 'س عدد بين ٠ و ١. قارن بين:', a: '`س²`', b: 'س', choices: C4, answer: 1, why: 'تربيع عدد أقل من واحد يصغّره: نص × نص = ربع', chk: ['vary', 'س²', 'س', [0.1, 0.5, 0.9]], free: [0, 1, 2] },
+    { les: 'al1', q: 'إذا كان `س + ص = 9` و `س − ص = 3` ، فكم قيمة `2س + ص`؟', choices: ['١٢', '٩', '١٥', '١٨'], answer: 2, why: 'نجمع المعادلتين: ٢س = ١٢ ← س = ٦ ، ص = ٣ ← ١٢ + ٣ = ١٥', chk: '(9 + 3) + (9 − 3) ÷ 2' },
+    { les: 'al2', q: 'عمر نورة الآن ثلاثة أمثال عمر أختها. بعد ٦ سنين يصير عمرها ضعف عمر أختها. كم عمر نورة الآن؟', choices: ['١٨', '١٢', '٢٤', '٦'], answer: 0, why: 'الأخت ٦ ونورة ١٨. بعد ٦ سنين: ١٢ و ٢٤', chk: '3 × 6' },
+    { les: 'ge2', q: 'مستطيل طوله ١٢ وعرضه ٥. كم طول قطره؟', choices: ['١٧', '٦٠', '١٥', '١٣'], answer: 3, why: 'القطر وتر مثلث قائم: ١٤٤ + ٢٥ = ١٦٩ ← ١٣', chk: '√(12² + 5²)' },
+    { les: 'ge1', q: 'زاويتين متتامتين ، وحدة منهم ضعف الثانية. كم درجة الكبرى؟', choices: ['٣٠', '٦٠', '١٢٠', '٤٥'], answer: 1, why: 'متتامتين = ٩٠. ثلاثة أجزاء ← الجزء ٣٠ ← الكبرى ٦٠', chk: '90 × 2 ÷ 3' },
+    { les: 'pc1', q: 'في مدرسة ٤٠٠ طالب ، ٥٥٪ منهم يجون بالباص. كم طالب ما يجي بالباص؟', choices: ['٢٢٠', '٤٥', '١٨٠', '٥٥'], answer: 2, why: 'الباقي ٤٥٪ ← ٤٥٪ من ٤٠٠ = ١٨٠. السؤال عن اللي ما يجون', chk: '400 × (100 − 55) ÷ 100' },
+    { les: 'fr2', q: 'قرأ سعد `2/5` الكتاب في يوم ، ثم قرأ نص الباقي في اليوم الثاني. كم بقي من الكتاب؟', choices: ['`3/10`', '`1/10`', '`3/5`', '`1/5`'], answer: 0, why: 'الباقي بعد اليوم الأول `3/5` ، قرأ نصه ← بقي `3/10`', chk: ['frac', '(1 − 2 ÷ 5) ÷ 2'] },
+    { les: 'lf1', q: 'عدّاد تاكسي يبدأ بـ ١٠ ريال ، ويزيد ٢ ريال عن كل كيلومتر. كم يدفع راكب قطع ١٥ كم؟', choices: ['٣٠', '٢٧', '١٨٠', '٤٠'], answer: 3, why: '١٠ + ٢ × ١٥ = ٤٠. لا تنسى ريالات البداية', chk: '10 + 2 × 15' },
+    { les: 'dt1', q: 'متوسط ٤ أعداد ١٥. إذا كانت ثلاثة منها ١٠ و ١٤ و ١٦ ، فكم الرابع؟', choices: ['١٥', '٢٠', '١٠', '٢٥'], answer: 1, why: 'المجموع ٤ × ١٥ = ٦٠ ، والثلاثة مجموعهم ٤٠ ← ٢٠', chk: '4 × 15 − (10 + 14 + 16)' },
+    { les: 'pt1', q: 'ما الحد التالي؟ ٢ ، ٥ ، ١١ ، ٢٣ ، ٤٧ ، …', choices: ['٩٤', '٧١', '٩٥', '٩٣'], answer: 2, why: 'كل حد = ضعف اللي قبله + ١ ← ٤٧ × ٢ + ١ = ٩٥', chk: '47 × 2 + 1', free: [2, 5, 11, 23] },
+  ];
+})();
+
 window.AcademyCourses = window.AcademyCourses || {};
 window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, persist, DISTRICTS, units, playLesson, fmt } };
 })();
@@ -5134,7 +5167,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* Owner, 14 Nov 2026: no free lesson. A visitor sees the page with the plans and nothing else; lessons open for subscribers only.
      Everything a visitor's trial needed (the door question, part one, «احفظ مكانك», the gate) is still here behind this switch, in case he brings it back. */
   const TRIAL = CFG.trial === true;   // set by build.py; off on the live site
-  const play = l => { if (!TRIAL && !subscriber()) return visitor(); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l);
+  const play = l => { if (!TRIAL && !subscriber() && !l.mock) return visitor(); app.className = ''; C[TUN].mount(app); api().playLesson(unit(), l);
     enter(2, () => { const x = document.querySelector('.dz-top .dz-btn[aria-label="خروج"]'); if (x) x.click(); else leave(l); }); };   // back inside a lesson = its own «خروج»: his place is kept
 
   /* ---------- a lesson's door: its name and how long it takes ---------- */
@@ -5257,12 +5290,14 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const w = room('tun-land'), L = lessons(), N = ar(L.length);
     const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
     const WHAT = [`${N} درسًا قصيرًا، من الأساس.`, 'تحلّ بنفسك، بأرقام جديدة كل مرة.', 'تعلق؟ نكتب لك الحل خطوة خطوة.', 'ومعك معلّم سعودي يتابعك.'];
-    const STEPS = ['اكتب اسمك ورقم جوالك.', 'نرسل لك حساب تجربة على واتساب.', 'الدروس كلها مفتوحة لك ساعة.'];
+    const NQ = ar((unit().pubExam || []).length), took = examTaken();   // 15 Nov 2026, 03:21 (owner: the campaign is built on the mock exam): the page's one button is «جرّب الاختبار»
+    const STEPS = [`${NQ} سؤال من كل المواضيع ، دقيقة لكل سؤال.`, 'نتيجتك: وين أنت قوي ووين تحتاج.', 'قل لنا متى اختبارك ، ونرتّب لك خطة.'];
     const PERKS = [['كل دروس الكمّي', `${N} درسًا، من الأسس والكسور إلى الهندسة والاحتمالات.`], ['تدريب مفتوح', 'أرقام جديدة في كل مرة، فتفهم الفكرة ولا تحفظ الجواب.'],
       ['الحل مكتوب لك', 'إذا علقت في مسألة، نكتب لك حلها خطوة خطوة.'], ['اختبار بعد كل درس', 'تعرف مستواك قبل أن تنتقل.'],
       ['ساعة مع معلّم خاص', 'حصة فردية، نرتّب موعدها معك على واتساب.'], ['متابعة من المعلّم', 'يتابع تقدّمك بعد الحصة.'],
       ['استرجاع كامل', `خلال ${ar(BACK)} أيام من الدفع، بدون أي سبب.`]];
-    const FAQ = [['كيف التجربة المجانية؟', 'اضغط «جرّب مجانًا» واكتب اسمك ورقمك. نرسل لك حساب تجربة على واتساب: كل الدروس مفتوحة ساعة كاملة، تبدأ من أول دخول.'],
+    const FAQ = [['وش الاختبار المحاكي؟', `${NQ} سؤال كمّي مخلوطة من كل المواضيع ، بنفس أسلوب القدرات ووقته. يعطيك إحساس بالاختبار ، مو درجتك في قياس. بعده نعرض لك نتيجتك ونرتّب لك خطة.`],
+      ['هل فيه تجربة مجانية للدروس؟', 'إيه. بعد الاختبار المحاكي تقدر تطلب حساب تجربة: كل الدروس مفتوحة ساعة كاملة، تبدأ من أول دخول.'],
       ['كيف أشترك؟', 'اضغط «اشترك الآن» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
       ['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
       ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'],
@@ -5273,7 +5308,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
         </header>
       <section class="la-sec" data-sec="what"><h2 class="la-h2">${two('كمّي القدرات كاملًا،', 'من جوالك.')}</h2>
         <ul class="la-what">${WHAT.map(t => `<li>${t}</li>`).join('')}</ul></section>
-      <section class="la-sec" data-sec="trial"><h2 class="la-h2">${two('جرّب أولًا،', 'مجانًا.')}</h2>
+      <section class="la-sec" data-sec="trial"><h2 class="la-h2">${two('جرّب اختبار', 'يشبه القدرات.')}</h2>
         <ol class="la-steps">${STEPS.map((t, i) => `<li><b>${ar(i + 1)}</b><span>${t}</span></li>`).join('')}</ol></section>
       <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('الاشتراك شهر،', `بـ${ar(PRICE)} ريال.`)}</h2>
         <ul class="la-perks">${PERKS.map(([a2, b2]) => `<li><b>${a2}</b><span>${b2}</span></li>`).join('')}</ul>
@@ -5285,9 +5320,11 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
         <a class="la-talk" target="_blank" rel="noopener" href="${waLink('السلام عليكم، عندي سؤال عن أكاديمية لينا.')}">كلّمنا على واتساب</a></section>
       <footer class="la-foot" data-sec="end"></footer>`);
     /* the button that follows him: the free trial, the same words everywhere */
-    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', 'جرّب مجانًا'), micro = el('p', 'la-micro', 'حساب تجربة: كل الدروس، ساعة كاملة');
+    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', took ? 'نتيجتك وخطتك' : 'جرّب الاختبار'), micro = el('p', 'la-micro', took ? 'أو أعد الاختبار من جديد' : `${NQ} سؤال مثل يوم الاختبار ، مجانًا`);
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
-    go.addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'trial' }); LT('trial_open'); order(scrollY, 'trial'); });
+    go.addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'exam' }); if (took) { LT('exam_back'); examGate(); } else startExam(); });
+    if (took) { micro.setAttribute('role', 'button'); micro.tabIndex = 0; micro.style.cursor = 'pointer'; micro.onclick = () => startExam(); }
+    if (wantExam) { wantExam = false; setTimeout(startExam, 0); }   // …/#exam: the films' link opens the exam itself
     w.querySelector('.la-buy').addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); LT('order_open'); order(scrollY); });
     if (wantLogin && window.LeenaAuth) { const A = window.LeenaAuth; wantLogin = false; A.whenReady(() => { if (!A.user && !document.querySelector('.modal.acct')) A.openLogin('user'); }); }
     account(w, 'tun-link la-acc-top');   // shown on a computer only (style.css): no stray thumbs there, and a subscriber should not have to scroll to the end to log in
@@ -5467,6 +5504,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
      The share of each family follows the count of real questions (tools/bank_map.py): comparisons about a quarter, then algebra, geometry, percent… */
   const MOCK = [['cmp', 6], ['al', 4], ['ge', 3], ['pc1 pc2', 2], ['pc3', 1], ['fr fs5', 2], ['nm fs6', 1], ['lf', 1], ['dt', 1], ['pt', 1], ['fs1 fs2 fs3 fs4', 1], ['mo', 1]];
   function mockLesson() {
+    if (!subscriber()) { const a = (unit().pubExam || []).slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }   // a visitor: the public twelve (courses/quant/d_fast_exam.js), shuffled
+      return { id: 'mock', title: 'اختبار محاكي', mock: true, sub: '', steps: [], drill: { v: 1, tunnel: true, levels: [], finalT: 60, final: a.map((q, i) => Object.assign({}, q, { key: 'pub:' + i })) } }; }
     const S = api().S, seen = new Set((S.mock && S.mock.seen) || []), shuf = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
     const pool = []; lessons().forEach(l => { if (ready(l)) (l.drill.final || []).forEach((q, i) => pool.push({ q, les: l.id, key: l.id + ':' + i })); });
     const used = new Set(), picked = [];
@@ -5496,11 +5535,11 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     return { days, per, weeks, need, earliest, tight: !!date && order.length > 0 && per > 7, late: !!date && days < 0 };
   };
   window.LeenaPlan = { build: planBuild, PER_WEEK };
-  const planState = () => { const S = api().S, MK = S.mock || {}; return { P: S.plan || null, todo: lessons().filter(l => ready(l) && !done(l) && !knows(l)), weak: MK.weak || [] }; };
+  const planState = () => { const S = api().S, MK = S.mock || {}; return { P: S.plan || null, todo: lessons().filter(l => (ready(l) || !subscriber()) && !done(l) && !knows(l)), weak: MK.weak || [] }; };   // a visitor sees the whole road in his plan (its lessons open when he subscribes)
   /* «متى اختبارك؟»: a date, or «ما حددت موعد» */
   function planAsk() {
     const { P, todo, weak } = planState(), base = planBuild({ todo, weak });
-    const w = room('tun-door jn tun-lead tun-plan-ask', goBack, 'رجوع'); enter(1, () => road());
+    const w = room('tun-door jn tun-lead tun-plan-ask', goBack, 'رجوع'); enter(1, () => subscriber() ? road() : landing());
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">متى اختبارك؟</h1><p class="tun-p">نرتّب لك الدروس على الأسابيع اللي باقية ، ونبدأ بالمواضيع اللي تحتاجك.</p></div>
       <form class="jn-form" novalidate><input id="pl-date" class="jn-in" type="date" min="${iso(new Date(Date.now() + DAY))}" value="${P && P.date ? P.date : ''}" aria-label="تاريخ الاختبار">
       <p class="jn-err" hidden></p><button class="tun-go" type="submit">رتّب خطتي</button></form>
@@ -5517,7 +5556,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   function planShow() {
     const { P, todo, weak } = planState(); if (!P) return planAsk();
     LT('plan_view');
-    const pl = planBuild({ todo, weak, date: P.date }), w = room('tun-door tun-list tun-plan', goBack, 'الدروس'); enter(1, () => road());
+    const pl = planBuild({ todo, weak, date: P.date }), VIS = !subscriber(), w = room('tun-door tun-list tun-plan', goBack, VIS ? 'رجوع' : 'الدروس'); enter(1, () => VIS ? landing() : road());
     const head = P.date ? (pl.late ? 'موعد اختبارك فات' : pl.days === 0 ? 'اختبارك اليوم' : `باقي ${ar(pl.days)} يوم على اختبارك`) : 'خطتك بدون موعد';
     const sub = !todo.length ? 'خلّصت الدروس كلها. الباقي مراجعة واختبارات محاكية.'
       : P.date ? (pl.tight ? `الوقت ضيّق: ${ar(pl.per)} دروس في الأسبوع. ركّز على اللي عليها «ابدأ من هنا» ، واستخدم «أعرف هذا» في اللي تعرفه.` : `${ar(pl.per)} ${pl.per <= 10 && pl.per >= 3 ? 'دروس' : pl.per === 1 ? 'درس' : pl.per === 2 ? 'درسين' : 'درس'} في الأسبوع ، وآخر كل أسبوع اختبار محاكي.`.replace(/^١ درس|^٢ درسين/, m => m.replace(/^[١٢] /, '')))
@@ -5526,8 +5565,58 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       <ol class="pl-weeks">${pl.weeks.map((k, i) => `<li class="${i === 0 ? 'now' : ''}${k.review ? ' rev' : ''}"><p class="pl-w"><b>${i === 0 ? 'هذا الأسبوع' : `الأسبوع ${ar(i + 1)}`}</b><span>${fdate(k.from)} – ${fdate(k.to)}</span></p>
         <ul>${k.lessons.map(l => `<li data-id="${l.id}">${esc(l.title)}${weak.includes(l.id) ? '<small class="wk">ابدأ من هنا</small>' : ''}</li>`).join('')}${k.review ? '<li class="x">مراجعة «نقاط ضعفك»</li><li class="x">اختبار محاكي ، مرتين</li>' : '<li class="x">اختبار محاكي</li>'}</ul></li>`).join('')}</ol>
       <button type="button" class="tun-know pl-change">${P.date ? 'غيّر الموعد' : 'حدّد موعد اختبارك'}</button>`);
-    w.querySelectorAll('.pl-weeks li[data-id]').forEach(li => { const l = byId(li.dataset.id); li.tabIndex = 0; li.setAttribute('role', 'button'); li.onclick = () => { LT('tunnel_enter', { val: 'plan', lesson: l.id }); door(l); }; });
     w.querySelector('.pl-change').onclick = () => quiet(() => planAsk());
+    if (VIS) return planOffer(w);
+    w.querySelectorAll('.pl-weeks li[data-id]').forEach(li => { const l = byId(li.dataset.id); li.tabIndex = 0; li.setAttribute('role', 'button'); li.onclick = () => { LT('tunnel_enter', { val: 'plan', lesson: l.id }); door(l); }; });
+  }
+  /* ---------- the visitor's way through the mock exam (the campaign of 15 Nov 2026): exam → name and number → result → «متى اختبارك؟» → his weeks → the offer ---------- */
+  const examLead = () => { try { return JSON.parse(localStorage.getItem('leena-exam-lead') || 'null'); } catch (e) { return null; } };
+  const examTaken = () => { const M = api().S.mock; return !!(M && M.last); };
+  const startExam = () => { LT('exam_open', { val: examTaken() ? 'again' : 'first' }); play(mockLesson()); };
+  /* the result is his for a name and a number (asked once) */
+  function examGate() {
+    LT('exam_done', { once: true });
+    if (examLead()) return examResult();
+    const M = api().S.mock, w = room('tun-door jn tun-lead tun-order tun-exam-gate', goBack, 'رجوع'); enter(1, () => landing());
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">نتيجتك جاهزة</h1><p class="tun-p">اكتب اسمك ورقمك ، ونعرض لك نتيجتك ونرتّب لك خطة.</p></div>
+      <form class="jn-form" novalidate><input id="ex-first" class="jn-in" type="text" autocomplete="given-name" maxlength="20" placeholder="الاسم الأول" aria-label="الاسم الأول">
+      <label class="jn-phone"><span>+966</span><input id="ex-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
+      <p class="jn-err" hidden></p><button class="tun-go" type="submit">اعرض نتيجتي</button></form><p class="jn-small">نستخدم رقمك للتواصل معك فقط.</p>`);
+    const f = w.querySelector('form'), fn = w.querySelector('#ex-first'), ph = w.querySelector('#ex-phone'), err = w.querySelector('.jn-err'), go = f.querySelector('.tun-go');
+    const bad = (m, at) => { err.textContent = m; err.hidden = false; at.focus(); };
+    f.onsubmit = async e => { e.preventDefault(); err.hidden = true;
+      const a = fn.value.trim().replace(/\s+/g, ' '), d = ph.value.replace(/\D/g, '').replace(/^(966|0)/, '');
+      if (a.length < 2) return bad('اكتب اسمك الأول', fn);
+      if (!/^5\d{8}$/.test(d)) return bad('اكتب رقم جوال صحيح يبدأ بـ ٥', ph);
+      go.disabled = true; go.textContent = 'نرسل…';
+      const ok = await sendLead(a.slice(0, 40), d, `|exam:${M && M.last ? M.last.got : 0}`);
+      if (!ok) { go.disabled = false; go.textContent = 'اعرض نتيجتي'; err.textContent = 'ما قدرنا نرسل. جرّب مرة ثانية.'; err.hidden = false; return; }
+      try { localStorage.setItem('leena-exam-lead', JSON.stringify({ n: a.slice(0, 40), p: d })); localStorage.setItem('leena-lead', '1'); } catch (x) {}
+      LT('exam_lead', { n: M && M.last ? M.last.got : 0 }); LT('lead_sent'); quiet(() => examResult()); };
+  }
+  function examResult() {
+    const M = api().S.mock; if (!M || !M.last) return landing();
+    const { got, total, by } = M.last, weak = M.weak || [], ids = Object.keys(by).sort((a, b) => by[a][0] / by[a][1] - by[b][0] / by[b][1] || by[b][1] - by[a][1]), nm = k => { const l = byId(k); return l ? l.title : k; };
+    LT('exam_result', { n: got });
+    const w = room('tun-door tun-list tun-exam-res', goBack, 'رجوع'); enter(1, () => landing());
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">نتيجتك</p><i class="tun-rule"></i><h1 class="tun-h stop">حلّيت ${ar(got)} من ${ar(total)}</h1><p class="tun-p">هذا إحساس بالاختبار ، مو درجتك في قياس.${weak.length ? ' وأول المواضيع تحت هي اللي تحتاجك أكثر.' : ''}</p></div>
+      <ul class="dz-mock">${ids.map(k => `<li class="${by[k][0] === by[k][1] ? 'ok' : by[k][0] === 0 ? 'bad' : 'mid'}${weak.includes(k) ? ' weak' : ''}"><span>${esc(nm(k))}</span><b>${ar(by[k][0])} من ${ar(by[k][1])}</b></li>`).join('')}</ul>`);
+    const go = el('button', 'tun-go', 'رتّب لي خطة'); go.onclick = () => { LT('plan_open', { val: 'exam' }); quiet(() => planShow()); }; w.appendChild(go);
+  }
+  /* under the visitor's weeks: how to begin them. He has given his name and number already, so one press is enough */
+  function planOffer(w) {
+    w.insertAdjacentHTML('beforeend', `<div class="pl-offer"><p class="pl-o-h">هذي خطتك. عشان تبدأها:</p>
+      <button type="button" class="tun-go pl-trial">أبي حساب تجربة مجاني</button><button type="button" class="tun-know pl-buy">اشترك الآن: شهر بـ${ar(PRICE)} ريال</button>
+      <p class="jn-small">حساب التجربة: كل الدروس مفتوحة لك ساعة كاملة ، نرسله على واتساب.<br>والاشتراك تسترجع مبلغه خلال ${ar(BACK)} أيام ، بدون سبب.</p></div>`);
+    const send = async (b, trial) => { const me = examLead(); if (!me) return order(0, trial ? 'trial' : '');
+      b.disabled = true; const ok = await sendLead(me.n, me.p, trial ? '|trial' : '');
+      if (!ok) { b.disabled = false; return say('ما قدرنا نرسل طلبك. جرّب مرة ثانية.'); }
+      if (trial) LT('trial_sent', { val: 'plan' }); else { LT('plan_pick', { val: 'plan' }); LT('order_wa', { val: `m1=${PRICE}` }); } LT('lead_sent');
+      const w2 = room('tun-door jn tun-lead tun-order', goBack, 'رجوع'); quiet(() => enter(1, () => landing()));
+      w2.insertAdjacentHTML('beforeend', `<div class="jn-ok">${TICK}</div><div class="tun-txt"><h1 class="tun-h stop">وصلنا طلبك</h1><p class="tun-p">${esc(me.n)}، ${trial ? 'بنرسل لك حساب التجربة<br>على واتساب قريبًا.' : 'واحد من فريق أكاديمية لينا<br>بيتواصل معك قريبًا.'}</p></div>`);
+      const bk = el('button', 'tun-go', 'رجوع إلى خطتي'); bk.onclick = () => quiet(() => planShow()); w2.appendChild(bk); };
+    w.querySelector('.pl-trial').onclick = e => send(e.currentTarget, true);
+    w.querySelector('.pl-buy').onclick = e => send(e.currentTarget, false);
   }
   function weakLesson() {
     const S = api().S, sk = (S.brain && S.brain.sk) || {}, list = [];
@@ -5584,10 +5673,10 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const nx = nextAfter(l);
     up(() => { if (nx && l) { LT('tunnel_next', { lesson: nx.id }); return door(nx, l); } road(); });
   }
-  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave, plan: () => quiet(() => { road(); planShow(); }),   /* from a lesson's room (one step down in the phone's history) to the plan (one step down too): the same history entry serves, so «back» lands on the lessons screen */ hasPlan: () => !!api().S.plan, next: l => subscriber() ? nextAfter(l && byId(l.id)) : true };
+  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave, visitorExam: () => quiet(() => examGate()), plan: () => quiet(() => { road(); planShow(); }),   /* from a lesson's room (one step down in the phone's history) to the plan (one step down too): the same history entry serves, so «back» lands on the lessons screen */ hasPlan: () => !!api().S.plan, next: l => subscriber() ? nextAfter(l && byId(l.id)) : true };
 
   /* ---------- home: where each person lands ---------- */
-  let waited = false, landPreview = false, wantLogin = false;
+  let waited = false, landPreview = false, wantLogin = false, wantExam = false;
   function home() {
     if (landPreview && document.querySelector('#app .tun-land')) return landing();   // the #land preview stays put when the account code redraws
     const h = location.hash;
@@ -5596,6 +5685,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       LT('restart_lesson'); return subscriber() ? door(first()) : door();
     }
     if (h === '#open-all') { clearHash(); try { localStorage.setItem('leena-open-all', '1'); } catch (e) {} LT('open_all'); }
+    if (h === '#exam') { clearHash(); wantExam = true; }   // the campaign's link: straight into the mock exam
     if (h === '#login') { clearHash(); wantLogin = true; }   // the link in a subscriber's welcome message: the login window opens by itself
     if (h === '#land') { clearHash(); landPreview = true; return landing(); }   // preview: the landing page for anyone, even a subscriber
     if (h === '#lesson1') { clearHash(); LT('direct_lesson'); if (!subscriber()) return door(); }
