@@ -1718,6 +1718,26 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
 .dz-mock li .kn{font-style:normal;font-size:12px;color:#5C6660;border:1px solid #C9CFC9;border-radius:99px;padding:2px 8px;margin-inline-start:6px;white-space:nowrap}
 .tun-mock.tun-weak{margin-top:10px;border-color:#9A7B5B;background:rgba(154,123,91,.07)}
 @media (min-width:1100px){.lt .tun-road{grid-template-rows:auto auto auto 1fr}.lt .tun-road>.tun-st{grid-row:1 / span 4}.lt .tun-road>.tun-mock.tun-weak{grid-row:4;top:536px;margin-top:10px}}
+/* ---- his exam date and his weeks («خطتك», 15 Nov 2026) ---- */
+.tun-mock.tun-plan-card{border-color:#16201B;background:#16201B}
+.tun-mock.tun-plan-card b{color:#F6F4EE}.tun-mock.tun-plan-card small{color:#C9CFC9}
+.tun-mock+.tun-mock.tun-plan-card{margin-top:10px}
+.lt .tun-plan-ask #pl-date{min-height:58px;text-align:center;font:400 19px/1 Alexandria,var(--f-display);color:#16201B}
+.lt .tun-plan-ask .tun-know{margin-top:14px}
+.pl-weeks{list-style:none;margin:26px 0 0;padding:0;width:100%}
+.pl-weeks>li{padding:18px 0;border-top:1px solid #E4E0D6}
+.pl-weeks>li.now{border-top:2px solid #16201B}
+.pl-w{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 8px;font-family:Alexandria,var(--f-display)}
+.pl-w b{font-weight:500;font-size:19px;color:#16201B}.pl-w span{font-weight:300;font-size:14px;color:#6B756F;white-space:nowrap}
+.pl-weeks ul{list-style:none;margin:0;padding:0}
+.pl-weeks ul li{display:flex;align-items:center;gap:10px;min-height:42px;font:300 18px/1.5 Alexandria,var(--f-display);color:#16201B;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pl-weeks ul li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:#1F7A5A}
+.pl-weeks ul li.x{color:#6B756F;cursor:default}.pl-weeks ul li.x::before{background:none;border:1.5px solid #9AA19C}
+.pl-weeks ul li .wk{margin-inline-start:auto;flex:none;font-size:13px;font-weight:500;color:#1F7A5A;border:1px solid #1F7A5A;border-radius:99px;padding:3px 10px;white-space:nowrap}
+.pl-weeks ul li[data-id]:focus-visible{outline:2px solid #16201B;outline-offset:2px;border-radius:6px}
+.tun-plan .pl-change{margin:22px auto 0}
+@media (min-width:1100px){.lt .tun-road{grid-template-rows:auto auto auto auto 1fr}.lt .tun-road>.tun-st{grid-row:1 / span 5}.lt .tun-road>.tun-mock:not(.tun-plan-card):not(.tun-weak){grid-row:3;top:418px}.lt .tun-road>.tun-mock.tun-plan-card{grid-row:4;top:536px;margin-top:10px}.lt .tun-road>.tun-mock.tun-weak{grid-row:5;top:654px}
+  .lt .tun-plan{max-width:720px}}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -1935,7 +1955,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794699765", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794701360", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -4265,7 +4285,9 @@ function runDrill(d, lesson) {
     p.innerHTML = `<h1 class="dz-h">حلّيت ${ar(got)} من ${ar(n)}</h1><p class="dz-p">${got === n ? 'ولا غلطة ، وفي الوقت.' : weak.length ? 'هذي المواضيع تحتاجك أكثر. علّمنا لك عليها في قائمة الدروس.' : ''}${known.length ? ' واللي عليها «تعرفه» ما تحتاج تمرّ عليها.' : ''}</p>
       <ul class="dz-mock">${ids.map(k => `<li class="${by[k][0] === by[k][1] ? 'ok' : by[k][0] === 0 ? 'bad' : 'mid'}${weak.includes(k) ? ' weak' : ''}"><span>${name(k)}${known.includes(k) ? ' <i class="kn">تعرفه</i>' : ''}</span><b>${ar(by[k][0])} من ${ar(by[k][1])}</b></li>`).join('')}</ul>`;
     if (got === n) { FX.play('finish'); FX.confetti(60); } else FX.play('task');
-    dockBtn('رجوع إلى الدروس', toDoor);
+    /* after the exam comes the plan (owner, 15 Nov 2026): «متى اختبارك؟» if he has not said, his weeks if he has */
+    if (TUN && TUN.plan) dockBtn(TUN.hasPlan && TUN.hasPlan() ? 'شوف خطتك' : 'رتّب لي خطة', () => { cleanup(); TUN.plan(); }, ['رجوع إلى الدروس', toDoor]);
+    else dockBtn('رجوع إلى الدروس', toDoor);
     if (S.drill && S.drill[id]) { delete S.drill[id]; persist(); }   // the mock exam keeps no place of its own
   }
   function finished(got) {
@@ -4616,18 +4638,19 @@ function runDrill(d, lesson) {
    A lesson with no drill yet shows on the road as «قريبًا».
    Keep the ids: a student's saved progress is stored under them. */
 (() => {
+  /* The order follows what the real exam asks most (docs/EXAM_MAP.md, owner 15 Nov 2026): after the first lesson (the easy start, and the
+     only one outside the encrypted course), algebra and its stories, percent, fractions, the comparison rules, geometry; the light
+     topics come later. Ids never change, so a student's saved progress is safe whatever the order. */
   const ROAD = [
-    ['fs1', 'قوانين الأسس'], ['fs2', 'الجذور'], ['fs3', 'حيل الحساب الذهني'], ['fs4', 'الفرق بين مربعين'], ['fs5', 'الأعداد العشرية'], ['fs6', 'آخر رقم'],
+    ['fs1', 'قوانين الأسس'], ['al1', 'المعادلات السريعة'], ['al2', 'ترجمة الكلام والأعمار'], ['lf1', 'مسائل من الحياة'],
     ['pc1', 'النسبة المئوية'], ['pc2', 'الخصم والربح'], ['pc3', 'التناسب والتقسيم'],
-    ['cm1', 'قواعد المقارنة'],
-    ['al1', 'المعادلات السريعة'], ['al2', 'ترجمة الكلام والأعمار'], ['lf1', 'مسائل من الحياة'], ['al3', 'المتطابقات'],
+    ['fr1', 'تبسيط الكسور ومقارنتها'], ['fr2', 'عمليات الكسور'], ['fs5', 'الأعداد العشرية'], ['cm1', 'قواعد المقارنة'],
+    ['ge1', 'الزوايا والمثلثات'], ['ge2', 'المحيط والمساحة'],
     ['nm1', 'ترتيب العمليات والسالب'], ['nm2', 'القسمة والعوامل'], ['nm3', 'ألغاز الأرقام'],
-    ['fr1', 'تبسيط الكسور ومقارنتها'], ['fr2', 'عمليات الكسور'],
-    ['mo1', 'السرعة والمسافة'], ['mo2', 'العمل والزمن'],
-    ['pt1', 'المتتابعات'],
-    ['dt1', 'المتوسطات'], ['dt2', 'الاحتمالات'], ['dt3', 'الرسوم والجداول'],
-    ['ge1', 'الزوايا والمثلثات'], ['ge2', 'المحيط والمساحة'], ['ge3', 'المجسمات والإحداثيات'],
-    ['cm2', 'مقارنات مختلطة'],
+    ['dt1', 'المتوسطات'], ['dt3', 'الرسوم والجداول'], ['pt1', 'المتتابعات'],
+    ['al3', 'المتطابقات'], ['fs2', 'الجذور'], ['fs4', 'الفرق بين مربعين'], ['fs3', 'حيل الحساب الذهني'],
+    ['mo1', 'السرعة والمسافة'], ['mo2', 'العمل والزمن'], ['dt2', 'الاحتمالات'],
+    ['ge3', 'المجسمات والإحداثيات'], ['fs6', 'آخر رقم'], ['cm2', 'مقارنات مختلطة'],
   ];
   BUILT.fast = { lessons: ROAD.map(([id, title]) => ({ id, title, sub: '', steps: [] })), boss: [] };
 })();
@@ -5456,6 +5479,56 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (short > 0) take(() => true, short);   // a family too thin today: fill from anywhere
     return { id: 'mock', title: 'اختبار محاكي', mock: true, sub: '', steps: [], drill: { v: 1, tunnel: true, levels: [], finalT: 60, final: shuf(picked).map(x => Object.assign({}, x.q, { les: x.les, key: x.key })) } };
   }
+  /* ---------- his exam date and the plan that follows from it (docs/EXAM_MAP.md B3; owner, 15 Nov 2026, 02:48) ----------
+     The owner's next campaign is built on the mock exam: a visitor sits it, and then is offered a plan: «متى اختبارك؟», and if no date is
+     set yet, we say when he could be ready. So the sums live in one pure function, LeenaPlan.build, that needs no account and no lesson
+     content: only the lessons' names and states, his weak ones, the date and today. The screens below are the subscriber's use of it. */
+  const DAY = 864e5, d0 = t => { const d = new Date(t); d.setHours(12, 0, 0, 0); return d; }, iso = d => { const z = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };
+  const fdate = d => { try { return new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { day: 'numeric', month: 'long' }).format(d); } catch (e) { return iso(d); } };
+  const PER_WEEK = 4;   // a pace a student can keep beside school: four lessons a week
+  const planBuild = ({ todo, weak = [], date = null, today = Date.now() }) => {
+    const order = [...todo.filter(l => weak.includes(l.id)).sort((a, b) => weak.indexOf(a.id) - weak.indexOf(b.id)), ...todo.filter(l => !weak.includes(l.id))];   // his weak lessons first, then the road
+    const need = Math.ceil(order.length / PER_WEEK) + 1, start = d0(today), earliest = new Date(+start + need * 7 * DAY);   // + a last week of mock exams and review
+    const days = date ? Math.round((+d0(date + 'T12:00:00') - +start) / DAY) : need * 7, total = Math.max(1, Math.floor(days / 7)), study = order.length ? Math.max(1, total > 1 ? total - 1 : 1) : 0;
+    const per = study ? Math.ceil(order.length / study) : 0, weeks = [];
+    for (let i = 0; i < study; i++) { const ls = order.slice(i * per, (i + 1) * per); if (!ls.length) break; weeks.push({ from: new Date(+start + i * 7 * DAY), to: new Date(+start + (i * 7 + 6) * DAY), lessons: ls, mock: true }); }
+    if (total > weeks.length || !weeks.length) weeks.push({ from: new Date(+start + weeks.length * 7 * DAY), to: date ? d0(date + 'T12:00:00') : new Date(+start + (weeks.length * 7 + 6) * DAY), lessons: [], review: true });
+    return { days, per, weeks, need, earliest, tight: !!date && order.length > 0 && per > 7, late: !!date && days < 0 };
+  };
+  window.LeenaPlan = { build: planBuild, PER_WEEK };
+  const planState = () => { const S = api().S, MK = S.mock || {}; return { P: S.plan || null, todo: lessons().filter(l => ready(l) && !done(l) && !knows(l)), weak: MK.weak || [] }; };
+  /* «متى اختبارك؟»: a date, or «ما حددت موعد» */
+  function planAsk() {
+    const { P, todo, weak } = planState(), base = planBuild({ todo, weak });
+    const w = room('tun-door jn tun-lead tun-plan-ask', goBack, 'رجوع'); enter(1, () => road());
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><h1 class="tun-h stop">متى اختبارك؟</h1><p class="tun-p">نرتّب لك الدروس على الأسابيع اللي باقية ، ونبدأ بالمواضيع اللي تحتاجك.</p></div>
+      <form class="jn-form" novalidate><input id="pl-date" class="jn-in" type="date" min="${iso(new Date(Date.now() + DAY))}" value="${P && P.date ? P.date : ''}" aria-label="تاريخ الاختبار">
+      <p class="jn-err" hidden></p><button class="tun-go" type="submit">رتّب خطتي</button></form>
+      <button type="button" class="tun-know pl-none">ما حددت موعد للحين</button>
+      <p class="jn-small">ما حجزت؟ على سرعة ${ar(PER_WEEK)} دروس في الأسبوع تكون جاهز بعد ${ar(base.need)} أسابيع تقريبًا ، يعني من ${fdate(base.earliest)}.</p>`);
+    const f = w.querySelector('form'), inp = w.querySelector('#pl-date'), err = w.querySelector('.jn-err');
+    const save = date => { const S = api().S; S.plan = { date, at: Date.now() }; api().persist(); LT(date ? 'plan_date' : 'plan_nodate', date ? { n: Math.round((+d0(date + 'T12:00:00') - +d0(Date.now())) / DAY) } : {}); quiet(() => planShow()); };
+    f.onsubmit = e => { e.preventDefault(); err.hidden = true; const v = inp.value;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(v) || +d0(v + 'T12:00:00') <= +d0(Date.now())) { err.textContent = 'اختر تاريخ اختبارك (يوم جاي).'; err.hidden = false; return inp.focus(); }
+      save(v); };
+    w.querySelector('.pl-none').onclick = () => save(null);
+  }
+  /* «خطتك»: week by week */
+  function planShow() {
+    const { P, todo, weak } = planState(); if (!P) return planAsk();
+    LT('plan_view');
+    const pl = planBuild({ todo, weak, date: P.date }), w = room('tun-door tun-list tun-plan', goBack, 'الدروس'); enter(1, () => road());
+    const head = P.date ? (pl.late ? 'موعد اختبارك فات' : pl.days === 0 ? 'اختبارك اليوم' : `باقي ${ar(pl.days)} يوم على اختبارك`) : 'خطتك بدون موعد';
+    const sub = !todo.length ? 'خلّصت الدروس كلها. الباقي مراجعة واختبارات محاكية.'
+      : P.date ? (pl.tight ? `الوقت ضيّق: ${ar(pl.per)} دروس في الأسبوع. ركّز على اللي عليها «ابدأ من هنا» ، واستخدم «أعرف هذا» في اللي تعرفه.` : `${ar(pl.per)} ${pl.per <= 10 && pl.per >= 3 ? 'دروس' : pl.per === 1 ? 'درس' : pl.per === 2 ? 'درسين' : 'درس'} في الأسبوع ، وآخر كل أسبوع اختبار محاكي.`.replace(/^١ درس|^٢ درسين/, m => m.replace(/^[١٢] /, '')))
+        : `على ${ar(PER_WEEK)} دروس في الأسبوع تكون جاهز من ${fdate(pl.earliest)}. احجز موعد بعد هذا التاريخ.`;
+    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">خطتك</p><i class="tun-rule"></i><h1 class="tun-h stop">${head}</h1><p class="tun-p">${sub}</p></div>
+      <ol class="pl-weeks">${pl.weeks.map((k, i) => `<li class="${i === 0 ? 'now' : ''}${k.review ? ' rev' : ''}"><p class="pl-w"><b>${i === 0 ? 'هذا الأسبوع' : `الأسبوع ${ar(i + 1)}`}</b><span>${fdate(k.from)} – ${fdate(k.to)}</span></p>
+        <ul>${k.lessons.map(l => `<li data-id="${l.id}">${esc(l.title)}${weak.includes(l.id) ? '<small class="wk">ابدأ من هنا</small>' : ''}</li>`).join('')}${k.review ? '<li class="x">مراجعة «نقاط ضعفك»</li><li class="x">اختبار محاكي ، مرتين</li>' : '<li class="x">اختبار محاكي</li>'}</ul></li>`).join('')}</ol>
+      <button type="button" class="tun-know pl-change">${P.date ? 'غيّر الموعد' : 'حدّد موعد اختبارك'}</button>`);
+    w.querySelectorAll('.pl-weeks li[data-id]').forEach(li => { const l = byId(li.dataset.id); li.tabIndex = 0; li.setAttribute('role', 'button'); li.onclick = () => { LT('tunnel_enter', { val: 'plan', lesson: l.id }); door(l); }; });
+    w.querySelector('.pl-change').onclick = () => quiet(() => planAsk());
+  }
   function weakLesson() {
     const S = api().S, sk = (S.brain && S.brain.sk) || {}, list = [];
     Object.keys(sk).forEach(key => { const [lid, i] = key.split(':'), l = byId(lid), r = sk[key]; if (!l || !ready(l) || !l.drill.levels[+i] || !(r.n > 0) || !(r.p < 0.6)) return; list.push([l, +i, r.p]); });
@@ -5472,12 +5545,16 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const w = room('tun-door tun-list tun-road');
     w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">القدرات العامة</p><i class="tun-rule"></i><h1 class="tun-h big stop">الكمّي</h1></div>
       <button type="button" class="tun-mock"><b>اختبار محاكي</b><small>${MK && MK.last ? `آخر نتيجة: ${ar(MK.last.got)} من ${ar(MK.last.total)}. أعده متى ما تبي.` : 'أسئلة من كل المواضيع ، مثل يوم الاختبار. يقول لك وين تبدأ.'}</small></button>
+      ${(() => { const P = api().S.plan; if (!P) return '<button type="button" class="tun-mock tun-plan-card"><b>خطتك</b><small>قل لنا متى اختبارك ، ونرتّب لك الدروس على الأسابيع.</small></button>';
+        const pl = planBuild(Object.assign(planState(), { date: P.date })), wk = pl.weeks[0], names = wk && wk.lessons.length ? wk.lessons.slice(0, 3).map(l => esc(l.title)).join(' ، ') + (wk.lessons.length > 3 ? ' …' : '') : 'مراجعة واختبار محاكي';
+        return `<button type="button" class="tun-mock tun-plan-card"><b>${P.date ? (pl.late ? 'خطتك' : `باقي ${ar(Math.max(0, pl.days))} يوم على اختبارك`) : 'خطتك'}</b><small>هذا الأسبوع: ${names}</small></button>`; })()}
       <ol class="tun-st">${L.map(l => { const s = st(l);
       return `<li class="${s}${weak(l) ? ' weak' : ''}${knows(l) ? ' known' : ''}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : weak(l) ? '<small class="wk">ابدأ من هنا</small>' : knows(l) ? '<small class="kn">تعرفه</small>' : ''}</li>`; }).join('')}</ol>`);
     /* «نقاط ضعفك» (B4): shown once the engine has seen him struggle with at least three ideas */
     { const WL = weakLesson(); if (WL) { const c = el('button', 'tun-mock tun-weak'); c.type = 'button'; c.innerHTML = '<b>نقاط ضعفك</b><small>عشرة أسئلة من الأفكار اللي تعبتك.</small>';
-        c.onclick = () => { LT('weak_open', { n: WL.drill.levels.length }); play(weakLesson()); }; w.querySelector('.tun-mock').insertAdjacentElement('afterend', c); } }
-    w.querySelector('.tun-mock').onclick = () => { LT('mock_open', { n: (MK && MK.n) || 0 }); play(mockLesson()); };
+        c.onclick = () => { LT('weak_open', { n: WL.drill.levels.length }); play(weakLesson()); }; w.querySelector('.tun-mock:not(.tun-plan-card)').insertAdjacentElement('afterend', c); } }
+    w.querySelector('.tun-mock:not(.tun-plan-card)').onclick = () => { LT('mock_open', { n: (MK && MK.n) || 0 }); play(mockLesson()); };
+    w.querySelector('.tun-plan-card').onclick = () => { LT('plan_open', { val: api().S.plan ? 'set' : 'new' }); planShow(); };
     { const ol = w.querySelector('.tun-st'); ol.style.setProperty('--rows', Math.ceil(L.length / 2)); ol.classList.toggle('odd', L.length % 2 === 1); }   // on a computer the lessons stand in two columns (style.css)
     enter(0);
     w.querySelectorAll('.tun-st li').forEach((li, i) => { const l = L[i], s = st(l), n = i + 1;
@@ -5507,7 +5584,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const nx = nextAfter(l);
     up(() => { if (nx && l) { LT('tunnel_next', { lesson: nx.id }); return door(nx, l); } road(); });
   }
-  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave, next: l => subscriber() ? nextAfter(l && byId(l.id)) : true };
+  window.AcademyTunnel = { door: leave, gate: after, room, home: () => home(), road, subscriber, win, save, wantSave, plan: () => quiet(() => { road(); planShow(); }),   /* from a lesson's room (one step down in the phone's history) to the plan (one step down too): the same history entry serves, so «back» lands on the lessons screen */ hasPlan: () => !!api().S.plan, next: l => subscriber() ? nextAfter(l && byId(l.id)) : true };
 
   /* ---------- home: where each person lands ---------- */
   let waited = false, landPreview = false, wantLogin = false;
