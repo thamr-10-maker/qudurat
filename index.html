@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>أكاديمية لينا | قدرات</title>
-<meta name="description" content="تحضير لاختبار القدرات، القسم الكمّي. تتدرّب بالحل، وتعرف سبب كل خطأ فورًا. اشتراك شهر، وتسترجع مبلغك خلال ٣ أيام بدون سبب.">
+<meta name="description" content="تحضير لاختبار القدرات، الكمّي واللفظي. تتدرّب بالحل، وتعرف سبب كل خطأ فورًا. اشتراك شهر، وتسترجع مبلغك خلال ٣ أيام بدون سبب.">
 <meta name="theme-color" content="#0D5A4A">
 <meta property="og:type" content="website">
 <meta property="og:title" content="أكاديمية لينا | قدرات">
-<meta property="og:description" content="تدرّب على كمّي القدرات بالحل، واعرف سبب كل خطأ فورًا. وإن لم يعجبك، استرجع مبلغك خلال ٣ أيام.">
+<meta property="og:description" content="تدرّب على القدرات ، كمّي ولفظي ، بالحل، واعرف سبب كل خطأ فورًا. وإن لم يعجبك، استرجع مبلغك خلال ٣ أيام.">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-110 -110 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF3EA5'/%3E%3Cstop offset='1' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='-110' y='-110' width='220' height='220' rx='56' fill='url(%23g)'/%3E%3Cpath d='M-62 10 C-62 72 62 72 62 10' fill='none' stroke='%23fff' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-42' r='16' fill='%23fff'/%3E%3Ccircle cx='30' cy='-42' r='16' fill='%23fff'/%3E%3C/svg%3E">
@@ -1751,6 +1751,151 @@ a.acct-wa{text-decoration:none;box-sizing:border-box}
 /* the visitor's score, before the form (15 Nov 19:33) */
 .tun-exam-gate .ex-more{margin-top:14px}
 
+/* ===== the landing page, seventh build (16 Nov 2026, owner: «make us look expensive», fewer words, quant + verbal) =====
+   One dark first screen with the real lesson on a phone, then ivory: the score you don't know yet, what's inside, the membership card */
+.lt .tun-land.lx{display:block;max-width:none;padding:0 0 30px;overflow:hidden}
+.lx>*{box-sizing:border-box}
+.lx-hero{position:relative;background:#16201B;color:#F6F4EE;padding:22px 26px 0;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;border-radius:0 0 34px 34px}
+.lx-hero::before{content:"";position:absolute;inset:auto -30% -18% -30%;height:70%;background:radial-gradient(closest-side,rgba(31,122,90,.55),rgba(31,122,90,0));pointer-events:none}
+.lx-bar{position:relative;display:flex;align-items:center;gap:10px;min-height:44px}
+.lx-logo{width:30px;height:30px;flex:none}
+.lx-bar>span{font:900 18px/1 Alexandria,var(--f-display);letter-spacing:0}
+.lt .lx .lx-acc{margin-inline-start:auto;min-height:44px;padding:0 4px;background:none;border:0;color:#C9CFC9;font:300 15px/1 Alexandria,var(--f-display);text-decoration:none;animation:none;cursor:pointer}
+.lx-h1{position:relative;margin:clamp(28px,6vh,56px) 0 0;font:900 clamp(38px,12.2vw,60px)/1.2 Alexandria,var(--f-display);color:#F6F4EE}
+.lx-h1 span{display:block;white-space:nowrap}
+.lx-h1 span+span{color:#B9D9C9}
+.lx-lede{position:relative;margin:16px 0 0;font:300 clamp(17px,4.8vw,20px)/1.75 Alexandria,var(--f-display);color:#C9CFC9;max-width:22em}
+.lx-phone{position:relative;margin:auto auto 0;padding-top:34px;width:min(66vw,290px)}
+.lx-phone img{display:block;width:100%;height:auto;border:9px solid #0C120F;border-bottom:0;border-radius:38px 38px 0 0;box-shadow:0 -1px 0 1px rgba(246,244,238,.14),0 30px 80px rgba(0,0,0,.45);aspect-ratio:1/1.32;object-fit:cover;object-position:top;background:#F6F4EE}
+.lx-sec{padding:96px 26px 0}
+.lx-eb{margin:0;font:500 15px/1.4 Alexandria,var(--f-display);color:#8A6E50}
+.lx-h2{margin:0;font:900 clamp(29px,8.6vw,40px)/1.35 Alexandria,var(--f-display);color:#16201B}
+.lx-p{margin:16px 0 0;font:300 18px/1.85 Alexandria,var(--f-display);color:#3D4A44;max-width:26em}
+.lx-dial{margin:22px 0 28px;padding:30px 20px 26px;border-radius:28px;background:#FFFFFF;border:1px solid #E4E0D6;text-align:center;box-shadow:0 24px 60px -30px rgba(22,32,27,.35)}
+.lx-dial b{display:flex;justify-content:center;align-items:baseline;gap:.12em;font:900 clamp(64px,21vw,96px)/1 Alexandria,var(--f-display);color:#16201B}
+.lx-dial b i{font-style:normal;font-weight:300;color:#B9B2A3}
+.lx-dial span{display:block;margin-top:12px;font:300 16px/1.5 Alexandria,var(--f-display);color:#6B756F}
+.lx-what{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:26px}
+.lx-what li{display:flex;gap:16px;align-items:flex-start}
+.lx-what svg{flex:none;width:46px;height:46px;padding:11px;box-sizing:border-box;border-radius:14px;background:#E9EFEA;fill:none;stroke:#1F7A5A;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.lx-what b{display:block;font:500 19px/1.5 Alexandria,var(--f-display);color:#16201B}
+.lx-what span{display:block;margin-top:2px;font:300 16px/1.75 Alexandria,var(--f-display);color:#5C6660}
+.lx-card{position:relative;overflow:hidden;padding:30px 24px 24px;border-radius:30px;background:#16201B;color:#F6F4EE;box-shadow:0 40px 80px -40px rgba(22,32,27,.6)}
+.lx-card::before{content:"";position:absolute;top:-40%;left:-30%;width:90%;height:90%;background:radial-gradient(closest-side,rgba(31,122,90,.5),rgba(31,122,90,0));pointer-events:none}
+.lx-card>*{position:relative}
+.lx-c-eb{margin:0;font:500 15px/1.4 Alexandria,var(--f-display);color:#C8AE8E}
+.lx-price{display:flex;align-items:flex-end;gap:12px;margin:10px 0 0}
+.lx-price b{font:900 clamp(72px,22vw,96px)/.95 Alexandria,var(--f-display);color:#F6F4EE}
+.lx-price span{padding-bottom:8px;font:300 16px/1.35 Alexandria,var(--f-display);color:#C9CFC9}
+.lx-perks{list-style:none;margin:24px 0 0;padding:20px 0 0;border-top:1px solid rgba(246,244,238,.14);display:grid;gap:12px}
+.lx-perks li{display:flex;align-items:center;gap:12px;font:300 17px/1.5 Alexandria,var(--f-display);color:#F6F4EE}
+.lx-perks svg{flex:none;width:22px;height:22px;padding:4px;box-sizing:border-box;border-radius:50%;background:#1F7A5A;fill:none;stroke:#F6F4EE;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.lx-buy{display:flex;align-items:center;justify-content:center;margin:26px 0 0;min-height:60px;border-radius:16px;background:#F6F4EE;color:#16201B;font:900 19px/1 Alexandria,var(--f-display);text-decoration:none}
+.lx-buy:active{transform:scale(.98)}
+.lx-buy:focus-visible,.lx .la-talk:focus-visible{outline:2px solid #B9D9C9;outline-offset:3px}
+.lx-c-note{margin:14px 0 0;text-align:center;font:300 14px/1.7 Alexandria,var(--f-display);color:#9AA19C}
+.lx-c-note a{color:#B9D9C9;text-underline-offset:4px;display:inline-block;padding:10px 0;margin:-10px 0}
+.lx-faq{margin-top:18px}
+.lx-talk{text-align:center}
+.lx-talk p{margin:0;font:500 20px/1.5 Alexandria,var(--f-display);color:#16201B}
+.lx .la-talk{margin-top:14px}
+.lx .la-foot{padding:44px 26px 0}
+@media (prefers-reduced-motion:reduce){.lx-buy:active{transform:none}}
+@media (max-height:700px){.lx-h1{margin-top:18px;font-size:clamp(38px,12vw,52px)}.lx-phone{width:min(54vw,240px);padding-top:22px}}
+@media (min-width:1100px){
+  .lt .tun-land.lx{max-width:none;padding:0 0 110px;display:block}
+  .lt .tun-land.lx>*{grid-column:auto}
+  .lx-hero{min-height:min(100svh,880px);padding:26px max(64px,calc(50vw - 600px)) 0;display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:auto 1fr auto;column-gap:80px;border-radius:0 0 48px 48px}
+  .lx-bar{grid-column:1 / -1}
+  .lx-h1{grid-column:1;grid-row:2;align-self:center;margin:0;font-size:84px}
+  .lx-lede{grid-column:1;grid-row:3;margin:0 0 120px;font-size:22px}
+  .lx-phone{grid-column:2;grid-row:2 / span 2;align-self:end;width:340px;margin:0}
+  .lx-sec{max-width:1200px;margin:0 auto;padding:150px 64px 0}
+  .lx-score{display:grid;grid-template-columns:minmax(0,1fr) 480px;column-gap:80px;align-items:center}
+  .lx-score .lx-eb{grid-column:1}.lx-score .lx-h2{grid-column:1}.lx-score .lx-p{grid-column:1}
+  .lx-score .lx-dial{grid-column:2;grid-row:1 / span 3;margin:0}
+  .lx-what{grid-template-columns:1fr 1fr;column-gap:60px;row-gap:40px}
+  .lx-card{max-width:560px;margin:0 auto;padding:40px 40px 32px}
+  .lx-sec[data-sec=ask],.lx-talk{max-width:760px}
+  .lt .tun-land.lx .la-acc-top{position:static;margin-inline-start:auto;color:#C9CFC9;text-decoration-color:rgba(201,207,201,.4)}
+}
+
+/* ===== the visitor's exam (16 Nov 2026): a serious start, no right or wrong shown while he answers ===== */
+.lt .dz-serious{justify-content:flex-start;text-align:right;align-items:stretch}
+.lt .dz-serious .dz-eb{margin:0 0 6px;font:500 15px/1.4 Alexandria,var(--f-display);color:#8A6E50}
+.lt .dz-serious .dz-big{font-size:clamp(46px,13vw,60px);line-height:1.15}
+.dz-rules{list-style:none;margin:26px 0 0;padding:0;border-top:1px solid #E4E0D6}
+.dz-rules li{display:flex;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid #E4E0D6;font-family:Alexandria,var(--f-display)}
+.dz-rules b{flex:none;width:7.2em;font-weight:500;font-size:18px;color:#16201B}
+.dz-rules span{font-weight:300;font-size:16px;line-height:1.6;color:#3D4A44}
+.lt .dz-serious .dz-mock-after{margin-top:18px;font:500 16px/1.6 Alexandria,var(--f-display);color:#1F7A5A;text-align:right}
+.dz-count{display:flex;align-items:baseline;justify-content:space-between;width:100%;font-family:Alexandria,var(--f-display)}
+.dz-count span{font-weight:500;font-size:14px;color:#8A6E50}
+.dz-count b{font-weight:500;font-size:17px;color:#16201B}.dz-count small{font-weight:300;font-size:14px;color:#6B756F}
+.dz-bar{width:100%;height:3px;margin:10px 0 4px;border-radius:2px;background:#E4E0D6;overflow:hidden}
+.dz-bar i{display:block;height:100%;background:#16201B;border-radius:2px;margin-inline-start:0}
+body.lt .dz-blind .opt.dz-o.pick{background:#16201B;border-color:#16201B;color:#F6F4EE;box-shadow:none;font-weight:500}
+body.lt .dz-blind .opt.dz-o.pick .mo{color:#F6F4EE}
+.dz-blind .dz-q{font-size:clamp(21px,6vw,27px)}
+
+/* ===== the expected score ===== */
+.rng{display:inline-flex;align-items:baseline;gap:.14em;direction:rtl;font-weight:900}
+.rng i{font-style:normal;font-weight:300;opacity:.45}
+.sc{width:100%;text-align:center}
+.sc-eb{margin:0;font:500 15px/1.4 Alexandria,var(--f-display);color:#8A6E50}
+.sc-big{margin:16px 0 0;padding:28px 16px 22px;border-radius:28px;background:#16201B;color:#F6F4EE;box-shadow:0 30px 70px -36px rgba(22,32,27,.7)}
+.sc-big .rng{font:900 clamp(66px,21vw,92px)/1 Alexandria,var(--f-display);color:#F6F4EE}
+.sc-big span{display:block;margin-top:10px;font:300 15px/1.4 Alexandria,var(--f-display);color:#C9CFC9}
+.sc-note{margin:12px 0 0;font:300 14px/1.6 Alexandria,var(--f-display);color:#6B756F}
+.sc-goal{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 0;padding:16px 20px;border-radius:20px;background:#E9EFEA;border:1px solid #CFE0D6}
+.sc-goal span{font:400 16px/1.5 Alexandria,var(--f-display);color:#16201B;text-align:right}
+.sc-goal .rng{font:900 32px/1 Alexandria,var(--f-display);color:#1F7A5A}
+.lt .tun-score .ex-more{margin-top:24px;font-weight:400;color:#16201B}
+.lt .tun-score .tun-act{margin-top:26px}
+.lt .tun-exam-res.tun-score{justify-content:flex-start}
+
+/* ===== the plan, redrawn ===== */
+.pl-top{width:100%;text-align:right}
+.pl-eb{margin:0;font:500 15px/1.4 Alexandria,var(--f-display);color:#8A6E50}
+.pl-h{margin:8px 0 0;font:900 clamp(34px,10vw,46px)/1.2 Alexandria,var(--f-display);color:#16201B}
+.pl-sub{margin:10px 0 0;font:300 16.5px/1.75 Alexandria,var(--f-display);color:#3D4A44}
+.pl-goal{display:flex;align-items:center;justify-content:space-between;margin:22px 0 0;padding:18px 22px;border-radius:24px;background:#16201B;color:#F6F4EE}
+.pl-goal>div{display:flex;flex-direction:column;gap:6px}
+.pl-goal small{font:300 13px/1 Alexandria,var(--f-display);color:#C9CFC9}
+.pl-goal .rng{font:900 34px/1 Alexandria,var(--f-display);color:#F6F4EE}
+.pl-goal .to .rng{color:#7FD1A8}
+.pl-goal .to{text-align:left;align-items:flex-end}
+.pl-goal svg{width:28px;height:28px;fill:none;stroke:#C8AE8E;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pl-sum{display:grid;grid-template-columns:repeat(3,1fr);margin:14px 0 0;border:1px solid #E4E0D6;border-radius:20px;background:#FFFFFF}
+.pl-sum>div{padding:14px 8px;text-align:center}
+.pl-sum>div+div{border-inline-start:1px solid #E4E0D6}
+.pl-sum b{display:block;font:900 26px/1.1 Alexandria,var(--f-display);color:#16201B}
+.pl-sum span{display:block;margin-top:4px;font:300 13px/1.3 Alexandria,var(--f-display);color:#6B756F}
+.tun-plan .pl-weeks{margin-top:22px;display:grid;gap:12px}
+.tun-plan .pl-weeks>li.pl-card{padding:18px 18px 10px;border:1px solid #E4E0D6;border-radius:22px;background:#FFFFFF}
+.tun-plan .pl-weeks>li.pl-card.now{border:1.5px solid #16201B;box-shadow:0 18px 40px -26px rgba(22,32,27,.5)}
+.tun-plan .pl-weeks>li.rev{background:#F1EEE6}
+.tun-plan .pl-weeks ul li{min-height:40px;font-size:16.5px}
+.tun-plan .pl-weeks ul li::before{display:none}
+.tun-plan .pl-weeks ul li em{flex:none;width:3.4em;font:500 12px/1 Alexandria,var(--f-display);font-style:normal;color:#1F7A5A}
+.tun-plan .pl-weeks ul li.v em{color:#8A6E50}
+.tun-plan .pl-weeks ul li.x em{color:#6B756F}
+.pl-o-p{margin:0 0 18px;font:300 16px/1.7 Alexandria,var(--f-display);color:#3D4A44;text-align:right}
+.pl-offer .pl-o-h{margin-bottom:6px;font-size:22px;font-weight:900}
+
+/* while the dark first screen is under it, the button that follows him is ivory on ink */
+.la-dock.on-dark{background:linear-gradient(to top,#16201B 62%,rgba(22,32,27,0))}
+.lt .la-dock.on-dark .ld-go{background:#F6F4EE;color:#16201B!important}
+.la-dock.on-dark .la-micro{color:#C9CFC9}
+@media (min-width:1100px){.la-dock.on-dark{background:#16201B;border-top-color:#16201B}}
+.tun-verbal{display:block;width:100%;box-sizing:border-box;margin:10px 0 0;padding:14px 18px;border:1px dashed #C9C4B6;border-radius:18px;text-align:right;font-family:Alexandria,var(--f-display)}
+.tun-verbal b{display:block;font-weight:500;font-size:18px;color:#16201B}.tun-verbal small{display:block;margin-top:4px;font-weight:300;font-size:14px;line-height:1.6;color:#6B756F}
+.tun-verbal b i{font-style:normal;font-weight:500;font-size:12px;color:#8A6E50;border:1px solid #C8AE8E;border-radius:99px;padding:2px 9px;margin-inline-start:8px;vertical-align:middle}
+/* he comes from the price film: a short dark header, then the membership card on the first screen */
+.lx.buy1 .lx-hero{min-height:0;padding-bottom:34px}.lx.buy1 .lx-phone{display:none}.lx.buy1 .lx-h1{margin-top:22px}
+.lx.buy1 [data-sec=plan]{padding-top:24px}
+@media (min-width:1100px){.lx.buy1 .lx-hero{min-height:0;grid-template-rows:auto auto auto;padding-bottom:0}.lx.buy1 .lx-lede{margin-bottom:60px}.lx.buy1 [data-sec=plan]{padding-top:60px}}
+
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
 .cover-btn.soon{opacity:.55;filter:saturate(.4)}
@@ -1967,7 +2112,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794760843", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794808588", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -3794,6 +3939,11 @@ function runDrill(d, lesson) {
       const b = h('button', 'opt dz-o', fmt(String(o.v)));
       b.onclick = () => {
         if (over || b.disabled) return;
+        if (g.blind) {                // the visitor's mock exam: like the real test, no right or wrong shown; his pick is marked and the next question comes
+          over = true; stopT(); b.classList.add('pick'); stage.classList.add('answered'); FX.play('tap');
+          opts.querySelectorAll('.opt').forEach(x => x.disabled = true);
+          return done(o.key == null ? 'ok' : 'wrong', fb, (performance.now() - t0) / 1000);
+        }
         if (o.key == null) {          // right
           over = true; stopT(); b.classList.add('ok'); stage.classList.add('answered'); FX.play('correct');
           opts.querySelectorAll('.opt').forEach(x => x.disabled = true);
@@ -3825,6 +3975,7 @@ function runDrill(d, lesson) {
       paint(left);
       const whole = Math.ceil(left);
       if (whole < last) { last = whole; if (whole > 0 && whole <= 5) FX.play('tickHi'); }
+      if (left <= 0 && g.blind) { stopT(); over = true; stage.classList.add('answered'); opts.querySelectorAll('.opt').forEach(x => x.disabled = true); return done('time', fb, secs); }
       if (left <= 0) {      // time up: counts as a miss, the right answer lights up, next question
         stopT(); over = true; stage.classList.add('answered'); FX.play('wrong');
         opts.querySelectorAll('.opt').forEach((x, ci) => { x.disabled = true; if (g.opts[ci].key == null) x.classList.add('ok'); });
@@ -4235,8 +4386,19 @@ function runDrill(d, lesson) {
     if (i >= D.final.length) return lesson.mock ? mockDone(got) : KNOW ? knowDone(got) : finished(got);
     const p = page('dz-drill dz-final');
     const s = D.final[i];
-    const g = { q: s.q, a: s.a, b: s.b, fig: s.fig, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
+    const g = { q: s.q, a: s.a, b: s.b, fig: s.fig, blind: !!lesson.pub, opts: s.choices.map((c, ci) => ({ v: c, key: ci === s.answer ? null : 'final' })) };
     dockNone();
+    if (g.blind) {   // the visitor's exam (owner, 16 Nov 2026): serious, like the real day. A count and a thin bar; no right or wrong until the end
+      const n = D.final.length;
+      p.classList.add('dz-blind');
+      p.insertAdjacentHTML('afterbegin', `<div class="dz-count"><span>${s.sec === 'v' ? 'لفظي' : 'كمّي'}</span><b>${ar(i + 1)} <small>من ${ar(n)}</small></b></div><div class="dz-bar"><i style="width:${(100 * i / n).toFixed(1)}%"></i></div>`);
+      ask(p, g, D.finalT || 60, { final: '' }, res => {
+        const ok = res === 'ok' || res === 'fast'; mres[i] = ok;
+        LT('drill_final', { lesson: id, n: i + 1, val: ok ? 'ok' : res });
+        setTimeout(() => !gone && final(i + 1, got + (ok ? 1 : 0)), res === 'time' ? 700 : 420);
+      });
+      return;
+    }
     ask(p, g, D.finalT || 40, { final: '' }, (res, fb) => {
       const ok = res === 'fast' || res === 'ok'; mres[i] = ok;
       LT('drill_final', { lesson: id, n: i + 1, val: ok ? 'ok' : res });
@@ -4274,6 +4436,22 @@ function runDrill(d, lesson) {
   function mockIntro() {
     paintTrack(1);
     const p = page('dz-final-intro dz-mock-intro', true), n = D.final.length;
+    if (lesson.pub) {   // the visitor's exam: what it takes, before the clock starts (owner, 16 Nov 2026: «make it look serious»)
+      const mins = Math.round(n * (D.finalT || 60) / 60 / 5) * 5;
+      p.classList.add('dz-serious');
+      p.innerHTML = `<p class="dz-eb">اختبار تحديد المستوى</p><h1 class="dz-big">قبل ما<br>تبدأ</h1>
+        <ul class="dz-rules">
+          <li><b>${ar(n)} سؤال</b><span>كمّي ولفظي ، مثل يوم الاختبار.</span></li>
+          <li><b>${ar(mins)} دقيقة</b><span>دقيقة لكل سؤال ، والوقت يمشي.</span></li>
+          <li><b>مكان هادي</b><span>جوالك على صامت ، وبدون مقاطعة.</span></li>
+          <li><b>ورقة وقلم</b><span>جنبك من الحين.</span></li>
+          <li><b>محاولة وحدة</b><span>ما تقدر ترجع لسؤال فات.</span></li>
+        </ul>
+        <p class="dz-p dz-mock-after">في آخره: درجتك المتوقعة من ١٠٠ ، وخطة لك.</p>`;
+      LT('mock_start');
+      dockBtn('أنا جاهز ، ابدأ', () => final(0, 0));
+      return;
+    }
     p.innerHTML = `<h1 class="dz-big">اختبار<br>محاكي</h1><div class="dz-line"></div><p class="dz-p">${ar(n)} سؤال من كل المواضيع، مخلوطة مثل يوم الاختبار. دقيقة لكل سؤال، ومحاولة وحدة.</p><p class="dz-p dz-mock-after">في آخره نقول لك وين تبدأ.</p>`;
     LT('mock_start');
     dockBtn('ابدأ الاختبار', () => final(0, 0));
@@ -4971,7 +5149,7 @@ function runDrill(d, lesson) {
 })();
 
 /* ================= the public mock exam: «a feel» of the real test, for a visitor (owner, 15 Nov 2026, 03:21; docs/EXAM_MAP.md) =================
-   Twelve questions in the exam's own mix (three comparisons, two of algebra, two of geometry, one each of percent, fractions, an
+   Twelve quant questions in the exam's own mix (and since 16 Nov, twelve verbal ones after them: 24 in all) (three comparisons, two of algebra, two of geometry, one each of percent, fractions, an
    everyday story, data and patterns), a minute each. They ship in the open page, so they are a set of their own: none of them is a
    lesson's final-test question, and nothing here gives a lesson away. Written here, with our own numbers; checked by test/drills.js
    like any final test. `les` = the lesson the result will name. Never promise a score with it: it is a feel. */
@@ -4990,6 +5168,20 @@ function runDrill(d, lesson) {
     { les: 'lf1', q: 'عدّاد تاكسي يبدأ بـ ١٠ ريال ، ويزيد ٢ ريال عن كل كيلومتر. كم يدفع راكب قطع ١٥ كم؟', choices: ['٣٠', '٢٧', '١٨٠', '٤٠'], answer: 3, why: '١٠ + ٢ × ١٥ = ٤٠. لا تنسى ريالات البداية', chk: '10 + 2 × 15' },
     { les: 'dt1', q: 'متوسط ٤ أعداد ١٥. إذا كانت ثلاثة منها ١٠ و ١٤ و ١٦ ، فكم الرابع؟', choices: ['١٥', '٢٠', '١٠', '٢٥'], answer: 1, why: 'المجموع ٤ × ١٥ = ٦٠ ، والثلاثة مجموعهم ٤٠ ← ٢٠', chk: '4 × 15 − (10 + 14 + 16)' },
     { les: 'pt1', q: 'ما الحد التالي؟ ٢ ، ٥ ، ١١ ، ٢٣ ، ٤٧ ، …', choices: ['٩٤', '٧١', '٩٥', '٩٣'], answer: 2, why: 'كل حد = ضعف اللي قبله + ١ ← ٤٧ × ٢ + ١ = ٩٥', chk: '47 × 2 + 1', free: [2, 5, 11, 23] },
+    /* ---- the verbal half (owner, 16 Nov 2026, 08:27: «quant plus verbal», the exam doubled to 24). Our own sentences, written here;
+       the five kinds of the verbal section: analogy, sentence completion, the word out of context, the odd word, reading ---- */
+    { les: 'v-an', sec: 'v', q: 'اختر الزوج اللي علاقته مثل: طبيب : مستشفى', choices: ['معلّم : مدرسة', 'قلم : ورقة', 'مريض : دواء', 'شجرة : ثمرة'], answer: 0, why: 'الطبيب يشتغل في المستشفى ، والمعلّم يشتغل في المدرسة', chk: ['text'] },
+    { les: 'v-an', sec: 'v', q: 'اختر الزوج اللي علاقته مثل: بذرة : شجرة', choices: ['غصن : ورقة', 'طفل : رجل', 'ماء : نهر', 'جذر : تربة'], answer: 1, why: 'البذرة تكبر وتصير شجرة ، والطفل يكبر ويصير رجل', chk: ['text'] },
+    { les: 'v-an', sec: 'v', q: 'اختر الزوج اللي علاقته مثل: عطش : ماء', choices: ['برد : شتاء', 'نوم : سرير', 'جوع : طعام', 'تعب : عمل'], answer: 2, why: 'الماء يروي العطش ، والطعام يسدّ الجوع', chk: ['text'] },
+    { les: 'v-an', sec: 'v', q: 'اختر الزوج اللي علاقته مثل: ثرثرة : كلام', choices: ['صمت : هدوء', 'سرعة : سيارة', 'قراءة : كتاب', 'إسراف : إنفاق'], answer: 3, why: 'الثرثرة كلام زايد عن الحاجة ، والإسراف إنفاق زايد عن الحاجة', chk: ['text'] },
+    { les: 'v-cm', sec: 'v', q: 'أكمل: كلما زاد اطّلاع الإنسان ، …… حكمه على الأمور.', choices: ['تسرّع', 'اتّزن', 'غاب', 'ضاق'], answer: 1, why: 'الاطّلاع يوسّع النظر ، فيصير الحكم أعدل وأهدأ', chk: ['text'] },
+    { les: 'v-cm', sec: 'v', q: 'أكمل: لم يكن نجاحه …… ، بل ثمرة سنوات من العمل.', choices: ['صدفة', 'كبيرًا', 'معروفًا', 'متأخرًا'], answer: 0, why: '«بل» تقلب المعنى: ما جاء صدفة ، جاء من عمل طويل', chk: ['text'] },
+    { les: 'v-cm', sec: 'v', q: 'أكمل: المعرفة بلا …… كالشجرة بلا …… .', choices: ['كتب / ماء', 'وقت / ظل', 'عمل / ثمر', 'سؤال / ورق'], answer: 2, why: 'فايدة المعرفة في العمل بها ، مثل ما فايدة الشجرة في ثمرها', chk: ['text'] },
+    { les: 'v-er', sec: 'v', q: 'أي كلمة تخالف معنى الجملة؟ يتميّز الصبور بالعجلة في قراراته ، فلا يندم عليها غالبًا.', choices: ['الصبور', 'العجلة', 'قراراته', 'يندم'], answer: 1, why: 'الصبور يتأنّى ، والعجلة عكس الصبر', chk: ['text'] },
+    { les: 'v-er', sec: 'v', q: 'أي كلمة تخالف معنى الجملة؟ كثرة التمرين تُضعف المهارة ، وتجعل الصعب سهلًا مع الوقت.', choices: ['كثرة', 'الصعب', 'تُضعف', 'الوقت'], answer: 2, why: 'التمرين يقوّي المهارة ، وباقي الجملة يقول هذا', chk: ['text'] },
+    { les: 'v-od', sec: 'v', q: 'أي كلمة مختلفة عن الباقي؟', choices: ['شجاعة', 'كرم', 'بُخل', 'أمانة'], answer: 2, why: 'الثلاث صفات حميدة ، والبخل صفة مذمومة', chk: ['text'] },
+    { les: 'v-rd', sec: 'v', q: 'اقرأ: «يظن طلاب كثير أن مذاكرة الليلة الأخيرة تكفي. لكن الذاكرة تثبّت المعلومة حين تتكرر على أيام متباعدة ، لا حين تُحشر في ساعات قليلة.» ما الفكرة الرئيسة؟', choices: ['الليلة الأخيرة أهم وقت للمذاكرة', 'التكرار على أيام يثبّت المعلومة أكثر من الحشر', 'الذاكرة تضعف مع كثرة المذاكرة', 'المذاكرة الطويلة لا تفيد أبدًا'], answer: 1, why: 'النص كله يقول: التكرار المتباعد أنفع من الحشر', chk: ['text'] },
+    { les: 'v-rd', sec: 'v', q: 'من النص نفسه: إذا عندك أسبوع قبل الاختبار ، فالأنفع إنك ……', choices: ['تذاكر كل يوم شوي', 'تذاكر كله في آخر ليلة', 'ما تذاكر أبدًا', 'تذاكر يوم واحد طويل'], answer: 0, why: 'النص يقول إن المعلومة تثبت حين تتكرر على أيام', chk: ['text'] },
   ];
 })();
 
@@ -5285,49 +5477,48 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     w.appendChild(act);
   }
   const PRICE_FIRST = ['why'];   // sources (…/?src=…) whose ad already said the price and what it holds (the film «ليش أكاديمية لينا؟», 15 Nov)
-  function landing() {   // sixth build, 14 Nov 2026, 19:23 (owner): «everything clear, nothing extra, nothing out of context. Sharp.»
-    // Visitors come from films with different ideas, so the page says in order: what this is · how to try it free · what 249 buys · questions.
-    // The problem to solve is gone. One button follows him, «جرّب مجانًا»: he leaves a name and a number, the owner sends a trial account
-    // (every lesson open, one hour from the first login: site/supabase/011_trial_hour.sql). «اشترك الآن» sits under the list of what the price holds.
+  function landing() {   // seventh build, 16 Nov 2026, 08:27 (owner: «make us look expensive… too much talk… quant plus verbal»)
+    // In order: who we are (dark, with the real lesson on a phone) · your expected score (the exam is the one button) · what is inside ·
+    // the membership card (249) · four questions · talk to us. Few words on each; the button that follows him opens the exam.
     LT('land_view', { once: true });
     if (lockedOut() && sawOffer) enter(1, () => { sawOffer = false; noAccess(); }); else enter(0);   // opened from «تفاصيل الاشتراك»: back returns to the account's screen
-    const w = room('tun-land'), L = lessons(), N = ar(L.length);
-    const two = (a, b) => `<span>${a}</span><span>${b}</span>`;   // every title is two short lines: the second completes the first
-    const WHAT = [`${N} درسًا قصيرًا، من الأساس.`, 'تحلّ بنفسك، بأرقام جديدة كل مرة.', 'تعلق؟ نكتب لك الحل خطوة خطوة.', 'ومعك معلّم سعودي يتابعك.'];
+    const w = room('tun-land lx'), L = lessons(), N = ar(L.length); bar('#16201B');
     const BUY1 = PRICE_FIRST.includes(String(window.LeenaSrc || '').toLowerCase());   // he comes from an ad that told him the price: the page goes on from there
-    const NQ = ar((unit().pubExam || []).length), took = examTaken();   // 15 Nov 2026, 03:21 (owner: the campaign is built on the mock exam): the page's one button is «جرّب الاختبار»
-    const STEPS = [`${NQ} سؤال من كل المواضيع ، دقيقة لكل سؤال.`, 'نتيجتك: وين أنت قوي ووين تحتاج.', 'قل لنا متى اختبارك ، ونرتّب لك خطة.'];
-    const PERKS = [['كل دروس الكمّي', `${N} درسًا، من الأسس والكسور إلى الهندسة والاحتمالات.`], ['تدريب مفتوح', 'أرقام جديدة في كل مرة، فتفهم الفكرة ولا تحفظ الجواب.'],
-      ['الحل مكتوب لك', 'إذا علقت في مسألة، نكتب لك حلها خطوة خطوة.'], ['اختبار بعد كل درس', 'تعرف مستواك قبل أن تنتقل.'],
-      ['ساعة مع معلّم خاص', 'حصة فردية، نرتّب موعدها معك على واتساب.'], ['متابعة من المعلّم', 'يتابع تقدّمك بعد الحصة.'],
-      ['استرجاع كامل', `خلال ${ar(BACK)} أيام من الدفع، بدون أي سبب.`]];
-    const FAQ = [['وش الاختبار المحاكي؟', `${NQ} سؤال كمّي مخلوطة من كل المواضيع ، بنفس أسلوب القدرات ووقته. يعطيك إحساس بالاختبار ، مو درجتك في قياس. بعده نعرض لك نتيجتك ونرتّب لك خطة.`],
-      ['هل فيه تجربة مجانية للدروس؟', 'إيه. بعد الاختبار المحاكي تقدر تطلب حساب تجربة: كل الدروس مفتوحة ساعة كاملة، تبدأ من أول دخول.'],
-      ['كيف أشترك؟', 'اضغط «اشترك الآن» واكتب اسمك ورقمك. نتواصل معك، نرسل لك طريقة الدفع، ثم نفعّل اشتراكك.'],
-      ['هل أحتاج تطبيقًا؟', 'لا. يعمل من متصفح الجوال مباشرة.'], ['مستواي ضعيف، هل يناسبني؟', 'كل درس يبدأ من الفكرة الأساسية، ثم يتدرّج.'],
-      ['هل يشمل القسم اللفظي؟', 'لا. الكمّي فقط حاليًا.'],
-      ['كيف أسترجع مبلغي؟', `راسلنا على واتساب خلال ${ar(BACK)} أيام من الدفع، ونعيده كاملًا.`]];
+    const NQ = ar((unit().pubExam || []).length), took = examTaken(), MIN = ar(Math.round((unit().pubExam || []).length / 5) * 5);
+    const I = { q: '<path d="M4 19h16M7 15l3-8 3 8M8.2 12h3.6M16 9v6M13 12h6"/>', v: '<path d="M5 6h14M5 11h14M5 16h9"/>', pen: '<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>', t: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4"/>' };
+    const ico = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${I[k]}</svg>`;
+    const WHAT = [['q', 'الكمّي كامل', `${N} درسًا قصيرًا ، وتدريب بأرقام جديدة كل مرة.`], ['v', 'اللفظي كامل', 'التناظر ، الإكمال ، الخطأ السياقي ، المقروء.'],
+      ['pen', 'الحل مكتوب لك', 'تعلق في سؤال؟ نكتب لك حله خطوة خطوة.'], ['t', 'معلّم يتابعك', 'ساعة خاصة معه ، ومتابعة بعدها.']];
+    const PERKS = ['الكمّي واللفظي ، كل الدروس', 'اختبار تحديد مستوى ، وخطة لك', 'ساعة مع معلّم خاص', 'متابعة من المعلّم', `استرجاع كامل خلال ${ar(BACK)} أيام`];
+    const FAQ = [['وش اختبار تحديد المستوى؟', `${NQ} سؤال كمّي ولفظي ، دقيقة لكل سؤال. في آخره نعطيك درجتك المتوقعة من ١٠٠ ، وخطة لك. تقدير منّا ، مو درجة رسمية من قياس.`],
+      ['كيف أشترك؟', 'اضغط «اشترك الآن» واكتب اسمك ورقمك. نتواصل معك ، نرسل طريقة الدفع ، ونفتح حسابك.'],
+      ['أحتاج تطبيق؟', 'لا. يشتغل من متصفح جوالك.'],
+      ['كيف أسترجع مبلغي؟', `راسلنا على واتساب خلال ${ar(BACK)} أيام من الدفع ، ونعيده كامل بدون سؤال.`]];
+    const CHK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
     w.insertAdjacentHTML('beforeend',
-      `<header class="la-hero"><svg class="la-logo" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="110" fill="#16201B"/><circle cx="-30" cy="-42" r="16" fill="#F6F4EE"/><circle cx="30" cy="-42" r="16" fill="#F6F4EE"/><path d="M-62 10 C-62 92 62 92 62 10" fill="none" stroke="#F6F4EE" stroke-width="22" stroke-linecap="round"/></svg>
-        <h1 class="la-h1">أكاديمية لينا</h1><p class="la-lede">${BUY1 ? 'خيارك الأفضل للقدرات.' : 'كمّي القدرات.'}</p>
-        </header>
-      <section class="la-sec" data-sec="what"><h2 class="la-h2">${two('كمّي القدرات كاملًا،', 'من جوالك.')}</h2>
-        <ul class="la-what">${WHAT.map(t => `<li>${t}</li>`).join('')}</ul></section>
-      <section class="la-sec" data-sec="trial"><h2 class="la-h2">${two('جرّب اختبار', 'يشبه القدرات.')}</h2>
-        <ol class="la-steps">${STEPS.map((t, i) => `<li><b>${ar(i + 1)}</b><span>${t}</span></li>`).join('')}</ol></section>
-      <section class="la-sec" data-sec="plan"><h2 class="la-h2">${two('الاشتراك شهر،', `بـ${ar(PRICE)} ريال.`)}</h2>
-        <ul class="la-perks">${PERKS.map(([a2, b2]) => `<li><b>${a2}</b><span>${b2}</span></li>`).join('')}</ul>
-        <a class="la-buy" href="#" role="button">اشترك الآن</a>
-        <p class="la-note">دفعة واحدة، بلا تجديد تلقائي. <a href="refund.html">سياسة الاسترجاع</a></p></section>
-      <section class="la-sec" data-sec="ask"><h2 class="la-h2">قد تسأل.</h2>
-        <div class="la-faq">${FAQ.map(([q, a2]) => `<details class="la-fq"><summary>${q}</summary><p>${a2}</p></details>`).join('')}</div></section>
-      <section class="la-sec" data-sec="talk"><h2 class="la-h2">${two('سؤال آخر؟', 'كلّمنا.')}</h2>
-        <a class="la-talk" target="_blank" rel="noopener" href="${waLink('السلام عليكم، عندي سؤال عن أكاديمية لينا.')}">كلّمنا على واتساب</a></section>
+      `<header class="lx-hero"><div class="lx-bar"><svg class="lx-logo" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="110" fill="#F6F4EE"/><circle cx="-30" cy="-42" r="16" fill="#16201B"/><circle cx="30" cy="-42" r="16" fill="#16201B"/><path d="M-62 10 C-62 92 62 92 62 10" fill="none" stroke="#16201B" stroke-width="22" stroke-linecap="round"/></svg><span>أكاديمية لينا</span></div>
+        <h1 class="lx-h1"><span>القدرات ،</span><span>كمّي ولفظي.</span></h1>
+        <p class="lx-lede">${BUY1 ? 'خيارك الأفضل للقدرات.' : 'دروس قصيرة ، تدريب بلا نهاية ، ومعلّم يتابعك.'}</p>
+        <div class="lx-phone"><img src="land/shot-lesson.webp" alt="سؤال من درس في أكاديمية لينا ، وحله مكتوب" width="600" height="1200"></div></header>
+      <section class="lx-sec lx-score" data-sec="trial"><p class="lx-eb">اختبار تحديد المستوى</p>
+        <div class="lx-dial"><b>؟؟<i>–</i>؟؟</b><span>درجتك المتوقعة من ١٠٠</span></div>
+        <h2 class="lx-h2">كم درجتك ،<br>وكم تقدر توصل؟</h2>
+        <p class="lx-p">${NQ} سؤال ، ${MIN} دقيقة. بعدها درجتك المتوقعة ، وخطة توصلك لهدفك.</p></section>
+      <section class="lx-sec" data-sec="what"><h2 class="lx-h2">كل اللي تحتاجه ،<br>في مكان واحد.</h2>
+        <ul class="lx-what">${WHAT.map(([k, a, b]) => `<li>${ico(k)}<div><b>${a}</b><span>${b}</span></div></li>`).join('')}</ul></section>
+      <section class="lx-sec" data-sec="plan"><div class="lx-card"><p class="lx-c-eb">الاشتراك الشهري</p>
+        <p class="lx-price"><b>${ar(PRICE)}</b><span>ريال<br>للشهر</span></p>
+        <ul class="lx-perks">${PERKS.map(t => `<li>${CHK}<span>${t}</span></li>`).join('')}</ul>
+        <a class="lx-buy la-buy" href="#" role="button">اشترك الآن</a>
+        <p class="lx-c-note">دفعة واحدة ، بلا تجديد تلقائي. <a href="refund.html">سياسة الاسترجاع</a></p></div></section>
+      <section class="lx-sec" data-sec="ask"><h2 class="lx-h2">أسئلة.</h2>
+        <div class="la-faq lx-faq">${FAQ.map(([q, a2]) => `<details class="la-fq"><summary>${q}</summary><p>${a2}</p></details>`).join('')}</div></section>
+      <section class="lx-sec lx-talk" data-sec="talk"><p>سؤال ثاني؟</p><a class="la-talk" target="_blank" rel="noopener" href="${waLink('السلام عليكم، عندي سؤال عن أكاديمية لينا.')}">كلّمنا على واتساب</a></section>
       <footer class="la-foot" data-sec="end"></footer>`);
-    if (BUY1) { const pl = w.querySelector('[data-sec=plan]'); w.querySelector('.la-hero').after(pl); LT('land_buy1', { once: true }); }   // the price and what it holds come right under the name
+    if (BUY1) { const pl = w.querySelector('[data-sec=plan]'); w.querySelector('.lx-hero').after(pl); w.classList.add('buy1'); LT('land_buy1', { once: true }); }   // the price and what it holds come right under the name
     /* the button that follows him: the exam; for the price-first visitor it is «اشترك الآن», and the exam is the line under it */
-    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', BUY1 ? 'اشترك الآن' : took ? 'نتيجتك وخطتك' : 'جرّب الاختبار'),
-      micro = el('p', 'la-micro', BUY1 ? (took ? 'أو شف نتيجتك وخطتك' : 'أو جرّب الاختبار المحاكي ، مجانًا') : took ? 'أو أعد الاختبار من جديد' : `${NQ} سؤال مثل يوم الاختبار ، مجانًا`);
+    const dock = el('div', 'la-dock'), go = el('a', 'tun-go ld-go show', BUY1 ? 'اشترك الآن' : took ? 'درجتك وخطتك' : 'اعرف درجتك المتوقعة'),
+      micro = el('p', 'la-micro', BUY1 ? (took ? 'أو شف درجتك وخطتك' : 'أو اعرف درجتك المتوقعة ، مجانًا') : took ? 'أو أعد الاختبار من جديد' : `${NQ} سؤال ، ${MIN} دقيقة ، مجانًا`);
     go.href = '#'; go.setAttribute('role', 'button'); dock.appendChild(go); dock.appendChild(micro); w.appendChild(dock);
     const toExam = () => { LT('land_go', { val: 'exam' }); if (took) { LT('exam_back'); examGate(); } else startExam(); };
     go.addEventListener('click', e => { e.preventDefault(); if (!BUY1) return toExam(); LT('land_go', { val: 'dock-buy' }); LT('plan_pick', { val: 'm1' }); LT('order_open'); order(scrollY); });
@@ -5335,11 +5526,12 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     if (wantExam) { wantExam = false; setTimeout(startExam, 0); }   // …/#exam: the films' link opens the exam itself
     w.querySelector('.la-buy').addEventListener('click', e => { e.preventDefault(); LT('land_go', { val: 'button' }); LT('plan_pick', { val: 'm1' }); LT('order_open'); order(scrollY); });
     if (wantLogin && window.LeenaAuth) { const A = window.LeenaAuth; wantLogin = false; A.whenReady(() => { if (!A.user && !document.querySelector('.modal.acct')) A.openLogin('user'); }); }
-    account(w, 'tun-link la-acc-top');   // shown on a computer only (style.css): no stray thumbs there, and a subscriber should not have to scroll to the end to log in
-    account(w.querySelector('.la-foot'), 'tun-link ld-acc');   // at the very end, away from the thumb: on 12 Nov it took 23 stray taps at the top
+    account(w.querySelector('.lx-bar'), 'tun-link la-acc-top');   // on a computer only (style.css), quiet, for a subscriber who comes back   // at the top, quiet, for a subscriber who comes back
+    account(w.querySelector('.la-foot'), 'tun-link ld-acc');
     /* how far down do they get? one event per section, the first time a fifth of it is on screen */
     let saw = false;
-    const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll);
+    const hero = w.querySelector('.lx-hero'), tone = () => dock.classList.toggle('on-dark', hero.getBoundingClientRect().bottom > innerHeight - 40); tone();
+    const onScroll = () => { if (!document.body.contains(w)) return removeEventListener('scroll', onScroll); tone();
       if (!saw && scrollY > innerHeight * 0.6) { saw = true; LT('land_scroll'); } };   // he left the first screen
     addEventListener('scroll', onScroll, { passive: true });
     if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { LT('land_' + e.target.dataset.sec); io.unobserve(e.target); } }), { threshold: .2 });
@@ -5354,7 +5546,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
     const f = first();
     LT('gate_view');
     const w = room('tun-door tun-gate');
-    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">افتح الكمّي<br>كاملًا</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${PERIOD}.</p>${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال</p>`}</div>`);
+    w.insertAdjacentHTML('beforeend', `${HOLE('shut')}<div class="tun-txt"><p class="tun-done">${TICK} ${esc(f.title)}</p><p class="tun-eyebrow tun-msg">للمشتركين</p><i class="tun-rule"></i><h1 class="tun-h big stop">افتح القدرات<br>كاملة</h1><p class="tun-p">${ar(lessons().length)} درسًا لمدة ${PERIOD}.</p>${(window.LeenaAuth && window.LeenaAuth.payOn) ? '' : `<p class="tun-price"><b>${ar(PRICE)}</b> ريال</p>`}</div>`);
     const act = el('div', 'tun-act'), Au = window.LeenaAuth, ended = !!(Au && Au.user && Au.access && Au.access.length);
     if (Au && Au.payOn) {   // online payment: phone + code → plan → pay
       const b = el('button', 'tun-go', ended ? 'جدّد اشتراكك' : 'اشترك وكمّل'); b.onclick = () => { LT('gate_join'); Au.join(ended ? 'renew' : 'join'); }; act.appendChild(b);
@@ -5369,7 +5561,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   }
 
   /* ---------- plan B while online payment is off: he leaves his name and number, we contact him ---------- */
-  const WA_MSG = `السلام عليكم، جرّبت الدرس الأول وأبغى أشترك في الكمّي كاملًا (${ar(PRICE)} ريال)`;
+  const WA_MSG = `السلام عليكم، جرّبت الدرس الأول وأبغى أشترك في القدرات ، كمّي ولفظي (${ar(PRICE)} ريال)`;
   /* name + Saudi mobile (5XXXXXXXX) → the leads table (site/supabase/005_leads.sql). tag: '' or '|save'. Resolves true/false, never throws */
   async function sendLead(n, d, tag) {
     try {
@@ -5513,7 +5705,8 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const MOCK = [['cmp', 6], ['al', 4], ['ge', 3], ['pc1 pc2', 2], ['pc3', 1], ['fr fs5', 2], ['nm fs6', 1], ['lf', 1], ['dt', 1], ['pt', 1], ['fs1 fs2 fs3 fs4', 1], ['mo', 1]];
   function mockLesson() {
     if (!subscriber()) { const a = (unit().pubExam || []).slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }   // a visitor: the public twelve (courses/quant/d_fast_exam.js), shuffled
-      return { id: 'mock', title: 'اختبار محاكي', mock: true, sub: '', steps: [], drill: { v: 1, tunnel: true, levels: [], finalT: 60, final: a.map((q, i) => Object.assign({}, q, { key: 'pub:' + i })) } }; }
+      const q = a.filter(x => x.sec !== 'v'), v = a.filter(x => x.sec === 'v');   // like the real test: the quant part, then the verbal part
+      return { id: 'mock', title: 'اختبار تحديد المستوى', mock: true, pub: true, sub: '', steps: [], drill: { v: 1, tunnel: true, levels: [], finalT: 60, final: q.concat(v).map((x, i) => Object.assign({}, x, { key: 'pub:' + i })) } }; }
     const S = api().S, seen = new Set((S.mock && S.mock.seen) || []), shuf = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
     const pool = []; lessons().forEach(l => { if (ready(l)) (l.drill.final || []).forEach((q, i) => pool.push({ q, les: l.id, key: l.id + ':' + i })); });
     const used = new Set(), picked = [];
@@ -5560,40 +5753,59 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       save(v); };
     w.querySelector('.pl-none').onclick = () => save(null);
   }
-  /* «خطتك»: week by week */
+  /* «خطتك»: week by week (redrawn 16 Nov 2026, owner: «the plan needs to look better»). On top: where he is and where the plan takes him;
+     then each week as a card: its quant lessons, one kind of the verbal part, and the week's mock exam */
   function planShow() {
     const { P, todo, weak } = planState(); if (!P) return planAsk();
     LT('plan_view');
     const pl = planBuild({ todo, weak, date: P.date }), VIS = !subscriber(), w = room('tun-door tun-list tun-plan', goBack, VIS ? 'رجوع' : 'الدروس'); enter(1, () => VIS ? landing() : road());
-    const head = P.date ? (pl.late ? 'موعد اختبارك فات' : pl.days === 0 ? 'اختبارك اليوم' : `باقي ${ar(pl.days)} يوم على اختبارك`) : 'خطتك بدون موعد';
-    const sub = !todo.length ? 'خلّصت الدروس كلها. الباقي مراجعة واختبارات محاكية.'
-      : P.date ? (pl.tight ? `الوقت ضيّق: ${ar(pl.per)} دروس في الأسبوع. ركّز على اللي عليها «ابدأ من هنا» ، واستخدم «أعرف هذا» في اللي تعرفه.` : `${ar(pl.per)} ${pl.per <= 10 && pl.per >= 3 ? 'دروس' : pl.per === 1 ? 'درس' : pl.per === 2 ? 'درسين' : 'درس'} في الأسبوع ، وآخر كل أسبوع اختبار محاكي.`.replace(/^١ درس|^٢ درسين/, m => m.replace(/^[١٢] /, '')))
-        : `على ${ar(PER_WEEK)} دروس في الأسبوع تكون جاهز من ${fdate(pl.earliest)}. احجز موعد بعد هذا التاريخ.`;
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">خطتك</p><i class="tun-rule"></i><h1 class="tun-h stop">${head}</h1><p class="tun-p">${sub}</p></div>
-      <ol class="pl-weeks">${pl.weeks.map((k, i) => `<li class="${i === 0 ? 'now' : ''}${k.review ? ' rev' : ''}"><p class="pl-w"><b>${i === 0 ? 'هذا الأسبوع' : `الأسبوع ${ar(i + 1)}`}</b><span>${fdate(k.from)} – ${fdate(k.to)}</span></p>
-        <ul>${k.lessons.map(l => `<li data-id="${l.id}">${esc(l.title)}${weak.includes(l.id) ? '<small class="wk">ابدأ من هنا</small>' : ''}</li>`).join('')}${k.review ? '<li class="x">مراجعة «نقاط ضعفك»</li><li class="x">اختبار محاكي ، مرتين</li>' : '<li class="x">اختبار محاكي</li>'}</ul></li>`).join('')}</ol>
-      <button type="button" class="tun-know pl-change">${P.date ? 'غيّر الموعد' : 'حدّد موعد اختبارك'}</button>`);
+    const r = lastScore(), g = r && GOAL(r), nW = pl.weeks.length, nL = pl.weeks.reduce((a, k) => a + k.lessons.length, 0);
+    const head = P.date ? (pl.late ? 'موعد اختبارك فات' : pl.days === 0 ? 'اختبارك اليوم' : `باقي ${ar(pl.days)} يوم`) : `جاهز من ${fdate(pl.earliest)}`;
+    const sub = !todo.length ? 'خلّصت الدروس كلها. الباقي مراجعة واختبارات محاكية.' : P.date && pl.tight ? `الوقت ضيّق ، فبدأنا بالأهم لك.` : P.date ? 'رتّبناها على الأسابيع اللي باقية ، والأهم لك أول.' : `على ${ar(PER_WEEK)} دروس في الأسبوع. احجز موعدك بعد هذا التاريخ.`;
+    const unit = (n, one, two, few, many) => n === 1 ? one : n === 2 ? two : n >= 3 && n <= 10 ? `${ar(n)} ${few}` : `${ar(n)} ${many}`;
+    w.insertAdjacentHTML('beforeend', `<div class="pl-top">
+        <p class="pl-eb">خطتك${P.date ? ` · اختبارك ${fdate(new Date(P.date + 'T12:00:00'))}` : ''}</p>
+        <h1 class="pl-h">${head}</h1><p class="pl-sub">${sub}</p>
+        ${r ? `<div class="pl-goal"><div><small>الحين</small>${RNG(r)}</div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><div class="to"><small>هدفك</small>${RNG(g)}</div></div>` : ''}
+        <div class="pl-sum"><div><b>${ar(nW)}</b><span>${nW === 1 ? 'أسبوع' : nW === 2 ? 'أسبوعين' : nW <= 10 ? 'أسابيع' : 'أسبوع'}</span></div><div><b>${ar(nL)}</b><span>درس كمّي</span></div><div><b>${ar(VERBAL.length)}</b><span>أقسام لفظي</span></div></div></div>
+      <ol class="pl-weeks">${pl.weeks.map((k, i) => `<li class="pl-card${i === 0 ? ' now' : ''}${k.review ? ' rev' : ''}"><p class="pl-w"><b>${i === 0 ? 'هذا الأسبوع' : k.review ? 'الأسبوع الأخير' : `الأسبوع ${ar(i + 1)}`}</b><span>${fdate(k.from)} – ${fdate(k.to)}</span></p>
+        <ul>${k.lessons.map(l => `<li data-id="${l.id}"><em>كمّي</em>${esc(l.title)}${weak.includes(l.id) ? '<small class="wk">ابدأ من هنا</small>' : ''}</li>`).join('')}${k.review ? '<li class="x">مراجعة نقاط ضعفك</li><li class="x"><em>اختبار</em>اختبار محاكي ، مرتين</li>' : `<li class="v"><em>لفظي</em>${VERBAL[i % VERBAL.length]}</li><li class="x"><em>اختبار</em>اختبار محاكي</li>`}</ul></li>`).join('')}</ol>
+      <button type="button" class="tun-know pl-change">${P.date ? 'غيّر موعد الاختبار' : 'حدّد موعد اختبارك'}</button>`);
     w.querySelector('.pl-change').onclick = () => quiet(() => planAsk());
     if (VIS) return planOffer(w);
     w.querySelectorAll('.pl-weeks li[data-id]').forEach(li => { const l = byId(li.dataset.id); li.tabIndex = 0; li.setAttribute('role', 'button'); li.onclick = () => { LT('tunnel_enter', { val: 'plan', lesson: l.id }); door(l); }; });
   }
   /* ---------- the visitor's way through the mock exam (the campaign of 15 Nov 2026): exam → name and number → result → «متى اختبارك؟» → his weeks → the offer ---------- */
+  /* the expected score (owner, 16 Nov 2026, 08:27): out of 100, as a range of five, «from 80 to 85». It is our estimate from his answers,
+     said so under it; never a promise. The goal is the next ten points: «learn how to raise it to 90–95» is the hook */
+  const SCORE = (got, tot) => { const p = tot ? got / tot : 0, lo = Math.max(50, Math.min(95, Math.floor((45 + 52 * p) / 5) * 5)); return { lo, hi: lo + 5 }; };
+  const GOAL = r => { const lo = Math.min(95, r.lo + 10); return { lo, hi: lo + 5 }; };
+  const RNG = r => `<b class="rng">${ar(r.lo)}<i>–</i>${ar(r.hi)}</b>`;
+  const lastScore = () => { const M = api().S.mock; return M && M.last ? SCORE(M.last.got, M.last.total) : null; };
+  /* the verbal part: its five kinds. Its lessons are prepared for each subscriber after he pays (owner, 16 Nov 2026), so they show in the plan, locked */
+  const VERBAL = ['التناظر اللفظي', 'إكمال الجمل', 'الخطأ السياقي', 'المفردة الشاذة', 'استيعاب المقروء'];
   const examLead = () => { try { return JSON.parse(localStorage.getItem('leena-exam-lead') || 'null'); } catch (e) { return null; } };
   const examTaken = () => { const M = api().S.mock; return !!(M && M.last); };
   const startExam = () => { LT('exam_open', { val: examTaken() ? 'again' : 'first' }); play(mockLesson()); };
   /* 15 Nov 2026, 19:33 (owner «Go», after the day's numbers: two finished the exam and both left at the form): he sees his score at once;
      the name and the number (asked once) open what is behind it: topic by topic, and his plan */
+  function scoreHTML(r) {
+    const g = GOAL(r);
+    return `<div class="sc"><p class="sc-eb">درجتك المتوقعة</p><div class="sc-big">${RNG(r)}<span>من ${ar(100)}</span></div>
+      <p class="sc-note">تقديرنا من إجاباتك ، مو درجة رسمية من قياس.</p>
+      <div class="sc-goal"><span>${r.lo >= 95 ? 'خطتك تثبّتها عند' : 'خطتك ترفعها إلى'}</span>${RNG(g)}</div></div>`;
+  }
   function examGate() {
     LT('exam_done', { once: true });
     if (examLead()) return examResult();
     LT('exam_score', { once: true });
-    const M = api().S.mock, w = room('tun-door jn tun-lead tun-order tun-exam-gate', goBack, 'رجوع'); enter(1, () => landing());
-    const got = M && M.last ? M.last.got : 0, tot = M && M.last ? M.last.total : 0;
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">نتيجتك</p><i class="tun-rule"></i><h1 class="tun-h stop">حلّيت ${ar(got)} من ${ar(tot)}</h1>
-      <p class="tun-p">هذا إحساس بالاختبار ، مو درجتك في قياس.</p><p class="tun-p ex-more">وين أنت قوي ووين تحتاج؟ عندنا نتيجتك موضوع موضوع ، وخطة لك.<br>اكتب اسمك ورقمك ونعرضها.</p></div>
+    const M = api().S.mock, w = room('tun-door jn tun-lead tun-order tun-exam-gate tun-score', goBack, 'رجوع'); enter(1, () => landing());
+    const got = M && M.last ? M.last.got : 0, tot = M && M.last ? M.last.total : 0, r = SCORE(got, tot);
+    w.insertAdjacentHTML('beforeend', `${scoreHTML(r)}
+      <p class="tun-p ex-more">اكتب اسمك ورقمك ، ونعرض لك الخطة.</p>
       <form class="jn-form" novalidate><input id="ex-first" class="jn-in" type="text" autocomplete="given-name" maxlength="20" placeholder="الاسم الأول" aria-label="الاسم الأول">
       <label class="jn-phone"><span>+966</span><input id="ex-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="5X XXX XXXX" aria-label="رقم الجوال"></label>
-      <p class="jn-err" hidden></p><button class="tun-go" type="submit">اعرض مواضيعي وخطتي</button></form><p class="jn-small">نستخدم رقمك للتواصل معك فقط.</p>`);
+      <p class="jn-err" hidden></p><button class="tun-go" type="submit">اعرض خطتي</button></form><p class="jn-small">نستخدم رقمك للتواصل معك فقط.</p>`);
     const f = w.querySelector('form'), fn = w.querySelector('#ex-first'), ph = w.querySelector('#ex-phone'), err = w.querySelector('.jn-err'), go = f.querySelector('.tun-go');
     const bad = (m, at) => { err.textContent = m; err.hidden = false; at.focus(); };
     f.onsubmit = async e => { e.preventDefault(); err.hidden = true;
@@ -5601,25 +5813,27 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       if (a.length < 2) return bad('اكتب اسمك الأول', fn);
       if (!/^5\d{8}$/.test(d)) return bad('اكتب رقم جوال صحيح يبدأ بـ ٥', ph);
       go.disabled = true; go.textContent = 'نرسل…';
-      const ok = await sendLead(a.slice(0, 40), d, `|exam:${M && M.last ? M.last.got : 0}`);
-      if (!ok) { go.disabled = false; go.textContent = 'اعرض مواضيعي وخطتي'; err.textContent = 'ما قدرنا نرسل. جرّب مرة ثانية.'; err.hidden = false; return; }
+      const ok = await sendLead(a.slice(0, 40), d, `|exam:${got}:${r.lo}`);
+      if (!ok) { go.disabled = false; go.textContent = 'اعرض خطتي'; err.textContent = 'ما قدرنا نرسل. جرّب مرة ثانية.'; err.hidden = false; return; }
       try { localStorage.setItem('leena-exam-lead', JSON.stringify({ n: a.slice(0, 40), p: d })); localStorage.setItem('leena-lead', '1'); } catch (x) {}
-      LT('exam_lead', { n: M && M.last ? M.last.got : 0 }); LT('lead_sent'); quiet(() => examResult()); };
+      LT('exam_lead', { n: got }); LT('lead_sent'); LT('plan_open', { val: 'exam' }); quiet(() => planShow()); };
   }
+  /* he came back (name and number given before): his range again, and his plan one press away */
   function examResult() {
     const M = api().S.mock; if (!M || !M.last) return landing();
-    const { got, total, by } = M.last, weak = M.weak || [], ids = Object.keys(by).sort((a, b) => by[a][0] / by[a][1] - by[b][0] / by[b][1] || by[b][1] - by[a][1]), nm = k => { const l = byId(k); return l ? l.title : k; };
-    LT('exam_result', { n: got });
-    const w = room('tun-door tun-list tun-exam-res', goBack, 'رجوع'); enter(1, () => landing());
-    w.insertAdjacentHTML('beforeend', `<div class="tun-txt"><p class="tun-eyebrow">نتيجتك</p><i class="tun-rule"></i><h1 class="tun-h stop">حلّيت ${ar(got)} من ${ar(total)}</h1><p class="tun-p">هذا إحساس بالاختبار ، مو درجتك في قياس.${weak.length ? ' وأول المواضيع تحت هي اللي تحتاجك أكثر.' : ''}</p></div>
-      <ul class="dz-mock">${ids.map(k => `<li class="${by[k][0] === by[k][1] ? 'ok' : by[k][0] === 0 ? 'bad' : 'mid'}${weak.includes(k) ? ' weak' : ''}"><span>${esc(nm(k))}</span><b>${ar(by[k][0])} من ${ar(by[k][1])}</b></li>`).join('')}</ul>`);
-    const go = el('button', 'tun-go', 'رتّب لي خطة'); go.onclick = () => { LT('plan_open', { val: 'exam' }); quiet(() => planShow()); }; w.appendChild(go);
+    LT('exam_result', { n: M.last.got });
+    const w = room('tun-door tun-list tun-exam-res tun-score', goBack, 'رجوع'); enter(1, () => landing());
+    w.insertAdjacentHTML('beforeend', scoreHTML(SCORE(M.last.got, M.last.total)));
+    const act = el('div', 'tun-act');
+    const go = el('button', 'tun-go', 'اعرض خطتي'); go.onclick = () => { LT('plan_open', { val: 'exam' }); quiet(() => planShow()); }; act.appendChild(go);
+    const re = el('button', 'tun-know', 'أعد الاختبار'); re.onclick = () => startExam(); act.appendChild(re);
+    w.appendChild(act);
   }
   /* under the visitor's weeks: how to begin them. He has given his name and number already, so one press is enough */
   function planOffer(w) {
-    w.insertAdjacentHTML('beforeend', `<div class="pl-offer"><p class="pl-o-h">هذي خطتك. عشان تبدأها:</p>
-      <button type="button" class="tun-go pl-trial">أبي حساب تجربة مجاني</button><button type="button" class="tun-know pl-buy">اشترك الآن: شهر بـ${ar(PRICE)} ريال</button>
-      <p class="jn-small">حساب التجربة: كل الدروس مفتوحة لك ساعة كاملة ، نرسله على واتساب.<br>والاشتراك تسترجع مبلغه خلال ${ar(BACK)} أيام ، بدون سبب.</p></div>`);
+    w.insertAdjacentHTML('beforeend', `<div class="pl-offer"><p class="pl-o-h">ابدأ خطتك اليوم</p><p class="pl-o-p">الكمّي واللفظي ، وساعة مع معلّم خاص. شهر كامل بـ${ar(PRICE)} ريال.</p>
+      <button type="button" class="tun-go pl-buy">اشترك الآن</button><button type="button" class="tun-know pl-trial">جرّب الدروس ساعة مجانًا</button>
+      <p class="jn-small">تسترجع مبلغك خلال ${ar(BACK)} أيام ، بدون سبب.</p></div>`);
     const send = async (b, trial) => { const me = examLead(); if (!me) return order(0, trial ? 'trial' : '');
       b.disabled = true; const ok = await sendLead(me.n, me.p, trial ? '|trial' : '');
       if (!ok) { b.disabled = false; return say('ما قدرنا نرسل طلبك. جرّب مرة ثانية.'); }
@@ -5649,6 +5863,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
       ${(() => { const P = api().S.plan; if (!P) return '<button type="button" class="tun-mock tun-plan-card"><b>خطتك</b><small>قل لنا متى اختبارك ، ونرتّب لك الدروس على الأسابيع.</small></button>';
         const pl = planBuild(Object.assign(planState(), { date: P.date })), wk = pl.weeks[0], names = wk && wk.lessons.length ? wk.lessons.slice(0, 3).map(l => esc(l.title)).join(' ، ') + (wk.lessons.length > 3 ? ' …' : '') : 'مراجعة واختبار محاكي';
         return `<button type="button" class="tun-mock tun-plan-card"><b>${P.date ? (pl.late ? 'خطتك' : `باقي ${ar(Math.max(0, pl.days))} يوم على اختبارك`) : 'خطتك'}</b><small>هذا الأسبوع: ${names}</small></button>`; })()}
+      <div class="tun-verbal"><b>اللفظي <i>نجهّزه لك</i></b><small>نفتحه لك قريبًا ، ونبلّغك على واتساب أول ما يفتح.</small></div>
       <ol class="tun-st">${L.map(l => { const s = st(l);
       return `<li class="${s}${weak(l) ? ' weak' : ''}${knows(l) ? ' known' : ''}"><span class="dot">${s === 'done' ? TICK : s === 'lock' ? LOCK : ''}</span><span class="nm">${esc(l.title)}</span>${s === 'soon' ? '<small>قريبًا</small>' : weak(l) ? '<small class="wk">ابدأ من هنا</small>' : knows(l) ? '<small class="kn">تعرفه</small>' : ''}</li>`; }).join('')}</ol>`);
     /* «نقاط ضعفك» (B4): shown once the engine has seen him struggle with at least three ideas */
