@@ -2112,7 +2112,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794808588", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794810643", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -5399,7 +5399,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* what is sold (owner, 14 Nov 2026, 06:09): ONE subscription. A month for 249 riyals, with one hour with a private teacher and his follow-up of the
      student's progress, and the money back within three days for no reason at all. No other lengths, no added hours. He charges on WhatsApp and
      arranges the hour himself, outside the site: there is no calendar here. A plain price: no «وفّر», nothing crossed out (a shown discount needs a Commerce licence). */
-  const PRICE = 249, BACK = 3;
+  const PRICE = 129, BACK = 3;   // 129 from 16 Nov 2026, 09:28 (owner: «let's try 129»); 249 before
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const fromAsk = () => /^ad\d$/.test(new URLSearchParams(location.search).get('src') || '');   // an ad whose video already showed a question: no page to read, straight into the first question (docs/AD_CAMPAIGN_PLAN.md)
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
@@ -5479,7 +5479,7 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   const PRICE_FIRST = ['why'];   // sources (…/?src=…) whose ad already said the price and what it holds (the film «ليش أكاديمية لينا؟», 15 Nov)
   function landing() {   // seventh build, 16 Nov 2026, 08:27 (owner: «make us look expensive… too much talk… quant plus verbal»)
     // In order: who we are (dark, with the real lesson on a phone) · your expected score (the exam is the one button) · what is inside ·
-    // the membership card (249) · four questions · talk to us. Few words on each; the button that follows him opens the exam.
+    // the membership card (129) · four questions · talk to us. Few words on each; the button that follows him opens the exam.
     LT('land_view', { once: true });
     if (lockedOut() && sawOffer) enter(1, () => { sawOffer = false; noAccess(); }); else enter(0);   // opened from «تفاصيل الاشتراك»: back returns to the account's screen
     const w = room('tun-land lx'), L = lessons(), N = ar(L.length); bar('#16201B');
