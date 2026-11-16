@@ -1941,6 +1941,8 @@ body.lt .dz-blind .opt.dz-o.pick .mo{color:#F6F4EE}
   .lx-mentor>*{grid-column:1}.lx-mentor .lx-phone-s{grid-column:2;grid-row:1 / span 4;margin:0;width:300px}
   .lx8 .lx-score{display:block;max-width:760px}
 }
+/* the week's offer (16–22 Nov 2026) */
+.lx-offer{display:inline-block;margin:0 0 14px;padding:8px 14px;border-radius:99px;background:#F5C46B;color:#2A1E08;font:500 14px/1.3 Alexandria,var(--f-display)}
 
 /* ================= academy shell ================= */
 .cover-btn.wide{width:min(52vw,200px)}
@@ -2158,7 +2160,7 @@ body:has(.player) .legal,body:has(.dg-run) .legal{display:none}
 <div id="app" dir="rtl" lang="ar"></div>
 <footer class="legal" dir="rtl" lang="ar"><a href="terms.html">الشروط والأحكام</a><a href="privacy.html">سياسة الخصوصية</a><a href="refund.html">سياسة الاسترجاع</a><a href="contact.html">تواصل معنا</a><span>مؤسسة عبدالعزيز عوض الحارثي للاتصالات وتقنية المعلومات · سجل تجاري ٧٠٥٤١٤٣٦٦٩</span></footer>
 <script>
-window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794811843", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
+window.ACADEMY_CONFIG = {"bank": [], "auth": {"url": "https://rkpjtbhqmkdwnwdpnykj.supabase.co", "key": "sb_publishable_llhmpOMvgwN_KGodxyigZw_kNYRRt7Y", "v": "1794857227", "pay": false}, "landing": true, "whatsapp": "966501320239", "trial": false};
 (function () {
 /* ================= course block =================
    This course is a self-contained block. An "academy" shell can host several courses:
@@ -5445,7 +5447,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
   /* what is sold (owner, 14 Nov 2026, 06:09): ONE subscription. A month for 249 riyals, with one hour with a private teacher and his follow-up of the
      student's progress, and the money back within three days for no reason at all. No other lengths, no added hours. He charges on WhatsApp and
      arranges the hour himself, outside the site: there is no calendar here. A plain price: no «وفّر», nothing crossed out (a shown discount needs a Commerce licence). */
-  const PRICE = 129, BACK = 3;   // 129 from 16 Nov 2026, 09:28 (owner: «let's try 129»); 249 before
+  /* 249 until 16 Nov 2026 09:28; then 129. The week's offer (owner, 16 Nov 22:23): 49 from today until the end of Sunday 22 Nov (Riyadh),
+     then back to 129 by itself. OFFER is true while the week runs */
+  const OFFER_END = new Date('2026-11-23T00:00:00+03:00'), OFFER = Date.now() < +OFFER_END, PRICE = OFFER ? 49 : 129, BACK = 3;
   const fromAd = () => /(^|-)ad$/.test(new URLSearchParams(location.search).get('src') || '');
   const fromAsk = () => /^ad\d$/.test(new URLSearchParams(location.search).get('src') || '');   // an ad whose video already showed a question: no page to read, straight into the first question (docs/AD_CAMPAIGN_PLAN.md)
   const landSeen = () => { try { return sessionStorage.getItem('leena-land') === '1'; } catch (e) { return false; } };
@@ -5545,9 +5549,9 @@ window.AcademyCourses[COURSE.id] = { COURSE, mount: mountBare, init, api: { S, p
         <h1 class="lx-h1"><span>القدرات كاملة ،</span><span>ومعك مرشد.</span></h1>
         <p class="lx-lede">الكمّي واللفظي ، ومرشد شخصي يتابعك لين يوم اختبارك.</p></header>
       <section class="lx-sec lx-pk" data-sec="plan"><div class="lx-card">
-        <p class="lx-c-eb">الباقة الكاملة · شهر</p>
+        ${OFFER ? '<p class="lx-offer">عرض هذا الأسبوع فقط ، لين يوم الأحد ٢٢ نوفمبر</p>' : ''}<p class="lx-c-eb">الباقة الكاملة · شهر</p>
         <p class="lx-price"><b>${ar(PRICE)}</b><span>ريال<br>للشهر كامل</span></p>
-        <p class="lx-day">يعني أقل من ${ar(Math.ceil(PRICE / 30))} ريال باليوم.</p>
+        <p class="lx-day">يعني أقل من ${Math.ceil(PRICE / 30) === 2 ? 'ريالين' : ar(Math.ceil(PRICE / 30)) + ' ريال'} باليوم.</p>
         <ul class="lx-perks">${PERKS.map(([a, b], k) => `<li${k === 0 ? ' class="star"' : ''}>${CHK}<div><b>${a}</b><span>${b}</span></div></li>`).join('')}</ul>
         <a class="lx-buy la-buy" href="#" role="button">اشترك الآن</a>
         <div class="lx-safe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></svg><div><b>ضمان ${ar(BACK)} أيام</b><span>ما عجبك؟ نرجّع لك مبلغك كامل ، بدون سبب.</span></div></div>
